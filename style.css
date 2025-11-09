@@ -798,3 +798,22 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   }
 }
 
+@media (max-width: 480px) {
+  .skills-tiles .tile-square.open .tile-reveal {
+    margin-top: 12px; /* Espaço entre o quadrado e os ícones internos */
+  }
+
+  .skills-tiles .reveal-grid {
+    gap: 10px; /* Espaço entre os ícones dentro */
+  }
+
+  .skills-tiles .tile-ico img {
+    width: 48px;
+    height: 48px;
+  }
+
+  .skills-tiles .tile-square {
+    margin-bottom: 18px; /* Distância entre os quadrados */
+  }
+}
+
