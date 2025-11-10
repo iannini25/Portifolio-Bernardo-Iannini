@@ -817,3 +817,42 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   }
 }
 
+/* ==== FIX: MOBILE SPACING FOR SKILLS (up to 380px) ==== */
+@media (max-width: 480px) {
+  /* espaço entre cada quadrado */
+  .skills-tiles .tiles-wrap.squares {
+    gap: 36px; /* aumenta o espaço vertical entre os blocos */
+  }
+
+  /* bloco principal */
+  .skills-tiles .tile-square {
+    --sq: 110px; /* reduz o tamanho do quadrado */
+  }
+
+  /* painel revelado */
+  .skills-tiles .tile-reveal {
+    margin-top: 16px !important; /* espaço entre o quadrado e o conteúdo revelado */
+    transform: translateY(10px) !important;
+    gap: 18px !important; /* respiro entre os ícones dentro */
+  }
+
+  .skills-tiles .tile-square.open .tile-reveal {
+    transform: translateY(0) !important;
+  }
+
+  /* grid dos ícones (subcategorias) */
+  .skills-tiles .reveal-grid {
+    gap: 18px !important; /* espaço entre os ícones */
+    justify-content: center;
+  }
+
+  .skills-tiles .reveal-grid li {
+    width: 48px; /* ícones um pouco menores */
+    height: 48px;
+  }
+
+  /* texto do label */
+  .skills-tiles .tile-square::after {
+    bottom: -28px;
+  }
+}
