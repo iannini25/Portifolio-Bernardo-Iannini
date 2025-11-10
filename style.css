@@ -842,7 +842,7 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
 
   /* grid dos ícones (subcategorias) */
   .skills-tiles .reveal-grid {
-    gap: 18px !important; /* espaço entre os ícones */
+    gap: 30px !important; /* espaço entre os ícones */
     justify-content: center;
   }
 
