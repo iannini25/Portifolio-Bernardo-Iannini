@@ -831,7 +831,7 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
 
   /* painel revelado */
   .skills-tiles .tile-reveal {
-    margin-top: 16px !important; /* espaço entre o quadrado e o conteúdo revelado */
+    margin-top: 56px !important; /* espaço entre o quadrado e o conteúdo revelado */
     transform: translateY(10px) !important;
     gap: 18px !important; /* respiro entre os ícones dentro */
   }
