@@ -32,7 +32,7 @@
   const I18N = {
     en: {
       htmlLang: "en",
-      nav: { home: "Home", about: "About", experience: "Experience", skills: "Skills", projects: "Projects", contact: "Contact", resume: "Download CV" },
+      nav: { home: "Home", about: "About", experience: "Experience", skills: "Skills", projects: "Projects", contact: "Contact", resume: "CV" },
       modes: { prof: "Professional", acad: "Academic", courses: "Courses & Certifications" },
       hero: { hello: "Hi, I'm" },
       taglines: ["Web developer.", "AI Product Designer.", "Video editor."],
@@ -621,4 +621,5 @@ Atualmente, aprofundo conhecimentos em desenvolvimento de software e tenho forte
   const r = document.querySelector('.resume-btn');
   if(r) r.classList.add('resume-attn');
 })();
+
 
