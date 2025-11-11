@@ -136,7 +136,7 @@ section { scroll-margin-top: calc(var(--nav-h) + 24px) }
 /* =============================
    1) HEADER / NAVBAR
    ============================= */
-header { position: fixed; top: 20px; left: 0; right: 0; z-index: 10; background: transparent; border: none }
+header { position: fixed; top: 20px; left: 0; right: 0; z-index: 10; background: transparent; border: none; margin-top: 30px; }
 .nav { max-width: 1120px; margin: 0 auto; padding: 0 20px; position: relative; min-height: var(--nav-h) }
 .nav-center { position: absolute; left: 50%; top: 50%; transform: translate(-55%, -50%) }
 .pill { display: inline-flex; gap: 6px; padding: 6px; background: var(--w-05); border: 1px solid var(--w-10); border-radius: 999px; backdrop-filter: blur(8px) }
@@ -858,6 +858,7 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
     bottom: -28px;
   }
 }
+
 
 
 
