@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bernardo Iannini - Portfólio</title>
+  <meta name="description" content="Portfólio de Bernardo Iannini — desenvolvedor web e editor de vídeos." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Favicon padrão (aba do navegador) -->
+  <link rel="icon" type="image/png" href="/icons/terminal.png" sizes="32x32">
+
+  <!-- Recomendado pro Google Site Icon (>= 48px) -->
+  <link rel="icon" type="image/png" href="/icons/terminal_48px.png" sizes="48x48">
+
+  <!-- Fallback tradicional (.ico) e caminho que o Google costuma procurar -->
+  <link rel="icon" type="image/x-icon" href="icons/terminal.png" sizes="any">
+  <link rel="icon" type="image/png" href="icons/terminal_48px.png" sizes="48x48">
+
+  <!-- Cor da UI no mobile -->
+  <meta name="theme-color" content="#000000">
+
+
+  <link rel="canonical" href="https://bernardoiannini.com/" />
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:title" content="Bernardo Iannini - Portfólio" />
+  <meta property="og:description"
+    content="Desenvolvedor web, AI Designer, C#, SQL, edição de vídeo. Projetos, experiência e contato." />
+  <meta property="og:url" content="https://bernardoiannini.com/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://bernardoiannini.com/cover.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Bernardo Araújo Iannini",
+  "url": "https://bernardoiannini.com/",
+  "sameAs": [
+    "https://github.com/iannini25",
+    "https://www.linkedin.com/in/bernardo-iannini"
+    "https://medium.com/@bernardoiannini"
+  ],
+  "jobTitle": "Desenvolvedor Web",
+  "image": "https://bernardoiannini.com/avatar.jpg"
+}
+</script>
+
+</head>
+
+<body>
+  <!-- NAVBAR -->
+  <header>
+    <div class="nav">
+
+      <!-- MENU MOBILE (drop) -->
+      <nav id="mobileNav" class="mobile-nav" aria-hidden="true">
+        <a href="#home" data-scroll data-i18n="nav.home">Home</a>
+        <a href="#sobre" data-scroll data-i18n="nav.about">About</a>
+        <a href="#xp" data-scroll data-i18n="nav.experience">Experience</a>
+        <a href="#skills" data-scroll data-i18n="nav.skills">Skills</a>
+        <a href="#projects" data-scroll data-i18n="nav.projects">Projects</a>
+        <a href="#contato" data-scroll data-i18n="nav.contact">Contact</a>
+        <!-- (REMOVIDO no mobile) Currículo -->
+      </nav>
+
+      <!-- Language switch (ESQUERDA) -->
+      <div class="lang-slot" aria-label="Language switch">
+        <button id="langBtn" class="lang-switch pill" aria-haspopup="listbox" aria-expanded="false">
+          <span class="lang-ico" aria-hidden="true">🌐</span>
+          <span id="langCode">EN</span>
+          <svg class="caret" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </button>
+        <ul id="langMenu" class="lang-menu" role="listbox">
+          <li data-lang="en" role="option" aria-selected="true">English</li>
+          <li data-lang="pt" role="option" aria-selected="false">Português</li>
+        </ul>
+      </div>
+
+      <div class="nav-center">
+        <nav class="pill">
+          <a href="#home" data-scroll data-i18n="nav.home">Home</a>
+          <a href="#sobre" data-scroll data-i18n="nav.about">About</a>
+          <a href="#xp" data-scroll data-i18n="nav.experience">Experience</a>
+          <a href="#skills" data-scroll data-i18n="nav.skills">Skills</a>
+          <a href="#projects" data-scroll data-i18n="nav.projects">Projects</a>
+          <a href="#contato" data-scroll data-i18n="nav.contact">Contact</a>
+        </nav>
+      </div>
+
+      <!-- Theme toggle (fica oculto no mobile via CSS) -->
+      <div class="theme-slot">
+        <input type="checkbox" id="darkmode-toggle" />
+        <label for="darkmode-toggle" class="dm-switch" aria-label="Toggle color mode">
+          <!-- sun -->
+          <svg class="sun" viewBox="0 0 496 496" aria-hidden="true">
+            <rect x="152.994" y="58.921" transform="matrix(0.3827 0.9239 -0.9239 0.3827 168.6176 -118.5145)"
+              width="40.001" height="16" />
+            <rect x="46.9" y="164.979" transform="matrix(0.9239 0.3827 -0.3827 0.9239 71.29 -12.4346)" width="40.001"
+              height="16" />
+            <rect x="46.947" y="315.048" transform="matrix(0.9239 -0.3827 0.3827 0.9239 -118.531 50.2116)"
+              width="40.001" height="16" />
+            <rect x="164.966" y="409.112" transform="matrix(-0.9238 -0.3828 0.3828 -0.9238 168.4872 891.7491)"
+              width="16" height="39.999" />
+            <rect x="303.031" y="421.036" transform="matrix(-0.3827 -0.9239 0.9239 -0.3827 50.2758 891.6655)"
+              width="40.001" height="16" />
+            <rect x="409.088" y="315.018" transform="matrix(-0.9239 -0.3827 0.3827 -0.9239 701.898 785.6559)"
+              width="40.001" height="16" />
+            <rect x="409.054" y="165.011" transform="matrix(-0.9239 0.3827 -0.3827 -0.9239 891.6585 168.6574)"
+              width="40.001" height="16" />
+            <rect x="315.001" y="46.895" transform="matrix(0.9238 0.3828 -0.3828 0.9238 50.212 -118.5529)" width="16"
+              height="39.999" />
+            <path d="M248,88c-88.224,0-160,71.776-160,160s71.776,160,160,160s160-71.776,160-160S336.224,88,248,88z M248,392
+            c-79.4,0-144-64.6-144-144s64.6-144,144-144s144,64.6,144,144S327.4,392,248,392z" />
+            <rect x="240" width="16" height="72" />
+            <rect x="62.097" y="90.096" transform="matrix(0.7071 0.7071 -0.7071 0.7071 98.0963 -40.6334)" width="71.999"
+              height="16" />
+            <rect y="240" width="72" height="16" />
+            <rect x="90.091" y="361.915" transform="matrix(-0.7071 -0.7071 0.7071 -0.7071 -113.9157 748.643)" width="16"
+              height="71.999" />
+            <rect x="240" y="424" width="16" height="72" />
+            <rect x="361.881" y="389.915" transform="matrix(-0.7071 -0.7071 0.7071 -0.7071 397.8562 960.6281)"
+              width="71.999" height="16" />
+            <rect x="424" y="240" width="72" height="16" />
+            <rect x="389.911" y="62.091" transform="matrix(0.7071 0.7071 -0.7071 0.7071 185.9067 -252.6357)" width="16"
+              height="71.999" />
+          </svg>
+          <!-- moon -->
+          <svg class="moon" viewBox="0 0 49.739 49.739" aria-hidden="true">
+            <path d="M25.068,48.889c-9.173,0-18.017-5.06-22.396-13.804C-3.373,23.008,1.164,8.467,13.003,1.979l2.061-1.129l-0.615,2.268
+            c-1.479,5.459-0.899,11.25,1.633,16.306c2.75,5.493,7.476,9.587,13.305,11.526c5.831,1.939,12.065,1.492,17.559-1.258
+            c0.25-0.125,0.492-0.258,0.734-0.391l2.061-1.13l-0.585,2.252c-1.863,6.873-6.577,12.639-12.933,15.822
+            C32.639,48.039,28.825,48.888,25.068,48.889z M12.002,4.936c-9.413,6.428-12.756,18.837-7.54,29.253
+            c5.678,11.34,19.522,15.945,30.864,10.268c5.154-2.582,9.136-7.012,11.181-12.357c-5.632,2.427-11.882,2.702-17.752,0.748
+            c-6.337-2.108-11.473-6.557-14.463-12.528C11.899,15.541,11.11,10.16,12.002,4.936z" />
+          </svg>
+        </label>
+      </div>
+
+      <!-- BOTÃO HAMBÚRGUER (aparece no mobile) -->
+      <button id="menuBtn" class="menu-btn" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobileNav">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+      </button>
+
+      <!-- NAV RIGHT (desktop) -->
+      <div class="nav-right">
+        <a class="resume-btn" href="Curriculo_Bernardo_Iannini.pdf" download>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3v11m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          <span data-i18n="nav.resume">Currículo</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+
+  <main>
+    <!-- HERO -->
+    <section id="home" class="hero" aria-label="apresentação">
+      <figure class="photo">
+        <img src="img/fotoolhandoprabaixo.png" alt="Bernardo Iannini olhando para baixo" />
+      </figure>
+
+      <div class="stack">
+        <p class="hello">Hi, I'm</p>
+        <h1 class="name"><span class="green">Bernardo</span><span class="break">Iannini.</span></h1>
+        <p class="tagline"><em id="taglineText">I build websites.</em><span class="cursor"></span></p>
+      </div>
+
+      <aside class="rail" aria-label="links sociais">
+        <a class="sbtn" href="https://www.linkedin.com/in/bernardo-iannini" target="_blank" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.05c.53-1 1.84-2.2 3.8-2.2 4.06 0 4.8 2.67 4.8 6.15V24h-4v-7.1c0-1.7-.03-3.9-2.4-3.9-2.4 0-2.77 1.87-2.77 3.8V24h-4V8z" />
+          </svg>
+        </a>
+        <a class="sbtn" href="https://github.com/iannini25" target="_blank" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M12 .5C5.73.5.98 5.24.98 11.5c0 4.85 3.14 8.96 7.49 10.41.55.1.75-.24.75-.53v-1.86c-3.04.66-3.68-1.45-3.68-1.45-.5-1.28-1.22-1.63-1.22-1.63-.99-.67.08-.66.08-.66 1.09.08 1.66 1.13 1.66 1.13.98 1.67 2.57 1.19 3.2.91.1-.71.38-1.19.69-1.46-2.43-.28-4.99-1.22-4.99-5.43 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.41.11-2.94 0 0 .92-.29 3.02 1.13A10.5 10.5 0 0 1 12 6.8c.94 0 1.88.13 2.77.38 2.1-1.42 3.02-1.13 3.02-1.13.6 1.53.22 2.66.11 2.94.7.77 1.13 1.75 1.13 2.95 0 4.22-2.57 5.14-5.01 5.41.39.34.73 1.02.73 2.07v3.07c0 .3.2.64.76.53 4.34-1.45 7.48-5.56 7.48-10.41C23.02 5.24 18.27.5 12 .5z" />
+          </svg>
+        </a>
+      </aside>
+
+      <div class="scroll-cue">
+        <div class="chev"></div>
+      </div>
+    </section>
+
+    <!-- SOBRE -->
+    <section id="sobre" class="section" aria-label="sobre mim">
+      <div class="kicker">About me</div>
+      <div class="term-wrap">
+        <div class="term-bar" role="toolbar" aria-label="Controles do terminal">
+          <button class="t-dot t-r" type="button" aria-label="Fechar (vermelho)"></button>
+          <button class="t-dot t-y" type="button" aria-label="Minimizar (amarelo)"></button>
+          <button class="t-dot t-g" type="button" aria-label="Maximizar (verde)"></button>
+          <span class="t-title">bernardoiannini@localhost — bash</span>
+        </div>
+        <div class="term-body" id="terminal"></div>
+      </div>
+    </section>
+
+    <!-- EXPERIÊNCIA -->
+    <section id="xp" class="section xp" aria-label="experiência">
+      <h2 class="xp-title">Experience</h2>
+      <p class="xp-sub">My professional and academic journey</p>
+
+      <!-- sprite de ícones -->
+      <svg aria-hidden="true" width="0" height="0" class="xp-sprite">
+        <defs>
+          <filter id="soft-glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          <symbol id="ico-cap" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 8l9-4 9 4-9 4-9-4z" />
+              <path d="M7 10v4c0 1.2 2.8 2.2 5 2.2s5-1 5-2.2v-4" />
+              <path d="M21 10v4" />
+            </g>
+          </symbol>
+          <symbol id="ico-briefcase" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 6V5a2.5 2.5 0 0 1 2.5-2.5h1A2.5 2.5 0 0 1 15 5v1" />
+              <rect x="3" y="6" width="18" height="14" rx="2.5" ry="2.5" />
+              <path d="M3 12h18" />
+            </g>
+          </symbol>
+          <!-- novo: certificado -->
+          <symbol id="ico-certificate" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="4.5" />
+              <path d="M9 14l-2.2 6 3.2-1.6 2 1.6 2-6" />
+              <path d="M15 14l2.2 6-3.2-1.6-2 1.6-2-6" />
+            </g>
+          </symbol>
+        </defs>
+      </svg>
+
+      <div class="xp-icons" role="group" aria-label="ícones de experiência">
+        <button id="btnAcad" class="xp-ico" aria-label="Acadêmica" type="button">
+          <svg viewBox="0 0 24 24">
+            <use href="#ico-cap" />
+          </svg>
+        </button>
+        <button id="btnProf" class="xp-ico active" aria-label="Profissional" type="button">
+          <svg viewBox="0 0 24 24">
+            <use href="#ico-briefcase" />
+          </svg>
+        </button>
+        <button id="btnCourses" class="xp-ico" aria-label="Cursos & Especializações" type="button"
+          title="Cursos & Especializações">
+          <svg viewBox="0 0 24 24">
+            <use href="#ico-certificate" />
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- TIMELINE DE EXPERIÊNCIAS -->
+    <section id="timeline" class="section work-timeline" aria-label="experiências">
+      <div class="tl-top"><span id="tlMode" class="tl-mode">Professional</span></div>
+
+      <div class="tl">
+        <div class="tl-line" aria-hidden="true"></div>
+
+        <!-- GRUPO PROFISSIONAL -->
+        <div id="group-prof" class="tl-group" data-track="prof">
+          <article class="tl-entry left">
+            <span class="dot"></span>
+            <div class="tl-card panel">
+              <div class="card-head"><span class="caret">›_</span><span class="sep"></span></div>
+              <h3>Web Developer & Digital Support</h3>
+              <div class="meta">
+                <span class="pill org">Inspire4U</span>
+                <span class="pill role">Internship</span>
+              </div>
+              <div class="loc">
+                <svg width="16" height="16" viewBox="0 0 24 24">
+                  <path d="M12 21s7-5.4 7-11a7 7 0 1 0-14 0c0 5.6 7 11 7 11z" stroke="currentColor" stroke-width="2"
+                    fill="none" />
+                  <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Belo Horizonte, MG</span>
+              </div>
+              <ul class="bullets">
+                <li>Worked on the development and maintenance of WordPress websites, focusing on performance and
+                  usability.</li>
+                <li>Implemented HTML and CSS adjustments to improve design and user experience.</li>
+                <li>Applied SEO and GEO techniques to optimize digital visibility and positioning.</li>
+                <li>Participated in innovation projects and provided digital support for partner fintechs.</li>
+              </ul>
+              <div class="skills">
+                <button class="btn-skill">WordPress</button>
+                <button class="btn-skill">HTML</button>
+                <button class="btn-skill">CSS</button>
+                <button class="btn-skill">SEO</button>
+                <button class="btn-skill">GEO</button>
+              </div>
+            </div>
+          </article>
+
+
+        </div>
+
+        <!-- GRUPO ACADÊMICO -->
+        <div id="group-acad" class="tl-group" data-track="acad">
+          <article class="tl-entry left">
+            <span class="dot"></span>
+            <div class="tl-card panel">
+              <div class="card-head"><span class="caret">›_</span><span class="sep"></span></div>
+              <h3>Technical High School in IT</h3>
+              <div class="meta">
+                <span class="pill org">Cotemig</span>
+                <span class="pill role">Student</span>
+              </div>
+              <div class="loc">
+                <svg width="16" height="16" viewBox="0 0 24 24">
+                  <path d="M12 21s7-5.4 7-11a7 7 0 1 0-14 0c0 5.6 7 11 7 11z" stroke="currentColor" stroke-width="2"
+                    fill="none" />
+                  <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Belo Horizonte, MG</span>
+              </div>
+              <ul class="bullets">
+                <li>Student of the Technical High School in IT e at COTEMIG, a reference in technology in Brazil.</li>
+                <li>Hands-on learning in Programming Logic, Databases, and Web Development.</li>
+                <li>Direct experience with Google tools, school projects, and practices focused on the IT market.</li>
+                <li>Technical education focused on programming, innovation, and problem-solving.</li>
+              </ul>
+              <div class="skills">
+                <button class="btn-skill">C#</button>
+                <button class="btn-skill">MySQL</button>
+                <button class="btn-skill">HTML</button>
+                <button class="btn-skill">CSS</button>
+                <button class="btn-skill">JavaScript</button>
+                <button class="btn-skill">Linux</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- <article class="tl-entry right">
+            <span class="dot"></span>
+            <div class="tl-card panel">
+              <div class="card-head"><span class="caret">›_</span><span class="sep"></span></div>
+              <h3>Usar esse quando tiver mais<br> usar depois no futuro</h3>
+              <div class="meta"><span class="pill org">MIT</span><span class="pill role">Student</span></div>
+              <div class="loc">
+                <svg width="16" height="16" viewBox="0 0 24 24">
+                  <path d="M12 21s7-5.4 7-11a7 7 0 1 0-14 0c0 5.6 7 11 7 11z" stroke="currentColor" stroke-width="2"
+                    fill="none" />
+                  <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <span>Online</span>
+              </div>
+              <ul class="bullets">
+                <li>??????????????</li>
+              </ul>
+              <div class="skills">
+                <button class="btn-skill">??</button>
+                <button class="btn-skill">??</button>
+                <button class="btn-skill">??</button>
+                <button class="btn-skill">??</button>
+              </div>
+            </div>
+          </article> -->
+
+        </div>
+
+        <!-- NOVO: GRUPO CURSOS & ESPECIALIZAÇÕES -->
+        <div id="group-courses" class="tl-group" data-track="courses">
+          <article class="tl-entry left">
+            <span class="dot"></span>
+            <div class="tl-card panel">
+              <div class="card-head"><span class="caret">›_</span><span class="sep"></span></div>
+              <h3>Designing products and services with AI</h3>
+              <div class="meta"><span class="pill org">MIT</span><span class="pill role">Student</span></div>
+
+              <dialog id="cert-mit" class="cert-modal">
+                <div class="cert-content">
+                  <button class="cert-close" aria-label="Fechar">&times;</button>
+                  <img src="img/erpinspire4u.png" alt="MIT Certificate" />
+                </div>
+              </dialog>
+
+              <div class="cert-btn-wrap">
+                <button class="btn-cert" type="button" data-cert="cert-mit">
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                    <use href="#ico-certificate" />
+                  </svg>
+                  Certificate
+                </button>
+              </div>
+
+
+              <ul class="bullets">
+                <li>blablbabla porra</li>
+              </ul>
+              <div class="skills">
+                <button class="btn-skill">Machine Learning</button>
+                <button class="btn-skill">Deep Learning</button>
+                <button class="btn-skill">AI Strategy</button>
+                <button class="btn-skill">AI Design</button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="skills" class="section skills-tiles">
+      <div class="section-head">
+        <h2 class="section-title">Skills</h2>
+        <p class="section-sub">Clique nos quadrados para revelar.</p>
+      </div>
+
+      <div class="tiles-wrap squares">
+        <!-- Operating Systems -->
+        <button class="tile tile-square" type="button" aria-expanded="false" data-label="Operating Systems">
+          <span class="tile-ico" aria-hidden="true">
+            <img src="icons/server-operating-systems-svgrepo-com.svg" alt="">
+          </span>
+          <span class="tile-reveal">
+            <ul class="skill-icons reveal-grid">
+              <li><img src="icons/ubuntulinux.png" alt="Linux"></li>
+              <li><img src="icons/kalilinux.png" alt="Kali"></li>
+              <li><img src="icons/windows.png" alt="Windows"></li>
+            </ul>
+          </span>
+        </button>
+
+        <!-- Programming -->
+        <button class="tile tile-square" type="button" aria-expanded="false" data-label="Programming">
+          <span class="tile-ico" aria-hidden="true">
+            <img src="icons/code-svgrepo-com.svg" alt="">
+          </span>
+          <span class="tile-reveal">
+            <ul class="skill-icons reveal-grid">
+              <li><img src="icons/csharp.png" alt="C#"></li>
+              <li><img src="icons/mysql.png" alt="MySQL"></li>
+              <li><img src="icons/python.png" alt="Python"></li>
+              <li><img src="icons/jupyter.png" alt="Jupyter"></li>
+            </ul>
+          </span>
+        </button>
+
+        <!-- Web Development -->
+        <button class="tile tile-square" type="button" aria-expanded="false" data-label="Web Development">
+          <span class="tile-ico" aria-hidden="true">
+            <img src="icons/web-svgrepo-com.svg" alt="">
+          </span>
+          <span class="tile-reveal">
+            <ul class="skill-icons reveal-grid">
+              <li><img src="icons/html.png" alt="HTML"></li>
+              <li><img src="icons/css.png" alt="CSS"></li>
+              <li><img src="icons/javascript.png" alt="JavaScript"></li>
+              <li><img src="icons/wordpress.png" alt="WordPress"></li>
+            </ul>
+          </span>
+        </button>
+
+        <!-- Creative -->
+        <button class="tile tile-square" type="button" aria-expanded="false" data-label="Creative">
+          <span class="tile-ico" aria-hidden="true">
+            <img src="icons/design-svgrepo-com.svg" alt="">
+          </span>
+          <span class="tile-reveal">
+            <ul class="skill-icons reveal-grid">
+              <li><img src="icons/premiere.png" alt="Premiere Pro"></li>
+              <li><img src="icons/aftereffects.png" alt="After Effects"></li>
+              <li><img src="icons/photoshop.png" alt="Photoshop"></li>
+              <li><img src="icons/blender.png" alt="Blender"></li>
+            </ul>
+          </span>
+        </button>
+      </div>
+    </section>
+
+
+
+
+
+    <!-- PROJECTS (3 uniform cards) -->
+    <section id="projects" class="section projects" aria-label="projects">
+      <div class="section-head">
+        <h2 class="section-title">Projects</h2>
+        <p class="section-sub">A concise selection of my recent work in web, product, and media.</p>
+      </div>
+
+      <div class="proj-grid" id="projGrid" aria-live="polite"></div>
+
+      <div class="proj-footer">
+        <a class="btn-more" href="https://github.com/iannini25" aria-label="View more projects">
+          <!-- GitHub logo (inline SVG) -->
+          <span>View more</span>
+          <svg class="gh-icon" viewBox="0 0 16 16" aria-hidden="true">
+            <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38
+             0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13
+             -.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66
+             .07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+             0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82
+             .64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82
+             .44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95
+             .29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8 8 0 0 0 16 8
+             c0-4.42-3.58-8-8-8Z" />
+          </svg>
+        </a>
+      </div>
+    </section>
+
+    <section id="contato" class="section contact" aria-label="contato">
+      <div class="hearts-bg" aria-hidden="true">
+
+      </div>
+
+      <div class="contact-wrap">
+        <div class="contact-head">
+          <div class="contact-kicker">Let's talk</div>
+          <h2 class="contact-title"><span class="caret">›_</span> Contact</h2>
+          <p class="contact-sub">Let's get your idea off the paper — quick, to-the-point response.</p>
+        </div>
+
+        <div class="contact-grid">
+          <!-- CONSOLE -->
+          <aside class="contact-console panel">
+            <div class="c-line">
+              <span class="k-ps1-top">┌──(</span><span class="k-ps1-user">bernardo</span><span
+                class="k-ps1-top">㉿</span><span class="k-ps1-host">localhost</span><span
+                class="k-ps1-top">)-[</span><span class="k-ps1-path">~/contact</span><span class="k-ps1-top">]</span>
+            </div>
+            <div class="c-line"><span class="k-ps1-bottom">└─$</span> <span class="cmd">open --channel linkedin</span>
+            </div>
+
+            <div class="c-quick">
+              <a class="cbtn" href="https://www.linkedin.com/in/bernardo-iannini" target="_blank"
+                rel="noreferrer">LinkedIn</a>
+              <a class="cbtn" href="https://github.com/iannini25" target="_blank" rel="noreferrer">GitHub</a>
+              <a class="cbtn" id="whatsQuick" href="#" rel="noreferrer">WhatsApp</a>
+              <a class="cbtn" href="Curriculo_Bernardo_Iannini.pdf" download>Download CV</a>
+            </div>
+
+
+          </aside>
+
+          <!-- FORM -->
+          <form class="contact-card panel" id="contactForm">
+            <div class="capsule">
+              <div class="capsule-glow"></div>
+              <div class="capsule-grid">
+                <label class="f-group">
+                  <span class="f-label">Your name</span>
+                  <input type="text" id="fName" placeholder="What should I call you?" autocomplete="name" required>
+                </label>
+
+                <label class="f-group">
+                  <span class="f-label">Your email</span>
+                  <input type="email" id="fEmail" placeholder="so I can get back to you ;)" autocomplete="email"
+                    required>
+                </label>
+
+                <!-- removidos chips + campo de assunto -->
+
+                <label class="f-group f-span2">
+                  <span class="f-label">Message</span>
+                  <textarea id="fMsg" rows="6" placeholder="Tell us briefly what you need." required></textarea>
+                </label>
+
+                <div class="f-actions f-span2">
+                  <button class="cta" id="sendMail" type="submit">
+                    <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M22 3L2 12l8 2 2 8 9-20z" fill="currentColor" />
+                    </svg>
+                    Send via email
+                  </button>
+                  <button class="cta ghost" id="sendWhats" type="button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M20.5 3.5A10 10 0 003.2 17.7L2 22l4.4-1.2A10 10 0 1020.5 3.5z" fill="currentColor" />
+                    </svg>
+                    Open in WhatsApp
+                  </button>
+
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+
+  </main>
+
+  <!-- MODAL DE PROJETO -->
+  <dialog id="projModal" class="proj-modal">
+    <div class="proj-modal-frame">
+      <div class="proj-modal-hero">
+        <h2 class="proj-modal-title">Project title</h2>
+      </div>
+
+      <div class="proj-modal-body">
+        <!-- descrição longa (JS preenche .proj-modal-desc) -->
+        <p class="proj-modal-description proj-modal-desc">
+          Longer project description will appear here.
+        </p>
+
+        <!-- header “Technologies” -->
+        <div class="proj-modal-tech-header">
+          <span class="proj-modal-tech-label-icon">&lt;/&gt;</span>
+          <span class="proj-modal-tech-label" data-proj-tech>Technologies</span>
+        </div>
+
+        <!-- pills de stack (JS preenche .proj-modal-chips) -->
+        <div class="proj-modal-tech-pills proj-modal-chips">
+          <!-- preenchido via JS -->
+        </div>
+
+        <!-- botões -->
+        <div class="proj-modal-actions">
+          <button type="button" class="btn-close proj-modal-btn ghost" data-close>
+            <span class="proj-modal-btn-label" data-close-label>Close</span>
+          </button>
+
+          <a href="#" target="_blank" rel="noopener noreferrer" class="btn-github proj-modal-btn github">
+            <svg class="btn-github-icon" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24"
+              fill="currentColor">
+              <path
+                d="M12 .5C5.73.5.98 5.24.98 11.5c0 4.85 3.14 8.96 7.49 10.41.55.1.75-.24.75-.53v-1.86c-3.04.66-3.68-1.45-3.68-1.45-.5-1.28-1.22-1.63-1.22-1.63-.99-.67.08-.66.08-.66 1.09.08 1.66 1.13 1.66 1.13.98 1.67 2.57 1.19 3.2.91.1-.71.38-1.19.69-1.46-2.43-.28-4.99-1.22-4.99-5.43 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.41.11-2.94 0 0 .92-.29 3.02 1.13A10.5 10.5 0 0 1 12 6.8c.94 0 1.88.13 2.77.38 2.1-1.42 3.02-1.13 3.02-1.13.6 1.53.22 2.66.11 2.94.7.77 1.13 1.75 1.13 2.95 0 4.22-2.57 5.14-5.01 5.41.39.34.73 1.02.73 2.07v3.07c0 .3.2.64.76.53 4.34-1.45 7.48-5.56 7.48-10.41C23.02 5.24 18.27.5 12 .5z" />
+            </svg>
+
+            <span class="proj-modal-btn-label">GitHub</span>
+          </a>
+
+          <a href="#" target="_blank" rel="noopener noreferrer" class="btn-site proj-modal-btn primary">
+            <span class="btn-site-icon" aria-hidden="true">🌐</span>
+            <span class="proj-modal-btn-label">View site</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+
+
+
+  <script src="js/language.js"></script>
+  <script src="js/home.js"></script>
+  <script src="js/about.js"></script>
+  <script src="js/experience.js"></script>
+  <script src="js/skills.js"></script>
+  <script src="js/projects.js"></script>
+  <script src="js/contact.js"></script>
+  <script src="js/UI.js"></script>
+
+</body>
+
+</html>

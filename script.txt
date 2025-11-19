@@ -1,0 +1,933 @@
+/* =========================================================
+   GLOBAL / UTIL & SCROLL
+   ========================================================= */
+(function () {
+  'use strict';
+
+  /* ===== Scroll suave com compensação ===== */
+  const header = document.querySelector('header');
+  const offset = () => (header?.getBoundingClientRect().height || 0) + 10;
+
+  document.querySelectorAll('a[data-scroll]').forEach(a => {
+    a.addEventListener('click', e => {
+      const href = a.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        e.preventDefault();
+        const el = document.querySelector(href);
+        if (el) {
+          const top = el.getBoundingClientRect().top + window.pageYOffset - offset();
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      }
+    });
+  });
+
+  /* ===== Helpers ===== */
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const SCRAMBLE_CHARS = "Aabcdefghijklmnopqrstuvwxyz!@#$%&*";
+  const randChars = n =>
+    Array.from({ length: n }, () =>
+      SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)]
+    ).join('');
+
+  /* =========================================================
+     I18N (EN/PT) + Estado de linguagem
+     ========================================================= */
+  const I18N = {
+    en: {
+      htmlLang: "en",
+      nav: { home: "Home", about: "About", experience: "Experience", skills: "Skills", projects: "Projects", contact: "Contact", resume: "CV" },
+      modes: { prof: "Professional", acad: "Academic", courses: "Courses & Certifications" },
+      hero: { hello: "Hi, I'm" },
+      taglines: ["Web developer.", "AI Product Designer.", "Video editor."],
+      about: {
+        kicker: "About me",
+        terminal: [
+          { type: "type", text: "cat about.txt" },
+          {
+            type: "out",
+            text:
+              `I'm Bernardo Araújo Iannini, 18 years old, a technology student at COTEMIG and an intern at Inspire4U, where I work in web development and innovation projects for fintechs.
+
+I have hands-on experience with C#, SQL, HTML, CSS, WordPress, and MySQL, as well as projects in video editing and creation, an area in which I have already won awards.
+
+Currently, I am deepening my knowledge in software development and have a strong interest in cybersecurity, seeking to combine creativity, technical skills, and strategic vision to build secure and innovative digital solutions.`
+          },
+          { type: "type", text: "contact --show" },
+          { type: "out", text: "LinkedIn: linkedin.com/in/bernardo-iannini\nGitHub: github.com/iannini25\nEmail: bernardo.iannini14@gmail.com" }
+        ]
+      },
+      xp: {
+        title: "Experience",
+        sub: "My professional and academic journey",
+        timeline: {
+          prof: [
+            {
+              title: "Web Developer & Digital Support",
+              org: "Inspire4U",
+              role: "Internship",
+              loc: "Belo Horizonte, MG",
+              bullets: [
+                "Worked on development and maintenance of WordPress websites, focusing on performance and usability.",
+                "Implemented HTML and CSS adjustments to improve design and user experience.",
+                "Applied SEO and GEO techniques to optimize digital visibility and positioning.",
+                "Participated in innovation projects and provided digital support for partner fintechs."
+              ],
+              skills: ["WordPress", "HTML", "CSS", "SEO", "GEO"]
+            }
+          ],
+          acad: [
+            {
+              title: "Technical High School in IT",
+              org: "COTEMIG",
+              role: "Student",
+              loc: "Belo Horizonte, MG",
+              bullets: [
+                "Hands-on learning in Programming Logic, Databases, and Web Development.",
+                "Direct experience with Google tools, school projects, and practices focused on the IT market.",
+                "Technical education focused on programming, innovation, and problem-solving."
+              ],
+              skills: ["C#", "MySQL", "HTML", "CSS", "JavaScript", "Linux"]
+            }
+          ],
+          courses: [
+            {
+              title: "Designing products and services with AI",
+              org: "MIT",
+              role: "Student",
+              cert: { id: "cert-mit", img: "erpinspire4u.png", label: "Certificate" },
+              bullets: ["Foundations of ML/DL, AI strategy and product design applied to real use cases."],
+              skills: ["Machine Learning", "Deep Learning", "AI Strategy", "AI Design"]
+            }
+          ]
+        }
+      },
+      skills: { title: "Skills", sub: "Click the squares to reveal.", tilesLabels: { os: "Operating Systems", programming: "Programming", web: "Web Development", creative: "Creative" } },
+      projects: {
+        title: "Projects",
+        sub: "A concise selection of my recent work in web, product, and media.",
+        ctas: { site: "Site", repo: "Repo", viewMore: "View more" },
+        list: [
+          { title: "Memória Cache Podcast — Site", desc: "Black & white landing plus episodes list with YouTube/Spotify integrations.", stack: ["HTML", "CSS", "JavaScript"], link: "https://memoriacache.example", repo: "", cover: "img/memoriacache.png" },
+          { title: "Condo Manager Assistant", desc: "Toolbox for condo managers: tasks, notices, quick reports, and resident flows.", stack: ["Product", "UX", "Automation"], link: "https://condo-assistant.example", repo: "", cover: "img/joselopes.png" },
+          { title: "Inspire4U ERP — Website", desc: "Corporate ERP website with performance, accessibility and SEO improvements.", stack: ["WordPress", "Performance", "A11y"], link: "https://erpi4u.com", repo: "", cover: "img/erpinspire4u.png" }
+        ]
+      },
+      contact: {
+        kicker: "Let's talk",
+        title: "Contact",
+        sub: "Let's get your idea off the paper — quick, to-the-point response.",
+        name: "Your name",
+        email: "Your email",
+        message: "Message",
+        namePh: "What should I call you?",
+        emailPh: "so I can get back to you ;)",
+        messagePh: "Tell us briefly what you need.",
+        emailCta: "Send via email",
+        waCta: "Open in WhatsApp",
+        quick: { linkedin: "LinkedIn", github: "GitHub", whatsapp: "WhatsApp", cv: "Download CV" },
+        consoleCmd: "open --channel linkedin"
+      }
+    },
+
+    /* ==================== PT ===================== */
+
+    pt: {
+      htmlLang: "pt-BR",
+      nav: { home: "Início", about: "Sobre", experience: "Experiência", skills: "Habilidades", projects: "Projetos", contact: "Contato", resume: "Currículo" },
+      modes: { prof: "Profissional", acad: "Acadêmica", courses: "Cursos & Certificações" },
+      hero: { hello: "Olá, eu sou" },
+      taglines: ["Desenvolvedor web.", "Designer de Produto em IA.", "Editor de vídeo."],
+      about: {
+        kicker: "Sobre mim",
+        terminal: [
+          { type: "type", text: "cat about.txt" },
+          {
+            type: "out",
+            text:
+              `Sou Bernardo Araújo Iannini, 18 anos, estudante de tecnologia no COTEMIG e estagiário na Inspire4U, atuando em desenvolvimento web e projetos de inovação para fintechs.
+
+Tenho experiência prática com C#, SQL, HTML, CSS, WordPress e MySQL, além de projetos em edição e criação de vídeo — área na qual já fui premiado.
+
+Atualmente, aprofundo conhecimentos em desenvolvimento de software e tenho forte interesse em cibersegurança, buscando unir criatividade, técnica e visão estratégica para construir soluções digitais seguras e inovadoras.`
+          },
+          { type: "type", text: "contact --show" },
+          { type: "out", text: "LinkedIn: linkedin.com/in/bernardo-iannini\nGitHub: github.com/iannini25\nEmail: bernardo.iannini14@gmail.com" }
+        ]
+      },
+      xp: {
+        title: "Experiência",
+        sub: "Minha trajetória profissional e acadêmica",
+        timeline: {
+          prof: [
+            {
+              title: "Desenvolvedor Web & Suporte Digital",
+              org: "Inspire4U",
+              role: "Estágio",
+              loc: "Belo Horizonte, MG",
+              bullets: [
+                "Desenvolvimento e manutenção de sites em WordPress com foco em performance e usabilidade.",
+                "Ajustes em HTML e CSS para melhorar design e experiência do usuário.",
+                "Aplicação de técnicas de SEO e GEO para otimizar visibilidade e posicionamento.",
+                "Participação em projetos de inovação e suporte digital a fintechs parceiras."
+              ],
+              skills: ["WordPress", "HTML", "CSS", "SEO", "GEO"]
+            }
+          ],
+          acad: [
+            {
+              title: "Ensino Técnico em Informática",
+              org: "COTEMIG",
+              role: "Aluno",
+              loc: "Belo Horizonte, MG",
+              bullets: [
+                "Aprendizado prático em Lógica de Programação, Bancos de Dados e Desenvolvimento Web.",
+                "Vivência com ferramentas Google, projetos escolares e práticas voltadas ao mercado de TI.",
+                "Formação técnica com foco em programação, inovação e resolução de problemas."
+              ],
+              skills: ["C#", "MySQL", "HTML", "CSS", "JavaScript", "Linux"]
+            }
+          ],
+          courses: [
+            {
+              title: "Designing products and services with AI",
+              org: "MIT",
+              role: "Aluno",
+              cert: { id: "cert-mit", img: "erpinspire4u.png", label: "Certificado" },
+              bullets: [
+                "Fundamentos de ML/DL, estratégia de IA e design de produto aplicados a casos reais."
+              ],
+              skills: ["Machine Learning", "Deep Learning", "Estratégia de IA", "Design de IA"]
+            }
+          ]
+        }
+      },
+
+      skills: {
+        title: "Habilidades",
+        sub: "Clique nos quadrados para revelar.",
+        tilesLabels: {
+          os: "Sistemas Operacionais",
+          programming: "Programação",
+          web: "Desenvolvimento Web",
+          creative: "Criativo"
+        }
+      },
+
+      projects: {
+        title: "Projetos",
+        sub: "Uma seleção concisa do meu trabalho recente em web, produto e mídia.",
+        ctas: { site: "Site", repo: "Repositório", viewMore: "Ver mais" },
+        list: [
+          {
+            title: "Memória Cache Podcast — Site",
+            desc: "Landing em preto & branco e lista de episódios integrando YouTube/Spotify.",
+            stack: ["HTML", "CSS", "JavaScript"],
+            link: "https://memoriacache.example",
+            repo: "https://github.com/iannini25",
+            cover: "img/memoriacache.png"
+          },
+          {
+            title: "Auxílio para Síndico",
+            desc: "Ferramentas para síndicos: tarefas, avisos, relatórios rápidos e fluxos de moradores.",
+            stack: ["Produto", "UX", "Automação"],
+            link: "https://condo-assistant.example",
+            repo: "https://github.com/iannini25",
+            cover: "img/joselopes.png"
+          },
+          {
+            title: "Inspire4U ERP — Website",
+            desc: "Site institucional com melhorias de performance, acessibilidade e SEO.",
+            stack: ["WordPress", "Performance", "A11y"],
+            link: "https://erpi4u.com",
+            repo: "https://github.com/iannini25",
+            cover: "img/erpinspire4u.png"
+          }
+        ]
+      },
+
+      contact: {
+        kicker: "Vamos conversar",
+        title: "Contato",
+        sub: "Tiro sua ideia do papel — resposta direta e objetiva.",
+        name: "Seu nome",
+        email: "Seu e-mail",
+        message: "Mensagem",
+        namePh: "Como devo te chamar?",
+        emailPh: "para eu poder te responder ;)",
+        messagePh: "Conte rapidamente o que você precisa.",
+        emailCta: "Enviar por e-mail",
+        waCta: "Abrir no WhatsApp",
+        quick: {
+          linkedin: "LinkedIn",
+          github: "GitHub",
+          whatsapp: "WhatsApp",
+          cv: "Baixar CV"
+        },
+        consoleCmd: "open --canal linkedin"
+      }
+    }
+  };
+
+  let LANG = localStorage.getItem('lang') || 'en';
+
+
+  /* =========================================================
+     HOME (Hero + Tagline Scramble)
+     ========================================================= */
+  const taglineEl = document.getElementById('taglineText');
+  let phrases = I18N[LANG].taglines;
+
+  const HOLD_MS = 3000,
+    TYPE_MS = 40,
+    ERASE_MS = 25,
+    FLICKERS = 1;
+  let phraseIdx = 0;
+
+  async function scrambleOut(text) {
+    for (let len = text.length; len >= 0; len--) {
+      for (let f = 0; f < FLICKERS; f++) {
+        taglineEl.textContent =
+          text.slice(0, len) + randChars(text.length - len);
+        await sleep(ERASE_MS / 2);
+      }
+      taglineEl.textContent = text.slice(0, len);
+      await sleep(ERASE_MS);
+    }
+  }
+
+  async function scrambleIn(text) {
+    for (let i = 0; i <= text.length; i++) {
+      const settled = text.slice(0, i);
+      const rest = text.length - i;
+
+      for (let f = 0; f < FLICKERS; f++) {
+        taglineEl.textContent = settled + randChars(rest);
+        await sleep(TYPE_MS / 2);
+      }
+
+      taglineEl.textContent = settled;
+      await sleep(TYPE_MS);
+    }
+  }
+
+  async function cycleTaglines() {
+    if (!taglineEl) return;
+
+    taglineEl.textContent = phrases[phraseIdx];
+    taglineEl.classList.toggle(
+      'glow',
+      phrases[phraseIdx].toLowerCase().includes('web developer')
+    );
+
+    while (true) {
+      await sleep(HOLD_MS);
+      const current = phrases[phraseIdx];
+      const next = phrases[(phraseIdx + 1) % phrases.length];
+
+      await scrambleOut(current);
+      await scrambleIn(next);
+
+      taglineEl.classList.toggle(
+        'glow',
+        next.toLowerCase().includes('web developer')
+      );
+
+      phraseIdx = (phraseIdx + 1) % phrases.length;
+    }
+  }
+
+  function renderHero(lang) {
+    const h = I18N[lang].hero;
+    const hello = document.querySelector('.hero .hello');
+    if (hello) hello.textContent = h.hello;
+    phrases = I18N[lang].taglines;
+  }
+
+
+  /* =========================================================
+     ABOUT — Terminal (Kali style)
+     ========================================================= */
+  const term = document.getElementById('terminal');
+
+  function termLine(html) {
+    const d = document.createElement('div');
+    d.innerHTML = html;
+    term.appendChild(d);
+    term.scrollTop = term.scrollHeight;
+  }
+
+  async function typeKaliPromptAndCmd(cmdToType) {
+    termLine(
+      `<span class="k-ps1-top">┌──(</span><span class="k-ps1-user">bernardoiannini</span><span class="k-ps1-top">㉿</span><span class="k-ps1-host">localhost</span><span class="k-ps1-top">)-[</span><span class="k-ps1-path">~</span><span class="k-ps1-top">]</span>`
+    );
+
+    const pre = `<span class="k-ps1-bottom">└─$</span> <span class="cmd">`;
+    let typed = '';
+
+    for (let i = 0; i <= cmdToType.length; i++) {
+      const html = pre + typed + `</span>`;
+
+      if (term.lastChild?.dataset?.typing === '1') {
+        term.lastChild.innerHTML = html;
+      } else {
+        const d = document.createElement('div');
+        d.dataset.typing = '1';
+        d.innerHTML = html;
+        term.appendChild(d);
+      }
+
+      if (i < cmdToType.length) {
+        typed += cmdToType[i];
+        await sleep(22);
+      }
+    }
+
+    term.lastChild?.removeAttribute('data-typing');
+  }
+
+  async function renderTerminal(lang) {
+    if (!term) return;
+
+    term.innerHTML = '';
+    const script = I18N[lang].about.terminal;
+
+    for (const step of script) {
+      if (step.type === 'type') await typeKaliPromptAndCmd(step.text);
+      else if (step.type === 'out')
+        termLine(`<span class="out">${step.text.replace(/\n/g, '<br>')}</span>`);
+
+      await sleep(300);
+    }
+  }
+
+
+  /* =========================================================
+     EXPERIENCE (Timeline)
+     ========================================================= */
+
+  const btnAcad = document.getElementById('btnAcad');
+  const btnProf = document.getElementById('btnProf');
+  const btnCourses = document.getElementById('btnCourses');
+
+  const groupAcad = document.getElementById('group-acad');
+  const groupProf = document.getElementById('group-prof');
+  const groupCourses = document.getElementById('group-courses');
+
+  const tlMode = document.getElementById('tlMode');
+  let CURRENT_MODE = 'prof';
+
+  function buildTlEntry(e, side) {
+    const el = document.createElement('article');
+    el.className = `tl-entry ${side}`;
+
+    el.innerHTML = `
+      <span class="dot"></span>
+      <div class="tl-card panel">
+        <div class="card-head">
+          <span class="caret">›_</span><span class="sep"></span>
+        </div>
+
+        <h3>${e.title}</h3>
+
+        <div class="meta">
+          <span class="pill org">${e.org}</span>
+          <span class="pill role">${e.role}</span>
+        </div>
+
+        ${e.loc ? `
+        <div class="loc">
+          <svg width="16" height="16" viewBox="0 0 24 24">
+            <path d="M12 21s7-5.4 7-11a7 7 0 1 0-14 0c0 5.6 7 11 7 11z"
+             stroke="currentColor" stroke-width="2" fill="none"/>
+            <circle cx="12" cy="10" r="3"
+             stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <span>${e.loc}</span>
+        </div>` : ''}
+
+        ${Array.isArray(e.bullets)
+        ? `<ul class="bullets">${e.bullets
+          .map(b => `<li>${b}</li>`)
+          .join('')}</ul>`
+        : ''}
+
+        <div class="skills">
+          ${(e.skills || [])
+        .map(s => `<button class="btn-skill">${s}</button>`)
+        .join('')}
+        </div>
+      </div>
+    `;
+
+    return el;
+  }
+
+  function renderTimeline(lang) {
+    if (!groupProf || !groupAcad || !groupCourses) return;
+
+    groupProf.innerHTML = '';
+    groupAcad.innerHTML = '';
+    groupCourses.innerHTML = '';
+
+    const data = I18N[lang].xp.timeline;
+    const sides = n => (n % 2 ? 'right' : 'left');
+
+    data.prof.forEach((e, i) => groupProf.appendChild(buildTlEntry(e, sides(i))));
+    data.acad.forEach((e, i) => groupAcad.appendChild(buildTlEntry(e, sides(i))));
+    data.courses.forEach((e, i) =>
+      groupCourses.appendChild(buildTlEntry(e, sides(i)))
+    );
+
+    setMode(CURRENT_MODE, lang);
+  }
+
+  function setMode(mode, lang = LANG) {
+    CURRENT_MODE = mode;
+
+    if (tlMode) tlMode.textContent = I18N[lang].xp.modes?.[mode] || '';
+
+    groupProf?.classList.toggle('is-hidden', mode !== 'prof');
+    groupAcad?.classList.toggle('is-hidden', mode !== 'acad');
+    groupCourses?.classList.toggle('is-hidden', mode !== 'courses');
+
+    btnProf?.classList.toggle('active', mode === 'prof');
+    btnAcad?.classList.toggle('active', mode === 'acad');
+    btnCourses?.classList.toggle('active', mode === 'courses');
+  }
+
+  btnProf?.addEventListener('click', () => setMode('prof'));
+  btnAcad?.addEventListener('click', () => setMode('acad'));
+  btnCourses?.addEventListener('click', () => setMode('courses'));
+
+  /* =========================================================
+     SKILLS
+     ========================================================= */
+  function renderSkills(lang) {
+    const S = I18N[lang].skills;
+
+    const title = document.querySelector('#skills .section-title');
+    const sub = document.querySelector('#skills .section-sub');
+
+    if (title) title.textContent = S.title;
+    if (sub) sub.textContent = S.sub;
+
+    const tiles = document.querySelectorAll('.skills-tiles .tile-square');
+    const keysByIndex = ['os', 'programming', 'web', 'creative'];
+
+    tiles.forEach((tile, i) => {
+      const key = tile.getAttribute('data-label-key') || keysByIndex[i];
+      const label = S.tilesLabels[key] || '';
+      if (label) tile.setAttribute('data-label', label);
+    });
+  }
+
+  document.querySelectorAll('.skills-tiles .tile').forEach(tile => {
+    tile.addEventListener('click', () => {
+      const isOpen = tile.classList.toggle('open');
+      tile.setAttribute('aria-expanded', String(isOpen));
+    });
+  });
+
+  document.querySelectorAll('.skills-tiles .tile-square').forEach(tile => {
+    tile.addEventListener('pointermove', e => {
+      const r = tile.getBoundingClientRect();
+      const x = ((e.clientX - r.left) / r.width) * 100;
+      tile.style.setProperty('--sheen-x', `${x}%`);
+    });
+    tile.addEventListener('pointerleave', () =>
+      tile.style.setProperty('--sheen-x', '-20%')
+    );
+  });
+
+  function refreshSkillItemTooltips() {
+    document.querySelectorAll('.skills-tiles .reveal-grid li').forEach(li => {
+      const current = li.getAttribute('data-label');
+      if (current && current.trim()) return;
+
+      const img = li.querySelector('img, svg');
+      const fromAlt =
+        img?.getAttribute('alt') ||
+        img?.getAttribute('aria-label') ||
+        img?.getAttribute('data-name') ||
+        '';
+
+      if (fromAlt.trim()) {
+        li.setAttribute('data-label', fromAlt.trim());
+        li.setAttribute('title', fromAlt.trim());
+      }
+    });
+  }
+
+  /* =========================================================
+     CONTACT
+     ========================================================= */
+  function renderContact(lang) {
+    const C = I18N[lang].contact;
+
+    const k = document.querySelector('#contato .contact-kicker');
+    const t = document.querySelector('#contato .contact-title');
+    const s = document.querySelector('#contato .contact-sub');
+
+    if (k) k.textContent = C.kicker;
+    if (t) t.innerHTML = `<span class="caret">›_</span> ${C.title}`;
+    if (s) s.textContent = C.sub;
+
+    const name = document.getElementById('fName');
+    const email = document.getElementById('fEmail');
+    const msg = document.getElementById('fMsg');
+
+    const lblName = name?.closest('label')?.querySelector('.f-label');
+    const lblEmail = email?.closest('label')?.querySelector('.f-label');
+    const lblMsg = msg?.closest('label')?.querySelector('.f-label');
+
+    if (lblName) lblName.textContent = C.name;
+    if (lblEmail) lblEmail.textContent = C.email;
+    if (lblMsg) lblMsg.textContent = C.message;
+
+    if (name) name.placeholder = C.namePh;
+    if (email) email.placeholder = C.emailPh;
+    if (msg) msg.placeholder = C.messagePh;
+
+    const emailBtn = document.getElementById('sendMail');
+    const waBtn = document.getElementById('sendWhats');
+
+    if (emailBtn) emailBtn.lastChild.nodeValue = ' ' + C.emailCta;
+    if (waBtn) waBtn.lastChild.nodeValue = ' ' + C.waCta;
+
+    const quick = document.querySelector('.contact-console .c-quick');
+    if (quick) {
+      quick.querySelectorAll('.cbtn').forEach(a => {
+        if (a.href?.includes('linkedin')) a.textContent = C.quick.linkedin;
+        else if (a.href?.includes('github')) a.textContent = C.quick.github;
+        else if (a.id === 'whatsQuick') a.textContent = C.quick.whatsapp;
+        else if (a.hasAttribute('download')) a.textContent = C.quick.cv;
+      });
+    }
+
+    const cmd = document.querySelector('.contact-console .c-line .cmd');
+    if (cmd) cmd.textContent = C.consoleCmd;
+  }
+
+  // Email
+  document.getElementById('contactForm')?.addEventListener('submit', e => {
+    e.preventDefault();
+    const name = document.getElementById('fName')?.value?.trim() || '';
+    const email = document.getElementById('fEmail')?.value?.trim() || '';
+    const msg = document.getElementById('fMsg')?.value?.trim() || '';
+
+    const subject = `Contact via portifólio — ${name || 'No name'}`;
+    const body = [
+      `Name: ${name || '(não informado)'}`,
+      `Email: ${email || '(não informado)'}`,
+      '',
+      msg || '(mensagem em branco)'
+    ].join('\n');
+
+    window.location.href =
+      `mailto:bernardo.iannini14@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  });
+
+  // WhatsApp
+  function buildWhatsLink() {
+    const name = document.getElementById('fName')?.value?.trim() || '';
+    const msg = document.getElementById('fMsg')?.value?.trim() || '';
+    const text = `Hi, i'm ${name || '(não informado)'}\n\n${msg || ''}`.trim();
+    return `https://wa.me/5531995624617?text=${encodeURIComponent(text)}`;
+  }
+
+  document.getElementById('sendWhats')?.addEventListener('click', () =>
+    window.open(buildWhatsLink(), '_blank')
+  );
+
+  document.getElementById('whatsQuick')?.addEventListener('click', e => {
+    e.preventDefault();
+    window.open(buildWhatsLink(), '_blank');
+  });
+
+  // Efeito de magnetismo nos botões
+  document.querySelectorAll('.cbtn').forEach(btn => {
+    const strength = 12;
+
+    btn.addEventListener('pointermove', e => {
+      const r = btn.getBoundingClientRect();
+      const dx = e.clientX - (r.left + r.width / 2);
+      const dy = e.clientY - (r.top + r.height / 2);
+      btn.style.transform = `translate(${dx / strength}px, ${dy / strength}px)`;
+    });
+
+    ['pointerleave', 'blur'].forEach(ev =>
+      btn.addEventListener(ev, () => (btn.style.transform = ''))
+    );
+  });
+
+
+  
+
+  /* =========================================================
+     PROJECTS — renderização dos cards
+     ========================================================= */
+  function renderProjects(lang) {
+    const grid = document.getElementById('projGrid');
+    if (!grid) return;
+
+    const list = I18N[lang].projects.list;
+    const ctas = I18N[lang].projects.ctas;
+
+    grid.innerHTML = '';
+
+    function card(p) {
+      const el = document.createElement('article');
+      el.className = 'proj-card';
+
+      const chips = (p.stack || [])
+        .map(s => `<span class="proj-chip">${s}</span>`)
+        .join('');
+
+      const hasRepo = p.repo
+        ? `<a class="btn-link" href="${p.repo}" target="_blank" rel="noopener">${ctas.repo}</a>`
+        : '';
+
+      el.innerHTML = `
+        <div class="proj-media">
+          <img class="proj-cover" src="${p.cover}" alt="Cover image for ${p.title}">
+          <div class="proj-overlay" aria-hidden="true">
+            <span class="overlay__text">${ctas.viewMore}</span>
+            <div class="overlay__filler"></div>
+          </div>
+        </div>
+
+        <div class="proj-body">
+          <h3 class="proj-title">${p.title}</h3>
+          <p class="proj-desc">${p.desc || ''}</p>
+          <div class="proj-meta">${chips}</div>
+        </div>
+
+  
+      `;
+
+      return el;
+    }
+
+    list.forEach(p => grid.appendChild(card(p)));
+
+    // Hover da capa (sheen + blur de fundo)
+    const cards = grid.querySelectorAll('.proj-card');
+
+    cards.forEach((card, idx) => {
+      const project = list[idx];
+
+      const enter = () => {
+        card.classList.remove('hover-out');
+        card.classList.add('hover-in');
+      };
+
+      const leave = () => {
+        card.classList.remove('hover-in');
+        card.classList.add('hover-out');
+      };
+
+      card.addEventListener('mouseenter', enter);
+      card.addEventListener('mouseleave', leave);
+
+      // Touch
+      let touchTimer = null;
+      card.addEventListener('touchstart', () => {
+        clearTimeout(touchTimer);
+        enter();
+        touchTimer = setTimeout(() => card.classList.remove('hover-in'), 900);
+      });
+
+      // Click abre modal
+      card.addEventListener('click', e => {
+        const link = e.target.closest('a.btn-link');
+        if (link) return; // deixa links funcionarem
+        openProjectModal(project);
+      });
+    });
+
+    const titleEl = document.querySelector('#projects .section-title');
+    if (titleEl) titleEl.textContent = I18N[lang].projects.title;
+
+    const subEl = document.querySelector('#projects .section-sub');
+    if (subEl) subEl.textContent = I18N[lang].projects.sub;
+  }
+
+
+  /* =========================================================
+     NAVBAR + LANGUAGE + THEME
+     ========================================================= */
+  function renderNav(lang) {
+    const code = document.getElementById('langCode');
+    if (code) code.textContent = lang.toUpperCase();
+    document.documentElement.lang = I18N[lang].htmlLang || lang;
+  }
+
+  (function themeToggle() {
+    const html = document.documentElement;
+    const cb = document.getElementById('darkmode-toggle');
+    const navRight = document.querySelector('.nav-right');
+
+    function place() {
+      const w = navRight?.offsetWidth || 0;
+      document.documentElement.style.setProperty('--navr-w', w + 'px');
+    }
+
+    window.addEventListener('resize', place);
+    place();
+
+    html.setAttribute('data-theme', 'dark');
+    localStorage.setItem('theme', 'dark');
+    if (cb) cb.checked = true;
+
+    function setTheme(next) {
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+
+    cb?.addEventListener('change', () =>
+      setTheme(cb.checked ? 'dark' : 'light')
+    );
+  })();
+
+
+  /* =========================================================
+     I18N — APLICAÇÃO (carrega tudo)
+     ========================================================= */
+  function applyI18n(lang) {
+    LANG = lang;
+    localStorage.setItem('lang', LANG);
+
+    renderNav(lang);
+    renderHero(lang);
+    renderTerminal(lang);
+    renderTimeline(lang);
+    renderSkills(lang);
+    renderProjects(lang);
+    renderContact(lang);
+
+    refreshSkillItemTooltips();
+
+    // Textos com data-i18n
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const keyPath = el.getAttribute('data-i18n');
+      const val = keyPath
+        .split('.')
+        .reduce((obj, k) => obj?.[k], I18N[lang]);
+
+      if (typeof val === 'string') el.textContent = val;
+    });
+  }
+
+
+  /* =========================================================
+     LANGUAGE SWITCH (menu suspenso)
+     ========================================================= */
+  (function languageSwitch() {
+    const btn = document.getElementById('langBtn');
+    const menu = document.getElementById('langMenu');
+
+    if (!btn || !menu) return;
+
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      menu.classList.toggle('open');
+      btn.setAttribute('aria-expanded', menu.classList.contains('open'));
+    });
+
+    menu.querySelectorAll('[data-lang]').forEach(li =>
+      li.addEventListener('click', () => {
+        const lang = li.getAttribute('data-lang');
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        applyI18n(lang);
+
+        menu
+          .querySelectorAll("[role='option']")
+          .forEach(o => o.setAttribute('aria-selected', 'false'));
+
+        li.setAttribute('aria-selected', 'true');
+      })
+    );
+
+    document.addEventListener('click', e => {
+      if (!menu.contains(e.target) && !btn.contains(e.target)) {
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  })();
+
+
+  /* =========================================================
+     INIT
+     ========================================================= */
+  function init() {
+    applyI18n(LANG);
+    cycleTaglines();
+  }
+
+  if (document.readyState !== 'loading') init();
+  else document.addEventListener('DOMContentLoaded', init);
+
+})(); // Fim do IIFE principal
+
+
+/* =========================================================
+   MENU MOBILE
+   ========================================================= */
+(function () {
+  const btn = document.getElementById('menuBtn');
+  const menu = document.getElementById('mobileNav');
+  if (!btn || !menu) return;
+
+  const open = () => {
+    menu.classList.add('open');
+    btn.classList.add('is-open');
+    btn.setAttribute('aria-expanded', 'true');
+    menu.setAttribute('aria-hidden', 'false');
+  };
+
+  const close = () => {
+    menu.classList.remove('open');
+    btn.classList.remove('is-open');
+    btn.setAttribute('aria-expanded', 'false');
+    menu.setAttribute('aria-hidden', 'true');
+  };
+
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    menu.classList.contains('open') ? close() : open();
+  });
+
+  document.addEventListener('click', e => {
+    if (menu.classList.contains('open') &&
+      !menu.contains(e.target) &&
+      !btn.contains(e.target)) {
+      close();
+    }
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && menu.classList.contains('open')) close();
+  });
+
+  menu.querySelectorAll('a[data-scroll]').forEach(a => {
+    a.addEventListener('click', () => close());
+  });
+})();
+
+
+/* =========================================================
+   RESUME BUTTON ATTENTION
+   ========================================================= */
+(function () {
+  const r = document.querySelector('.resume-btn');
+  if (r && window.matchMedia('(min-width: 901px)').matches) {
+    r.classList.add('resume-attn');
+  }
+})();
+
+
+
+
