@@ -124,8 +124,8 @@ I developed an online platform using Firebase to centralize announcements, tasks
 It improved clarity and helped the building management run smoothly.`
 ,
           stack: ["HTML", "CSS", "JavaScript", "Product", "UX",],
-          link: "https://condo-assistant.example",
-          repo: "",
+          link: "https://iannini25.github.io/condo_management/",
+          repo: "https://github.com/iannini25/condo_management",
           cover: "img/joselopes.png"
         },
         {
@@ -391,3 +391,4 @@ function applyI18n(lang) {
     }
   });
 })();
+
