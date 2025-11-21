@@ -113,7 +113,7 @@ This project taught me front-end architecture and real data organization.
 ,
           stack: ["HTML", "CSS", "JavaScript", "UX"],
           link: "https://memoriacache.com.br",
-          repo: "",
+          repo: "https://github.com/iannini25",
           cover: "img/memoriacache.png"
         },
         {
@@ -137,7 +137,7 @@ Includes SEO, accessibility and performance optimization to elevate Inspire4U’
 ,
           stack: ["WordPress", "Performance", "A11y", "Figma", "SEO", "Elementor"],
           link: "https://erpi4u.com",
-          repo: "",
+          repo: "https://github.com/iannini25",
           cover: "img/erpinspire4u.png"
         }
       ]
@@ -268,8 +268,8 @@ Desenvolvi uma plataforma online com Firebase para centralizar avisos, tarefas e
 Melhorou a transparência e facilitou muito o trabalho do síndico.`
 ,
           stack: ["HTML", "CSS", "JavaScript", "Product", "UX",],
-          link: "https://condo-assistant.example",
-          repo: "https://github.com/iannini25",
+          link: "https://iannini25.github.io/condo_management/",
+          repo: "https://github.com/iannini25/condo_management",
           cover: "img/joselopes.png"
         },
         {
@@ -391,4 +391,5 @@ function applyI18n(lang) {
     }
   });
 })();
+
 
