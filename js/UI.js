@@ -22,35 +22,7 @@ document.querySelectorAll('a[data-scroll]').forEach(a => {
   });
 });
 
-/* =========================================================
-   THEME (Dark/Light)
-   ========================================================= */
-(function themeToggle() {
-  const html = document.documentElement;
-  const cb = document.getElementById('darkmode-toggle');
-  const navRight = document.querySelector('.nav-right');
 
-  function place() {
-    const w = navRight?.offsetWidth || 0;
-    document.documentElement.style.setProperty('--navr-w', w + 'px');
-  }
-
-  window.addEventListener('resize', place);
-  place();
-
-  html.setAttribute('data-theme', 'dark');
-  localStorage.setItem('theme', 'dark');
-  if (cb) cb.checked = true;
-
-  function setTheme(next) {
-    html.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-  }
-
-  cb?.addEventListener('change', () =>
-    setTheme(cb.checked ? 'dark' : 'light')
-  );
-})();
 
 /* =========================================================
    MENU MOBILE
