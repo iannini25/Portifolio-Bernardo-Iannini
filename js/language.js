@@ -81,9 +81,17 @@ Currently, I am deepening my knowledge in software development and have a strong
             title: "Designing products and services with AI",
             org: "MIT",
             role: "Student",
-            cert: { id: "cert-mit", img: "erpinspire4u.png", label: "Certificate" },
-            bullets: ["Foundations of ML/DL, AI strategy and product design applied to real use cases."],
-            skills: ["Machine Learning", "Deep Learning", "AI Strategy", "AI Design"]
+            cert: { id: "cert-mit", img: "Certificado-MIT.png", label: "Certificate" },
+            bullets: [
+              "AI strategy, performance metrics, and product design.",
+              "Machine learning fundamentals and model evaluation.",
+              "Deep learning techniques (MLPs, CNNs, RNNs, transformers).",
+              "Data pipelines, AI limitations, and responsible deployment.",
+              "Human–Computer Interaction and AI-driven interfaces.",
+              "Generative AI, prompt engineering, and marketplace frontiers.",
+              "Superminds and human–AI collaboration."
+            ],
+            skills: ["Machine Learning", "Deep Learning", "AI Strategy", "AI Design", "Prompt Engineering", "HCI", "Generative AI", "Superminds"]
           }
         ]
       }
@@ -110,7 +118,7 @@ Currently, I am deepening my knowledge in software development and have a strong
 Includes a clean landing page, episodes section, and a Reels-style “Short Clips” system powered by manually structured JSON files.  
 This project taught me front-end architecture and real data organization.
 `
-,
+          ,
           stack: ["HTML", "CSS", "JavaScript", "UX"],
           link: "https://memoriacache.com.br",
           repo: "https://github.com/iannini25",
@@ -122,7 +130,7 @@ This project taught me front-end architecture and real data organization.
           longDesc: `Built to solve the information overload in my building’s WhatsApp group.  
 I developed an online platform using Firebase to centralize announcements, tasks and resident communication.  
 It improved clarity and helped the building management run smoothly.`
-,
+          ,
           stack: ["HTML", "CSS", "JavaScript", "Product", "UX",],
           link: "https://iannini25.github.io/condo_management/",
           repo: "https://github.com/iannini25/condo_management",
@@ -134,7 +142,7 @@ It improved clarity and helped the building management run smoothly.`
           longDesc: `My first WordPress project, built with no templates.  
 I designed everything in Figma and rebuilt it manually with Elementor and custom CSS.  
 Includes SEO, accessibility and performance optimization to elevate Inspire4U’s digital presence.`
-,
+          ,
           stack: ["WordPress", "Performance", "A11y", "Figma", "SEO", "Elementor"],
           link: "https://erpi4u.com",
           repo: "https://github.com/iannini25",
@@ -222,11 +230,17 @@ Atualmente, aprofundo conhecimentos em desenvolvimento de software e tenho forte
             title: "Designing products and services with AI",
             org: "MIT",
             role: "Aluno",
-            cert: { id: "cert-mit", img: "erpinspire4u.png", label: "Certificado" },
+            cert: { id: "cert-mit", img: "Certificado-MIT.png", label: "Certificado" },
             bullets: [
-              "Fundamentos de ML/DL, estratégia de IA e design de produto aplicados a casos reais."
+              "Estratégia de IA, métricas de performance e design de produtos.",
+              "Fundamentos de machine learning e avaliação de modelos.",
+              "Técnicas de deep learning (MLPs, CNNs, RNNs, transformers).",
+              "Pipelines de dados, limitações da IA e implantação responsável.",
+              "Interação Humano–Computador e interfaces impulsionadas por IA.",
+              "IA generativa, engenharia de prompt e fronteiras de marketplaces.",
+              "Superminds e colaboração entre humanos e IA."
             ],
-            skills: ["Machine Learning", "Deep Learning", "Estratégia de IA", "Design de IA"]
+            skills: ["Machine Learning", "Deep Learning", "Estratégia de IA", "Design de IA", "Engenharia de prompt", "HCI", "IA Generativa", "Superminds"]
           }
         ]
       }
@@ -254,7 +268,7 @@ Atualmente, aprofundo conhecimentos em desenvolvimento de software e tenho forte
           longDesc: `Meu primeiro site profissional feito totalmente à mão usando HTML, CSS e JavaScript puro.  
 Possui landing page limpa, página de episódios e um sistema de “cortes” estilo Reels/TikTok, alimentado por arquivos JSON organizados manualmente.  
 O projeto me ensinou arquitetura front-end, organização e dinâmica real com dados estruturados.`
-,
+          ,
           stack: ["HTML", "CSS", "JavaScript", "UX"],
           link: "https://memoriacache.com.br",
           repo: "https://github.com/iannini25",
@@ -266,7 +280,7 @@ O projeto me ensinou arquitetura front-end, organização e dinâmica real com d
           longDesc: `Criado para resolver o caos de informações no grupo de WhatsApp do meu prédio.  
 Desenvolvi uma plataforma online com Firebase para centralizar avisos, tarefas e comunicações entre moradores.  
 Melhorou a transparência e facilitou muito o trabalho do síndico.`
-,
+          ,
           stack: ["HTML", "CSS", "JavaScript", "Product", "UX",],
           link: "https://iannini25.github.io/condo_management/",
           repo: "https://github.com/iannini25/condo_management",
@@ -278,7 +292,7 @@ Melhorou a transparência e facilitou muito o trabalho do síndico.`
           longDesc: `Meu primeiro projeto em WordPress, desenvolvido sem templates.  
 Criei o design no Figma e reconstruí tudo manualmente com Elementor e CSS próprio.  
 Inclui SEO, acessibilidade e performance ajustadas para posicionar melhor a Inspire4U.`
-,
+          ,
           stack: ["WordPress", "Performance", "A11y", "Figma", "SEO", "Elementor"],
           link: "https://erpi4u.com",
           repo: "https://github.com/iannini25",
