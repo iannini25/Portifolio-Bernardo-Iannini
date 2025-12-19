@@ -136,13 +136,66 @@ section { scroll-margin-top: calc(var(--nav-h) + 24px) }
 /* =============================
    1) HEADER / NAVBAR
    ============================= */
-header { position: fixed; top: 20px; left: 0; right: 0; z-index: 10; background: transparent; border: none; margin-top: 30px; }
-.nav { max-width: 1120px; margin: 0 auto; padding: 0 20px; position: relative; min-height: var(--nav-h) }
-.nav-center { position: absolute; left: 50%; top: 50%; transform: translate(-55%, -50%) }
-.pill { display: inline-flex; gap: 6px; padding: 6px; background: var(--w-05); border: 1px solid var(--w-10); border-radius: 999px; backdrop-filter: blur(8px) }
-.pill a { padding: 8px 16px; border-radius: 999px; font-weight: 700; font-size: .9rem; opacity: .95; transition: background .2s, opacity .2s }
-.pill a:hover { background: var(--w-08); opacity: 1 }
-.nav-right { position: absolute; right: 20px; top: 0; height: var(--nav-h); display: flex; align-items: center; padding-left: 20px; border-left: 1px solid var(--w-10) }
+header {
+  position: fixed;
+  top: 20px;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: transparent;
+  border: none;
+  margin-top: 30px;
+}
+
+.nav {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  min-height: var(--nav-h)
+}
+
+.nav-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%)
+}
+
+.pill {
+  display: inline-flex;
+  gap: 6px;
+  padding: 6px;
+  background: var(--w-05);
+  border: 1px solid var(--w-10);
+  border-radius: 999px;
+  backdrop-filter: blur(8px)
+}
+
+.pill a {
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: .9rem;
+  opacity: .95;
+  transition: background .2s, opacity .2s
+}
+
+.pill a:hover {
+  background: var(--w-08);
+  opacity: 1
+}
+
+.nav-right {
+  position: absolute;
+  right: 160px;
+  top: 0;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+  border-left: 1px solid var(--w-10)
+}
 
 /* Slot para o switch de tema (entre .nav-center e .nav-right) */
 .theme-slot{
@@ -448,18 +501,7 @@ input:focus, textarea:focus{ border-color: color-mix(in oklab, var(--green) 65%,
 
 @media (prefers-reduced-motion: reduce){ .resume-btn, .resume-btn::before, .resume-btn::after{ transition: none !important; animation: none !important } }
 
-/* Toggle Dark/Light — input invisível + switch */
-#darkmode-toggle { position: absolute; inset: 0; width: 0; height: 0; visibility: hidden }
-.dm-switch { --w: calc(var(--dm-h) * 1.5); width: var(--w); height: var(--dm-h); position: relative; display: block; cursor: pointer; border-radius: 999px; background: var(--w-05); border: 1px solid var(--w-10); backdrop-filter: blur(8px); box-shadow: 0 8px 18px rgba(0,0,0,.18), inset 0 1px 0 var(--w-06), inset 0 -1px 0 var(--w-02); transition: background-color .28s ease, border-color .28s ease, box-shadow .28s ease, transform .18s ease, filter .28s ease; overflow: hidden; padding-inline: calc(var(--dm-h) * 0.25) }
-.dm-switch::after{ content:""; position: absolute; top: 5px; left: calc(var(--dm-h) * 0.16); width: calc(var(--dm-h) - 10px); height: calc(var(--dm-h) - 10px); border-radius: 50%; background: linear-gradient(180deg, #22c55e , #22c55e66); box-shadow: 0 5px 12px rgba(0,0,0,.25), inset 0 1px 1px rgba(255,255,255,.55), 0 0 10px rgba(255,205,120,.3); transition: left .35s cubic-bezier(.25,.8,.25,1), background .3s ease, transform .2s ease, box-shadow .3s ease; z-index:0 }
-.dm-switch svg{ position: absolute; top: 50%; transform: translateY(-50%); width: calc(var(--dm-h) * 0.48); transition: fill .25s ease, opacity .25s ease; z-index: 1 }
-.dm-switch .sun{ left: calc(var(--dm-h) * 0.25 + 3px); fill: #ffffff; opacity: 1 }
-.dm-switch .moon{ right: calc(var(--dm-h) * 0.25 + 3px); fill: #8b8b8b; opacity: .85 }
-#darkmode-toggle:checked + .dm-switch{ background: var(--w-08); border-color: var(--w-12) }
-#darkmode-toggle:checked + .dm-switch::after{ left: calc(100% - (var(--dm-h) - 10px) - calc(var(--dm-h) * 0.17)); background: linear-gradient(180deg, #808080, #3c3c3c) }
-#darkmode-toggle:checked + .dm-switch .sun { fill: #8b8b8b; opacity: .85 }
-#darkmode-toggle:checked + .dm-switch .moon{ fill: #ffffff; opacity: 1 }
-#darkmode-toggle:active + .dm-switch::after { transform: scale(1.05) }
+
 
 /* Transições suaves site-wide */
 html, body, .panel, .pill, .xp-ico, .proj-card, .resume-btn,
@@ -481,8 +523,25 @@ input[type="text"], input[type="email"], textarea, .btn-link, .btn-more,
 .lang-menu li:hover{ background: color-mix(in oklab, var(--green) 18%, transparent); color: var(--text) }
 
 /* Botão de certificado + Modal (<dialog>) */
-.btn-cert{ appearance:none; border:none; border-radius:10px; font-weight:800; letter-spacing:.02em; padding:8px 14px; display:inline-flex; align-items:center; gap:8px; cursor:pointer; transition:.25s; font-family:inherit }
-.btn-cert svg{ width:18px; height:18px }
+.btn-cert {
+  appearance: none;
+  border: none;
+  border-radius: 10px;
+  font-weight: 800;
+  letter-spacing: .02em;
+  padding: 8px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: .25s;
+  font-family: inherit
+}
+
+.btn-cert svg {
+  width: 18px;
+  height: 18px
+}
 .cert-modal {
   border: none;
   border-radius: 12px;
@@ -549,54 +608,8 @@ input[type="text"], input[type="email"], textarea, .btn-link, .btn-more,
 
 
 
-/* Tema claro para certificado */
-html[data-theme="dark"] .btn-cert{ background: rgba(34,197,94,.15); border: 1px solid rgba(34,197,94,.45); color: #d8f3e4 }
-html[data-theme="dark"] .btn-cert:hover{ background: rgba(34,197,94,.25); box-shadow: 0 0 10px rgba(34,197,94,.3) }
-html[data-theme="light"] .btn-cert{ background:#e6f8ed; border:1px solid #22c55e; color:#0b2e15 }
-html[data-theme="light"] .btn-cert:hover{ background:#22c55e; color:#fff; box-shadow:0 0 10px #22c55e66 }
 
-/* =============================
-   10) LIGHT THEME (OVERRIDES)
-   ============================= */
-html[data-theme="light"]{
-  --bg: #f4f7f5; --text: #0e1a13; --muted: #5a6a60;
-  --green: #22c55e; --green-2: #16a34a;
-  --rail: #f1f5f2; --border: #cedbd2;
-  --glass: rgba(255,255,255,.72); --glass-2: rgba(255,255,255,.88);
-  --w-02: rgba(0,0,0,.02); --w-03: rgba(0,0,0,.03); --w-05: rgba(0,0,0,.05); --w-06: rgba(0,0,0,.06); --w-08: rgba(0,0,0,.08); --w-10: rgba(0,0,0,.10); --w-12: rgba(0,0,0,.12);
-  --shadow-35: 0 10px 18px rgba(0,0,0,.15); --shadow-38: 0 16px 32px rgba(0,0,0,.16); --shadow-45: 0 18px 40px rgba(0,0,0,.18);
-  --gline-28: rgba(80,130,105,.22); --gline-35: rgba(80,130,105,.28); --gline-38: rgba(80,130,105,.32); --gline-42: rgba(80,130,105,.36);
-  --g-08: rgba(34,197,94,.08); --g-10: rgba(34,197,94,.10); --g-14: rgba(34,197,94,.14); --g-15: rgba(34,197,94,.15); --g-16: rgba(34,197,94,.16); --g-18: rgba(34,197,94,.18); --g-22: rgba(34,197,94,.22); --g-28: rgba(34,197,94,.28); --g-30: rgba(34,197,94,.30); --g-35: rgba(34,197,94,.35); --g-45: rgba(34,197,94,.45); --g-50: rgba(34,197,94,.50); --g-55: rgba(34,197,94,.55); --g-70: rgba(34,197,94,.70); --g-80: rgba(34,197,94,.80);
-  --text-soft: #233529; --text-italic: #2b3f32; --text-icon: #2a3a30; --text-hint: #5a6a60; --text-accent: #2b4a3a; --text-mint: #12462d;
-  --cursor-bg: rgba(0,0,0,.28); --chev: #6a7c72;
-  --term-prompt: #089e57; --term-path: #137d55; --term-cmd: #2d6cdf; --term-out: #0f241a; --msg-red: #a63a34; --msg-yellow: #a67e1f; --msg-green: #2c7c49;
-  --input-bg: rgba(255,255,255,.92); --input-bg-focus: rgba(255,255,255,.98);
-}
-/* Verde um pouco mais fechado no light para contraste (opcional) */
-html[data-theme="light"]{ --green: #15803d }
 
-/* Ajustes de componentes no light */
-html[data-theme="light"] .section-title,
-html[data-theme="light"] .xp-title,
-html[data-theme="light"] .tl-mode { color: (black); text-shadow: 0 0 6px rgba(34,197,94,.20) }
-html[data-theme="light"] .xp-ico { color: #111; border-color: rgba(0,0,0,.15); filter: none; transition: color .2s ease, filter .2s ease, border-color .2s ease, transform .2s ease }
-html[data-theme="light"] .xp-ico:hover:not(.active){ color: var(--green); border-color: rgba(34,197,94,.35); filter: drop-shadow(0 0 8px rgba(34,197,94,.35)) }
-html[data-theme="light"] .xp-ico.active{ color: var(--green); border-color: rgba(34,197,94,.55); filter: drop-shadow(0 0 10px rgba(34,197,94,.45)) }
-html[data-theme="light"] .secao-skills{ color:#0e1a13 }
-html[data-theme="light"] .secao-skills .secao-subtitulo{ color:#4d5c54 }
-html[data-theme="light"] .panel{ background: linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.96)); border-color: rgba(80,130,105,.25); box-shadow: 0 10px 28px rgba(0,0,0,.12), inset 0 0 0 1px rgba(0,0,0,.02) }
-html[data-theme="light"] .cbtn{ background:#f5faf7; border-color:#cddbd2; color:#103421 }
-html[data-theme="light"] .capsule-grid{ background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,1)); border-color:#d7e4db }
-html[data-theme="light"] input[type="text"], html[data-theme="light"] input[type="email"], html[data-theme="light"] textarea{ background:#ffffff; color:#0f241a; border-color:#d2e0d7 }
-html[data-theme="light"] .skills-tiles .section-sub{ color: #4d5c54 }
-html[data-theme="light"] .skills-tiles .tile-ico, html[data-theme="light"] .skills-tiles .reveal-grid li{ background: #ffffff; border-color: #d9e6dd }
-/* Ícones pretos no light mode (quando imagens/SVG inline) */
-html[data-theme="light"] .skills-tiles .tile-ico img,
-html[data-theme="light"] .skills-tiles .tile-ico svg,
-html[data-theme="light"] .skills-tiles .tile-ico svg *,
-html[data-theme="light"] .skills-tiles .reveal-grid img,
-html[data-theme="light"] .skills-tiles .reveal-grid svg,
-html[data-theme="light"] .skills-tiles .reveal-grid svg *{ filter: brightness(0) saturate(100%) !important; fill: #000 !important; stroke: #000 !important }
 
 /* =============================
    11) MICRO AJUSTES / UTILITÁRIOS
