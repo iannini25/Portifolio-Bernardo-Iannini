@@ -1,0 +1,20 @@
+# Nao sobe pra producao (a Vercel e estatica; o admin so roda LOCAL)
+# Mantemos scripts/ e data/ porque o build (npm run build:posts) precisa deles.
+
+node_modules
+.git
+*.log
+
+# Painel admin: existe so na sua maquina via `npm run admin`.
+# Tirar daqui evita expor a tela de login/admin (inutil em estatico).
+admin.html
+bernardolindao.html
+js/blog-admin.js
+js/blog-auth.js
+scripts/admin-server.js
+
+# Caches locais
+.claude
+.DS_Store
+Thumbs.db
+desktop.ini

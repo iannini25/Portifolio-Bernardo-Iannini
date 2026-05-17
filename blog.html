@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blog · Bernardo Iannini — Eventos, projetos e bastidores</title>
+  <meta name="author" content="Bernardo Iannini">
+  <meta name="description" content="Acompanhe os eventos, projetos e bastidores do Bernardo Iannini — desenvolvedor Full Stack e AI Designer em Belo Horizonte." />
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;600;700&family=Instrument+Serif:ital@0;1&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/blog.css">
+
+  <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/favicon-48.png" sizes="48x48">
+  <link rel="icon" type="image/png" href="/favicon_192px.png" sizes="192x192">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any">
+  <meta name="theme-color" content="#060807">
+
+  <link rel="canonical" href="https://bernardoiannini.com/blog.html" />
+  <link rel="alternate" hreflang="pt-BR" href="https://bernardoiannini.com/blog.html" />
+  <link rel="alternate" hreflang="en"    href="https://bernardoiannini.com/blog.html" />
+  <link rel="alternate" hreflang="x-default" href="https://bernardoiannini.com/blog.html" />
+
+  <style id="page-fx">
+    html:not(.i18n-ready) body { opacity: 0; }
+    body {
+      opacity: 1;
+      transition: opacity .35s cubic-bezier(.22,.61,.36,1);
+    }
+    html:not(.i18n-ready) main {
+      transform: scale(1.03);
+      filter: blur(8px);
+    }
+    main {
+      transition:
+        transform .45s cubic-bezier(.22,.61,.36,1),
+        filter .45s cubic-bezier(.22,.61,.36,1);
+    }
+    body.page-leaving { opacity: 0; pointer-events: none; }
+    body.page-leaving main {
+      transform: scale(.97);
+      filter: blur(8px);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html:not(.i18n-ready) main { transform: none; filter: none; }
+      body, body.page-leaving { transition: opacity .18s ease; }
+      main, body.page-leaving main { transition: none; transform: none; filter: none; }
+    }
+  </style>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('lang');
+        if (l === 'pt' || l === 'en') {
+          document.documentElement.lang = (l === 'pt') ? 'pt-BR' : 'en';
+        }
+      } catch (e) {}
+    })();
+    window.addEventListener('pageshow', function () {
+      document.body && document.body.classList.remove('page-leaving');
+    });
+  </script>
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Bernardo Iannini" />
+  <meta property="og:title" content="Blog · Bernardo Iannini — Eventos, projetos e bastidores" />
+  <meta property="og:description" content="Acompanhe os eventos, projetos e bastidores do Bernardo Iannini — desenvolvedor Full Stack e AI Designer em Belo Horizonte." />
+  <meta property="og:url" content="https://bernardoiannini.com/blog.html" />
+  <meta property="og:image" content="https://bernardoiannini.com/img/eufoto1.png" />
+  <meta property="og:image:alt" content="Bernardo Iannini, desenvolvedor Full Stack e AI Designer" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:locale:alternate" content="en_US" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Blog · Bernardo Iannini" />
+  <meta name="twitter:description" content="Eventos, projetos e bastidores do Bernardo Iannini." />
+  <meta name="twitter:image" content="https://bernardoiannini.com/img/eufoto1.png" />
+
+  <!--BUILD:JSONLD-->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "Blog - Bernardo Iannini",
+  "description": "Eventos, projetos e bastidores",
+  "url": "https://bernardoiannini.com/blog.html",
+  "inLanguage": "pt-BR",
+  "author": {
+    "@type": "Person",
+    "name": "Bernardo Iannini",
+    "alternateName": [
+      "Bernardo Iannini",
+      "Bernardo A. Iannini",
+      "Bernardo Araujo Iannini"
+    ],
+    "url": "https://bernardoiannini.com/",
+    "image": "https://bernardoiannini.com/img/eufoto1.png",
+    "sameAs": [
+      "https://www.linkedin.com/in/bernardo-iannini",
+      "https://github.com/iannini25"
+    ]
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Bernardo Iannini",
+    "url": "https://bernardoiannini.com/"
+  },
+  "blogPost": [
+    {
+      "@type": "BlogPosting",
+      "headline": "novooo testedz",
+      "url": "https://bernardoiannini.com/posts/novooo-testedz.html",
+      "datePublished": "2026-05-16T15:42:14.434Z",
+      "dateModified": "2026-05-16T15:42:14.434Z",
+      "image": "https://bernardoiannini.com/img/posts/post/eu.jpg",
+      "author": {
+        "@type": "Person",
+        "name": "Bernardo Iannini",
+        "url": "https://bernardoiannini.com/"
+      }
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "teste",
+      "url": "https://bernardoiannini.com/posts/teste.html",
+      "datePublished": "2026-05-16T01:27:29.245Z",
+      "dateModified": "2026-05-16T02:39:58.122Z",
+      "image": "https://bernardoiannini.com/img/posts/teste/cover.png",
+      "author": {
+        "@type": "Person",
+        "name": "Bernardo Iannini",
+        "url": "https://bernardoiannini.com/"
+      }
+    }
+  ]
+}
+</script>
+<!--/BUILD:JSONLD-->
+
+  <!--BUILD:WINDOW_POSTS-->
+<script>window.BI_POSTS=[{"id":"p_70h0q5twmp8ili8y","slug":"novooo-testedz","title":"novooo testedz","subtitle":"asdasdasdasd","cover":"/img/posts/post/eu.jpg","coverAlt":"novooo testedz - Bernardo Iannini","tags":[],"category":"Vida","author":"Bernardo Iannini","status":"published","featured":false,"createdAt":"2026-05-16T15:42:14.434Z","updatedAt":"2026-05-16T15:42:14.434Z","readTimeMin":1,"url":"/posts/novooo-testedz.html","excerpt":"Comece a escrever aqui Use negrito , itálico , ou código inline . Subtítulos com - Listas com hífen - Outra linha Citação com [Link](https://exemplo.com)"},{"id":"p_voryg5ozmp7o2acd","slug":"teste","title":"teste","subtitle":"testando","cover":"/img/posts/teste/cover.png","coverAlt":"teste - Bernardo Iannini","tags":[],"category":"IA","author":"Bernardo Iannini","status":"published","featured":false,"createdAt":"2026-05-16T01:27:29.245Z","updatedAt":"2026-05-16T02:39:58.122Z","readTimeMin":1,"url":"/posts/teste.html","excerpt":"Comece a escrever aqui Use negrito , itálico , ou código inline . Subtítulos com - Listas com hífen - Outra linha Citação com [Link](https://exemplo.com)"}];</script>
+<!--/BUILD:WINDOW_POSTS-->
+</head>
+
+<body class="blog-body">
+
+  <!-- ============================================================
+       NAVBAR — mesma estrutura/comportamento da landing
+       ============================================================ -->
+  <header>
+    <div class="nav">
+
+      <!-- Menu mobile -->
+      <nav id="mobileNav" class="mobile-nav" aria-hidden="true">
+        <a href="/index.html#home" data-i18n="nav.home">Home</a>
+        <a href="/index.html#sobre" data-i18n="nav.about">About</a>
+        <a href="/index.html#services" data-i18n="nav.services">Services</a>
+        <div class="mobile-dd">
+          <button type="button" class="mobile-dd-btn" aria-haspopup="menu" aria-expanded="false">
+            <span data-i18n="nav.work">Work</span>
+            <svg class="mobile-dd-caret" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="mobile-dd-menu" role="menu">
+            <a href="/index.html#xp" data-i18n="nav.experience" role="menuitem">Experience</a>
+            <a href="/index.html#skills" data-i18n="nav.skills" role="menuitem">Skills</a>
+            <a href="/index.html#projects" data-i18n="nav.projects" role="menuitem">Projects</a>
+          </div>
+        </div>
+        <a href="/blog.html" class="nav-blog-link active-link">
+          <span data-i18n="nav.blog">Blog</span>
+        </a>
+        <a href="/index.html#contato" data-i18n="nav.contact">Contact</a>
+      </nav>
+
+      <!-- Language switch (ESQUERDA) -->
+      <div class="lang-slot" aria-label="Language switch">
+        <button id="langBtn" class="lang-switch pill" aria-haspopup="listbox" aria-expanded="false">
+          <span class="lang-ico" aria-hidden="true">🌐</span>
+          <span id="langCode">EN</span>
+          <svg class="caret" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </button>
+        <ul id="langMenu" class="lang-menu" role="listbox">
+          <li data-lang="en" role="option" aria-selected="true">English</li>
+          <li data-lang="pt" role="option" aria-selected="false">Português</li>
+        </ul>
+      </div>
+
+      <!-- Pill central -->
+      <div class="nav-center">
+        <nav class="pill">
+          <a href="/index.html#home" data-i18n="nav.home">Home</a>
+          <a href="/index.html#sobre" data-i18n="nav.about">About</a>
+          <a href="/index.html#services" data-i18n="nav.services">Services</a>
+          <div class="nav-dd">
+            <button type="button" id="workBtn" class="nav-dd-btn" aria-haspopup="menu" aria-expanded="false">
+              <span data-i18n="nav.work">Work</span>
+              <svg class="nav-dd-caret" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+            <ul id="workMenu" class="nav-dd-menu" role="menu">
+              <li><a href="/index.html#xp" data-i18n="nav.experience" role="menuitem">Experience</a></li>
+              <li><a href="/index.html#skills" data-i18n="nav.skills" role="menuitem">Skills</a></li>
+              <li><a href="/index.html#projects" data-i18n="nav.projects" role="menuitem">Projects</a></li>
+            </ul>
+          </div>
+          <a href="/blog.html" class="nav-blog-link active-link">
+            <span data-i18n="nav.blog">Blog</span>
+          </a>
+          <a href="/index.html#contato" data-i18n="nav.contact">Contact</a>
+        </nav>
+      </div>
+
+      <!-- Hamburguer -->
+      <button id="menuBtn" class="menu-btn" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobileNav">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+      </button>
+
+      <!-- Currículo (direita) -->
+      <div class="nav-right">
+        <a class="resume-btn" href="/Curriculo_Bernardo_Iannini.pdf" download>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3v11m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          <span data-i18n="nav.resume">Currículo</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="blog-main">
+
+    <!-- ============================================================
+         HERO
+         ============================================================ -->
+    <section class="blog-hero">
+      <div class="blog-hero-inner">
+        <p class="kicker" data-i18n="blog.kicker">Blog</p>
+        <h1 class="blog-hero-title" data-i18n-html="blog.heroTitle">
+          Mais do que código, <em>histórias.</em>
+        </h1>
+        <p class="blog-hero-sub" data-i18n="blog.heroSub">Estudos de caso, decisões técnicas e bastidores dos projetos que tenho construído.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         BENTO DE IDENTIDADE
+         ============================================================ -->
+    <section class="blog-identity-section">
+      <div class="blog-identity-bento" id="blogIdentity">
+
+        <!-- 1) Perfil -->
+        <article class="bid-tile bid-profile">
+          <figure class="bid-avatar" aria-hidden="true">
+            <img class="bid-avatar-img bid-avatar-img--a" src="/img/eufoto1.png" alt="" draggable="false" width="240" height="240"/>
+            <img class="bid-avatar-img bid-avatar-img--b" src="/img/eufoto2.png" alt="" draggable="false" width="240" height="240"/>
+            <span class="bid-avatar-sweep" aria-hidden="true"></span>
+          </figure>
+          <div class="bid-profile-text">
+            <p class="bid-kicker" data-i18n="blog.profile.kicker">Author</p>
+            <h3 class="bid-name">Bernardo<br><span>Iannini</span></h3>
+          </div>
+        </article>
+
+        <!-- 2) Featured post -->
+        <article class="bid-tile bid-featured" id="bidFeatured" data-tile="featured">
+          <!--BUILD:FEATURED-->
+<a class="bid-featured-inner" href="/posts/novooo-testedz.html" data-id="p_70h0q5twmp8ili8y" data-cover="/img/posts/post/eu.jpg">
+      <div class="bid-featured-img"><img src="/img/posts/post/eu.jpg" alt="novooo testedz - Bernardo Iannini" loading="lazy" width="1200" height="630"/></div>
+      <div class="bid-featured-noise" aria-hidden="true"></div>
+      <div class="bid-featured-content">
+        <span class="bid-featured-badge">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 6.6L21 9.2l-5 4.6L17.4 21 12 17.7 6.6 21 8 13.8 3 9.2l6.6-.6z"/></svg>
+          <span data-i18n="blog.featured.latest">Latest</span>
+        </span>
+        <h3 class="bid-featured-title">novooo testedz</h3>
+        <div class="bid-featured-meta">
+          <span>16 de maio de 2026</span>
+          <span>&middot;</span>
+          <span>1 min</span>
+          <span>&middot;</span>
+          <span>Vida</span>
+        </div>
+      </div>
+    </a>
+<!--/BUILD:FEATURED-->
+        </article>
+
+        <!-- 3) Stats -->
+        <article class="bid-tile bid-stats" data-tile="stats">
+          <div class="bid-tile-head">
+            <h3 class="bid-tile-title" data-i18n="blog.stats.title">By the numbers</h3>
+            <p class="bid-tile-sub" data-i18n="blog.stats.sub">what's happening here</p>
+          </div>
+          <div class="bid-stats-grid">
+            <div class="bid-stat">
+              <span class="bid-stat-value" id="stat-posts" data-count="2">2</span>
+              <span class="bid-stat-label" data-i18n="blog.stats.posts">posts</span>
+            </div>
+            <div class="bid-stat">
+              <span class="bid-stat-value" id="stat-categories" data-count="2">2</span>
+              <span class="bid-stat-label" data-i18n="blog.stats.categories">categories</span>
+            </div>
+            <div class="bid-stat">
+              <span class="bid-stat-value" id="stat-readtime" data-count="2">2</span>
+              <span class="bid-stat-label" data-i18n="blog.stats.readtime">min total</span>
+            </div>
+          </div>
+          <svg class="bid-stats-spark" viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="sparkGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="var(--green)" stop-opacity="0"/>
+                <stop offset="50%" stop-color="var(--green)" stop-opacity="1"/>
+                <stop offset="100%" stop-color="var(--lime)" stop-opacity="1"/>
+              </linearGradient>
+            </defs>
+            <polyline points="0,30 20,28 40,22 60,25 80,18 100,20 120,12 140,15 160,8 180,10 200,4"
+              fill="none" stroke="url(#sparkGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </article>
+
+        <!-- 4) Localização -->
+        <article class="bid-tile bid-location" data-tile="location">
+          <div class="bid-location-glow" aria-hidden="true"></div>
+          <div class="bid-location-head">
+            <span class="bid-location-pulse" aria-hidden="true"></span>
+            <span class="bid-location-status" data-i18n="blog.location.status">writing from</span>
+          </div>
+          <p class="bid-location-place">Belo<br>Horizonte</p>
+          <p class="bid-location-time" id="bidClock">GMT-3</p>
+        </article>
+
+        <!-- 5) Tópicos -->
+        <article class="bid-tile bid-topics" data-tile="topics">
+          <div class="bid-tile-head">
+            <h3 class="bid-tile-title" data-i18n="blog.topics.title">Topics</h3>
+            <p class="bid-tile-sub" data-i18n="blog.topics.sub">what I write about</p>
+          </div>
+          <div class="bid-topics-rotator" id="bidTopicRotator" aria-live="polite">
+            <span class="bid-topic-current">—</span>
+          </div>
+          <div class="bid-tags-cloud" id="blogTagCloud">
+            <!--BUILD:TAG_CLOUD-->
+<p style="color:var(--text-hint);font-size:12px;">Nenhuma tag ainda.</p>
+<!--/BUILD:TAG_CLOUD-->
+          </div>
+        </article>
+
+        <!-- 6) Centro -->
+        <article class="bid-tile bid-center" id="bidCenter">
+          <div class="bid-center-img" id="bidCenterImg" aria-hidden="true"></div>
+          <div class="bid-center-grid" aria-hidden="true"></div>
+          <div class="bid-center-fallback">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 4h16v16H4z" stroke-linejoin="round"/>
+              <path d="M4 16l4-4 4 4 4-4 4 4" stroke-linejoin="round"/>
+              <circle cx="9" cy="9" r="1.5"/>
+            </svg>
+            <span data-i18n="blog.center.hint">hover any tile</span>
+          </div>
+          <div class="bid-center-meta" id="bidCenterMeta"></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         TOOLBAR
+         ============================================================ -->
+    <section class="blog-toolbar-section">
+      <div class="blog-toolbar">
+        <div class="blog-search">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+            <path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input type="search" id="blogSearch" data-i18n-attr="placeholder:blog.search.placeholder" placeholder="Buscar por título, tag ou conteúdo..." autocomplete="off"/>
+          <kbd class="blog-search-kbd">⌘ K</kbd>
+        </div>
+        <div class="blog-filters" id="blogFilters">
+          <!--BUILD:FILTERS-->
+<button type="button" class="blog-chip blog-chip--active" data-filter="all" data-i18n="blog.filters.all">Todos</button>
+        <button type="button" class="blog-chip" data-filter="Vida">Vida</button>
+        <button type="button" class="blog-chip" data-filter="IA">IA</button>
+<!--/BUILD:FILTERS-->
+        </div>
+        <div class="blog-sort">
+          <label for="blogSort" class="blog-sort-label" data-i18n="blog.sort.label">Ordenar</label>
+          <select id="blogSort" class="blog-sort-select">
+            <option value="recent"   data-i18n="blog.sort.recent">Mais recentes</option>
+            <option value="oldest"   data-i18n="blog.sort.oldest">Mais antigos</option>
+            <option value="popular"  data-i18n="blog.sort.popular">Mais lidos</option>
+            <option value="readtime" data-i18n="blog.sort.readtime">Leitura rápida</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         POSTS BENTO — pré-renderizado pelo build (estático)
+         ============================================================ -->
+    <section class="blog-section">
+      <div class="blog-section-head">
+        <p class="kicker" data-i18n="blog.posts.kicker">Posts</p>
+        <h2 class="blog-section-title" data-i18n-html="blog.posts.title">Tudo que <em>escrevi</em> até hoje</h2>
+      </div>
+
+      <div class="blog-bento" id="blogBento">
+        <!--BUILD:POSTS_BENTO-->
+<article class="blog-post-card blog-post-card--featured"
+             data-id="p_70h0q5twmp8ili8y" data-slug="novooo-testedz"
+             data-action="open" data-href="/posts/novooo-testedz.html"
+             data-cover="/img/posts/post/eu.jpg"
+             data-category="Vida"
+             data-tags=""
+             data-date="2026-05-16T15:42:14.434Z"
+             data-readtime="1"
+             data-featured="0">
+      <div class="blog-post-cover"><img src="/img/posts/post/eu.jpg" alt="novooo testedz - Bernardo Iannini" loading="lazy" width="800" height="500"/></div>
+      
+      <div class="blog-post-content">
+        <div class="blog-post-meta">
+          <span class="blog-post-category">Vida</span>
+          <span class="blog-post-date">16 de maio de 2026</span>
+          <span class="blog-post-readtime">1 min de leitura</span>
+        </div>
+        <h3 class="blog-post-title"><a href="/posts/novooo-testedz.html">novooo testedz</a></h3>
+        <p class="blog-post-excerpt">asdasdasdasd</p>
+        
+      </div>
+    </article>
+      <article class="blog-post-card blog-post-card--tall"
+             data-id="p_voryg5ozmp7o2acd" data-slug="teste"
+             data-action="open" data-href="/posts/teste.html"
+             data-cover="/img/posts/teste/cover.png"
+             data-category="IA"
+             data-tags=""
+             data-date="2026-05-16T01:27:29.245Z"
+             data-readtime="1"
+             data-featured="0">
+      <div class="blog-post-cover"><img src="/img/posts/teste/cover.png" alt="teste - Bernardo Iannini" loading="lazy" width="800" height="500"/></div>
+      
+      <div class="blog-post-content">
+        <div class="blog-post-meta">
+          <span class="blog-post-category">IA</span>
+          <span class="blog-post-date">15 de maio de 2026</span>
+          <span class="blog-post-readtime">1 min de leitura</span>
+        </div>
+        <h3 class="blog-post-title"><a href="/posts/teste.html">teste</a></h3>
+        <p class="blog-post-excerpt">testando</p>
+        
+      </div>
+    </article>
+<!--/BUILD:POSTS_BENTO-->
+      </div>
+
+      <noscript>
+        <p style="margin-top:24px;color:var(--text-hint);text-align:center;">Para filtros/busca interativos, ative o JavaScript. Os posts estão visíveis acima.</p>
+      </noscript>
+
+      <div class="blog-empty" id="blogEmpty" hidden>
+        <div class="blog-empty-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="42" height="42" fill="none">
+            <path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 data-i18n="blog.empty.title">Ainda nenhum post por aqui</h3>
+        <p data-i18n="blog.empty.text">Em breve, conteúdos sobre engenharia, IA, design e os bastidores dos projetos. Volte logo!</p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         AUTOR
+         ============================================================ -->
+    <section class="blog-section blog-author-section">
+      <article class="blog-author-card">
+        <div class="blog-author-photo">
+          <img src="/img/eufoto1.png" alt="Bernardo Iannini, desenvolvedor Full Stack e AI Designer em Belo Horizonte" loading="lazy" width="320" height="320"/>
+          <span class="blog-author-photo-ring" aria-hidden="true"></span>
+        </div>
+        <div class="blog-author-info">
+          <p class="kicker" data-i18n="blog.author.kicker">Author</p>
+          <h3 class="blog-author-name">Bernardo Iannini</h3>
+          <p class="blog-author-bio" data-i18n="blog.author.bio">
+            19 anos · Full Stack Developer · AI Designer. Escrevo sobre o que aprendo no caminho — engenharia, IA, design e os bastidores dos projetos que construo.
+          </p>
+          <div class="blog-author-actions">
+            <a href="https://www.linkedin.com/in/bernardo-iannini" target="_blank" rel="me noopener" class="blog-author-btn">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.05c.53-1 1.84-2.2 3.8-2.2 4.06 0 4.8 2.67 4.8 6.15V24h-4v-7.1c0-1.7-.03-3.9-2.4-3.9-2.4 0-2.77 1.87-2.77 3.8V24h-4V8z"/>
+              </svg>
+              <span>LinkedIn</span>
+            </a>
+            <a href="https://github.com/iannini25" target="_blank" rel="me noopener" class="blog-author-btn">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 .5C5.73.5.98 5.24.98 11.5c0 4.85 3.14 8.96 7.49 10.41.55.1.75-.24.75-.53v-1.86c-3.04.66-3.68-1.45-3.68-1.45-.5-1.28-1.22-1.63-1.22-1.63-.99-.67.08-.66.08-.66 1.09.08 1.66 1.13 1.66 1.13.98 1.67 2.57 1.19 3.2.91.1-.71.38-1.19.69-1.46-2.43-.28-4.99-1.22-4.99-5.43 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.41.11-2.94 0 0 .92-.29 3.02 1.13A10.5 10.5 0 0 1 12 6.8c.94 0 1.88.13 2.77.38 2.1-1.42 3.02-1.13 3.02-1.13.6 1.53.22 2.66.11 2.94.7.77 1.13 1.75 1.13 2.95 0 4.22-2.57 5.14-5.01 5.41.39.34.73 1.02.73 2.07v3.07c0 .3.2.64.76.53 4.34-1.45 7.48-5.56 7.48-10.41C23.02 5.24 18.27.5 12 .5z"/>
+              </svg>
+              <span>GitHub</span>
+            </a>
+            <a href="/index.html#contato" class="blog-author-btn">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 6h16v12H4zM4 6l8 7 8-7" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              </svg>
+              <span data-i18n="blog.author.contact">Contato</span>
+            </a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="blog-footer">
+      <div class="blog-footer-inner">
+        <p>© <span id="footerYear"></span> Bernardo Iannini · <span data-i18n="blog.footer.rights">Todos os direitos reservados</span></p>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Mesmo language.js + UI.js da landing -->
+  <script src="/js/language.js"></script>
+  <script src="/js/UI.js"></script>
+  <script src="/js/blog-seed.js"></script>
+  <script src="/js/blog.js"></script>
+</body>
+
+</html>

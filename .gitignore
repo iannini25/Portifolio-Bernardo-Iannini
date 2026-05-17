@@ -1,0 +1,26 @@
+# ===========================================================
+#  .gitignore — Portfolio Bernardo Iannini
+#  IMPORTANTE: os arquivos GERADOS pelo build (blog.html,
+#  posts/*.html, data/posts.json, sitemap.xml, js/blog-seed.js)
+#  e as imagens (img/posts/**) DEVEM ser commitados — e o que
+#  a Vercel serve. Por isso NAO estao ignorados aqui.
+# ===========================================================
+
+# Dependencias / instalacao
+node_modules/
+*.log
+npm-debug.log*
+
+# Vercel local
+.vercel/
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Claude / IA caches locais
+.claude/
+CLAUDE.md

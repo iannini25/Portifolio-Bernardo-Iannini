@@ -1,0 +1,19 @@
+/* TEAM */
+Author: Bernardo Iannini
+Site: https://bernardoiannini.com
+Role: Full Stack Developer & AI Designer
+Location: Belo Horizonte, MG — Brasil
+LinkedIn: https://www.linkedin.com/in/bernardo-iannini
+GitHub: https://github.com/iannini25
+Email: bernardo.iannini14@gmail.com
+
+/* SITE */
+Last update: 2026-05-15
+Language: PT-BR / EN
+Standards: HTML5, CSS3, ES2022
+Components: Vanilla — sem frameworks
+Build: Static — gerador próprio em scripts/build-posts.js
+Hosting: configurar conforme deploy
+
+/* THANKS */
+Café, música no fone, e quem aguentou as ideias loucas.

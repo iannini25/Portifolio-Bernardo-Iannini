@@ -1,0 +1,3822 @@
+/* ==================================================================
+   BERNARDO — STYLE (ORGANIZED)
+   Estrutura em blocos por seção: Base/Shared, Header, Home, About,
+   Experience, Projects, Skills, Contact e Complementares (resume,
+   dark mode, language, modal, etc.). Duplicatas removidas.
+   ================================================================== */
+
+/* =============================
+   0) BASE / TOKENS / GLOBALS
+   ============================= */
+:root {
+  --bg: #060807;
+  --text: #f3f6f4;
+  --muted: #a7b5ab;
+  --green: #22c55e;
+  --green-2: #16a34a;
+  --rail: #0e1511;
+  --border: #1c2a20;
+  --glass: rgba(10, 18, 14, .55);
+  --glass-2: rgba(15, 25, 20, .6);
+  --nav-h: 56px;
+
+  /* brancos translúcidos (vidro/pills/bordas) */
+  --w-02: rgba(255,255,255,.02);
+  --w-03: rgba(255,255,255,.03);
+  --w-05: rgba(255,255,255,.05);
+  --w-06: rgba(255,255,255,.06);
+  --w-08: rgba(255,255,255,.08);
+  --w-10: rgba(255,255,255,.10);
+  --w-12: rgba(255,255,255,.12);
+
+  /* sombras escuras (cards/botões) */
+  --shadow-35: 0 12px 28px rgba(0,0,0,.35);
+  --shadow-38: 0 22px 44px rgba(0,0,0,.38);
+  --shadow-45: 0 20px 50px rgba(0,0,0,.45);
+
+  /* contornos “verde-musgo” (painéis/inputs) */
+  --gline-28: rgba(65,110,84,.28);
+  --gline-35: rgba(65,110,84,.35);
+  --gline-38: rgba(65,110,84,.38);
+  --gline-42: rgba(65,110,84,.42);
+
+  /* derivados do verde (chips/efeitos/linhas) */
+  --g-08: rgba(34,197,94,.08);
+  --g-10: rgba(34,197,94,.10);
+  --g-14: rgba(34,197,94,.14);
+  --g-15: rgba(34,197,94,.15);
+  --g-16: rgba(34,197,94,.16);
+  --g-18: rgba(34,197,94,.18);
+  --g-22: rgba(34,197,94,.22);
+  --g-28: rgba(34,197,94,.28);
+  --g-30: rgba(34,197,94,.30);
+  --g-35: rgba(34,197,94,.35);
+  --g-45: rgba(34,197,94,.45);
+  --g-50: rgba(34,197,94,.50);
+  --g-55: rgba(34,197,94,.55);
+  --g-70: rgba(34,197,94,.70);
+  --g-80: rgba(34,197,94,.80);
+
+  /* preset de gradiente verde → lime — usar em destaques (badge, headline) */
+  --lime: #a3e635;
+  --gradient-lime: linear-gradient(135deg, var(--green) 0%, var(--lime) 100%);
+
+  /* textos auxiliares */
+  --text-soft: #dce4de;
+  --text-italic: #e6efe9;
+  --text-icon: #dbe7df;
+  --text-hint: #9fb2a6;
+  --text-accent: #cfe7db;
+  --text-mint: #d8f3e4;
+
+  /* cursores/ícones */
+  --cursor-bg: #e6efe980;
+  --chev: #94b8a2;
+
+  /* terminal */
+  --term-prompt: #66e6a1;
+  --term-path:   #b7ffda;
+  --term-cmd:    #a4e3ff;
+  --term-out:    #e7f5ee;
+  --msg-red:     #ffb3ae;
+  --msg-yellow:  #ffe2a6;
+  --msg-green:   #b9f5c8;
+
+  /* botões janela */
+  --win-red:  #ff5f57;
+  --win-ylw:  #febc2e;
+  --win-grn:  #28c840;
+
+  /* inputs */
+  --input-bg:       rgba(10,18,14,.6);
+  --input-bg-focus: rgba(10,18,14,.72);
+
+  /* hacks locais */
+  --tl-gutter: -18px;
+  --hero-nudge: -110px;
+
+  /* Section de projetos não usa mais painel sólido (evita marcação
+     visível entre sections). A variável permanece pra borda do
+     .proj-badge — agora casada com --bg pra manter o efeito de
+     "recorte circular" sobre o fundo contínuo da página. */
+  --projects-bg: var(--bg);
+
+  /* slots header (dark mode switch) */
+  --dm-h: 48px;     /* altura do switch */
+  --switch-gap: 17px;
+  --navr-w: 160px;
+}
+
+html, body { height: 100% }
+html {
+  background:
+    radial-gradient(1200px 700px at 0% -20%, var(--g-18), transparent 70%),
+    radial-gradient(900px 500px at 100% -10%, var(--g-10), transparent 70%),
+    var(--bg);
+  background-attachment: fixed, fixed, fixed;
+}
+body {
+  overflow-x: hidden;
+  margin: 0;
+  color: var(--text);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  line-height: 1.6;
+  position: relative;
+}
+body::before {
+  content: "";
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(1200px 800px at 50% -200px, rgba(0,0,0,0) 30%, rgba(0,0,0,.18) 100%),
+    radial-gradient(1600px 1000px at 50% 120%, rgba(0,0,0,0) 40%, rgba(0,0,0,.22) 100%);
+}
+a { color: inherit; text-decoration: none }
+main { max-width: 1120px; margin: 0 auto; position: relative; z-index: 1 }
+
+/* Padrão de seção e kicker compartilhados */
+section { scroll-margin-top: calc(var(--nav-h) + 24px) }
+.section { padding: 56px 20px 72px }
+.kicker {
+  font-size: .85rem; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--text-hint); font-weight: 800; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.kicker::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green) }
+
+/* =============================
+   1) HEADER / NAVBAR
+   ============================= */
+header {
+  position: fixed;
+  top: 20px;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: transparent;
+  border: none;
+  margin-top: 30px;
+}
+
+.nav {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  min-height: var(--nav-h);
+  /* Grid de 3 colunas: lang à esquerda | pill no centro | CV à direita.
+     As colunas laterais (1fr) crescem/encolhem simetricamente, mantendo
+     o pill no centro geométrico. Sem absolute → zero colisão de elementos. */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(12px, 1.6vw, 24px);
+}
+
+.nav-center {
+  position: relative;
+  justify-self: center;
+}
+
+.pill {
+  display: inline-flex;
+  gap: 6px;
+  padding: 6px;
+  background: var(--w-05);
+  border: 1px solid var(--w-10);
+  border-radius: 999px;
+  backdrop-filter: blur(8px)
+}
+
+.pill a {
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: .9rem;
+  opacity: .95;
+  transition: background .2s, opacity .2s
+}
+
+.pill a:hover {
+  background: var(--w-08);
+  opacity: 1
+}
+
+/* Link "Blog" no nav (desktop + mobile) com badge "em breve" inline */
+.nav-blog-link {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+}
+.nav-blog-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #08120c;
+  background: #a3e635;
+  box-shadow: 0 0 8px rgba(163, 230, 53, .3);
+  line-height: 1;
+}
+/* Mobile drop: badge fica menor e mais discreta */
+.mobile-nav .nav-blog-link {
+  justify-content: space-between;
+}
+.mobile-nav .nav-blog-badge {
+  font-size: 9px;
+  padding: 2px 7px;
+}
+
+/* ===== Work dropdown (desktop) ===== */
+.nav-dd {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.nav-dd-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 14px 8px 16px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: .9rem;
+  letter-spacing: inherit;
+  border-radius: 999px;
+  cursor: pointer;
+  opacity: .95;
+  transition: background .2s ease, opacity .2s ease;
+}
+.nav-dd-btn:hover,
+.nav-dd-btn[aria-expanded="true"] {
+  background: var(--w-08);
+  opacity: 1;
+}
+.nav-dd-caret {
+  display: block;
+  margin-top: 1px;
+  transition: transform .22s ease;
+}
+.nav-dd-btn[aria-expanded="true"] .nav-dd-caret {
+  transform: rotate(180deg);
+}
+
+.nav-dd-menu {
+  /* position: fixed — top/left setados via JS baseado no rect do botão.
+     O menu é movido pro <body> ao abrir, fora do stacking context do .pill,
+     então o backdrop-filter funciona perfeitamente igual ao .lang-menu. */
+  position: fixed;
+  top: 0;
+  left: 0;
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  min-width: 170px;
+  /* Glass idêntico ao .lang-menu — bg transparente + blur limpo */
+  background: var(--w-05);
+  border: 1px solid var(--w-10);
+  border-radius: 14px;
+  box-shadow: 0 18px 44px rgba(0,0,0,.26), inset 0 1px 0 var(--w-06);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%) translateY(-6px) scale(.96);
+  transform-origin: top center;
+  transition: opacity .22s ease, transform .22s ease, visibility 0s linear .22s;
+  z-index: 30;
+}
+.nav-dd-menu.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0) scale(1);
+  transition: opacity .22s ease, transform .22s ease, visibility 0s;
+}
+.nav-dd-menu li { margin: 0; }
+.nav-dd-menu a {
+  display: block;
+  padding: 9px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--text);
+  font-weight: 700;
+  font-size: .9rem;
+  transition: background .15s ease, color .15s ease;
+}
+.nav-dd-menu a:hover {
+  background: color-mix(in oklab, var(--green) 18%, transparent);
+  color: var(--text-mint);
+}
+
+.nav-right {
+  position: relative;
+  /* justify-self: start → CV cola junto ao pill (com o gap da grid),
+     em vez de ser empurrado pro extremo direito do viewport. A pill
+     continua no centro geométrico (1fr/1fr nas laterais), só que o CV
+     fica logo depois dela ao invés de na ponta. */
+  justify-self: start;
+  display: flex;
+  align-items: center;
+  padding-left: clamp(18px, 1.8vw, 30px);
+  border-left: 1px solid var(--w-10);
+}
+
+/* Slot para o switch de tema (entre .nav-center e .nav-right) */
+.theme-slot{
+  position:absolute;
+  top: calc((var(--nav-h) - var(--dm-h)) / 2);
+  right: calc(20px + var(--navr-w) + var(--switch-gap));
+  z-index:9;
+}
+
+/* =============================
+   2) HOME (HERO)
+   ============================= */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center; gap: 84px;
+  padding: 84px 20px 32px;
+  position: relative; left: var(--hero-nudge);
+}
+/* ===== Photo — crossfade A→B com sweep diagonal lime no hover.
+   clip-path: ellipse() recorta a box retangular da <img> num oval,
+   eliminando os cantos onde a "box" aparecia. ===== */
+.photo {
+  width: 500px;
+  height: auto;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  cursor: pointer;
+  /* Recorta o figure num oval — visualmente não existe mais retângulo. */
+  clip-path: ellipse(50% 50% at center);
+}
+
+/* Layout — primeira img define a altura natural da figure */
+.photo__img--a { position: relative; }
+.photo__img--b { position: absolute; inset: 0; }
+
+.photo__img {
+  width: 100%;
+  height: auto;
+  display: block;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  /* bloqueia drag em todas as variações de browser */
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  /* tap-callout do iOS (segura pra abrir menu de salvar) */
+  -webkit-touch-callout: none;
+  /* sem eventos diretos no <img> — o hover continua via .photo (pai) */
+  pointer-events: none;
+  will-change: opacity, transform, filter;
+  backface-visibility: hidden;
+  transition:
+    opacity .55s cubic-bezier(.4, 0, .2, 1),
+    transform .55s cubic-bezier(.4, 0, .2, 1),
+    filter .55s cubic-bezier(.4, 0, .2, 1);
+}
+
+/* Default: A visível e nítida; B encolhida, desfocada e dessaturada (esperando) */
+.photo__img--a {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
+}
+.photo__img--b {
+  opacity: 0;
+  transform: scale(.94);
+  filter: blur(12px) saturate(.7);
+}
+
+/* Hover: A esmaece com leve zoom + blur; B emerge nítida e em escala normal */
+.photo:hover .photo__img--a {
+  opacity: 0;
+  transform: scale(1.06);
+  filter: blur(12px) saturate(.7);
+}
+.photo:hover .photo__img--b {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
+}
+
+/* Faixa lime/verde varrendo diagonalmente durante o hover */
+.photo__sweep {
+  display: block;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    color-mix(in oklab, var(--lime) 32%, transparent) 48%,
+    color-mix(in oklab, var(--green) 38%, transparent) 52%,
+    transparent 65%
+  );
+  mix-blend-mode: screen;
+  opacity: 0;
+  transform: translateX(-110%);
+  transition:
+    transform .9s cubic-bezier(.22, .61, .36, 1),
+    opacity .4s ease;
+}
+.photo:hover .photo__sweep {
+  opacity: .85;
+  transform: translateX(110%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo__img,
+  .photo__sweep { transition: none; }
+}
+.stack { display: flex; flex-direction: column }
+.hello { font-size: clamp(22px, 2.8vw, 30px); color: var(--text-soft); margin: 0 0 10px 0; font-weight: 600 }
+.name { margin: 0; font-weight: 900; font-size: clamp(58px, 9.6vw, 112px); line-height: .96; letter-spacing: -.012em }
+.name .break {
+  display: block;
+}
+
+/* "Iannini" — cada letra muda de cor pra lime e sobe levemente
+   no hover. Direto, sem efeitos extras. */
+.name .break .letter {
+  display: inline-block;
+  transition:
+    color .28s ease,
+    transform .4s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+.name .break .letter:hover {
+  color: var(--lime);
+  transform: translateY(-6px);
+}
+
+/* Nome — gradient verde→lime que ESCORRE por "Bernardo" no hover.
+   Um clarão branco no centro do gradient passa pela palavra como
+   um reflexo de luz atravessando. */
+.name .green {
+  background-image: linear-gradient(
+    90deg,
+    var(--green) 0%,
+    var(--lime) 25%,
+    color-mix(in oklab, var(--lime) 55%, #ffffff) 50%,
+    var(--lime) 75%,
+    var(--green) 100%
+  );
+  background-size: 240% 100%;
+  background-position: 0% 0%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 14px 30px var(--g-22));
+  transition: background-position 1.4s cubic-bezier(.65, 0, .35, 1);
+}
+
+.name:hover .green {
+  background-position: 100% 0%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .name .green,
+  .name .break::after { transition: none; }
+}
+.tagline { margin-top: 16px; font-family: "Instrument Serif", "Playfair Display", Georgia, serif; font-size: clamp(26px, 3.4vw, 36px); font-style: italic; font-weight: 400; letter-spacing: -.005em; color: var(--text-italic); display: inline-block; min-height: 1.2em; transition: color .4s, text-shadow .4s }
+.tagline.glow { color: var(--green); text-shadow: 0 0 12px var(--g-80), 0 0 24px rgba(34,197,94,.4) }
+/* #taglineText sempre usa background-clip: text com um gradient base
+   solid (currentColor → currentColor). Mantém o rendering mode CONSTANTE
+   entre todos os estados (scramble, sheen ativa, depois da sheen) —
+   nenhum flicker de "switch de modo" pode acontecer porque o modo é
+   sempre o mesmo. A sheen só troca o background-image. */
+#taglineText {
+  display: inline-block;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: text-shadow .45s ease;
+}
+
+/* Halo lime — ativo durante scramble E durante sheen pra ter
+   presença contínua. Quando ambas as classes saem, faz fade out
+   pela transition de .45s do #taglineText. */
+#taglineText.scrambling,
+#taglineText.sheen-done {
+  text-shadow: 0 0 14px color-mix(in oklab, var(--lime) 32%, transparent);
+}
+
+/* Acentos coloridos das letras embaralhadas — sobrescrevem o
+   -webkit-text-fill-color: transparent herdado pra usar SUA própria cor.
+   Assim a letra fica opaca verde/lime POR CIMA do gradient do pai. */
+#taglineText .scramble-accent--green,
+#taglineText .scramble-accent--lime {
+  -webkit-text-fill-color: currentColor;
+}
+#taglineText .scramble-accent--green { color: var(--green); }
+#taglineText .scramble-accent--lime  { color: var(--lime); }
+
+/* Sheen — APENAS troca o background-image pelo gradient com faixa.
+   Não muda o rendering mode, não mexe em text-fill-color ou
+   background-clip. Saída clean porque o estado base já é background-clip
+   também — gradient extras simplesmente são substituídos pelo solid. */
+#taglineText.sheen-done {
+  background-image: linear-gradient(
+    100deg,
+    currentColor 0%,
+    currentColor 42%,
+    color-mix(in oklab, var(--lime)  85%, #ffffff) 48%,
+    color-mix(in oklab, var(--green) 85%, #ffffff) 52%,
+    currentColor 58%,
+    currentColor 100%
+  );
+  background-size: 240% 100%;
+  animation: tagline-sheen-text .85s cubic-bezier(.22, .61, .36, 1) both;
+}
+
+@keyframes tagline-sheen-text {
+  from { background-position: 100% 0; }
+  to   { background-position: 0% 0;   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #taglineText.sheen-done { animation: none; }
+}
+.cursor { display: inline-block; width: 10px; margin-left: 2px; background: var(--cursor-bg); animation: blink 1s steps(1, end) infinite }
+@keyframes blink { 50% { background: transparent } }
+.rail { display: flex; flex-direction: column; gap: 14px; align-items: center }
+.sbtn { width: 39px; height: 39px; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 10px; background: var(--rail); box-shadow: var(--shadow-35); transition: .2s transform, .2s border-color }
+.sbtn:hover { transform: translateY(-2px); border-color: color-mix(in oklab, var(--green) 55%, var(--border)) }
+.sbtn svg { width: 18px; height: 18px; fill: var(--text-icon) }
+/* Scroll cue — container invisível, foco todo na arrow SVG */
+.scroll-cue {
+  grid-column: 1 / -1;
+  justify-self: center;
+  margin-top: -90px;
+  display: grid;
+  place-items: center;
+  padding: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition:
+    transform .25s cubic-bezier(.22,1,.32,1),
+    filter .3s ease;
+  animation: scroll-cue-bob 2.4s ease-in-out infinite;
+}
+
+.scroll-cue__chev {
+  width: 42px;
+  height: 36px;
+  display: block;
+  filter: drop-shadow(0 0 8px color-mix(in oklab, var(--lime) 35%, transparent));
+  transition: filter .3s ease;
+}
+
+/* Partículas decorativas — cintilam em tempos diferentes */
+.scroll-cue__particle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: scroll-cue-twinkle 2.6s ease-in-out infinite;
+}
+.scroll-cue__particle--l1 { animation-delay: 0s;   }
+.scroll-cue__particle--r1 { animation-delay: .2s;  }
+.scroll-cue__particle--l2 { animation-delay: .55s; }
+.scroll-cue__particle--r2 { animation-delay: .8s;  }
+
+.scroll-cue:hover {
+  transform: translateY(3px);
+}
+.scroll-cue:hover .scroll-cue__chev {
+  filter: drop-shadow(0 0 14px color-mix(in oklab, var(--lime) 65%, transparent));
+}
+
+.scroll-cue:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 6px;
+  border-radius: 12px;
+}
+
+@keyframes scroll-cue-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(6px); }
+}
+@keyframes scroll-cue-twinkle {
+  0%, 100% { opacity: .25; transform: scale(.85); }
+  50%      { opacity: 1;   transform: scale(1.15); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue,
+  .scroll-cue__particle { animation: none; }
+  .scroll-cue:hover { transform: none; }
+}
+
+/* =============================
+   3) ABOUT (TERMINAL + SIDE PANEL)
+   — sem glows próprios na section, usa o fundo natural do body
+   ============================= */
+.about-section {
+  --svc-color: #a3e635;
+  position: relative;
+  padding: clamp(56px, 7vw, 96px) 20px;
+}
+
+.about-wrap {
+  position: relative;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+/* Header da seção (igual o padrão de Services / Projects) */
+.about-head {
+  text-align: center;
+  margin: 0 auto 36px;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.about-head .kicker {
+  margin: 0;
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: .85rem; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--text-hint);
+  font-weight: 800;
+}
+.about-title {
+  margin: 0;
+  text-align: center;
+  border: 0;
+  font-size: clamp(32px, 5.5vw, 52px);
+  font-weight: 900;
+  letter-spacing: -.018em;
+  line-height: 1.06;
+  color: var(--text);
+}
+.about-title__line { display: block }
+/* Segunda linha em italic serif verde — vibe da contact-hero */
+.about-title__line--em {
+  font-family: "Instrument Serif", "Playfair Display", Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.08em;
+  letter-spacing: -.005em;
+  color: var(--green);
+  text-shadow: 0 0 22px color-mix(in oklab, var(--green) 30%, transparent);
+}
+.about-sub {
+  margin: 0;
+  text-align: center;
+  border: 0;
+  color: var(--muted);
+  font-size: clamp(13px, 1.5vw, 15px);
+  max-width: 560px;
+}
+
+/* Grid: terminal grande + painel lateral.
+   align-items: center centraliza o painel verticalmente em relação ao
+   terminal — preenchendo o "vazio" abaixo dos cards quando o terminal
+   é mais alto que a soma do painel. */
+.about-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(260px, 1fr);
+  gap: clamp(20px, 2.5vw, 32px);
+  align-items: center;
+  /* Perspective menor = profundidade mais dramática no tilt 3D */
+  perspective: 900px;
+}
+
+/* Custom props animáveis pro tilt do terminal — @property garante que
+   browser interpole valores de forma suave em transitions/var() changes. */
+@property --term-tilt-x { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+@property --term-tilt-y { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+@property --term-hover-y { syntax: '<length>'; initial-value: 0px; inherits: false; }
+
+/* === TERMINAL === */
+.term-wrap {
+  position: relative;
+  background: linear-gradient(180deg, var(--glass), var(--glass-2));
+  border: 1px solid var(--gline-42);
+  border-radius: 16px;
+  box-shadow: var(--shadow-45), inset 0 0 0 1px var(--w-02);
+  overflow: hidden;
+  transition:
+    transform .35s cubic-bezier(.22,.9,.32,1),
+    box-shadow .35s ease,
+    border-color .35s ease;
+}
+
+/* O .about-term combina LIFT no hover + TILT 3D que segue o mouse.
+   Os custom props (--term-hover-y, --term-tilt-x/y) são setados via
+   CSS (hover) e JS (rAF + lerp). O JS interpola o tilt frame a frame,
+   então NÃO animamos --term-tilt-x/y no CSS — evitaria double-animation
+   e jitter perto das bordas. */
+.about-term {
+  --term-hover-y: 0px;
+  --term-tilt-x: 0deg;
+  --term-tilt-y: 0deg;
+  transform-style: preserve-3d;
+  transform:
+    translateY(var(--term-hover-y))
+    rotateX(var(--term-tilt-x))
+    rotateY(var(--term-tilt-y));
+  transition:
+    --term-hover-y .35s cubic-bezier(.22,.9,.32,1),
+    box-shadow .35s ease,
+    border-color .35s ease;
+  will-change: transform;
+}
+.about-term:hover {
+  --term-hover-y: -2px;
+  border-color: var(--gline-42);
+  box-shadow:
+    0 22px 48px rgba(0, 0, 0, .55),
+    inset 0 1px 0 var(--w-08),
+    inset 0 0 0 1px var(--w-03);
+}
+
+/* fina linha de luz no topo do terminal — lime → branco → green */
+.about-term::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 18px; right: 18px;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--svc-color) 35%,
+    #fff 50%,
+    var(--green) 65%,
+    transparent 100%
+  );
+  opacity: .5;
+  pointer-events: none;
+  z-index: 3;
+  transition: opacity .35s ease;
+}
+.about-term:hover::after { opacity: .9 }
+
+/* scan-line sutil "vidro CRT" — só aparece no hover, dá vida */
+.about-term::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    transparent 0,
+    transparent 2px,
+    rgba(34, 197, 94, .025) 2px,
+    rgba(34, 197, 94, .025) 3px
+  );
+  opacity: 0;
+  transition: opacity .4s ease;
+  z-index: 2;
+}
+.about-term:hover::before { opacity: 1 }
+
+.term-bar {
+  position: relative;
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--gline-28);
+  background: linear-gradient(180deg, var(--w-06), var(--w-02));
+  z-index: 4;
+}
+.t-dot {
+  width: 10px; height: 10px; border-radius: 50%; border: none;
+  cursor: pointer; display: inline-block;
+  transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+}
+/* dots reagem ao mouse — escalam + ganham glow da própria cor */
+.t-dot:hover {
+  transform: scale(1.25);
+  filter: brightness(1.2);
+}
+.t-r { background: var(--win-red) }
+.t-y { background: var(--win-ylw) }
+.t-g { background: var(--win-grn) }
+.t-r:hover { box-shadow: 0 0 10px var(--win-red) }
+.t-y:hover { box-shadow: 0 0 10px var(--win-ylw) }
+.t-g:hover { box-shadow: 0 0 10px var(--win-grn) }
+
+.t-title {
+  margin-left: 8px;
+  color: var(--text-accent);
+  font-weight: 700; font-size: .8rem; opacity: .9;
+}
+.term-body {
+  position: relative;
+  z-index: 1;
+  padding: 16px 16px 20px;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px; line-height: 1.7;
+  color: var(--term-out);
+  white-space: pre-wrap;
+}
+/* prompt verde pulsa muito sutilmente — sensação de "vivo" */
+.about-term:hover .k-ps1-top,
+.about-term:hover .k-ps1-user,
+.about-term:hover .k-ps1-host,
+.about-term:hover .k-ps1-path,
+.about-term:hover .k-ps1-bottom,
+.about-term:hover .prompt {
+  animation: term-prompt-pulse 2.4s ease-in-out infinite;
+}
+@keyframes term-prompt-pulse {
+  0%, 100% { text-shadow: none }
+  50%      { text-shadow: 0 0 8px var(--green) }
+}
+
+/* Glow periódico no texto verde do terminal — a cada 10s, brilha por
+   ~2.8s com ramp longo e suave (ramp up → peak → ramp down) e descansa
+   ~7.2s. Peak discreto (single text-shadow, blur baixo) pra ficar clean
+   sem flash. Em hover, a regra acima sobrescreve por term-prompt-pulse. */
+.term-body .k-ps1-top,
+.term-body .k-ps1-user,
+.term-body .k-ps1-host,
+.term-body .k-ps1-path,
+.term-body .k-ps1-bottom,
+.term-body .prompt {
+  animation: term-prompt-glow-10s 10s ease-in-out infinite;
+}
+@keyframes term-prompt-glow-10s {
+  0%, 28%, 100% { text-shadow: none; }
+  8%            { text-shadow: 0 0 3px var(--g-30); }
+  14%           { text-shadow: 0 0 8px var(--g-50); }
+  22%           { text-shadow: 0 0 3px var(--g-30); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .term-body .k-ps1-top,
+  .term-body .k-ps1-user,
+  .term-body .k-ps1-host,
+  .term-body .k-ps1-path,
+  .term-body .k-ps1-bottom,
+  .term-body .prompt { animation: none; }
+}
+
+.prompt { color: var(--term-prompt) }
+.path   { color: var(--term-path) }
+.cmd    { color: var(--text-mint) }
+.out    { color: var(--term-out) }
+.term-msg { font-style: italic; opacity: .95; margin: 6px 0 }
+.term-msg.red    { color: var(--msg-red) }
+.term-msg.yellow { color: var(--msg-yellow) }
+.term-msg.green  { color: var(--msg-green) }
+/* Prompt estilo Kali em verde */
+.k-ps1-top, .k-ps1-user, .k-ps1-host, .k-ps1-path, .k-ps1-bottom { color: var(--green) }
+
+/* === PAINEL LATERAL === */
+.about-side {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.about-card {
+  position: relative;
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, var(--glass), var(--glass-2));
+  border: 1px solid var(--gline-35);
+  box-shadow: var(--shadow-38), inset 0 0 0 1px var(--w-02);
+  isolation: isolate;
+}
+/* leve glow no topo de cada card */
+.about-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 14px; right: 14px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--g-50), transparent);
+  opacity: .55;
+  pointer-events: none;
+}
+.about-card-label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: var(--text-hint);
+}
+.about-card-value {
+  margin: 6px 0 0;
+  color: var(--text);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.45;
+}
+.about-card-value--big {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -.005em;
+}
+
+/* Status (verde piscando) */
+.about-card--status {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 14px;
+}
+.about-card-text { display: flex; flex-direction: column; gap: 2px }
+.about-status-dot {
+  position: relative;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--svc-color);
+  box-shadow: 0 0 0 4px rgba(163, 230, 53, .18), 0 0 14px var(--svc-color);
+}
+.about-status-dot::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: var(--svc-color);
+  opacity: .6;
+  animation: about-pulse 1.8s ease-in-out infinite;
+}
+@keyframes about-pulse {
+  0%, 100% { transform: scale(1);   opacity: .55 }
+  50%      { transform: scale(1.8); opacity: 0   }
+}
+
+/* === BLOG CARD === */
+.about-card--blog {
+  padding: 18px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+}
+/* leve degrade lime no canto pra dar vida ao card */
+.about-card--blog::after {
+  content: "";
+  position: absolute;
+  inset: -1px -1px auto auto;
+  width: 60%;
+  height: 70%;
+  background: radial-gradient(ellipse at 100% 0%, var(--svc-15, rgba(163,230,53,.12)), transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+.about-card--blog > * { position: relative; z-index: 1 }
+
+.about-blog-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px;
+}
+.about-blog-tag {
+  display: inline-flex; align-items: center;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
+  color: #08120c;
+  background: var(--svc-color);
+  box-shadow: 0 0 12px rgba(163, 230, 53, .35);
+}
+
+.about-blog-desc {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.about-blog-btn {
+  margin-top: 6px;
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--gline-42);
+  background: var(--rail);
+  color: var(--text-hint);
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: .02em;
+  cursor: not-allowed;
+  opacity: .85;
+  transition: border-color .2s ease, color .2s ease, background .2s ease, transform .2s ease;
+}
+.about-blog-btn:not([disabled]) {
+  cursor: pointer;
+  color: var(--text);
+}
+.about-blog-btn:not([disabled]):hover {
+  border-color: color-mix(in oklab, var(--svc-color) 55%, var(--gline-42));
+  background: color-mix(in oklab, var(--rail) 80%, var(--svc-color) 6%);
+  transform: translateY(-1px);
+}
+.about-blog-btn svg { transition: transform .25s ease }
+.about-blog-btn:not([disabled]):hover svg { transform: translateX(2px) }
+
+/* === CV CARD === */
+.about-card--cv {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.about-cv-head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 12px;
+}
+.about-cv-icon {
+  display: grid; place-items: center;
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  background: var(--g-10);
+  color: var(--text-mint);
+  border: 1px solid var(--gline-38);
+}
+.about-cv-meta {
+  display: flex; align-items: center; gap: 8px;
+}
+.about-cv-tag {
+  font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  padding: 3px 7px;
+  border-radius: 6px;
+  background: var(--w-05);
+  border: 1px solid var(--w-10);
+  color: var(--text-hint);
+}
+.about-cv-btn {
+  margin-top: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  /* Gradiente verde→lime: --green (#22c55e) → --svc-color (#a3e635).
+     Texto escuro pra contraste sobre o fundo vibrante (mesmo padrão
+     do .proj-badge). O SVG herda via currentColor. */
+  border: 1px solid color-mix(in oklab, var(--svc-color) 55%, var(--green));
+  background: linear-gradient(135deg, var(--green) 0%, var(--svc-color) 100%);
+  color: #08120c;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: .02em;
+  text-decoration: none;
+  transition: filter .2s ease, border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+.about-cv-btn svg { transition: transform .25s ease }
+.about-cv-btn:hover {
+  /* Boost de brilho/saturação sem trocar o gradient — preserva o degradê */
+  filter: brightness(1.08) saturate(1.05);
+  border-color: var(--svc-color);
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 18px -4px var(--green),
+    0 0 28px -8px var(--svc-color);
+}
+.about-cv-btn:hover svg { transform: translateY(2px) }
+
+/* === LOCATION CARD === */
+.about-card--loc {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.about-loc-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text);
+  font-weight: 700;
+  font-size: 14px;
+}
+.about-loc-ico { color: var(--svc-color) }
+.about-loc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.about-loc-tag {
+  font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: var(--g-10);
+  border: 1px solid var(--gline-38);
+  color: var(--text-mint);
+}
+.about-loc-tag--alt {
+  background: var(--w-05);
+  border-color: var(--w-10);
+  color: var(--text-hint);
+}
+
+/* === RESPONSIVO === */
+@media (max-width: 880px) {
+  .about-layout {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+
+/* =============================
+   4) EXPERIENCE (ÍCONES + TIMELINE)
+   ============================= */
+.xp { text-align: center }
+.xp-title { margin: 0 0 6px 0; font-weight: 900; letter-spacing: -.012em; font-size: clamp(36px, 6.5vw, 56px); line-height: 1 }
+.xp-sub { margin: 0; color: var(--muted); font-size: clamp(12px, 2vw, 15px) }
+.xp-icons { display: flex; justify-content: center; align-items: center; gap: clamp(22px, 6vw, 48px); margin-top: clamp(16px, 3.5vw, 24px) }
+.xp-ico { width: clamp(52px, 9vw, 76px); height: clamp(52px, 9vw, 76px); display: grid; place-items: center; border: 1px solid var(--border); border-radius: 14px; background: var(--rail); box-shadow: var(--shadow-35); color: #fff; opacity: .95; transition: transform .2s ease, border-color .2s ease, color .25s ease, filter .25s ease; padding: 10px }
+.xp-ico svg { fill: currentColor; transition: color .2s ease, filter .2s ease, transform .2s ease }
+.xp-ico:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in oklab, var(--green) 55%, var(--border));
+  color: var(--green);
+  filter: drop-shadow(0 0 10px var(--g-35));
+}
+.xp-ico.active {
+  border-color: color-mix(in oklab, var(--green) 65%, var(--border));
+  color: var(--green);
+  filter: drop-shadow(0 0 10px var(--g-35));
+}
+@media (max-width:480px) { .xp-ico { width: 60px; height: 60px } }
+
+/* Timeline (trail vertical, ano de um lado / card do outro) */
+.work-timeline.section { padding-top: 6px }
+.work-timeline .tl {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.work-timeline .tl-line {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  /* Verde sólido em quase toda a extensão, com fade suave nos últimos ~15% */
+  background: linear-gradient(
+    180deg,
+    var(--green) 0%,
+    var(--green) 85%,
+    transparent 100%
+  );
+  border-radius: 2px;
+  /* drop-shadow respeita o alpha do bg, então o glow também esvanece no fim */
+  filter: drop-shadow(0 0 6px var(--g-50));
+}
+
+/* linha do trail: ano | (eixo) | card  — ou invertido */
+.work-timeline .tl-entry {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  column-gap: 64px;
+  min-height: 220px;
+}
+
+/* Sem wrappers .tl-side — .tl-year e .tl-card são grid items diretos
+   de .tl-entry. IMPORTANTE: grid-row: 1 em ambos força os dois pra
+   mesma linha. Sem isso, no --left (ano vem 1º com grid-column: 2),
+   o auto-flow joga o card pra linha 2 e ele desce. */
+
+/* card à direita / ano à esquerda (índice par) */
+.tl-entry--right > .tl-year { grid-column: 1; grid-row: 1; justify-self: end;   align-self: center }
+.tl-entry--right > .tl-card { grid-column: 2; grid-row: 1; justify-self: start; align-self: center }
+
+/* card à esquerda / ano à direita (índice ímpar) */
+.tl-entry--left  > .tl-year { grid-column: 2; grid-row: 1; justify-self: start; align-self: center }
+.tl-entry--left  > .tl-card { grid-column: 1; grid-row: 1; justify-self: end;   align-self: center }
+
+/* dot central no eixo */
+.work-timeline .dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 14px;
+  background: var(--green);
+  border: 3px solid var(--bg);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--g-70);
+  z-index: 2;
+}
+
+/* =============================
+   END-OF-TIMELINE — "continua" no final de cada track
+   Botão circular verde com ▶▶, salpicado de dots decorativos.
+   ============================= */
+.tl-end {
+  position: relative;
+  width: 100%;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+/* Botão principal — borda em gradient verde → lime via background-clip */
+.tl-end__btn {
+  position: relative;
+  z-index: 3;
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  /* dupla background: miolo opaco em padding-box + gradient na border-box */
+  background:
+    linear-gradient(var(--bg), var(--bg)) padding-box,
+    var(--gradient-lime) border-box;
+  display: grid;
+  place-items: center;
+  color: var(--green);
+  box-shadow:
+    0 0 24px var(--g-35),
+    0 0 16px rgba(163, 230, 53, .18),
+    inset 0 0 10px rgba(34,197,94,.06);
+  animation: tl-end-pulse 3s ease-in-out infinite;
+}
+
+/* Anel pontilhado lime girando ao redor */
+.tl-end__btn::before {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border-radius: 999px;
+  border: 1px dashed var(--lime);
+  opacity: .35;
+  pointer-events: none;
+  animation: tl-end-rotate 14s linear infinite;
+}
+
+.tl-end__icon { width: 22px; height: 22px; display: block; }
+.tl-end__chev--1 {
+  stroke: var(--green);
+}
+.tl-end__chev--2 {
+  /* segundo chevron em lime — detalhe colorido */
+  stroke: var(--lime);
+}
+
+/* Dots decorativos espalhados ao redor do botão */
+.tl-end__dot {
+  position: absolute;
+  border-radius: 999px;
+  z-index: 1;
+}
+/* anel oco verde — acima à esquerda */
+.tl-end__dot--a {
+  width: 11px; height: 11px;
+  top: 24%; left: calc(50% - 76px);
+  border: 1.5px solid var(--g-55);
+  animation: tl-end-float 4s ease-in-out infinite;
+}
+/* dot preenchido lime — abaixo à direita (accent) */
+.tl-end__dot--b {
+  width: 8px; height: 8px;
+  bottom: 26%; right: calc(50% - 78px);
+  background: var(--lime);
+  box-shadow: 0 0 10px rgba(163, 230, 53, .65);
+  animation: tl-end-float 4.5s ease-in-out infinite reverse;
+}
+/* dot médio translúcido verde — acima à direita */
+.tl-end__dot--c {
+  width: 14px; height: 14px;
+  top: 30%; right: calc(50% - 92px);
+  background: var(--g-22);
+  animation: tl-end-float 5s ease-in-out infinite;
+}
+/* anel pequeno em lime — abaixo à esquerda */
+.tl-end__dot--d {
+  width: 7px; height: 7px;
+  bottom: 32%; left: calc(50% - 94px);
+  border: 1.5px solid color-mix(in oklab, var(--lime) 70%, var(--green));
+  animation: tl-end-float 4.2s ease-in-out infinite reverse;
+}
+
+@keyframes tl-end-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 24px var(--g-35), 0 0 16px rgba(163,230,53,.18), inset 0 0 10px rgba(34,197,94,.06);
+  }
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 0 32px var(--g-50), 0 0 22px rgba(163,230,53,.28), inset 0 0 14px rgba(34,197,94,.12);
+  }
+}
+@keyframes tl-end-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+@keyframes tl-end-rotate {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tl-end__btn,
+  .tl-end__btn::before,
+  .tl-end__dot { animation: none; }
+}
+
+/* === YEAR CARD (caixinha lateral com início/fim) === */
+.tl-year {
+  background: linear-gradient(180deg, var(--glass), var(--glass-2));
+  border: 1.5px solid var(--green);
+  border-radius: 14px;
+  padding: 14px 20px;
+  min-width: 132px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  box-shadow: 0 0 0 1px var(--g-22), 0 12px 26px rgba(0,0,0,.35);
+  text-align: right;
+}
+.tl-entry--left .tl-year { text-align: left }
+
+.tl-year-row {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 0;
+  line-height: 1;
+}
+.tl-entry--right .tl-year-row { align-items: flex-end }
+.tl-entry--left  .tl-year-row { align-items: flex-start }
+
+.tl-year-row + .tl-year-row {
+  margin-top: 6px;
+  padding-top: 12px;
+  border-top: 1px solid var(--gline-28);
+}
+.tl-year-num {
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--text);
+  letter-spacing: .01em;
+}
+.tl-year-mon {
+  font-weight: 700;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: .16em;
+  margin-top: 6px;
+}
+/* "Current" / "IN PROGRESS" — destaca em lime (#a3e635) para qualquer
+   experiência em andamento. */
+.tl-year-row--current .tl-year-num {
+  color: #a3e635;
+  text-shadow: 0 0 12px rgba(163, 230, 53, .5);
+}
+.tl-year-row--current .tl-year-mon {
+  color: #a3e635;
+  opacity: .85;
+}
+
+/* === CONTENT CARD === */
+.tl-card.panel {
+  width: 100%;
+  max-width: 460px;
+  position: relative;
+  background: linear-gradient(180deg, var(--glass), var(--glass-2));
+  border: 1px solid var(--gline-42);
+  border-radius: 14px;
+  box-shadow: var(--shadow-38), inset 0 0 0 1px var(--w-03);
+  padding: 22px 24px;
+}
+
+.tl-card-title {
+  margin: 0 0 14px;
+  font-weight: 900;
+  font-size: clamp(18px, 2.4vw, 22px);
+  /* Mesmo gradient preset — green → lime */
+  background: var(--gradient-lime);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  line-height: 1.15;
+  text-align: center;
+  filter: drop-shadow(0 0 14px var(--g-35));
+}
+
+.tl-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.tl-org {
+  font-weight: 800;
+  color: var(--text);
+  font-size: 14px;
+  letter-spacing: .02em;
+}
+.tl-role {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: var(--green);
+  color: #0a1410;
+  font-weight: 800;
+  font-size: 10.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.tl-loc {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 14px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.tl-loc .loc-ico { color: var(--muted) }
+
+.tl-bullets {
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 0;
+}
+.tl-bullets li {
+  position: relative;
+  padding-left: 14px;
+  margin: 10px 0;
+  color: var(--text-soft);
+  font-size: 13.5px;
+  line-height: 1.55;
+  text-align: center;
+}
+.tl-bullets li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--green);
+  font-weight: 900;
+}
+
+.tl-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.btn-skill {
+  appearance: none;
+  border: 1px solid var(--gline-38);
+  background: rgba(20, 28, 22, .85);
+  color: var(--text-mint);
+  font-weight: 700;
+  font-size: 11.5px;
+  font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  padding: 5px 11px;
+  border-radius: 999px;
+  letter-spacing: .02em;
+  transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease, background .15s ease;
+  cursor: default;
+}
+.btn-skill:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in oklab, var(--green) 65%, var(--gline-38));
+  box-shadow: 0 0 10px var(--g-35);
+  background: var(--g-16);
+}
+.btn-skill:active { transform: translateY(0) }
+
+/* Botão de certificado dentro do card */
+.tl-card .cert-btn-wrap { margin: 8px 0 12px }
+@media (max-width: 520px) {
+  .tl-card .cert-btn-wrap { margin-top: 6px }
+  .tl-bullets { margin-top: 6px }
+}
+
+/* === MOBILE: empilha o trail à esquerda === */
+@media (max-width: 900px) {
+  .work-timeline .tl-line { left: 24px; transform: none }
+  .work-timeline .tl-entry {
+    grid-template-columns: 1fr;
+    grid-template-areas: "year" "card";
+    column-gap: 0;
+    row-gap: 14px;
+    padding-left: 56px;
+    min-height: auto;
+  }
+  /* Em mobile, ano em cima, card embaixo — ambos à esquerda */
+  .tl-entry--right > .tl-year,
+  .tl-entry--left  > .tl-year { grid-column: 1; grid-area: year; justify-self: start; align-self: start; text-align: left }
+  .tl-entry--right > .tl-card,
+  .tl-entry--left  > .tl-card { grid-column: 1; grid-area: card; justify-self: start; align-self: start }
+  .tl-entry--right .tl-year-row,
+  .tl-entry--left  .tl-year-row { align-items: flex-start }
+  .work-timeline .dot { left: 24px; top: 28px; transform: translateX(-50%) }
+  .tl-year { min-width: 0; padding: 10px 14px }
+  .tl-year-num { font-size: 18px }
+  .tl-card.panel { max-width: 100% }
+  .tl-card-title { text-align: left }
+  .tl-bullets li { text-align: left }
+}
+
+/* Toggle de modo (Professional / Academic / Courses) */
+.tl-top { max-width: 1120px; margin: 0 auto 16px; padding: 0 20px; display: flex; justify-content: center }
+.tl-mode { display: inline-block; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; color: #fff; font-size: clamp(22px, 3.6vw, 32px); opacity: 1; border: none; background: transparent; padding: 6px 12px; text-shadow: 0 0 14px rgba(0,0,0,.6) }
+.is-hidden { display: none !important }
+
+/* =============================
+   4.5) SERVICES
+   ============================= */
+.services-section {
+  padding-top: 24px;
+  /* Quebra o max-width: 1120px do <main> para dar mais largura aos cards */
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  max-width: 100vw;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 8px 28px 0;
+}
+@media (min-width: 720px)  { .services-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; } }
+@media (min-width: 1100px) { .services-grid { grid-template-columns: repeat(4, 1fr); gap: 28px; } }
+
+/* Cartão base — layout em fluxo, espaçamento em múltiplos de 4.
+   Cada card recebe sua --svc-color via JS (variações no eixo verde). */
+.service-card {
+  --svc-color: var(--green);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 24px 28px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, var(--glass), var(--glass-2));
+  border: 1px solid var(--gline-35);
+  box-shadow: var(--shadow-38), inset 0 0 0 1px var(--w-03);
+  overflow: hidden;
+  transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease;
+}
+
+/* Barra vertical na borda esquerda — aparece no hover */
+.service-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 16px;
+  bottom: 16px;
+  width: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    var(--svc-color) 28%,
+    var(--svc-color) 72%,
+    transparent 100%
+  );
+  opacity: 0;
+  transform: scaleY(.4);
+  transform-origin: 50% 50%;
+  transition: opacity .25s ease, transform .35s cubic-bezier(.22,1,.32,1);
+  pointer-events: none;
+}
+
+.service-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in oklab, var(--svc-color) 45%, var(--gline-35));
+  box-shadow:
+    0 18px 42px rgba(0,0,0,.45),
+    inset 0 0 0 1px var(--w-03);
+}
+.service-card:hover::before {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+/* Head inline: ícone esquerda, badge direita.
+   Badge fica no mesmo eixo direito da descrição (largura do conteúdo). */
+.service-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 18px;
+}
+
+.service-icon {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  color: var(--svc-color);
+  flex: 0 0 auto;
+}
+.service-icon svg { width: 26px; height: 26px; display: block; }
+
+.service-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 9px;
+  border-radius: 5px;
+  border: 1px solid color-mix(in oklab, var(--svc-color) 32%, var(--w-08));
+  background: color-mix(in oklab, var(--svc-color) 8%, transparent);
+  color: var(--svc-color);
+  font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  line-height: 1;
+  flex: 0 0 auto;
+}
+
+.service-title {
+  margin: 0 0 10px;
+  font-weight: 700;
+  font-size: 1.12rem;
+  letter-spacing: -.005em;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.service-desc {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: .88rem;
+  line-height: 1.55;
+}
+
+/* Lista de features — separada por divisor sutil, dá hierarquia */
+.service-features {
+  list-style: none;
+  margin: auto 0 0;
+  padding: 16px 0 0;
+  display: grid;
+  gap: 8px;
+  border-top: 1px solid var(--w-06);
+}
+.service-features li {
+  position: relative;
+  padding-left: 16px;
+  color: var(--text-accent);
+  font-size: .85rem;
+  line-height: 1.45;
+}
+.service-features li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .58em;
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--svc-color);
+}
+
+/* =============================
+   5) PROJECTS — FEATURED GRID
+   ============================= */
+.projects {
+  padding-top: 40px;
+  /* Quebra o max-width: 1120px do <main> pra dar mais largura aos cards */
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  max-width: 100vw;
+  /* Stacking context próprio pro fundo decorativo (::before, ::after) ficar
+     atrás do conteúdo sem vazar pra fora da section. */
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* Fundo da section de projetos — "Iridescent Mist".
+   Conceito: névoa ambiente multi-colorida que reusa a paleta do .proj-badge
+   (verde / teal / lime / emerald). Sem moldura, linhas, painéis ou
+   horizontes — só manchas de cor blurradas em posições assimétricas que
+   desaparecem completamente nas extremidades via mask vertical agressiva.
+   Cards "flutuam" sobre um halo iridescente que dialoga com os badges:
+   badge = orbe pequeno colorido, fundo = orbe difuso da mesma paleta.
+   Drift lento (40s) dá vida sem deslocar o eixo de leitura. */
+.projects::before {
+  content: "";
+  position: absolute;
+  /* Overscan generoso pra o drift nunca expor borda */
+  inset: -18% -8%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    /* Verde principal — pool maior à esquerda-alta */
+    radial-gradient(48% 38% at 18% 30%, var(--g-15), transparent 62%),
+    /* Lime — canto superior-direito */
+    radial-gradient(46% 36% at 82% 36%, rgba(163,230,53,.10), transparent 64%),
+    /* Teal — banda central inferior, mais espalhada */
+    radial-gradient(58% 46% at 50% 72%, rgba(45,212,191,.07), transparent 66%),
+    /* Emerald — canto inferior-esquerdo, mais discreto */
+    radial-gradient(40% 30% at 22% 80%, rgba(16,185,129,.09), transparent 62%),
+    /* Verde acessório — canto inferior-direito */
+    radial-gradient(38% 28% at 78% 82%, var(--g-10), transparent 62%);
+  /* Mask vertical agressiva: fade total nas extremidades, com transição
+     suave (em vez de cliff). Garante zero linha visível entre vizinhas. */
+  -webkit-mask: linear-gradient(180deg,
+    transparent 0%,
+    rgba(0,0,0,.25) 10%,
+    #000 32%,
+    #000 68%,
+    rgba(0,0,0,.25) 90%,
+    transparent 100%);
+          mask: linear-gradient(180deg,
+    transparent 0%,
+    rgba(0,0,0,.25) 10%,
+    #000 32%,
+    #000 68%,
+    rgba(0,0,0,.25) 90%,
+    transparent 100%);
+  /* Blur derrete tudo numa única "mist" — sem bordas duras de orbe */
+  filter: blur(28px);
+  animation: proj-mist-drift 40s ease-in-out infinite alternate;
+}
+
+@keyframes proj-mist-drift {
+  0%   { transform: translate3d(-18px, -10px, 0) scale(1);     }
+  100% { transform: translate3d( 20px,  14px, 0) scale(1.045); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .projects::before { animation: none; }
+}
+
+/* Garante que o conteúdo da section fique acima do fundo decorativo */
+.projects .section-head,
+.projects .proj-grid { position: relative; z-index: 1; }
+
+.section-head { max-width: 1180px; margin: 0 auto 16px; padding: 0 20px }
+.section-title { margin: 0 0 6px 0; font-weight: 900; letter-spacing: -.012em; font-size: clamp(36px, 6.5vw, 56px); line-height: 1; text-align: center; border-top: 40px solid transparent }
+.section-sub { margin: 0; color: var(--muted); font-size: clamp(12px, 2vw, 15px); text-align: center; border-bottom: 80px solid transparent; border-top: 5px solid transparent }
+
+/* Grid: flexível para qualquer quantidade de cards */
+.proj-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 44px 24px 8px; /* topo extra reservado para o badge flutuante */
+}
+@media (min-width: 720px) { .proj-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1000px) { .proj-grid { grid-template-columns: repeat(3, 1fr); gap: 26px; } }
+
+/* Cartão base — formato levemente retangular (mais alto que largo) */
+.proj-card {
+  position: relative;
+  aspect-ratio: 5 / 6;
+  border-radius: 22px;
+  background: linear-gradient(180deg, var(--glass), var(--glass-2));
+  border: 1px solid transparent;
+  box-shadow: var(--shadow-38), inset 0 0 0 1px var(--w-03);
+  cursor: pointer;
+  outline: none;
+  /* overflow:visible — necessário para o badge "sair" do topo do card.
+     A imagem é recortada pelo wrapper interno .proj-media. */
+  transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+}
+
+.proj-card:focus-visible {
+  box-shadow: 0 0 0 3px var(--g-45), var(--shadow-38);
+}
+
+/* Centraliza o último item sozinho no fim de uma linha de 3 colunas
+   (cobre tanto um project card quanto o bloco do CTA quando ficar isolado). */
+@media (min-width: 1000px) {
+  .proj-grid > :last-child:nth-child(3n+1) { grid-column: 2; }
+}
+
+/* Wrapper que segura a imagem e o véu (clip via overflow:hidden) */
+.proj-media {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  isolation: isolate;
+  z-index: 0;
+}
+
+/* Imagem de capa */
+.proj-cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  background: var(--rail);
+  /* Transition alongada + easing suave pra o zoom não acelerar/parar
+     brusco — sensação clean, "respirando" em vez de "estalando". */
+  transition: transform .85s cubic-bezier(.22,.9,.32,1), filter .55s ease;
+}
+
+/* Fallback elegante quando não há imagem definida (placeholders) */
+.proj-cover--placeholder {
+  background:
+    radial-gradient(circle at 30% 25%, var(--g-30), transparent 55%),
+    radial-gradient(circle at 80% 80%, rgba(34,197,94,.10), transparent 60%),
+    linear-gradient(135deg, var(--rail), #14201a 60%, #0a120e);
+}
+
+/* Véu escuro p/ leitura do título/desc — só gradient + mask, sem blur.
+   Imagem fica nítida, o efeito vidro foi removido pra um look mais clean. */
+.proj-veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg,
+    rgba(0, 0, 0, 0) 50%,
+    rgba(0, 0, 0, .92) 100%
+  );
+  -webkit-mask-image: linear-gradient(180deg, transparent 50%, #000 100%);
+          mask-image: linear-gradient(180deg, transparent 50%, #000 100%);
+  transition: background .4s cubic-bezier(.22,.9,.32,1);
+}
+
+/* Conteúdo (título + desc) */
+.proj-content {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 80px;
+  z-index: 2;
+  text-align: center;
+  color: #fff;
+  pointer-events: none;
+}
+.proj-title {
+  margin: 0 0 8px;
+  font-weight: 800;
+  font-size: clamp(.92rem, 1.25vw, 1.05rem);
+  letter-spacing: .01em;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,.55);
+  /* Smooth ease-out — sem overshoot. Movimento calmo. */
+  transition: transform .5s cubic-bezier(.22,.9,.32,1);
+}
+.proj-desc {
+  margin: 0 auto;
+  max-width: 90%;
+  font-size: clamp(.7rem, .9vw, .76rem);
+  line-height: 1.45;
+  color: rgba(255,255,255,.86);
+  text-shadow: 0 1px 2px rgba(0,0,0,.6);
+  /* Descrição começa escondida e levemente deslocada pra baixo */
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity .42s ease,
+    transform .5s cubic-bezier(.22,.9,.32,1);
+}
+
+/* Hover do card — título sobe levemente, descrição emerge de baixo */
+.proj-card:hover .proj-title,
+.proj-card.hover-in .proj-title {
+  transform: translateY(-6px);
+}
+.proj-card:hover .proj-desc,
+.proj-card.hover-in .proj-desc {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proj-title,
+  .proj-desc { transition: none; transform: none; }
+  .proj-desc { opacity: 1; }
+}
+
+/* Botão circular de seta (canto inferior direito).
+   Hover verde só no próprio botão. Preenchimento líquido sobe
+   pelo fundo via ::before, easing limpo (sem overshoot). */
+.proj-arrow {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 3;
+  width: 54px;
+  height: 54px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(255, 255, 255, .8);
+  background: rgba(0,0,0,.32);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+  overflow: hidden;
+  transition: color .28s ease, border-color .28s ease;
+}
+.proj-arrow:hover {
+  border-color: var(--green);
+}
+.proj-arrow svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+  position: relative;
+  z-index: 2;
+  /* Rotação suave acionada pelo hover do card. Mesma transition cobre
+     entrada e saída — animação simétrica nos dois sentidos. */
+  transition: transform .45s cubic-bezier(.4, 0, .2, 1);
+}
+
+/* Cards comuns: setinha gira sutilmente (-45°) no hover do card —
+   movimento pequeno, sem virar meia volta. */
+.proj-card:not(.proj-card--featured):hover .proj-arrow svg,
+.proj-card:not(.proj-card--featured).hover-in .proj-arrow svg {
+  transform: rotate(-45deg);
+}
+
+/* Card destacado: a setinha do BADGE (no topo) vai de ↙ → ↓
+   (reto pra baixo) no hover do card. */
+.proj-badge svg {
+  transition: transform .45s cubic-bezier(.4, 0, .2, 1);
+}
+.proj-card--featured:hover .proj-badge svg,
+.proj-card--featured.hover-in .proj-badge svg {
+  transform: rotate(-45deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proj-arrow svg,
+  .proj-badge svg { transition: none; }
+  .proj-card:hover .proj-arrow svg,
+  .proj-card.hover-in .proj-arrow svg,
+  .proj-card:hover .proj-badge svg,
+  .proj-card.hover-in .proj-badge svg { transform: none; }
+}
+/* Preenchimento clean: o ::before é um retângulo já recortado em círculo
+   pelo overflow:hidden do parent. Slide-up reto (sem morph de blob). */
+.proj-arrow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--green) 0%, var(--green-2) 100%);
+  transform: translateY(101%);
+  transition: transform .34s cubic-bezier(.22,.9,.32,1);
+  z-index: 1;
+  pointer-events: none;
+}
+.proj-arrow:hover { color: #08120c; }
+.proj-arrow:hover::before {
+  transform: translateY(0);
+}
+
+/* Cards NÃO destacados: preenchimento do hover do arrow usa o gradient lime. */
+.proj-card:not(.proj-card--featured) .proj-arrow::before {
+  background: var(--gradient-lime);
+}
+.proj-card:not(.proj-card--featured) .proj-arrow:hover {
+  border-color: var(--lime);
+}
+
+/* Card destacado: sem arrow no canto (o badge no topo já é o indicador). */
+.proj-card--featured .proj-arrow {
+  display: none;
+}
+.proj-arrow:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+}
+
+/* Badge "entalhe": metade pra fora, metade dentro, com borda na cor do
+   fundo da página criando o efeito de recorte circular. */
+.proj-badge {
+  --badge-size: 65px;
+  --badge-hover: #ffffff;
+  --badge-hover-2: #e8eef0;
+  position: absolute;
+  top: calc(var(--badge-size) / -2);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  width: var(--badge-size);
+  height: var(--badge-size);
+  border-radius: 999px;
+  /* Mistura estática das 4 cores via dois radial-gradients sobrepostos.
+     Sem rotação — efeito "orbe" colorido suave. */
+  background:
+    radial-gradient(circle at 30% 25%, var(--green) 0%, transparent 55%),
+    radial-gradient(circle at 75% 30%, #2dd4bf 0%, transparent 55%),
+    radial-gradient(circle at 70% 80%, #a3e635 0%, transparent 60%),
+    radial-gradient(circle at 25% 75%, #10b981 0%, transparent 60%),
+    var(--green);
+  color: #08120c;
+  display: grid;
+  place-items: center;
+  border: 7px solid var(--projects-bg);
+  overflow: hidden;
+  isolation: isolate;
+  cursor: pointer;
+  /* Sem animação contínua — o badge fica estático, mais limpo.
+     Hover continua tendo o liquid fill + scale do SVG abaixo. */
+}
+
+/* Liquid fill — preenchimento lime sobe de baixo pra cima quando o mouse
+   está em cima do badge (escopo local, não no hover do card). */
+.proj-badge::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--badge-hover), var(--badge-hover-2));
+  clip-path: ellipse(65% 0% at 50% 110%);
+  transition: clip-path .4s cubic-bezier(.65, .05, .2, 1);
+  pointer-events: none;
+  z-index: 0;
+}
+.proj-badge:hover::before {
+  clip-path: ellipse(85% 115% at 50% 110%);
+}
+
+.proj-badge svg {
+  position: relative;
+  z-index: 1;
+  width: 24px;
+  height: 24px;
+  display: block;
+  transition: transform .25s cubic-bezier(.4, 0, .2, 1);
+}
+.proj-badge:hover svg {
+  transform: scale(1.04);
+}
+
+/* Halo verde sutil no card destacado */
+.proj-card--featured {
+  border-color: transparent;
+  box-shadow:
+    var(--shadow-38),
+    0 16px 44px rgba(34,197,94,.12);
+}
+
+/* Borda do destacado: anel gradient estático (verde → teal → lime → emerald).
+   A rotação foi removida — fica mais clean, sem motion infinito competindo
+   com o resto da página. Mesma técnica conic + mask-composite. */
+.proj-card--featured::before {
+  content: "";
+  position: absolute;
+  inset: -1.5px;
+  border-radius: calc(22px + 1.5px);
+  padding: 1.5px;
+  background: conic-gradient(
+    from 135deg,
+    var(--green) 0%,
+    #2dd4bf 25%,
+    #a3e635 50%,
+    #10b981 75%,
+    var(--green) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: .75;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Hover (desktop) — border-color NÃO muda no hover: cards comuns mantêm a
+   borda branca e o destacado mantém o verde via .proj-card--featured. */
+@media (hover: hover) and (pointer: fine) {
+  .proj-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 32px rgba(0,0,0,.42), inset 0 0 0 1px var(--w-03);
+  }
+  .proj-card:hover .proj-cover {
+    transform: scale(1.02);
+    filter: brightness(.92);
+  }
+  .proj-card:hover .proj-veil {
+    /* Só intensifica o gradient — sem blur, mantém a imagem nítida. */
+    background: linear-gradient(180deg,
+      rgba(0, 0, 0, 0) 42%,
+      rgba(0, 0, 0, .96) 100%
+    );
+  }
+}
+
+/* Touch: mesmo efeito via classe (aplicada pelo JS), exceto o arrow */
+.proj-card.hover-in {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(0,0,0,.42), inset 0 0 0 1px var(--w-03);
+}
+.proj-card.hover-in .proj-cover { transform: scale(1.02); filter: brightness(.92); }
+.proj-card.hover-in .proj-veil {
+  background: linear-gradient(180deg,
+    rgba(0, 0, 0, 0) 42%,
+    rgba(0, 0, 0, .96) 100%
+  );
+}
+
+/* =============================
+   5b) PROJECTS — CTA "Mais no meu repositório"
+   (sem borda de card — apenas conteúdo centralizado na célula da grid)
+   ============================= */
+.proj-cta {
+  display: grid;
+  grid-template-rows: auto auto auto;
+  align-content: center;
+  justify-items: center;
+  gap: 18px;
+  padding: 24px 20px;
+  text-align: center;
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+.proj-cta__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  border: 1.5px solid var(--gline-42);
+  color: var(--text);
+  display: grid;
+  place-items: center;
+}
+.proj-cta__icon svg { width: 28px; height: 28px; display: block; }
+
+.proj-cta__title {
+  margin: 0;
+  font-weight: 900;
+  letter-spacing: .01em;
+  line-height: 1.05;
+  font-size: clamp(20px, 2.4vw, 28px);
+  color: var(--text);
+  text-transform: uppercase;
+  max-width: 14ch;
+}
+
+.proj-cta__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 20px;
+  border-radius: 12px;
+  border: 1px solid var(--gline-42);
+  background: transparent;
+  color: var(--text);
+  font-weight: 700;
+  letter-spacing: .01em;
+  text-decoration: none;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease, color .18s ease;
+}
+.proj-cta__btn svg { width: 16px; height: 16px; }
+.proj-cta__btn:hover {
+  transform: translateY(-1px);
+  border-color: #ffffff;
+  background: #ffffff;
+  color: #08120c;
+  box-shadow: 0 0 22px rgba(255, 255, 255, .35);
+}
+
+
+/* =============================
+   6) SKILLS (SEÇÃO + TILES)
+   ============================= */
+/* — A) Grade vertical (secao-skills) — */
+.secao-skills{ padding: clamp(48px, 8vw, 96px) 0; color: var(--cor-texto, #fff) }
+.secao-skills .secao-titulo{ margin: 0 0 6px 0; font-weight: 900; letter-spacing: -.012em; font-size: clamp(36px, 6.5vw, 56px); line-height: 1; text-align: center }
+.secao-skills .secao-subtitulo{ margin: 0; color: var(--muted); font-size: clamp(12px, 2vw, 15px); text-align: center; padding-bottom: 50px }
+.skills-grid{ display:grid; grid-template-columns: repeat(4, 1fr); gap: clamp(16px, 3vw, 32px); align-items: start }
+.skill-col{ position: relative; display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: start; padding: clamp(12px, 2vw, 16px); border: none; background: transparent; box-shadow: none }
+.skill-axis{ writing-mode: vertical-rl; transform: rotate(180deg); font-weight: 700; letter-spacing: .4px; color: var(--cor-texto-suave, #ffffffb3); user-select: none; white-space: nowrap; font-size: clamp(16px, 2.2vw, 22px) }
+.skill-icons{ list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; justify-items: center }
+.skill-icons li{ width: clamp(64px, 10vw, 86px); aspect-ratio: 1/1; border-radius: 999px; display: grid; place-items: center; transition: transform .18s ease }
+.skill-icons img{ filter: none !important; width: 70%; height: 70%; object-fit: contain }
+/* Claude — força o ícone em branco, sobrescrevendo o filter: none acima */
+.skill-icons img[src*="claude"]{ filter: brightness(0) invert(1) !important; }
+.skill-icons li:hover{ transform: translateY(-3px) scale(1.5); transition: .3s }
+@media (max-width:980px){ .skills-grid{ grid-template-columns: repeat(2, 1fr) } }
+@media (max-width:480px){ .skills-grid{ grid-template-columns: 1fr } .skill-col{ grid-template-columns: 1fr; text-align: center } .skill-axis{ writing-mode: initial; transform: none; order: -1; margin-bottom: 8px } .skill-icons{ grid-template-columns: repeat(4, 1fr); gap: 12px } .skill-icons li{ width: 64px } }
+@media (max-width:380px){ .skill-icons{ grid-template-columns: repeat(4, minmax(0, 1fr)) } .skill-icons li{ width: 56px } }
+.secao-skills .skill-icons li:active{ transform: translateY(-2px) scale(1.04) }
+@media (max-width:480px){ .secao-skills .skill-icons li:hover{ transform: translateY(-4px) scale(1.06) } }
+
+/* — B) Tiles com faixa revelada (skills-tiles) — */
+.skills-tiles{ padding: clamp(48px, 8vw, 96px) 20px }
+.skills-tiles .tiles-wrap.squares{ max-width: 880px; margin: 0 auto; display: grid; gap: 40px; justify-items: center }
+.skills-tiles .tile{ --reveal-w: clamp(620px, 58vw, 880px); position: relative; border-radius: 14px; transition: border-color .28s ease, box-shadow .28s ease, background .28s ease; overflow: visible }
+.skills-tiles .tile-square{ --sq: 120px; --shift: 260px; --slideX: 0; --liftY: 0; --liftS: 1; width: var(--sq); height: var(--sq); display: grid; place-items: center; isolation: isolate; cursor: pointer; background: transparent; border: none; box-shadow: none; transform: translateX(var(--slideX)) translateY(var(--liftY)) scale(var(--liftS)); transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease }
+.skills-tiles .tile-ico{ position: relative; width: 100%; height: 100%; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 12px; background: var(--rail); box-shadow: 0 12px 28px rgba(0,0,0,.35); overflow: hidden; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, filter .18s ease }
+.skills-tiles .tile-square::before{ content:""; position:absolute; inset:-6px; border-radius: 16px; background: radial-gradient(40% 40% at 50% 50%, rgba(34,197,94,.28), transparent 60%); opacity: 0; transform: scale(.9); filter: blur(10px); transition: opacity .20s ease, transform .20s ease, filter .20s ease; z-index: -1 }
+.skills-tiles .tile-ico::after{ content:""; position:absolute; inset:0; border-radius: 12px; background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.28) 50%, transparent 65%); mix-blend-mode: screen; transform: translateX(-140%); opacity: 0; transition: transform .55s ease, opacity .25s ease; pointer-events:none }
+.skills-tiles .tile-ico img, .skills-tiles .tile-ico svg{ width: 68%; height: 68%; object-fit: contain; display: block; transition: transform .18s ease, filter .18s ease }
+.skills-tiles .tile-square:hover{ --liftY: -3px; --liftS: 1.03; border-color: color-mix(in oklab, var(--green) 55%, var(--border)); box-shadow: 0 16px 40px rgba(0,0,0,.38), inset 0 0 0 1px rgba(255,255,255,.02) }
+.skills-tiles .tile-square:hover::before{ opacity: 1; transform: scale(1.08); filter: blur(16px) }
+.skills-tiles .tile-square:hover .tile-ico{ border-color: color-mix(in oklab, var(--green) 55%, var(--border)); box-shadow: 0 18px 44px rgba(0,0,0,.42) }
+.skills-tiles .tile-square:hover .tile-ico::after{ transform: translateX(140%); opacity: .9 }
+.skills-tiles .tile-square:hover .tile-ico img{ transform: scale(1.08) rotate(-2deg); filter: drop-shadow(0 0 8px rgba(34,197,94,.35)) }
+.skills-tiles .tile-square::after{ content: attr(data-label); position: absolute; left: 50%; bottom: -34px; transform: translateX(-50%) translateY(6px); padding: 6px 10px; font-weight: 800; font-size: 12px; letter-spacing: .02em; white-space: nowrap; color: var(--text); background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(8px); border-radius: 10px; box-shadow: 0 8px 18px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.06); pointer-events: none; opacity: 0; z-index: 10; transition: opacity .18s ease, transform .18s ease }
+.skills-tiles .tile-square:hover::after{ opacity: 1; transform: translateX(-50%) translateY(0) }
+.skills-tiles .tile-reveal{ position: absolute; top: 0; bottom: 0; left: calc(100% + 12px); width: var(--reveal-w); display: grid; align-content: center; justify-items: start; background: linear-gradient(180deg, var(--glass), var(--glass-2)); border: 1px solid rgba(65,110,84,.35); border-radius: 14px; padding: 12px 14px; box-shadow: 0 20px 50px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.02); opacity: 0; transform: translateX(12px); pointer-events: none; transition: opacity .28s ease, transform .28s ease, border-color .28s ease, background .28s ease }
+.skills-tiles .reveal-grid{ display: grid; grid-auto-flow: column; grid-auto-columns: max-content; gap: 12px; align-items: center }
+.skills-tiles .reveal-grid li{ width: 52px; aspect-ratio: 1/1; border-radius: 12px; display: grid; place-items: center; background: var(--rail); border: 1px solid var(--border); box-shadow: 0 12px 28px rgba(0,0,0,.35); transition: transform .2s ease, border-color .2s ease, filter .2s ease; position: relative }
+.skills-tiles .reveal-grid li:hover{ transform: translateY(-3px); border-color: color-mix(in oklab, var(--green) 55%, var(--border)); filter: drop-shadow(0 0 10px rgba(34,197,94,.35)) }
+.skills-tiles .reveal-grid img{ width: 70%; height: 70%; object-fit: contain }
+.skills-tiles .reveal-grid li::after{ content: attr(data-label); position: absolute; left: 50%; top: -32px; transform: translate(-50%, 6px); padding: 6px 8px; font-weight: 800; font-size: 12px; letter-spacing: .02em; white-space: nowrap; background: var(--w-05); border: 1px solid var(--w-10); backdrop-filter: blur(8px); border-radius: 8px; box-shadow: 0 8px 18px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.04); color: var(--text); opacity: 0; pointer-events: none; z-index: 20; transition: opacity .18s ease, transform .18s ease }
+.skills-tiles .reveal-grid li:hover::after{ opacity: 1; transform: translate(-50%, 0) }
+.skills-tiles .tile-square.open{ --slideX: calc(-1 * var(--shift)); box-shadow: 0 18px 44px rgba(0,0,0,.42); border-color: color-mix(in oklab, var(--green) 45%, var(--border)) }
+.skills-tiles .tile-square.open .tile-reveal{ opacity: 1; transform: translateX(0); pointer-events: auto }
+@media (max-width:980px){ .skills-tiles .tiles-wrap.squares{ max-width: 860px } .skills-tiles .tile-square{ --shift: 220px } }
+@media (max-width:760px){ .skills-tiles .tile-square{ --shift: 0 } .skills-tiles .tile-reveal{ left: 0; top: calc(var(--sq) + 10px); bottom: auto; width: 100%; border-radius: 12px; transform: translateY(8px) } .skills-tiles .tile-square.open .tile-reveal{ transform: none } .skills-tiles .tile-square::after{ display:none } .skills-tiles .reveal-grid li::after{ display:none } }
+@media (prefers-reduced-motion: reduce){ .skills-tiles .tile-ico, .skills-tiles .tile-ico::after, .skills-tiles .tile-square::before, .skills-tiles .tile-reveal, .skills-tiles .reveal-grid li, .skills-tiles .tile-square{ transition: none !important } }
+
+/* =============================
+   7) CONTACT (AURORA HERO + MODAL)
+   ============================= */
+.panel{ background: linear-gradient(180deg, var(--glass), var(--glass-2)); border: 1px solid var(--gline-35); border-radius: 16px; box-shadow: var(--shadow-45), inset 0 0 0 1px var(--w-02) }
+
+/* === HERO DE CONTATO ============================================
+   --svc-color: lime brilhante. Mistura com --green padrão e branco
+   no horizonte para criar uma atmosfera contínua, sem bordas duras.
+   ================================================================ */
+.contact-hero {
+  --svc-color: #a3e635;
+  /* posição do horizonte em relação à base da seção */
+  --aurora-offset: clamp(110px, 12vw, 170px);
+  /* quanto o glow colorido sangra ABAIXO do horizonte (atmospheric scatter) */
+  --aurora-bleed: 90px;
+  /* tamanho do fade total no rodapé da seção */
+  --hero-fade: 340px;
+
+  position: relative;
+  /* Quebra o max-width do <main> para ocupar o viewport inteiro */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  min-height: clamp(560px, 74vh, 720px);
+  display: grid;
+  place-items: center;
+  padding: clamp(56px, 7vw, 90px) 20px calc(var(--aurora-offset) + 100px);
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--bg);
+  scroll-margin-top: calc(var(--nav-h) + 24px);
+}
+
+/* Overlay de fade no rodapé: gradualmente cobre TUDO (aurora + bg)
+   até virar var(--bg) sólido na base, blendando com o body sem corte.
+   z-index: 10 garante que fica acima das auroras (max z-index 3). */
+.contact-hero::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 0;
+  height: var(--hero-fade);
+  background: linear-gradient(
+    to bottom,
+    rgba(6, 8, 7, 0)    0%,
+    rgba(6, 8, 7, 0.35) 28%,
+    rgba(6, 8, 7, 0.75) 55%,
+    rgba(6, 8, 7, 0.95) 78%,
+    rgba(6, 8, 7, 1)    100%
+  );
+  pointer-events: none;
+  z-index: 10;
+}
+.contact-hero__inner {
+  position: relative;
+  z-index: 3;
+  max-width: 880px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.contact-hero__kicker {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin: 0;
+  padding: 6px 12px;
+  font-size: 12px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--text-hint);
+  background: var(--w-05);
+  border: 1px solid var(--w-10);
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+}
+.contact-hero__kicker::before {
+  content: ""; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 10px var(--green);
+}
+.contact-hero__title {
+  margin: 4px 0 0;
+  font-family: inherit;
+  font-weight: 900;
+  font-size: clamp(34px, 6vw, 64px);
+  line-height: 1.06;
+  letter-spacing: -.018em;
+  color: var(--text);
+}
+.contact-hero__line { display: block }
+/* só a linha em destaque ganha a fonte com serifa */
+.contact-hero__line--em {
+  font-family: "Instrument Serif", "Playfair Display", Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.08em;
+  letter-spacing: -.005em;
+  color: var(--green);
+  text-shadow: 0 0 22px color-mix(in oklab, var(--green) 30%, transparent);
+}
+.contact-hero__sub {
+  margin: 6px 0 0;
+  max-width: 520px;
+  color: var(--muted);
+  font-size: clamp(13px, 1.4vw, 15px);
+  line-height: 1.55;
+}
+
+/* === CTA ========================================================
+   Setinha sempre visível à direita. No hover, o botão fica branco
+   da direita pra esquerda, o texto some, e a setinha cresce e
+   centraliza no botão.
+   ================================================================ */
+.contact-hero__cta {
+  --cta-h: 54px;
+  --arrow-d: calc(var(--cta-h) - 12px);
+  appearance: none;
+  position: relative;
+  display: inline-flex; align-items: center;
+  height: var(--cta-h);
+  padding: 0 calc(var(--arrow-d) + 18px) 0 24px;
+  margin-top: 14px;
+  border-radius: 999px;
+  border: 1px solid var(--gline-42);
+  background: var(--rail);
+  color: var(--text);
+  font-family: inherit; font-size: 15px; font-weight: 700; letter-spacing: .01em;
+  cursor: pointer;
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow: 0 14px 40px rgba(0,0,0,.5), inset 0 0 0 1px var(--w-03);
+  transition: border-color .35s ease, box-shadow .35s ease;
+}
+/* fundo branco que sobe pela direita */
+.contact-hero__cta::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: var(--arrow-d);
+  height: var(--arrow-d);
+  border-radius: 999px;
+  background: #fff;
+  z-index: 1;
+  transition: width .32s cubic-bezier(.4,0,.2,1);
+}
+.contact-hero__cta-label {
+  position: relative;
+  z-index: 2;
+  transition: opacity .18s ease, transform .25s cubic-bezier(.4,0,.2,1);
+}
+/* setinha sempre visível, sobreposta ao branco */
+.contact-hero__cta-arrow {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: var(--arrow-d);
+  height: var(--arrow-d);
+  border-radius: 999px;
+  background: transparent;
+  color: #0a0d0b;
+  display: grid; place-items: center;
+  z-index: 3;
+  transition: right .32s cubic-bezier(.4,0,.2,1);
+}
+.contact-hero__cta-arrow svg {
+  transition: transform .28s cubic-bezier(.4,0,.2,1);
+}
+
+.contact-hero__cta:hover {
+  border-color: rgba(255,255,255,.45);
+  box-shadow: 0 18px 44px rgba(0,0,0,.55), 0 0 24px rgba(255,255,255,.18);
+}
+.contact-hero__cta:hover::before {
+  width: calc(100% - 12px);
+}
+.contact-hero__cta:hover .contact-hero__cta-label {
+  opacity: 0;
+  transform: translateX(-12px);
+}
+.contact-hero__cta:hover .contact-hero__cta-arrow {
+  right: calc(50% - var(--arrow-d) / 2);
+}
+.contact-hero__cta:hover .contact-hero__cta-arrow svg {
+  transform: scale(1.35);
+}
+
+/* === AURORA =====================================================
+   As camadas vivem direto na seção (sem container que as recorte),
+   ancoradas na altura do horizonte (--aurora-offset). O fade em
+   todas as direções vem só dos próprios gradientes — sem fatia
+   visível em cima nem em baixo.
+   ================================================================ */
+.aurora {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* AURORA ESQUERDA — verde, sangra ABAIXO do horizonte pra fade suave */
+.aurora__halo--violet {
+  position: absolute;
+  left: 0; right: 30%;
+  bottom: calc(var(--aurora-offset) - var(--aurora-bleed));
+  height: calc(60% + var(--aurora-bleed));
+  background: radial-gradient(
+    ellipse 80% 88% at 35% calc(100% - var(--aurora-bleed)),
+    var(--green) 0%,
+    color-mix(in oklab, var(--green) 60%, transparent) 22%,
+    color-mix(in oklab, var(--green) 25%, transparent) 48%,
+    transparent 78%
+  );
+  mix-blend-mode: screen;
+  opacity: .65;
+}
+
+/* AURORA DIREITA — lime, idem */
+.aurora__halo--magenta {
+  position: absolute;
+  left: 30%; right: 0;
+  bottom: calc(var(--aurora-offset) - var(--aurora-bleed));
+  height: calc(60% + var(--aurora-bleed));
+  background: radial-gradient(
+    ellipse 80% 88% at 65% calc(100% - var(--aurora-bleed)),
+    var(--svc-color) 0%,
+    color-mix(in oklab, var(--svc-color) 55%, transparent) 22%,
+    color-mix(in oklab, var(--svc-color) 22%, transparent) 48%,
+    transparent 78%
+  );
+  mix-blend-mode: screen;
+  opacity: .55;
+}
+
+/* HALO BRANCO CENTRAL — núcleo focado, também sangra um pouco abaixo */
+.aurora__halo--teal {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--aurora-offset) - calc(var(--aurora-bleed) / 2));
+  transform: translateX(-50%);
+  width: 44%;
+  height: calc(38% + calc(var(--aurora-bleed) / 2));
+  background: radial-gradient(
+    ellipse 55% 88% at 50% calc(100% - calc(var(--aurora-bleed) / 2)),
+    rgba(255,255,255,.6) 0%,
+    rgba(255,255,255,.32) 14%,
+    rgba(255,255,255,.12) 32%,
+    rgba(255,255,255,.04) 50%,
+    transparent 75%
+  );
+  mix-blend-mode: screen;
+  z-index: 2;
+}
+
+/* LINHA DO HORIZONTE — arco branco na altura do offset */
+.aurora__horizon {
+  position: absolute;
+  left: 50%;
+  bottom: var(--aurora-offset);
+  transform: translateX(-50%);
+  width: 240vw;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: transparent;
+  border-top: 1.5px solid #fff;
+  box-shadow:
+    0 -1px 14px rgba(255,255,255,.55),
+    0 -4px 40px rgba(255,255,255,.18);
+  z-index: 3;
+}
+
+/* GLOW BRANCO INTENSO — bem em cima da linha do horizonte */
+.aurora__glow {
+  position: absolute;
+  left: 50%;
+  bottom: var(--aurora-offset);
+  transform: translateX(-50%);
+  width: 28%;
+  height: 90px;
+  background: radial-gradient(
+    ellipse at center bottom,
+    rgba(255,255,255,.55) 0%,
+    rgba(255,255,255,.2) 30%,
+    transparent 70%
+  );
+  filter: blur(6px);
+  z-index: 2;
+}
+
+/* Modal de contato */
+.ctm {
+  --ctm-w: min(560px, 92vw);
+  /* svc lime: acento secundário, complementa o --green padrão */
+  --svc-color: #a3e635;
+  --svc-30: rgba(163, 230, 53, .30);
+  --svc-45: rgba(163, 230, 53, .45);
+  --svc-15: rgba(163, 230, 53, .15);
+  border: none; background: transparent; padding: 0; margin: auto;
+  max-width: 100vw; max-height: 100vh; width: 100%; height: 100%;
+  color: var(--text); overflow: visible;
+}
+.ctm[open] { display: grid; place-items: center }
+.ctm::backdrop {
+  background:
+    /* aurora dual: lime à esquerda, green à direita */
+    radial-gradient(ellipse 50% 60% at 30% 30%, rgba(163,230,53,.05), transparent 70%),
+    radial-gradient(ellipse 50% 60% at 70% 30%, rgba(34,197,94,.06), transparent 70%),
+    radial-gradient(circle at 50% 60%, rgba(8,18,12,.6) 0%, rgba(0,0,0,.88) 80%);
+  backdrop-filter: blur(10px);
+  animation: ctm-backdrop-in .35s ease forwards;
+}
+@keyframes ctm-backdrop-in { from { opacity: 0 } to { opacity: 1 } }
+
+.ctm__shell {
+  position: relative;
+  width: var(--ctm-w);
+  max-height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  padding: 36px clamp(24px, 4.5vw, 38px) 30px;
+  border-radius: 20px;
+  background:
+    /* spotlight dual no topo: lime à esquerda + green à direita */
+    radial-gradient(ellipse 60% 50% at 30% 0%, var(--svc-15) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 50% at 70% 0%, var(--g-15) 0%, transparent 65%),
+    /* base glass */
+    linear-gradient(180deg, #0e1611 0%, #08100b 100%);
+  border: 1px solid var(--gline-42);
+  box-shadow:
+    var(--shadow-45),
+    inset 0 1px 0 var(--w-08),
+    inset 0 0 0 1px var(--w-02),
+    0 0 60px -20px var(--g-30);
+  isolation: isolate;
+  transform-origin: center center;
+  animation: ctm-shell-in .35s cubic-bezier(.2,.9,.25,1) both;
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+/* linha de luz no topo: lime → branco → green, com glow svc */
+.ctm__shell::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 24px; right: 24px;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--svc-color) 35%,
+    #ffffff 50%,
+    var(--green) 65%,
+    transparent 100%
+  );
+  opacity: .65;
+  filter: drop-shadow(0 0 4px var(--svc-30));
+  pointer-events: none;
+}
+/* Scrollbar discreta dentro do shell */
+.ctm__shell { scrollbar-width: thin; scrollbar-color: var(--gline-42) transparent }
+.ctm__shell::-webkit-scrollbar { width: 6px }
+.ctm__shell::-webkit-scrollbar-track { background: transparent }
+.ctm__shell::-webkit-scrollbar-thumb {
+  background: var(--gline-42);
+  border-radius: 3px;
+}
+.ctm__shell::-webkit-scrollbar-thumb:hover { background: var(--g-45) }
+@keyframes ctm-shell-in {
+  from { opacity: 0; transform: translateY(12px) scale(.98) }
+  to   { opacity: 1; transform: translateY(0) scale(1) }
+}
+/* sem aurora interna nem borda conic — visual igual aos demais panels */
+.ctm__aurora { display: none }
+
+.ctm__close {
+  position: absolute; top: 16px; right: 16px;
+  width: 34px; height: 34px; border-radius: 10px;
+  border: 1px solid var(--w-08);
+  background: rgba(255,255,255,.025);
+  color: var(--text-hint);
+  display: grid; place-items: center; cursor: pointer;
+  transition: background .2s, color .2s, transform .2s, border-color .2s, box-shadow .2s;
+  z-index: 2;
+}
+.ctm__close:hover {
+  background: var(--g-10);
+  color: var(--green);
+  border-color: var(--g-45);
+  transform: rotate(90deg);
+  box-shadow: 0 0 16px -4px var(--g-50);
+}
+
+.ctm__head {
+  text-align: center;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  /* defensivo: garante que o <div> NÃO seja sequestrado por nenhum reset */
+  position: static;
+}
+.ctm__kicker {
+  margin: 0;
+  font-size: 11px; font-weight: 800; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--text-mint);
+  display: inline-flex; align-items: center; gap: 8px;
+  position: static;
+}
+.ctm__kicker::before {
+  content: ""; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--svc-color);
+  box-shadow: 0 0 10px var(--svc-color), 0 0 18px var(--svc-30);
+}
+.ctm__title {
+  margin: 0;
+  font-family: inherit;
+  font-weight: 900; font-style: normal;
+  font-size: clamp(24px, 3vw, 30px);
+  letter-spacing: -.012em;
+  color: var(--text);
+  line-height: 1.2;
+  position: static;
+}
+.ctm__sub {
+  margin: 2px 0 0;
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.5;
+  max-width: 420px;
+  position: static;
+}
+
+.ctm__channels { display: grid; gap: 10px; margin: 0 }
+.ctm__channel {
+  display: grid; grid-template-columns: 42px 1fr auto;
+  align-items: center; gap: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.02);
+  border: 1px solid var(--w-06);
+  color: var(--text); text-decoration: none;
+  opacity: 0; transform: translateY(8px);
+  position: relative; overflow: hidden;
+  animation: ctm-stagger .35s ease forwards;
+  animation-delay: calc(.10s + var(--i, 0) * .05s);
+  transition: border-color .25s ease, background .25s ease, padding-left .25s ease;
+}
+/* barrinha lime → green à esquerda no hover */
+.ctm__channel::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 50%;
+  width: 3px;
+  height: 0;
+  background: linear-gradient(180deg, var(--svc-color), var(--green));
+  border-radius: 0 3px 3px 0;
+  transform: translateY(-50%);
+  transition: height .25s ease, box-shadow .25s ease;
+}
+.ctm__channel:hover {
+  border-color: var(--g-45);
+  background: rgba(34,197,94,.04);
+  padding-left: 18px;
+}
+.ctm__channel:hover::before {
+  height: 60%;
+  box-shadow: 0 0 12px var(--svc-30), 0 0 18px var(--g-50);
+}
+.ctm__ch-ico {
+  display: grid; place-items: center;
+  width: 42px; height: 42px; border-radius: 9px;
+  background: var(--w-05);
+  color: var(--text-mint);
+  border: 1px solid var(--w-08);
+  transition: color .2s ease, border-color .2s ease, background .2s ease;
+}
+.ctm__channel:hover .ctm__ch-ico {
+  background: var(--g-10);
+  color: var(--green);
+  border-color: var(--g-45);
+}
+.ctm__ch-text { display: flex; flex-direction: column; min-width: 0 }
+.ctm__ch-label {
+  font-weight: 700; font-size: 14px; letter-spacing: .01em;
+  color: var(--text);
+}
+.ctm__ch-meta {
+  font-size: 12px;
+  color: var(--text-hint);
+  margin-top: 2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.ctm__channel::after {
+  content: "→"; font-size: 15px;
+  color: var(--text-hint);
+  transition: color .2s ease;
+}
+.ctm__channel:hover::after { color: var(--green) }
+
+.ctm__divider {
+  display: flex; align-items: center; gap: 14px;
+  margin: 0;
+  color: var(--text-hint);
+  font-size: 11px; letter-spacing: .18em; text-transform: uppercase; font-weight: 700;
+}
+.ctm__divider::before, .ctm__divider::after {
+  content: ""; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gline-28), transparent);
+}
+
+.ctm__form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 0;
+}
+.ctm__field {
+  display: flex; flex-direction: column; gap: 6px;
+  opacity: 0; transform: translateY(8px);
+  animation: ctm-stagger .35s ease forwards;
+  animation-delay: calc(.10s + var(--i, 0) * .05s);
+  min-width: 0;
+}
+.ctm__field--full { grid-column: 1 / -1 }
+.ctm__field-label {
+  font-size: 12px; letter-spacing: .08em; text-transform: uppercase; font-weight: 800;
+  color: var(--text-hint);
+}
+.ctm__field input, .ctm__field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  appearance: none; border-radius: 10px;
+  border: 1px solid var(--w-08);
+  background: rgba(255,255,255,.02);
+  color: var(--text);
+  padding: 12px 14px;
+  font-family: inherit; font-size: 14px;
+  outline: none;
+  transition: border-color .2s, background .2s, box-shadow .2s;
+}
+.ctm__field textarea { min-height: 110px; resize: vertical; line-height: 1.5 }
+.ctm__field input::placeholder,
+.ctm__field textarea::placeholder { color: var(--text-hint); opacity: .65 }
+.ctm__field input:hover, .ctm__field textarea:hover {
+  border-color: var(--w-12);
+}
+.ctm__field input:focus, .ctm__field textarea:focus {
+  border-color: var(--g-50);
+  background: rgba(34,197,94,.025);
+  box-shadow:
+    0 0 0 3px var(--g-15),
+    0 0 22px -10px var(--g-50),
+    0 0 32px -14px var(--svc-45);
+}
+
+/* botão de envio — gradiente sutil + brilho */
+.ctm__submit {
+  grid-column: 1 / -1;
+  appearance: none;
+  height: 46px;
+  border-radius: 10px;
+  border: 1px solid var(--g-50);
+  background: linear-gradient(180deg, var(--g-22), var(--g-15));
+  color: var(--text-mint);
+  font-family: inherit; font-size: 14px; font-weight: 800; letter-spacing: .03em;
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  position: relative; overflow: hidden; isolation: isolate;
+  transition: background .25s ease, border-color .25s ease, transform .15s ease, box-shadow .25s ease;
+  opacity: 0; transform: translateY(8px);
+  animation: ctm-stagger .35s ease forwards;
+  animation-delay: calc(.10s + var(--i, 0) * .05s);
+  margin-top: 4px;
+}
+/* shimmer ao passar o mouse — passa de lime → branco → green */
+.ctm__submit::before {
+  content: "";
+  position: absolute;
+  top: 0; left: -120%;
+  width: 60%; height: 100%;
+  background: linear-gradient(115deg,
+    transparent 30%,
+    var(--svc-30) 45%,
+    rgba(255,255,255,.18) 50%,
+    var(--g-30) 55%,
+    transparent 70%
+  );
+  transition: left .7s cubic-bezier(.22,.61,.36,1);
+  z-index: -1;
+}
+.ctm__submit:hover {
+  background: linear-gradient(180deg, var(--g-30), var(--g-22));
+  border-color: color-mix(in oklab, var(--svc-color) 60%, var(--g-50));
+  box-shadow:
+    0 8px 24px -8px var(--g-50),
+    0 0 0 1px var(--g-22),
+    0 0 28px -14px var(--svc-45);
+}
+.ctm__submit:hover::before { left: 130% }
+.ctm__submit:active { transform: translateY(1px); filter: brightness(.95) }
+
+.ctm__status {
+  grid-column: 1 / -1; margin: 0; min-height: 18px;
+  font-size: 12.5px; text-align: center; color: var(--text-hint);
+}
+.ctm__status.ok   { color: var(--text-mint) }
+.ctm__status.fail { color: var(--msg-red) }
+
+@keyframes ctm-stagger { to { opacity: 1; transform: translateY(0) } }
+
+.ctm.is-closing .ctm__shell { animation: ctm-shell-out .22s ease forwards }
+@keyframes ctm-shell-out {
+  to { opacity: 0; transform: translateY(8px) scale(.98) }
+}
+
+@media (max-width: 520px) {
+  .ctm__form { grid-template-columns: 1fr }
+  .ctm__channel { grid-template-columns: 40px 1fr auto; gap: 12px }
+  .ctm__shell { padding: 28px 18px 24px }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ctm__shell, .ctm__channel, .ctm__field, .ctm__submit {
+    animation: none !important; opacity: 1 !important; transform: none !important; filter: none !important;
+  }
+  .ctm::backdrop { animation: none }
+}
+
+/* =============================
+   8) RESPONSIVO GERAL
+   ============================= */
+@media (max-width:900px){
+  .nav-center { display: none }
+  .hero { grid-template-columns: 1fr; gap: 32px; text-align: center; justify-items: center; left: 0 }
+  .rail { flex-direction: row; justify-content: center }
+}
+
+/* =============================
+   9) COMPLEMENTARES (resume, tema, language, modal)
+   ============================= */
+/* Resume button — hover “wow” sem reflow */
+.resume-btn { display:inline-flex; align-items:center; gap:8px; font-weight:700; font-size:.9rem; opacity:.95; background: var(--w-05); padding:8px 16px; border-radius:999px; border:1px solid var(--w-10); backdrop-filter: blur(8px); transition: background .2s, opacity .2s; position: relative; overflow: hidden; isolation: isolate; backface-visibility: hidden; will-change: filter, box-shadow;  user-select: none;
+  -webkit-user-select: none;   /* iOS/Safari */
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-touch-callout: none;}
+.resume-btn:hover { background: var(--w-12); opacity: 1 }
+.resume-btn::before{ content:""; position:absolute; inset:-14px; border-radius: inherit; background: radial-gradient(60% 80% at 50% 50%, color-mix(in oklab, var(--green) 28%, transparent) 0%, transparent 60%); opacity: 0; filter: blur(14px); transform: scale(.88); transition: opacity .24s ease, filter .24s ease, transform .24s ease; z-index: 0; pointer-events: none }
+.resume-btn::after{ content:""; position:absolute; top:0; left:-130%; width:130%; height:100%; border-radius: inherit; background: linear-gradient(115deg, transparent 45%, rgba(255,255,255,.28) 52%, transparent 60%); opacity: 0; transition: left .8s cubic-bezier(.22,.61,.36,1), opacity .24s ease; z-index: 1; pointer-events: none }
+.resume-btn > *{ position: relative; z-index: 2 }
+.resume-btn:hover::before, .resume-btn:focus-visible::before{ opacity:1; filter: blur(22px); transform: scale(1) }
+.resume-btn:hover::after, .resume-btn:focus-visible::after{ opacity:1; left:130% }
+/* ==== Resume button: animação de atenção discreta ==== */
+/* ativa a animação quando tiver esta classe */
+.resume-btn.resume-attn {
+  animation: resume-breathe 2s ease-in-out infinite;
+  will-change: transform, filter, box-shadow;
+}
+
+/* usa os pseudo-elementos que você já tem como “glow” e “sheen” */
+.resume-btn.resume-attn::before{
+  opacity: .14;                  /* visível de leve */
+  animation: resume-halo 2s ease-in-out infinite;
+}
+.resume-btn.resume-attn::after{
+  animation: resume-sheen 7s cubic-bezier(.22,.61,.36,1) infinite;
+}
+
+/* pausa a animação quando o usuário interage (mantém seu hover) */
+.resume-btn:hover,
+.resume-btn:focus-visible,
+.resume-btn:hover::before,
+.resume-btn:hover::after{
+  animation-play-state: paused;
+}
+
+/* keyframes */
+@keyframes resume-breathe{
+  0%,100% { transform: translateZ(0) scale(1); }
+  50%     { transform: translateZ(0) scale(1.05); }
+}
+@keyframes resume-halo{
+  0%,100% { opacity: .12; filter: blur(14px); }
+  50%     { opacity: .28; filter: blur(22px); }
+}
+/* brilho que cruza o botão só no final do ciclo */
+@keyframes resume-sheen{
+  0%,82%  { left:-130%; opacity: 0; }
+  88%     { opacity:.9; }
+  100%    { left:130%;  opacity: 0; }
+}
+
+/* respeita quem prefere menos movimento */
+@media (prefers-reduced-motion: reduce){
+  .resume-btn.resume-attn,
+  .resume-btn.resume-attn::before,
+  .resume-btn.resume-attn::after{
+    animation: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce){ .resume-btn, .resume-btn::before, .resume-btn::after{ transition: none !important; animation: none !important } }
+
+
+
+/* Transições suaves site-wide */
+html, body, .panel, .pill, .xp-ico, .proj-card, .resume-btn,
+input[type="text"], input[type="email"], textarea, .btn-link, .btn-more,
+.tl-card, .term-wrap, .contact, .capsule-grid, .cbtn, .chip, .cta {
+  transition: background-color .28s ease, color .28s ease, border-color .28s ease,
+              box-shadow .28s ease, filter .28s ease, outline-color .28s ease;
+}
+
+/* Switch de language (à esquerda do header) */
+.lang-slot{ position:relative; justify-self: start; z-index: 40 }
+.lang-switch.pill{ display:flex; align-items:center; gap:8px; height: 38px; padding: 0 14px; border-radius: 999px; background: var(--w-05); backdrop-filter: blur(8px); border: 1px solid var(--w-10); color: var(--text); box-shadow: 0 6px 16px rgba(0,0,0,.18), inset 0 1px 0 var(--w-06); cursor:pointer; transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease }
+.lang-switch:hover{ box-shadow: 0 10px 24px rgba(0,0,0,.22), inset 0 1px 0 var(--w-06) }
+.lang-switch:active{ transform: translateY(1px) scale(.98) }
+.lang-switch .lang-ico{ font-size: 15px; line-height: 0 } .lang-switch .caret{ opacity:.8 }
+.lang-menu{ position:absolute; top: calc(100% + 10px); left: 0; min-width: 180px; background: var(--w-05); border:1px solid var(--w-10); border-radius: 12px; box-shadow: 0 18px 44px rgba(0,0,0,.26), inset 0 1px 0 var(--w-06); backdrop-filter: blur(10px); padding:10px 8px; list-style:none; display:none }
+.lang-menu.open{ display:block }
+.lang-menu li{ padding:10px 12px; border-radius:10px; color: var(--text); cursor:pointer }
+.lang-menu li:hover{ background: color-mix(in oklab, var(--green) 18%, transparent); color: var(--text) }
+
+/* Botão de certificado + Modal (<dialog>) */
+.btn-cert {
+  appearance: none;
+  border: none;
+  border-radius: 10px;
+  font-weight: 800;
+  letter-spacing: .02em;
+  padding: 8px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: .25s;
+  font-family: inherit
+}
+
+.btn-cert svg {
+  width: 18px;
+  height: 18px
+}
+.cert-modal {
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  padding: 0;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: visible;
+}
+
+/* fundo escuro atrás do dialog */
+.cert-modal::backdrop {
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+}
+
+/* container da imagem do certificado */
+.cert-content {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  background: #020817;
+  max-width: min(1200px, 90vw);
+}
+
+/* imagem menor e responsiva */
+.cert-content img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 70vh;
+  object-fit: contain;
+}
+
+/* botão de fechar (X) vermelho no canto superior direito */
+.cert-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  border: none;
+  padding: 6px 10px;
+  background: #ff3b30;
+  color: #fff;
+  font-weight: 600;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  font-size: 20px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(255, 59, 48, 0.35);
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+.cert-close:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+
+
+
+
+
+
+/* =============================
+   11) MICRO AJUSTES / UTILITÁRIOS
+   ============================= */
+/* Ícone de experiência usa a cor do texto por padrão */
+.xp-ico svg { fill: currentColor }
+
+/* header respeita notch/safe-area e fica mais perto no mobile */
+header { top: max(8px, env(safe-area-inset-top, 0px)); }
+
+/* reforça altura do header em telas pequenas */
+@media (max-width: 480px){
+  :root { --nav-h: 64px; }
+}
+
+/* botão hamburger (esconde no desktop) */
+.menu-btn{
+  position:absolute;
+  right: calc(20px + var(--navr-w) + var(--switch-gap) + 56px); /* antes do resume */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px; height: 38px;
+  border-radius: 12px;
+  border: 1px solid var(--w-10);
+  background: var(--w-05);
+  backdrop-filter: blur(8px);
+  display:none; /* só no mobile */
+  align-items:center; justify-content:center;
+  gap:4px; padding:8px 10px;
+  box-shadow: 0 6px 16px rgba(0,0,0,.18), inset 0 1px 0 var(--w-06);
+}
+.menu-btn .menu-line{
+  display:block; width: 20px; height: 2px;
+  background: var(--text); border-radius: 2px;
+  transition: transform .25s ease, opacity .25s ease;
+}
+@media (max-width: 900px){
+  .menu-btn{ display:flex; }
+}
+
+/* animação de X quando aberto */
+.menu-btn.is-open .menu-line:nth-child(1){ transform: translateY(4px) rotate(45deg); }
+.menu-btn.is-open .menu-line:nth-child(2){ opacity: 0; }
+.menu-btn.is-open .menu-line:nth-child(3){ transform: translateY(-4px) rotate(-45deg); }
+
+
+/* container do menu mobile */
+.mobile-nav{
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + var(--nav-h) + 8px);
+  left: 12px; right: 12px;
+  z-index: 9998;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  background: var(--w-05);
+  border: 1px solid var(--w-10);
+  border-radius: 16px;
+  box-shadow: 0 18px 44px rgba(0,0,0,.26), inset 0 1px 0 var(--w-06);
+  backdrop-filter: blur(10px);
+}
+.mobile-nav a{
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 12px;
+  border-radius: 12px;
+  font-weight: 800; letter-spacing: .02em;
+  border: 1px solid transparent;
+}
+.mobile-nav a:hover{
+  border-color: color-mix(in oklab, var(--green) 28%, transparent);
+  background: color-mix(in oklab, var(--green) 10%, transparent);
+}
+.mobile-nav .mobile-resume{
+  justify-content: center;
+  border: 1px solid var(--g-45); background: var(--g-14); color: var(--text-mint);
+}
+.mobile-nav.open{ display: flex; }
+
+/* ===== Work dropdown (mobile) — expansão inline ===== */
+.mobile-dd { display: block; }
+.mobile-dd-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 12px;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 800;
+  letter-spacing: .02em;
+  background: transparent;
+  border: 1px solid transparent;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.mobile-dd-btn:hover {
+  border-color: color-mix(in oklab, var(--green) 28%, transparent);
+  background: color-mix(in oklab, var(--green) 10%, transparent);
+}
+.mobile-dd-caret {
+  display: block;
+  transition: transform .25s ease;
+}
+.mobile-dd-btn[aria-expanded="true"] .mobile-dd-caret {
+  transform: rotate(180deg);
+}
+
+.mobile-dd-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+  padding-left: 12px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .3s ease, margin-top .3s ease;
+}
+.mobile-dd-menu.open {
+  max-height: 280px;
+  margin-top: 8px;
+}
+.mobile-dd-menu a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-weight: 700; letter-spacing: .02em;
+  border: 1px solid transparent;
+  font-size: .92em;
+  opacity: .9;
+}
+.mobile-dd-menu a:hover {
+  border-color: color-mix(in oklab, var(--green) 28%, transparent);
+  background: color-mix(in oklab, var(--green) 10%, transparent);
+  opacity: 1;
+}
+
+/* no desktop, nunca aparece */
+@media (min-width:901px){ .mobile-nav{ display: none !important } }
+
+
+/* =============================================================
+   NAVBAR RESPONSIVO — o layout é GRID (.nav), então os elementos
+   se reorganizam dinamicamente sem precisar ajustar posições.
+   Estas media queries só encolhem o conteúdo (padding/font) pra
+   caber em viewports menores. Sem manipular right/left/absolute.
+   ============================================================= */
+
+/* Faixa "compacta" — desktops/laptops médios (até ~1280px) */
+@media (min-width: 901px) and (max-width: 1280px) {
+  .pill { gap: 3px; padding: 5px; }
+  .pill a { padding: 6px 11px; font-size: .85rem; }
+  .nav-dd-btn { padding: 6px 9px 6px 11px; font-size: .85rem; }
+  .resume-btn { padding: 7px 12px; font-size: .85rem; }
+}
+
+/* Faixa "apertada" — laptops menores (até ~1080px) */
+@media (min-width: 901px) and (max-width: 1080px) {
+  .pill { gap: 2px; padding: 4px; }
+  .pill a { padding: 5px 9px; font-size: .8rem; }
+  .nav-dd-btn { padding: 5px 8px 5px 10px; font-size: .8rem; }
+  .nav-dd-caret { width: 11px; height: 11px; }
+  .resume-btn { padding: 6px 10px; font-size: .8rem; gap: 6px; }
+  .resume-btn svg { width: 14px; height: 14px; }
+}
+
+/* Ajustes específicos em PT — textos têm letras a mais que EN.
+   Como o grid empurra os elementos pelas laterais automaticamente,
+   só preciso encolher levemente fonte/padding pro pill caber sem
+   precisar invadir o espaço lateral. */
+[lang^="pt"] .pill a,
+[lang^="pt"] .nav-dd-btn { font-size: .87rem; }
+[lang^="pt"] .resume-btn { font-size: .85rem; padding-left: 14px; padding-right: 14px; }
+
+
+@media (max-width: 900px){
+  .photo{ width: min(68vw, 320px); }
+}
+@media (max-width: 420px){
+  .name{ letter-spacing: -.01em; }
+  .tagline{ font-size: clamp(18px, 6vw, 22px); }
+}
+
+
+/* comportamento mobile dos tiles (stack) */
+@media (max-width: 760px){
+  .skills-tiles .tile{
+    display: grid;
+    grid-template-rows: var(--sq) auto;
+  }
+  .skills-tiles .tile-reveal{
+    position: static;          /* sai do absolute */
+    width: 100%;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transform: none;
+    border-radius: 12px;
+    margin-top: 10px;
+    transition: opacity .25s ease, max-height .25s ease;
+  }
+  .skills-tiles .tile.open .tile-reveal{
+    opacity: 1;
+    max-height: 420px;         /* empurra o layout */
+  }
+
+  /* como agora o reveal empurra, removo o deslocamento lateral mobile */
+  .skills-tiles .tile-square{ --shift: 0; }
+  /* tooltip de rótulo some no mobile pra evitar sobreposição */
+  .skills-tiles .tile-square::after{ display: none; }
+}
+
+/* 2.1) Some o botão de Resume e o switch de Dark Mode no mobile */
+@media (max-width: 900px){
+  .resume-btn{ display: none !important; }
+  .theme-slot, #darkmode-toggle, .dm-switch{ display: none !important; }
+}
+
+/* 2.2) Reposiciona o hambúrguer quando não existe o Resume no mobile */
+@media (max-width: 900px){
+  .menu-btn{ right: 20px; } /* simples e firme no canto direito */
+}
+
+/* 2.3) SKILLS — impedir que um bloco cubra o outro no mobile */
+@media (max-width: 760px){
+  .skills-tiles .tiles-wrap.squares{
+    align-items: stretch;        /* cada tile cresce conforme o conteúdo */
+    gap: 24px;                   /* um pouco mais de respiro entre tiles */
+  }
+  .skills-tiles .tile{
+    width: 100%;
+    z-index: 0;
+  }
+  .skills-tiles .tile.open{
+    z-index: 1;                  /* o aberto fica por cima se encostar */
+  }
+  .skills-tiles .tile-reveal{
+    position: static;            /* já estava no seu CSS, reforço aqui */
+    width: 100%;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;            /* empurra layout ao abrir */
+    transform: none;
+    border-radius: 12px;
+    margin-top: 10px;
+    transition: opacity .25s ease, max-height .25s ease;
+  }
+  .skills-tiles .tile.open .tile-reveal{
+    opacity: 1;
+    max-height: 800px;           /* altura generosa p/ não cortar nada */
+  }
+  /* sem tooltip no mobile pra evitar sobreposição */
+  .skills-tiles .tile-square::after{ display: none; }
+}
+
+/* --- Navbar: some o bloco da direita no mobile (evita o traço) --- */
+@media (max-width: 900px){
+  .nav-right{ display:none !important; border-left:0 !important; }
+}
+
+/* --- Hamburger: garante X sem barra do meio --- */
+.menu-btn.is-open .menu-line:nth-child(2){ opacity:0; }
+
+/* --- Skills (mobile): ícone pequeno e reveal empurrando layout --- */
+@media (max-width: 760px){
+  /* o botão (tile) ocupa a largura, mas o ícone fica pequeno */
+  .skills-tiles .tile{ display:grid; grid-template-rows: 110px auto; width: 100%; }
+  /* “quadrado” visual pequeno no topo */
+  .skills-tiles .tile-ico{
+    width: 88px; height: 88px; margin: 0 auto;
+    border-radius: 12px;
+  }
+  .skills-tiles .tile-ico img,
+  .skills-tiles .tile-ico svg{ width:72%; height:72%; }
+
+  /* o conteúdo revelado vem embaixo e empurra a página */
+  .skills-tiles .tile-reveal{
+    position: static;
+    width: 100%;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transform: none;
+    margin-top: 10px;
+    border-radius: 12px;
+    transition: opacity .25s ease, max-height .25s ease;
+  }
+  .skills-tiles .tile.open .tile-reveal{
+    opacity: 1;
+    max-height: 800px; /* sobra pra não cortar */
+  }
+
+
+  /* grade com respiro para não “tapar” o de baixo */
+  .skills-tiles .tiles-wrap.squares{
+    align-items: stretch;
+    gap: 24px;
+  }
+
+  /* sem tooltip no mobile (evita sobreposição) */
+  .skills-tiles .tile-square::after,
+  .skills-tiles .reveal-grid li::after{ display:none; }
+}
+
+/* ===== Skills: respiro maior entre quadrados quando abre (mobile) ===== */
+@media (max-width: 760px){
+
+  /* aumenta o espaço vertical padrão entre os tiles */
+  .skills-tiles .tiles-wrap.squares{
+    gap: 28px; /* era ~16–24; pode ajustar aqui se quiser */
+  }
+
+  /* quando QUALQUER tile estiver aberto, dá ainda mais respiro geral */
+  .skills-tiles .tiles-wrap.squares:has(.tile.open){
+    gap: 50px; /* cria ar entre os blocos enquanto há conteúdo revelado */
+  }
+
+  /* e um extra só abaixo do tile que está aberto (soma ao gap) */
+  .skills-tiles .tile.open{
+    margin-bottom: 14px;
+  }
+
+  /* leve respiro interno entre o ícone e a área revelada */
+  .skills-tiles .tile-reveal{
+    margin-top: 14px;        /* separa a área aberta do ícone */
+    padding: 10px 12px;      /* não deixa os ícones colarem na borda */
+  }
+
+  /* ícones internos com folga entre si */
+  .skills-tiles .reveal-grid{
+    gap: 10px 12px;          /* linhas x colunas */
+  }
+}
+
+@media (max-width: 480px) {
+  .skills-tiles .tile-square.open .tile-reveal {
+    margin-top: 12px; /* Espaço entre o quadrado e os ícones internos */
+  }
+
+  .skills-tiles .reveal-grid {
+    gap: 10px; /* Espaço entre os ícones dentro */
+  }
+
+  .skills-tiles .tile-ico img {
+    width: 48px;
+    height: 48px;
+  }
+
+  .skills-tiles .tile-square {
+    margin-bottom: 18px; /* Distância entre os quadrados */
+  }
+}
+
+/* ==== FIX: MOBILE SPACING FOR SKILLS (up to 380px) ==== */
+@media (max-width: 480px) {
+  /* espaço entre cada quadrado */
+  .skills-tiles .tiles-wrap.squares {
+    gap: 36px; /* aumenta o espaço vertical entre os blocos */
+  }
+
+  /* bloco principal */
+  .skills-tiles .tile-square {
+    --sq: 110px; /* reduz o tamanho do quadrado */
+  }
+
+  /* painel revelado */
+  .skills-tiles .tile-reveal {
+    margin-top: 60px !important; /* espaço entre o quadrado e o conteúdo revelado */
+    transform: translateY(10px) !important;
+    gap: 18px !important; /* respiro entre os ícones dentro */
+  }
+
+  .skills-tiles .tile-square.open .tile-reveal {
+    transform: translateY(0) !important;
+  }
+
+  /* grid dos ícones (subcategorias) */
+  .skills-tiles .reveal-grid {
+    gap: 30px !important; /* espaço entre os ícones */
+    justify-content: center;
+  }
+
+  .skills-tiles .reveal-grid li {
+    width: 48px; /* ícones um pouco menores */
+    height: 48px;
+  }
+
+  /* texto do label */
+  .skills-tiles .tile-square::after {
+    bottom: -28px;
+  }
+}
+
+
+
+
+
+
+
+/* =========================================================
+   PROJECTS — MODAL DETALHES (estilo cards do site)
+   ========================================================= */
+
+.proj-modal {
+  border: none;
+  padding: 0;
+  background: transparent;
+  max-width: none;
+}
+
+/* centralizado na tela quando aberto */
+.proj-modal[open] {
+  position: fixed;
+  inset: 0;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  z-index: 50;
+}
+
+/* backdrop escuro com blur */
+.proj-modal::backdrop {
+  background: radial-gradient(circle at top, rgba(0,0,0,.7), rgba(0,0,0,.96));
+  backdrop-filter: blur(18px);
+}
+
+/* ========== CARD CONTAINER (igual “panel”) ========== */
+.proj-modal-frame {
+  width: min(620px, 100vw - 3rem);
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(180deg, var(--glass), var(--glass-2));
+  border: 1px solid var(--gline-35);
+  box-shadow: var(--shadow-45), inset 0 0 0 1px var(--w-02);
+  color: var(--text);
+  
+}
+
+/* halo bem discreto, tipo os outros painéis */
+.proj-modal-frame::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 180deg,
+    rgba(34,197,94,.0),
+    var(--g-30),
+    rgba(34,197,94,.0)
+  );
+  opacity: .18;
+  mix-blend-mode: screen;
+  filter: blur(18px);
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   MODAL — "Neo Morph Smooth Pop"
+   ========================================================= */
+
+/* melhora performance da animação */
+.proj-modal-frame {
+  will-change: transform, opacity, box-shadow;
+}
+
+/* animação só quando o dialog estiver aberto */
+.proj-modal[open] .proj-modal-frame {
+  animation: modalNeoPop 420ms cubic-bezier(.22, 1, .32, 1) forwards;
+}
+
+/* fade suave no backdrop */
+.proj-modal::backdrop {
+  animation: modalBackdropFade 320ms ease-out forwards;
+}
+
+/* card "inflável" com overshoot suave */
+@keyframes modalNeoPop {
+  0% {
+    opacity: 0;
+    transform: translateY(26px) scale(.88);
+    box-shadow: 0 8px 20px rgba(0,0,0,.7);
+  }
+  45% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 26px 60px rgba(0,0,0,.9);
+  }
+  70% {
+    transform: translateY(1px) scale(.995);
+    box-shadow: 0 18px 40px rgba(0,0,0,.85);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    box-shadow: var(--shadow-45), inset 0 0 0 1px var(--w-02);
+  }
+}
+
+/* fade do fundo */
+@keyframes modalBackdropFade {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+
+
+
+
+/* ========== HERO BAR (estilo terminal/contact) ========== */
+.proj-modal-hero {
+  position: relative;
+  padding: 1.4rem 1.8rem 1.3rem;
+  background: linear-gradient(180deg, var(--w-06), var(--w-02));
+  border-bottom: 1px solid var(--gline-28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.proj-modal-hero::before {
+  content: "›_";
+  position: absolute;
+  left: 1.0rem;
+  font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--green);
+  opacity: .9;
+}
+
+.proj-modal-title {
+  margin: 0;
+  text-align: center;
+  font-size: 1.9rem;
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  text-shadow: 0 0 6px rgba(0,0,0,.7);
+}
+
+/* ========== BODY ========== */
+.proj-modal-body {
+  padding: 1.8rem 2rem 2rem;
+  font-size: .95rem;
+  line-height: 1.65;
+  color: var(--text);
+}
+
+/* descrição longa */
+.proj-modal-description,
+.proj-modal-desc {
+  margin-bottom: 1.6rem;
+  color: var(--muted);
+}
+
+/* section title "Technologies" */
+.proj-modal-tech-header {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .9rem;
+  margin-bottom: .8rem;
+  color: var(--text-hint);
+}
+
+.proj-modal-tech-label-icon {
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.0rem;
+  opacity: .9;
+  color: var(--text-mint);
+}
+
+.proj-modal-tech-header span:last-child,
+.proj-modal-tech-label {
+  font-weight: 600;
+  color: var(--text-soft);
+}
+
+/* lista de pills */
+.proj-modal-tech-pills,
+.proj-modal-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem .7rem;
+  margin-bottom: 1.9rem;
+}
+
+.proj-modal-pill,
+.proj-modal-chip {
+  padding: .35rem .9rem;
+  border-radius: 999px;
+  border: 1px solid var(--g-30);
+  font-size: .78rem;
+  letter-spacing: .01em;
+  background: var(--g-10);
+  color: var(--text-mint);
+  box-shadow: 0 6px 14px rgba(0,0,0,.6);
+  backdrop-filter: blur(6px);
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* hover sutil nas chips */
+.proj-modal-chip,
+.proj-modal-pill {
+  transition:
+    background .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease,
+    filter .18s ease;
+}
+
+.proj-modal-chip:hover,
+.proj-modal-pill:hover {
+  background: var(--g-14);
+  border-color: var(--g-45);
+  color: var(--text-mint);
+  box-shadow: 0 0 14px rgba(34,197,94,.25);
+  filter: brightness(1.12);
+}
+
+
+/* ========== BUTTON ROW ========== */
+.proj-modal-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: .5rem;
+}
+
+/* base para todos os botões do modal (estilo cta/cbtn) */
+.proj-modal-actions button,
+.proj-modal-actions a,
+.proj-modal-btn {
+  flex: 1;
+  padding: .9rem 1.1rem;
+  border-radius: 12px;
+  font-size: .95rem;
+  font-weight: 700;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: .45rem;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition:
+    transform .16s ease,
+    box-shadow .16s ease,
+    border-color .16s ease,
+    background .16s ease,
+    filter .16s ease;
+  white-space: nowrap;
+}
+
+/* Close — ghost bem limpo, pouco glow */
+.btn-close,
+.proj-modal-btn.ghost {
+  background: var(--w-05);
+  border-color: var(--w-10);
+  color: var(--text-soft);
+  box-shadow: var(--shadow-35);
+}
+
+.btn-close:hover,
+.proj-modal-btn.ghost:hover {
+  background: var(--w-08);
+  transform: translateY(-1px);
+  box-shadow: 0 14px 26px rgba(0,0,0,.6);
+}
+
+/* GitHub — laranja contrastado (como no card de projetos) */
+.btn-github,
+.proj-modal-btn.github {
+  background: #3c2706;
+  border-color: #a66912;
+  color: #f9fafb;
+  box-shadow: 0 16px 34px rgba(0,0,0,.85);
+}
+
+.btn-github:hover,
+.proj-modal-btn.github:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 20px 40px rgba(0,0,0,.95);
+}
+
+/* Site — verde igual CTAs do contato, sem glow exagerado */
+.btn-site,
+.proj-modal-btn.primary {
+  background: var(--g-16);
+  border-color: var(--g-55);
+  color: var(--text-mint);
+  box-shadow: var(--shadow-35);
+}
+
+.btn-site:hover,
+.proj-modal-btn.primary:hover {
+  background: var(--g-22);
+  transform: translateY(-1px);
+  box-shadow: 0 18px 38px rgba(0,0,0,.7);
+}
+
+/* ícones */
+.btn-github-icon {
+  font-size: 1.05rem;
+}
+
+.btn-site-icon {
+  font-size: 1.1rem;
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 540px) {
+  .proj-modal-hero {
+    padding: 1.2rem 1.4rem 1.1rem;
+  }
+  .proj-modal-title {
+    font-size: 1.5rem;
+  }
+  .proj-modal-body {
+    padding: 1.6rem 1.4rem 1.8rem;
+  }
+  .proj-modal-actions {
+    flex-direction: column;
+  }
+}
+

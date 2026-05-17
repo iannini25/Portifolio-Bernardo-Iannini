@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bernardo Iannini — Desenvolvedor Full Stack & AI Designer em Belo Horizonte</title>
+  <meta name="author" content="Bernardo Iannini">
+  <meta name="description" content="Bernardo Iannini, desenvolvedor Full Stack e AI Designer baseado em Belo Horizonte. Portfólio com projetos (ERP Inspire4U, Athena7, Memoriacache), serviços, experiência e blog com bastidores e eventos." />
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="keywords" content="Bernardo Iannini, Bernardo Araújo Iannini, desenvolvedor Full Stack, AI Designer, Belo Horizonte, portfólio, ERP Inspire4U, Athena7, Memoriacache, COTEMIG">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;600;700&family=Instrument+Serif:ital@0;1&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+
+  <!-- Favicon padrão (aba do navegador) -->
+  <link rel="icon" type="image/png" href="./favicon.png" sizes="32x32">
+
+  <!-- Recomendado pro Google Site Icon (>= 48px) -->
+  <link rel="icon" type="image/png" href="./favicon-48.png" sizes="48x48">
+
+  <!-- Recomendado pro Google Site Icon (>= 48px) -->
+  <link rel="icon" type="image/png" href="./favicon_192px.png" sizes="192x192">
+
+  <!-- Fallback tradicional (.ico) e caminho que o Google costuma procurar -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any">
+
+  <!-- Cor da UI no mobile -->
+  <meta name="theme-color" content="#000000">
+
+
+  <link rel="canonical" href="https://bernardoiannini.com/" />
+  <link rel="alternate" hreflang="pt-BR" href="https://bernardoiannini.com/" />
+  <link rel="alternate" hreflang="en"    href="https://bernardoiannini.com/" />
+  <link rel="alternate" hreflang="x-default" href="https://bernardoiannini.com/" />
+
+  <!-- IndieWeb / Mastodon — rel=me reforça identidade nas redes -->
+  <link rel="me" href="https://www.linkedin.com/in/bernardo-iannini">
+  <link rel="me" href="https://github.com/iannini25">
+  <link rel="me" href="mailto:bernardo.iannini14@gmail.com">
+
+  <!-- =================================================================
+       ANTI-FLICKER de i18n + transição entre páginas
+       ================================================================= -->
+  <style id="page-fx">
+    /* Body: só opacity — NÃO usar transform/filter aqui (quebra position:fixed do header) */
+    html:not(.i18n-ready) body { opacity: 0; }
+    body {
+      opacity: 1;
+      transition: opacity .35s cubic-bezier(.22,.61,.36,1);
+    }
+    /* Main: efeito scale+blur no conteúdo (header fica fora, fixed no viewport) */
+    html:not(.i18n-ready) main {
+      transform: scale(1.03);
+      filter: blur(8px);
+    }
+    main {
+      transition:
+        transform .45s cubic-bezier(.22,.61,.36,1),
+        filter .45s cubic-bezier(.22,.61,.36,1);
+    }
+    /* Saída */
+    body.page-leaving { opacity: 0; pointer-events: none; }
+    body.page-leaving main {
+      transform: scale(.97);
+      filter: blur(8px);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html:not(.i18n-ready) main { transform: none; filter: none; }
+      body, body.page-leaving { transition: opacity .18s ease; }
+      main, body.page-leaving main { transition: none; transform: none; filter: none; }
+    }
+  </style>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('lang');
+        if (l === 'pt' || l === 'en') {
+          document.documentElement.lang = (l === 'pt') ? 'pt-BR' : 'en';
+        }
+      } catch (e) {}
+    })();
+    window.addEventListener('pageshow', function () {
+      document.body && document.body.classList.remove('page-leaving');
+    });
+  </script>
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Bernardo Iannini" />
+  <meta property="og:title" content="Bernardo Iannini — Desenvolvedor Full Stack & AI Designer em Belo Horizonte" />
+  <meta property="og:description" content="Portfólio de Bernardo Iannini — projetos, serviços, experiência e blog com bastidores e eventos." />
+  <meta property="og:url" content="https://bernardoiannini.com/" />
+  <meta property="og:image" content="https://bernardoiannini.com/img/eufoto1.png" />
+  <meta property="og:image:alt" content="Bernardo Iannini, desenvolvedor Full Stack e AI Designer baseado em Belo Horizonte" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="1200" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:locale:alternate" content="en_US" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Bernardo Iannini — Desenvolvedor Full Stack & AI Designer" />
+  <meta name="twitter:description" content="Portfólio com projetos (ERP Inspire4U, Athena7, Memoriacache), serviços e blog." />
+  <meta name="twitter:image" content="https://bernardoiannini.com/img/eufoto1.png" />
+  <meta name="twitter:image:alt" content="Bernardo Iannini, foto de perfil" />
+
+  <!-- JSON-LD: WEBSITE -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Bernardo Iannini – Portfólio Oficial",
+    "alternateName": ["Bernardo Araújo Iannini", "Bernardo A. Iannini"],
+    "url": "https://bernardoiannini.com/",
+    "inLanguage": ["pt-BR", "en"],
+    "publisher": { "@type": "Person", "name": "Bernardo Iannini", "url": "https://bernardoiannini.com/" },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://bernardoiannini.com/blog.html?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+  <!-- JSON-LD: PERSON (Knowledge Graph) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Bernardo Iannini",
+    "alternateName": ["Bernardo Araújo Iannini", "Bernardo A. Iannini"],
+    "url": "https://bernardoiannini.com/",
+    "jobTitle": "Full Stack Developer & AI Designer",
+    "description": "Desenvolvedor Full Stack e AI Designer baseado em Belo Horizonte, autor do ERP Inspire4U, Athena7 e Memoriacache.",
+    "image": "https://bernardoiannini.com/img/eufoto1.png",
+    "email": "mailto:bernardo.iannini14@gmail.com",
+    "telephone": "+55-31-99562-4617",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Belo Horizonte",
+      "addressRegion": "MG",
+      "addressCountry": "BR"
+    },
+    "nationality": { "@type": "Country", "name": "Brasil" },
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Inspire4U",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Belo Horizonte",
+        "addressRegion": "MG",
+        "addressCountry": "BR"
+      }
+    },
+    "alumniOf": {
+      "@type": "EducationalOrganization",
+      "name": "COTEMIG",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Belo Horizonte",
+        "addressRegion": "MG",
+        "addressCountry": "BR"
+      }
+    },
+    "knowsAbout": [
+      "Desenvolvimento Web",
+      "Full Stack",
+      "AI Design",
+      "C#",
+      "SQL",
+      "TypeScript",
+      "JavaScript",
+      "React",
+      "Python",
+      "UX Design",
+      "Edição de Vídeo",
+      "ERP"
+    ],
+    "knowsLanguage": ["pt-BR", "en"],
+    "sameAs": [
+      "https://www.linkedin.com/in/bernardo-iannini",
+      "https://github.com/iannini25"
+    ]
+  }
+  </script>
+
+  <!-- JSON-LD: BREADCRUMB (home) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://bernardoiannini.com/" }
+    ]
+  }
+  </script>
+
+  <!-- JSON-LD: PROFESSIONAL SERVICE (reforça serviços ofertados) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Bernardo Iannini — Desenvolvimento & AI Design",
+    "description": "Serviços de desenvolvimento Full Stack, AI Design, sites institucionais, ERPs e edição de vídeo.",
+    "url": "https://bernardoiannini.com/",
+    "image": "https://bernardoiannini.com/img/eufoto1.png",
+    "provider": { "@type": "Person", "name": "Bernardo Iannini", "url": "https://bernardoiannini.com/" },
+    "areaServed": ["Brasil", "United States"],
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Belo Horizonte",
+      "addressRegion": "MG",
+      "addressCountry": "BR"
+    },
+    "telephone": "+55-31-99562-4617",
+    "email": "mailto:bernardo.iannini14@gmail.com"
+  }
+  </script>
+
+
+</head>
+
+<body>
+  <!-- NAVBAR -->
+  <header>
+    <div class="nav">
+
+      <!-- MENU MOBILE (drop) -->
+      <nav id="mobileNav" class="mobile-nav" aria-hidden="true">
+        <a href="#home" data-scroll data-i18n="nav.home">Home</a>
+        <a href="#sobre" data-scroll data-i18n="nav.about">About</a>
+        <a href="#services" data-scroll data-i18n="nav.services">Services</a>
+
+        <div class="mobile-dd">
+          <button type="button" class="mobile-dd-btn" aria-haspopup="menu" aria-expanded="false">
+            <span data-i18n="nav.work">Work</span>
+            <svg class="mobile-dd-caret" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="mobile-dd-menu" role="menu">
+            <a href="#xp" data-scroll data-i18n="nav.experience" role="menuitem">Experience</a>
+            <a href="#skills" data-scroll data-i18n="nav.skills" role="menuitem">Skills</a>
+            <a href="#projects" data-scroll data-i18n="nav.projects" role="menuitem">Projects</a>
+          </div>
+        </div>
+
+        <a href="blog.html" class="nav-blog-link">
+          <span data-i18n="nav.blog">Blog</span>
+        </a>
+        <a href="#contato" data-scroll data-i18n="nav.contact">Contact</a>
+        <!-- (REMOVIDO no mobile) Currículo -->
+      </nav>
+
+      <!-- Language switch (ESQUERDA) -->
+      <div class="lang-slot" aria-label="Language switch">
+        <button id="langBtn" class="lang-switch pill" aria-haspopup="listbox" aria-expanded="false">
+          <span class="lang-ico" aria-hidden="true">🌐</span>
+          <span id="langCode">EN</span>
+          <svg class="caret" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </button>
+        <ul id="langMenu" class="lang-menu" role="listbox">
+          <li data-lang="en" role="option" aria-selected="true">English</li>
+          <li data-lang="pt" role="option" aria-selected="false">Português</li>
+        </ul>
+      </div>
+
+      <div class="nav-center">
+        <nav class="pill">
+          <a href="#home" data-scroll data-i18n="nav.home">Home</a>
+          <a href="#sobre" data-scroll data-i18n="nav.about">About</a>
+          <a href="#services" data-scroll data-i18n="nav.services">Services</a>
+
+          <div class="nav-dd">
+            <button type="button" id="workBtn" class="nav-dd-btn" aria-haspopup="menu" aria-expanded="false">
+              <span data-i18n="nav.work">Work</span>
+              <svg class="nav-dd-caret" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+            <ul id="workMenu" class="nav-dd-menu" role="menu">
+              <li><a href="#xp" data-scroll data-i18n="nav.experience" role="menuitem">Experience</a></li>
+              <li><a href="#skills" data-scroll data-i18n="nav.skills" role="menuitem">Skills</a></li>
+              <li><a href="#projects" data-scroll data-i18n="nav.projects" role="menuitem">Projects</a></li>
+            </ul>
+          </div>
+
+          <a href="blog.html" class="nav-blog-link">
+            <span data-i18n="nav.blog">Blog</span>
+          </a>
+          <a href="#contato" data-scroll data-i18n="nav.contact">Contact</a>
+        </nav>
+      </div>
+
+
+      <!-- BOTÃO HAMBÚRGUER (aparece no mobile) -->
+      <button id="menuBtn" class="menu-btn" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobileNav">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+      </button>
+
+      <!-- NAV RIGHT (desktop) -->
+      <div class="nav-right">
+        <a class="resume-btn" href="Curriculo_Bernardo_Iannini.pdf" download>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3v11m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          <span data-i18n="nav.resume">Currículo</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+
+  <main>
+    <!-- HERO -->
+    <section id="home" class="hero" aria-label="apresentação">
+      <figure class="photo">
+        <img class="photo__img photo__img--a" src="img/eufoto1.png"
+             alt="Bernardo Iannini, desenvolvedor Full Stack e AI Designer, em foto de perfil"
+             width="520" height="520" draggable="false" fetchpriority="high" />
+        <img class="photo__img photo__img--b" src="img/eufoto2.png"
+             alt="Bernardo Iannini, foto alternativa de perfil"
+             width="520" height="520" draggable="false" />
+        <span class="photo__sweep" aria-hidden="true"></span>
+      </figure>
+
+      <div class="stack">
+        <p class="hello">Hi, I'm</p>
+        <h1 class="name"><span class="green">Bernardo</span><span class="break">Iannini.</span></h1>
+        <p class="tagline"><em id="taglineText">I build websites.</em><span class="cursor"></span></p>
+      </div>
+
+      <aside class="rail" aria-label="links sociais">
+        <a class="sbtn" href="https://www.linkedin.com/in/bernardo-iannini" target="_blank" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.05c.53-1 1.84-2.2 3.8-2.2 4.06 0 4.8 2.67 4.8 6.15V24h-4v-7.1c0-1.7-.03-3.9-2.4-3.9-2.4 0-2.77 1.87-2.77 3.8V24h-4V8z" />
+          </svg>
+        </a>
+        <a class="sbtn" href="https://github.com/iannini25" target="_blank" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M12 .5C5.73.5.98 5.24.98 11.5c0 4.85 3.14 8.96 7.49 10.41.55.1.75-.24.75-.53v-1.86c-3.04.66-3.68-1.45-3.68-1.45-.5-1.28-1.22-1.63-1.22-1.63-.99-.67.08-.66.08-.66 1.09.08 1.66 1.13 1.66 1.13.98 1.67 2.57 1.19 3.2.91.1-.71.38-1.19.69-1.46-2.43-.28-4.99-1.22-4.99-5.43 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.41.11-2.94 0 0 .92-.29 3.02 1.13A10.5 10.5 0 0 1 12 6.8c.94 0 1.88.13 2.77.38 2.1-1.42 3.02-1.13 3.02-1.13.6 1.53.22 2.66.11 2.94.7.77 1.13 1.75 1.13 2.95 0 4.22-2.57 5.14-5.01 5.41.39.34.73 1.02.73 2.07v3.07c0 .3.2.64.76.53 4.34-1.45 7.48-5.56 7.48-10.41C23.02 5.24 18.27.5 12 .5z" />
+          </svg>
+        </a>
+      </aside>
+
+      <button id="scrollCue" class="scroll-cue" type="button" aria-label="Scroll to next section">
+        <svg class="scroll-cue__chev" viewBox="0 0 42 36" aria-hidden="true" fill="none">
+          <defs>
+            <linearGradient id="scrollCueGrad" x1="50%" y1="0%" x2="50%" y2="100%">
+              <stop offset="0%"  stop-color="#22c55e"/>
+              <stop offset="100%" stop-color="#a3e635"/>
+            </linearGradient>
+          </defs>
+
+          <!-- partículas laterais (decorativas, com animação própria) -->
+          <circle class="scroll-cue__particle scroll-cue__particle--l1"
+            cx="6" cy="14" r="1.3" fill="url(#scrollCueGrad)"/>
+          <circle class="scroll-cue__particle scroll-cue__particle--l2"
+            cx="3" cy="23" r="0.9" fill="url(#scrollCueGrad)"/>
+          <circle class="scroll-cue__particle scroll-cue__particle--r1"
+            cx="36" cy="14" r="1.3" fill="url(#scrollCueGrad)"/>
+          <circle class="scroll-cue__particle scroll-cue__particle--r2"
+            cx="39" cy="23" r="0.9" fill="url(#scrollCueGrad)"/>
+
+          <!-- ponto de origem central -->
+          <circle cx="21" cy="5" r="1.9" fill="url(#scrollCueGrad)"/>
+          <!-- haste vertical -->
+          <line x1="21" y1="9" x2="21" y2="22"
+            stroke="url(#scrollCueGrad)" stroke-width="2" stroke-linecap="round"/>
+          <!-- chevron principal -->
+          <path d="M13.5 21l7.5 7.5 7.5-7.5"
+            stroke="url(#scrollCueGrad)" stroke-width="2.6"
+            stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </section>
+
+    <!-- SOBRE -->
+    <section id="sobre" class="about-section section" aria-label="sobre mim">
+      <div class="about-wrap">
+        <div class="section-head about-head">
+          <p class="kicker" data-i18n="about.kicker">About me</p>
+          <h2 class="section-title about-title">
+            <span class="about-title__line" data-i18n="about.titleA">Mais do que código,</span>
+            <em class="about-title__line about-title__line--em" data-i18n="about.titleB">uma jornada.</em>
+          </h2>
+          <p class="section-sub about-sub" data-i18n="about.sub">19 · Full Stack Developer · Inspire4U / COTEMIG</p>
+        </div>
+
+        <div class="about-layout">
+          <!-- Terminal -->
+          <div class="term-wrap about-term">
+            <div class="term-bar" role="toolbar" aria-label="Controles do terminal">
+              <button class="t-dot t-r" type="button" aria-label="Fechar (vermelho)"></button>
+              <button class="t-dot t-y" type="button" aria-label="Minimizar (amarelo)"></button>
+              <button class="t-dot t-g" type="button" aria-label="Maximizar (verde)"></button>
+              <span class="t-title">bernardoiannini@localhost — bash</span>
+            </div>
+            <div class="term-body" id="terminal"></div>
+          </div>
+
+          <!-- Painel lateral -->
+          <aside class="about-side">
+            <!-- Status: aberto a projetos -->
+            <div class="about-card about-card--status">
+              <span class="about-status-dot" aria-hidden="true"></span>
+              <div class="about-card-text">
+                <span class="about-card-label" data-i18n="about.statusLabel">Status</span>
+                <span class="about-card-value" data-i18n="about.statusValue">Aberto a novos projetos</span>
+              </div>
+            </div>
+
+            <!-- Blog teaser -->
+            <div class="about-card about-card--blog">
+              <div class="about-blog-head">
+                <span class="about-card-label" data-i18n="about.blogLabel">Blog</span>
+                <span class="about-blog-tag" style="background:#a3e635;color:#08120c;" data-i18n="about.blogTag">No ar</span>
+              </div>
+              <p class="about-card-value about-card-value--big" data-i18n="about.blogTitle">Compartilhando o que aprendo no caminho.</p>
+              <p class="about-blog-desc" data-i18n="about.blogDesc">Estudos de caso, decisões técnicas e bastidores dos projetos.</p>
+              <a href="blog.html" class="about-blog-btn" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
+                <span data-i18n="about.blogCta">Acessar blog</span>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </div>
+
+            <!-- Currículo / CV download -->
+            <div class="about-card about-card--cv">
+              <div class="about-cv-head">
+                <span class="about-cv-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+                    <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5z"
+                          stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+                    <path d="M14 3v5h5" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+                    <path d="M9 13h6M9 16h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+                  </svg>
+                </span>
+                <div class="about-cv-meta">
+                  <span class="about-card-label" data-i18n="about.cvLabel">Currículo</span>
+                  <span class="about-cv-tag">PDF</span>
+                </div>
+              </div>
+              <p class="about-card-value about-card-value--big" data-i18n="about.cvTitle">Trajetória completa em uma página.</p>
+              <a class="about-cv-btn" href="Curriculo_Bernardo_Iannini.pdf" download>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true">
+                  <path d="M12 4v12m0 0l-4-4m4 4l4-4M5 20h14"
+                        stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span data-i18n="about.cvCta">Baixar currículo</span>
+              </a>
+            </div>
+
+            <!-- Localização & disponibilidade -->
+            <div class="about-card about-card--loc">
+              <span class="about-card-label" data-i18n="about.locLabel">Onde eu estou</span>
+              <div class="about-loc-row">
+                <svg class="about-loc-ico" viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
+                  <path d="M12 21s7-5.4 7-11a7 7 0 1 0-14 0c0 5.6 7 11 7 11z"
+                        stroke="currentColor" stroke-width="1.8" fill="none"/>
+                  <circle cx="12" cy="10" r="2.6" stroke="currentColor" stroke-width="1.8"/>
+                </svg>
+                <span class="about-loc-text" data-i18n="about.locValue">Belo Horizonte, MG · Brasil</span>
+              </div>
+              <div class="about-loc-tags">
+                <span class="about-loc-tag" data-i18n="about.locRemote">Remoto · Brasil/EUA</span>
+                <span class="about-loc-tag about-loc-tag--alt" data-i18n="about.locTimezone">UTC−3</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVIÇOS / SERVICES -->
+    <section id="services" class="section services-section" aria-label="services">
+      <div class="section-head">
+        <h2 class="section-title">Services</h2>
+        <p class="section-sub">What I deliver for clients and teams.</p>
+      </div>
+
+      <div class="services-grid" id="servicesGrid" aria-live="polite"></div>
+    </section>
+
+    <!-- EXPERIÊNCIA -->
+    <section id="xp" class="section xp" aria-label="experiência">
+      <h2 class="xp-title">Experience</h2>
+      <p class="xp-sub">My professional and academic journey</p>
+
+      <!-- sprite de ícones -->
+      <svg aria-hidden="true" width="0" height="0" class="xp-sprite">
+        <defs>
+          <filter id="soft-glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          <symbol id="ico-cap" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 8l9-4 9 4-9 4-9-4z" />
+              <path d="M7 10v4c0 1.2 2.8 2.2 5 2.2s5-1 5-2.2v-4" />
+              <path d="M21 10v4" />
+            </g>
+          </symbol>
+          <symbol id="ico-briefcase" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 6V5a2.5 2.5 0 0 1 2.5-2.5h1A2.5 2.5 0 0 1 15 5v1" />
+              <rect x="3" y="6" width="18" height="14" rx="2.5" ry="2.5" />
+              <path d="M3 12h18" />
+            </g>
+          </symbol>
+          <!-- novo: certificado -->
+          <symbol id="ico-certificate" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="4.5" />
+              <path d="M9 14l-2.2 6 3.2-1.6 2 1.6 2-6" />
+              <path d="M15 14l2.2 6-3.2-1.6-2 1.6-2-6" />
+            </g>
+          </symbol>
+        </defs>
+      </svg>
+
+      <div class="xp-icons" role="group" aria-label="ícones de experiência">
+        <button id="btnAcad" class="xp-ico" aria-label="Acadêmica" type="button">
+          <svg viewBox="0 0 24 24">
+            <use href="#ico-cap" />
+          </svg>
+        </button>
+        <button id="btnProf" class="xp-ico active" aria-label="Profissional" type="button">
+          <svg viewBox="0 0 24 24">
+            <use href="#ico-briefcase" />
+          </svg>
+        </button>
+        <button id="btnCourses" class="xp-ico" aria-label="Cursos & Especializações" type="button"
+          title="Cursos & Especializações">
+          <svg viewBox="0 0 24 24">
+            <use href="#ico-certificate" />
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- TIMELINE DE EXPERIÊNCIAS (renderizada por js/experience.js) -->
+    <section id="timeline" class="section work-timeline" aria-label="experiências">
+      <div class="tl-top"><span id="tlMode" class="tl-mode">Professional</span></div>
+
+      <div class="tl">
+        <div class="tl-line" aria-hidden="true"></div>
+        <div id="group-prof" class="tl-group" data-track="prof"></div>
+        <div id="group-acad" class="tl-group" data-track="acad"></div>
+        <div id="group-courses" class="tl-group" data-track="courses"></div>
+      </div>
+    </section>
+
+    <section id="skills" class="section skills-tiles">
+      <div class="section-head">
+        <h2 class="section-title">Skills</h2>
+        <p class="section-sub">Clique nos quadrados para revelar.</p>
+      </div>
+
+      <div class="tiles-wrap squares">
+        <!-- OS & Cloud -->
+        <button class="tile tile-square" type="button" aria-expanded="false" data-label="OS & Cloud">
+          <span class="tile-ico" aria-hidden="true">
+            <img src="icons/server-operating-systems-svgrepo-com.svg" alt="">
+          </span>
+          <span class="tile-reveal">
+            <ul class="skill-icons reveal-grid">
+              <li><img src="icons/ubuntulinux.png" alt="Linux"></li>
+              <li><img src="icons/kalilinux.png" alt="Kali"></li>
+              <li><img src="icons/windows.png" alt="Windows"></li>
+              <li><img src="icons/apple.svg" alt="macOS"></li>
+              <li><img src="icons/aws.svg" alt="AWS"></li>
+              <li><img src="icons/VPS.svg" alt="VPS"></li>
+            </ul>
+          </span>
+        </button>
+
+        <!-- Programming -->
+        <button class="tile tile-square" type="button" aria-expanded="false" data-label="Programming">
+          <span class="tile-ico" aria-hidden="true">
+            <img src="icons/code-svgrepo-com.svg" alt="">
+          </span>
+          <span class="tile-reveal">
+            <ul class="skill-icons reveal-grid">
+              <li><img src="icons/csharp.png" alt="C#"></li>
+              <li><img src="icons/python.png" alt="Python"></li>
+              <li><img src="icons/typescript.svg" alt="TypeScript"></li>
+              <li><img src="icons/javascript.png" alt="JavaScript"></li>
+              <li><img src="icons/dart.svg" alt="Dart"></li>
+              <li><img src="icons/mysql.png" alt="MySQL"></li>
+            </ul>
+          </span>
+        </button>
+
+        <!-- Web & Mobile -->
+        <button class="tile tile-square" type="button" aria-expanded="false" data-label="Web & Mobile">
+          <span class="tile-ico" aria-hidden="true">
+            <img src="icons/web-svgrepo-com.svg" alt="">
+          </span>
+          <span class="tile-reveal">
+            <ul class="skill-icons reveal-grid">
+              <li><img src="icons/html.png" alt="HTML"></li>
+              <li><img src="icons/css.png" alt="CSS"></li>
+              <li><img src="icons/wordpress.png" alt="WordPress"></li>
+              <li><img src="icons/react.svg" alt="React"></li>
+              <li><img src="icons/flutter.svg" alt="Flutter"></li>
+              <li><img src="icons/kotlin.svg" alt="Kotlin"></li>
+              <li><img src="icons/swift.svg" alt="Swift"></li>
+            </ul>
+          </span>
+        </button>
+
+        <!-- Design & AI -->
+        <button class="tile tile-square" type="button" aria-expanded="false" data-label="Design & AI">
+          <span class="tile-ico" aria-hidden="true">
+            <img src="icons/design-svgrepo-com.svg" alt="">
+          </span>
+          <span class="tile-reveal">
+            <ul class="skill-icons reveal-grid">
+              <li><img src="icons/figma.svg" alt="Figma"></li>
+              <li><img src="icons/photoshop.png" alt="Photoshop"></li>
+              <li><img src="icons/premiere.png" alt="Premiere Pro"></li>
+              <li><img src="icons/aftereffects.png" alt="After Effects"></li>
+              <li><img src="icons/blender.png" alt="Blender"></li>
+              <li><img src="icons/claude.svg" alt="Claude"></li>
+              <li><img src="icons/jupyter.png" alt="Jupyter"></li>
+            </ul>
+          </span>
+        </button>
+      </div>
+    </section>
+
+
+
+
+
+    <!-- PROJECTS (featured grid + GitHub CTA card) -->
+    <section id="projects" class="section projects" aria-label="projects">
+      <div class="section-head">
+        <h2 class="section-title">Projects</h2>
+        <p class="section-sub">A concise selection of my recent work in web, product, and media.</p>
+      </div>
+
+      <div class="proj-grid" id="projGrid" aria-live="polite"></div>
+    </section>
+
+    <!-- CONTACT (Aurora hero) -->
+    <section id="contato" class="contact-hero" aria-label="contato">
+      <div class="aurora" aria-hidden="true">
+        <div class="aurora__halo aurora__halo--violet"></div>
+        <div class="aurora__halo aurora__halo--teal"></div>
+        <div class="aurora__halo aurora__halo--magenta"></div>
+        <div class="aurora__horizon"></div>
+        <div class="aurora__glow"></div>
+      </div>
+
+      <div class="contact-hero__inner">
+        <p class="contact-hero__kicker" data-i18n="contact.kicker">Let's talk</p>
+        <h2 class="contact-hero__title">
+          <span class="contact-hero__line" data-i18n="contact.lineA">Let's build something real,</span>
+          <em class="contact-hero__line contact-hero__line--em" data-i18n="contact.lineB">with real impact.</em>
+        </h2>
+        <p class="contact-hero__sub" data-i18n="contact.sub">
+          Whether it's a product, a website or just an idea — I'm one click away.
+        </p>
+
+        <button class="contact-hero__cta" id="openContactBtn" type="button">
+          <span class="contact-hero__cta-label" data-i18n="contact.openCta">Get in touch</span>
+          <span class="contact-hero__cta-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </button>
+      </div>
+    </section>
+
+    <!-- MODAL DE CONTATO -->
+    <dialog id="contactModal" class="ctm" aria-labelledby="ctmTitle">
+      <div class="ctm__shell" role="document">
+        <div class="ctm__aurora" aria-hidden="true"></div>
+
+        <button class="ctm__close" type="button" aria-label="Fechar" data-close-contact>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+
+        <div class="ctm__head">
+          <p class="ctm__kicker" data-i18n="contact.modal.kicker">Direct line</p>
+          <h3 id="ctmTitle" class="ctm__title" data-i18n="contact.modal.title">Let's talk</h3>
+          <p class="ctm__sub" data-i18n="contact.modal.sub">Pick a channel or send a message — I reply fast.</p>
+        </div>
+
+        <div class="ctm__channels">
+          <a class="ctm__channel" id="ctmEmail" href="mailto:bernardo.iannini14@gmail.com" style="--i:0">
+            <span class="ctm__ch-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+                <rect x="3" y="5" width="18" height="14" rx="2.5" stroke="currentColor" stroke-width="1.6"/>
+                <path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="ctm__ch-text">
+              <span class="ctm__ch-label">Email</span>
+              <span class="ctm__ch-meta">bernardo.iannini14@gmail.com</span>
+            </span>
+          </a>
+
+          <a class="ctm__channel" id="ctmWhats" href="https://wa.me/5531995624617" target="_blank" rel="noreferrer" style="--i:1">
+            <span class="ctm__ch-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+                <path d="M20.5 3.5A10 10 0 003.2 17.7L2 22l4.4-1.2A10 10 0 1020.5 3.5z"
+                  stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                <path d="M8.5 9c.4 1.6 1.6 3.4 3 4.6 1.5 1.2 3 1.7 4 1.7l1-1.6-2.4-1.4-1 1c-.7-.3-1.5-.9-2.1-1.5-.6-.6-1.2-1.4-1.5-2.1l1-1L9.1 6.4 7.5 7.4c0 .6.4 1.4 1 2.6"
+                  stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="ctm__ch-text">
+              <span class="ctm__ch-label">WhatsApp</span>
+              <span class="ctm__ch-meta" data-i18n="contact.modal.whatsMeta">+55 31 99562-4617</span>
+            </span>
+          </a>
+
+          <a class="ctm__channel" id="ctmLinkedin" href="https://www.linkedin.com/in/bernardo-iannini" target="_blank" rel="noreferrer" style="--i:2">
+            <span class="ctm__ch-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.05c.53-1 1.84-2.2 3.8-2.2 4.06 0 4.8 2.67 4.8 6.15V24h-4v-7.1c0-1.7-.03-3.9-2.4-3.9-2.4 0-2.77 1.87-2.77 3.8V24h-4V8z"/>
+              </svg>
+            </span>
+            <span class="ctm__ch-text">
+              <span class="ctm__ch-label">LinkedIn</span>
+              <span class="ctm__ch-meta">@bernardo-iannini</span>
+            </span>
+          </a>
+        </div>
+
+        <div class="ctm__divider">
+          <span data-i18n="contact.modal.or">or write to me</span>
+        </div>
+
+        <form class="ctm__form" id="ctmForm" novalidate>
+          <label class="ctm__field" style="--i:3">
+            <span class="ctm__field-label" data-i18n="contact.name">Name</span>
+            <input type="text" id="ctmName" autocomplete="name" required>
+          </label>
+          <label class="ctm__field" style="--i:4">
+            <span class="ctm__field-label" data-i18n="contact.email">Email</span>
+            <input type="email" id="ctmEmail2" autocomplete="email" required>
+          </label>
+          <label class="ctm__field ctm__field--full" style="--i:5">
+            <span class="ctm__field-label" data-i18n="contact.message">Message</span>
+            <textarea id="ctmMsg" rows="4" required></textarea>
+          </label>
+          <button type="submit" class="ctm__submit" style="--i:6">
+            <span class="ctm__submit-label" data-i18n="contact.modal.send">Send message</span>
+            <span class="ctm__submit-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
+                <path d="M22 3L11 14M22 3l-7 19-4-8-8-4 19-7z" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </button>
+          <p class="ctm__status" id="ctmStatus" aria-live="polite"></p>
+        </form>
+      </div>
+    </dialog>
+
+
+  </main>
+
+  <!-- MODAL DE PROJETO -->
+  <dialog id="projModal" class="proj-modal">
+    <div class="proj-modal-frame">
+      <div class="proj-modal-hero">
+        <h2 class="proj-modal-title">Project title</h2>
+      </div>
+
+      <div class="proj-modal-body">
+        <!-- descrição longa (JS preenche .proj-modal-desc) -->
+        <p class="proj-modal-description proj-modal-desc">
+          Longer project description will appear here.
+        </p>
+
+        <!-- header “Technologies” -->
+        <div class="proj-modal-tech-header">
+          <span class="proj-modal-tech-label-icon">&lt;/&gt;</span>
+          <span class="proj-modal-tech-label" data-proj-tech>Technologies</span>
+        </div>
+
+        <!-- pills de stack (JS preenche .proj-modal-chips) -->
+        <div class="proj-modal-tech-pills proj-modal-chips">
+          <!-- preenchido via JS -->
+        </div>
+
+        <!-- botões -->
+        <div class="proj-modal-actions">
+          <button type="button" class="btn-close proj-modal-btn ghost" data-close>
+            <span class="proj-modal-btn-label" data-close-label>Close</span>
+          </button>
+
+          <a href="#" target="_blank" rel="noopener noreferrer" class="btn-github proj-modal-btn github">
+            <svg class="btn-github-icon" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24"
+              fill="currentColor">
+              <path
+                d="M12 .5C5.73.5.98 5.24.98 11.5c0 4.85 3.14 8.96 7.49 10.41.55.1.75-.24.75-.53v-1.86c-3.04.66-3.68-1.45-3.68-1.45-.5-1.28-1.22-1.63-1.22-1.63-.99-.67.08-.66.08-.66 1.09.08 1.66 1.13 1.66 1.13.98 1.67 2.57 1.19 3.2.91.1-.71.38-1.19.69-1.46-2.43-.28-4.99-1.22-4.99-5.43 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.41.11-2.94 0 0 .92-.29 3.02 1.13A10.5 10.5 0 0 1 12 6.8c.94 0 1.88.13 2.77.38 2.1-1.42 3.02-1.13 3.02-1.13.6 1.53.22 2.66.11 2.94.7.77 1.13 1.75 1.13 2.95 0 4.22-2.57 5.14-5.01 5.41.39.34.73 1.02.73 2.07v3.07c0 .3.2.64.76.53 4.34-1.45 7.48-5.56 7.48-10.41C23.02 5.24 18.27.5 12 .5z" />
+            </svg>
+
+            <span class="proj-modal-btn-label">GitHub</span>
+          </a>
+
+          <a href="#" target="_blank" rel="noopener noreferrer" class="btn-site proj-modal-btn primary">
+            <span class="btn-site-icon" aria-hidden="true">🌐</span>
+            <span class="proj-modal-btn-label">View site</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+
+
+
+  <script src="/js/language.js"></script>
+  <script src="/js/home.js"></script>
+  <script src="/js/about.js"></script>
+  <script src="/js/services.js"></script>
+  <script src="/js/experience.js"></script>
+  <script src="/js/skills.js"></script>
+  <script src="/js/projects.js"></script>
+  <script src="/js/contact.js"></script>
+  <script src="/js/UI.js"></script>
+
+</body>
+
+
+</html>
