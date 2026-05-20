@@ -65,6 +65,9 @@
         var l = localStorage.getItem('lang');
         if (l === 'pt' || l === 'en') {
           document.documentElement.lang = (l === 'pt') ? 'pt-BR' : 'en';
+          // Visitante recorrente: revela o conteudo ja no 1o paint pra
+          // a View Transition nativa nao capturar um body opacity:0.
+          document.documentElement.classList.add('i18n-ready');
         }
       } catch (e) {}
     })();

@@ -920,6 +920,12 @@ function openPost(id, href) {
   const post = state.posts.find(p => p.id === id);
   const url = href || (post ? postUrl(post) : null);
   if (!url) return;
+  // Browser com View Transitions cross-document: navega direto e deixa
+  // o @view-transition (CSS) animar nativo. Sem suporte: fade JS atual.
+  if ('startViewTransition' in document && 'onpagereveal' in window) {
+    location.href = url;
+    return;
+  }
   document.body.classList.add('page-leaving');
   setTimeout(() => { location.href = url; }, 220);
 }

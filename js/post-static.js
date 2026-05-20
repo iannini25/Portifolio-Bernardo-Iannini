@@ -136,7 +136,13 @@
     window.addEventListener('resize', update);
   }
 
-  /* ---------- Fade-out ao sair pra outra página interna ---------- */
+  /* ---------- Fade-out ao sair pra outra página interna ----------
+     Browser com View Transitions cross-document (Chrome/Edge 126+):
+     NAO intercepta — navegacao normal + @view-transition nativo (CSS).
+     Sem suporte (Firefox/Safari): mantem o fade JS. */
+  const SUPPORTS_CROSS_DOC_VT =
+    'startViewTransition' in document && 'onpagereveal' in window;
+  if (!SUPPORTS_CROSS_DOC_VT)
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a[href]');
     if (!a) return;
