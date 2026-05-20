@@ -4693,7 +4693,13 @@ body.blog-body { min-height: 100vh; }
   }
 
   /* Contact */
-  .contact-hero { padding: 48px 16px; }
+  .contact-hero {
+    --aurora-offset: 90px;
+    --aurora-bleed: 70px;
+    --hero-fade: 200px;
+    padding: 56px 18px 150px;
+    min-height: 520px;
+  }
   .contact-hero__title { font-size: clamp(32px, 8vw, 52px) !important; line-height: 1.05; }
   .contact-hero__sub { font-size: 1rem; }
 
@@ -4753,7 +4759,13 @@ body.blog-body { min-height: 100vh; }
   }
 
   /* Contact */
-  .contact-hero { padding: 40px 14px; min-height: auto; }
+  .contact-hero {
+    --aurora-offset: 70px;
+    --aurora-bleed: 55px;
+    --hero-fade: 160px;
+    padding: 48px 14px 130px;
+    min-height: 480px;
+  }
   .contact-hero__title { font-size: clamp(28px, 9vw, 44px) !important; }
   .contact-hero__sub { font-size: .92rem; }
   .contact-hero__cta { padding: 12px 20px; font-size: .9rem; }
@@ -4804,8 +4816,10 @@ body.blog-body { min-height: 100vh; }
 }
 
 /* ====== Contenção global: evita scroll horizontal nas seções ====== */
-.contact-hero,
-.aurora,
+/* .contact-hero e .aurora ficam de fora: a seção usa width:100vw +
+   margin-left negativo pra ocupar o viewport inteiro (full-bleed).
+   Aplicar max-width:100% aqui colapsa a largura mas mantém o negativo,
+   deslocando tudo pra esquerda. O body já tem overflow-x:clip. */
 .projects-soon,
 .blog-soon {
   max-width: 100%;
