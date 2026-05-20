@@ -1553,7 +1553,15 @@ header {
   .work-timeline .dot { left: 24px; top: 28px; transform: translateX(-50%) }
   .tl-year { min-width: 0; padding: 10px 14px }
   .tl-year-num { font-size: 18px }
-  .tl-card.panel { max-width: 100% }
+  /* min-width:0 evita que conteúdo (palavras longas, gradients) force o
+     card a crescer além da coluna de grid. overflow-wrap garante quebra. */
+  .tl-card.panel {
+    max-width: 100%;
+    min-width: 0;
+    padding: 18px 18px;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
   .tl-card-title { text-align: left }
   .tl-bullets li { text-align: left }
 }
@@ -4665,7 +4673,9 @@ body.blog-body { min-height: 100vh; }
   /* About */
   .about-section { padding: 48px 16px 64px; }
   .about-head { margin-bottom: 28px; }
-  .term-body { font-size: 12px; padding: 12px; max-height: 50vh; }
+  /* sem max-height: o pai .term-wrap tem overflow:hidden (pros cantos
+     arredondados), então qualquer limite aqui CORTA o conteúdo. */
+  .term-body { font-size: 12px; padding: 12px; }
   .term-bar { padding: 8px 12px; }
   .term-bar .t-title { display: none; }
 
@@ -4681,8 +4691,14 @@ body.blog-body { min-height: 100vh; }
   .xp-title { font-size: clamp(28px, 7vw, 36px); }
   .xp-sub { font-size: .9rem; }
 
-  /* Timeline: já há rules existentes; reforça */
-  .tl { padding: 16px 8px; }
+  /* Timeline: aperta a margem esquerda (linha+dot mais perto da borda)
+     e garante folga visível na direita pra card não encostar na tela. */
+  .work-timeline .tl { padding: 16px 14px 16px 8px; }
+  .work-timeline .tl-line { left: 18px; }
+  .work-timeline .dot { left: 18px; }
+  .work-timeline .tl-entry { padding-left: 44px; }
+  .tl-card.panel { padding: 16px 16px; }
+  .tl-card-title { font-size: 17px; }
 
   /* Skills already responsive but reforça tipo */
   .skills-tiles .tiles-wrap.squares {
@@ -4742,7 +4758,7 @@ body.blog-body { min-height: 100vh; }
   .about-title { font-size: clamp(26px, 7vw, 36px); }
   .about-card { padding: 16px; border-radius: 14px; }
   .about-card-value--big { font-size: .98rem !important; line-height: 1.4; }
-  .term-body { font-size: 11.5px; max-height: 44vh; }
+  .term-body { font-size: 11.5px; }
 
   /* Services */
   .services-section { padding-left: 14px; padding-right: 14px; }
@@ -4751,6 +4767,16 @@ body.blog-body { min-height: 100vh; }
   /* Experience */
   .xp-title { font-size: clamp(26px, 8vw, 34px); }
   .xp-icons { gap: 10px; }
+
+  /* Timeline em mobile pequeno: linha mais à esquerda e mais folga
+     na direita pra card não ficar colado na borda. */
+  .work-timeline .tl { padding: 14px 14px 14px 6px; }
+  .work-timeline .tl-line { left: 14px; }
+  .work-timeline .dot { left: 14px; }
+  .work-timeline .tl-entry { padding-left: 36px; }
+  .tl-card.panel { padding: 14px 14px; }
+  .tl-card-title { font-size: 16px; }
+  .tl-bullets li { font-size: 12.5px; }
 
   /* Skills */
   .skills-tiles .tiles-wrap.squares {
@@ -4797,7 +4823,7 @@ body.blog-body { min-height: 100vh; }
   .name { font-size: clamp(36px, 13vw, 52px) !important; }
   .hero .photo { width: 80vw; }
   .about-title { font-size: clamp(24px, 7vw, 32px); }
-  .term-body { font-size: 10.5px; max-height: 38vh; }
+  .term-body { font-size: 10.5px; }
 
   /* Skills: 1 coluna se ficar muito apertado */
   .skills-tiles .tiles-wrap.squares {
