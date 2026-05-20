@@ -58,6 +58,9 @@
         var l = localStorage.getItem('lang');
         if (l === 'pt' || l === 'en') {
           document.documentElement.lang = (l === 'pt') ? 'pt-BR' : 'en';
+          // Visitante recorrente: revela o conteudo ja no 1o paint pra
+          // a View Transition nativa nao capturar um body opacity:0.
+          document.documentElement.classList.add('i18n-ready');
         }
       } catch (e) {}
     })();
@@ -174,8 +177,9 @@
             <a href="/index.html#projects" data-i18n="nav.projects" role="menuitem">Projects</a>
           </div>
         </div>
-        <a href="/blog.html" class="nav-blog-link active-link">
+        <a href="#" class="nav-blog-link is-soon active-link" aria-disabled="true" data-blog-soon>
           <span data-i18n="nav.blog">Blog</span>
+          <span class="nav-blog-soon-badge" data-i18n="nav.blogSoon">Em breve</span>
         </a>
         <a href="/index.html#contato" data-i18n="nav.contact">Contact</a>
       </nav>
@@ -214,8 +218,9 @@
               <li><a href="/index.html#projects" data-i18n="nav.projects" role="menuitem">Projects</a></li>
             </ul>
           </div>
-          <a href="/blog.html" class="nav-blog-link active-link">
+          <a href="#" class="nav-blog-link is-soon active-link" aria-disabled="true" data-blog-soon>
             <span data-i18n="nav.blog">Blog</span>
+            <span class="nav-blog-soon-badge" data-i18n="nav.blogSoon">Em breve</span>
           </a>
           <a href="/index.html#contato" data-i18n="nav.contact">Contact</a>
         </nav>
@@ -241,6 +246,68 @@
     </div>
   </header>
 
+  <!-- =========================================================
+       BLOG EM BREVE — overlay full-page
+       O conteúdo original do blog está preservado abaixo dentro
+       de <template id="blog-original">. Pra reativar, troque
+       este <main class="blog-soon"> pelo conteúdo do template.
+       ========================================================= -->
+  <main class="blog-soon" aria-label="Blog em breve">
+    <section class="blog-soon-wrap">
+      <div class="blog-soon-card">
+        <div class="blog-soon-glow" aria-hidden="true"></div>
+
+        <div class="blog-soon-ico" aria-hidden="true">
+          <svg viewBox="0 0 80 80" fill="none">
+            <defs>
+              <linearGradient id="blogSoonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#22c55e"/>
+                <stop offset="100%" stop-color="#a3e635"/>
+              </linearGradient>
+            </defs>
+            <g stroke="url(#blogSoonGrad)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+              <path d="M50 16l14 14-30 30-14 4 4-14 30-30z"/>
+              <path d="M44 22l14 14"/>
+              <path d="M18 64l10 10"/>
+              <path d="M58 12l8 8"/>
+            </g>
+            <circle cx="68" cy="14" r="3" fill="url(#blogSoonGrad)"/>
+            <circle cx="14" cy="68" r="2.5" fill="url(#blogSoonGrad)"/>
+            <circle cx="72" cy="40" r="1.5" fill="url(#blogSoonGrad)"/>
+          </svg>
+        </div>
+
+        <span class="blog-soon-kicker" data-i18n="blog.soonKicker">Blog</span>
+        <h1 class="blog-soon-title" data-i18n-html="blog.soonTitle">
+          Em <em>breve</em>
+        </h1>
+        <p class="blog-soon-sub" data-i18n="blog.soonSub">
+          Estou finalizando os primeiros conteúdos: estudos de caso, decisões técnicas e bastidores
+          dos projetos. Volte logo!
+        </p>
+
+        <div class="blog-soon-progress" aria-hidden="true">
+          <div class="blog-soon-progress__bar"></div>
+        </div>
+
+        <a class="blog-soon-cta" href="/index.html">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+            <path d="M19 12H5M11 18l-6-6 6-6" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span data-i18n="blog.soonBack">Voltar para home</span>
+        </a>
+
+        <div class="blog-soon-tags" aria-hidden="true">
+          <span class="blog-soon-tag">writing</span>
+          <span class="blog-soon-tag">curating</span>
+          <span class="blog-soon-tag">shipping soon</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <template id="blog-original">
   <main class="blog-main">
 
     <!-- ============================================================
@@ -527,12 +594,11 @@
       </div>
     </footer>
   </main>
+  </template>
 
   <!-- Mesmo language.js + UI.js da landing -->
   <script src="/js/language.js"></script>
   <script src="/js/UI.js"></script>
-  <script src="/js/blog-seed.js"></script>
-  <script src="/js/blog.js"></script>
 </body>
 
 </html>

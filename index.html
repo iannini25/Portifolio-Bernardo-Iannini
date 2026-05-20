@@ -79,6 +79,9 @@
         var l = localStorage.getItem('lang');
         if (l === 'pt' || l === 'en') {
           document.documentElement.lang = (l === 'pt') ? 'pt-BR' : 'en';
+          // Visitante recorrente: revela o conteudo ja no 1o paint pra
+          // a View Transition nativa nao capturar um body opacity:0.
+          document.documentElement.classList.add('i18n-ready');
         }
       } catch (e) {}
     })();
@@ -247,8 +250,9 @@
           </div>
         </div>
 
-        <a href="blog.html" class="nav-blog-link">
+        <a href="#" class="nav-blog-link is-soon" aria-disabled="true" data-blog-soon>
           <span data-i18n="nav.blog">Blog</span>
+          <span class="nav-blog-soon-badge" data-i18n="nav.blogSoon">Em breve</span>
         </a>
         <a href="#contato" data-scroll data-i18n="nav.contact">Contact</a>
         <!-- (REMOVIDO no mobile) Currículo -->
@@ -289,8 +293,9 @@
             </ul>
           </div>
 
-          <a href="blog.html" class="nav-blog-link">
+          <a href="#" class="nav-blog-link is-soon" aria-disabled="true" data-blog-soon>
             <span data-i18n="nav.blog">Blog</span>
+            <span class="nav-blog-soon-badge" data-i18n="nav.blogSoon">Em breve</span>
           </a>
           <a href="#contato" data-scroll data-i18n="nav.contact">Contact</a>
         </nav>
@@ -421,20 +426,20 @@
             </div>
 
             <!-- Blog teaser -->
-            <div class="about-card about-card--blog">
+            <div class="about-card about-card--blog is-soon">
               <div class="about-blog-head">
                 <span class="about-card-label" data-i18n="about.blogLabel">Blog</span>
-                <span class="about-blog-tag" style="background:#a3e635;color:#08120c;" data-i18n="about.blogTag">No ar</span>
+                <span class="about-blog-tag about-blog-tag--soon" data-i18n="about.blogTag">Em breve</span>
               </div>
               <p class="about-card-value about-card-value--big" data-i18n="about.blogTitle">Compartilhando o que aprendo no caminho.</p>
               <p class="about-blog-desc" data-i18n="about.blogDesc">Estudos de caso, decisões técnicas e bastidores dos projetos.</p>
-              <a href="blog.html" class="about-blog-btn" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
-                <span data-i18n="about.blogCta">Acessar blog</span>
+              <button type="button" class="about-blog-btn about-blog-btn--soon" disabled aria-disabled="true">
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true">
-                  <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2"
+                  <path d="M14.7 6.3l3 3M3 21l4.5-1 11-11-3-3-11 11L3 21z" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-              </a>
+                <span data-i18n="about.blogCta">Em breve</span>
+              </button>
             </div>
 
             <!-- Currículo / CV download -->
@@ -650,14 +655,50 @@
 
 
 
-    <!-- PROJECTS (featured grid + GitHub CTA card) -->
-    <section id="projects" class="section projects" aria-label="projects">
-      <div class="section-head">
-        <h2 class="section-title">Projects</h2>
-        <p class="section-sub">A concise selection of my recent work in web, product, and media.</p>
-      </div>
+    <!-- PROJECTS (em atualização — conteúdo original preservado abaixo, dentro de comentário, para reativação futura) -->
+    <section id="projects" class="section projects-soon" aria-label="projects">
+      <div class="ps-soon-wrap">
+        <div class="ps-soon-card">
+          <div class="ps-soon-glow" aria-hidden="true"></div>
 
-      <div class="proj-grid" id="projGrid" aria-live="polite"></div>
+          <div class="ps-soon-ico" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none">
+              <defs>
+                <linearGradient id="psSoonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%"  stop-color="#22c55e"/>
+                  <stop offset="100%" stop-color="#a3e635"/>
+                </linearGradient>
+              </defs>
+              <g stroke="url(#psSoonGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                <path d="M40 14l10 10-22 22-10 2 2-10 22-22z"/>
+                <path d="M36 18l10 10"/>
+                <path d="M14 50l8 8"/>
+                <path d="M48 10l6 6"/>
+              </g>
+              <circle cx="54" cy="14" r="2.5" fill="url(#psSoonGrad)"/>
+              <circle cx="12" cy="52" r="2" fill="url(#psSoonGrad)"/>
+            </svg>
+          </div>
+
+          <span class="ps-soon-kicker" data-i18n="projects.soonKicker">Projects</span>
+          <h2 class="ps-soon-title" data-i18n-html="projects.soonTitle">
+            Seção em <em>atualização</em>
+          </h2>
+          <p class="ps-soon-sub" data-i18n="projects.soonSub">
+            Estou finalizando o desenvolvimento de novos projetos pra mostrar aqui. Volte em breve!
+          </p>
+
+          <div class="ps-soon-progress" aria-hidden="true">
+            <div class="ps-soon-progress__bar"></div>
+          </div>
+
+          <div class="ps-soon-tags" aria-hidden="true">
+            <span class="ps-soon-tag">working</span>
+            <span class="ps-soon-tag">building</span>
+            <span class="ps-soon-tag">shipping soon</span>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- CONTACT (Aurora hero) -->

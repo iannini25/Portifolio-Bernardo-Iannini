@@ -22,7 +22,7 @@ function randChars(n) {
 const I18N = {
   en: {
     htmlLang: "en",
-    nav: { home: "Home", about: "About", services: "Services", work: "Work", experience: "Experience", skills: "Skills", projects: "Projects", blog: "Blog", blogSoon: "live", contact: "Contact", resume: "CV" },
+    nav: { home: "Home", about: "About", services: "Services", work: "Work", experience: "Experience", skills: "Skills", projects: "Projects", blog: "Blog", blogSoon: "soon", contact: "Contact", resume: "CV" },
     modes: { prof: "Professional", acad: "Academic", courses: "Courses & Certifications" },
     tabAway: "come back here :(",
     hero: { hello: "Hi, I'm" },
@@ -41,10 +41,10 @@ const I18N = {
       statusLabel: "Status",
       statusValue: "Open to new projects",
       blogLabel: "Blog",
-      blogTag: "Live",
+      blogTag: "Soon",
       blogTitle: "Sharing what I learn along the way.",
       blogDesc: "Case studies, technical decisions and behind-the-scenes of my projects.",
-      blogCta: "Visit blog",
+      blogCta: "Coming soon",
       cvLabel: "Resume",
       cvTitle: "Full journey on a single page.",
       cvCta: "Download resume",
@@ -220,6 +220,16 @@ I'm passionate about technology, solving problems and turning ideas into real pr
       ctaTitle: "More on my repository",
       repoAll: "https://github.com/iannini25",
       ctas: { site: "View site", repo: "GitHub", viewMore: "View more", viewAll: "View all" },
+      soonKicker: "Projects",
+      soonTitle: "Section under <em>maintenance</em>",
+      soonSub: "I'm wrapping up new projects to showcase here. Come back soon!",
+      showcase: {
+        kicker: "Building things that matter",
+        title: "Featured Work",
+        visitBtn: "Visit Project",
+        repoBtn: "Source",
+        scrollHint: "scroll to explore"
+      },
       list: [
         {
           title: "Athena7 — Whistleblowing Channel",
@@ -305,6 +315,10 @@ Includes SEO, accessibility and performance optimization to elevate Inspire4U’
       kicker: "Blog",
       heroTitle: "More than code, <em>stories.</em>",
       heroSub: "Case studies, technical decisions and behind-the-scenes of the projects I've been building.",
+      soonKicker: "Blog",
+      soonTitle: "Coming <em>soon</em>",
+      soonSub: "I'm wrapping up the first pieces: case studies, technical decisions and behind-the-scenes of my projects. Stay tuned!",
+      soonBack: "Back to home",
       profile: { kicker: "Author" },
       stats: {
         title: "By the numbers",
@@ -365,7 +379,7 @@ Includes SEO, accessibility and performance optimization to elevate Inspire4U’
 
   pt: {
     htmlLang: "pt-BR",
-    nav: { home: "Início", about: "Sobre", services: "Serviços", work: "Trabalhos", experience: "Experiência", skills: "Habilidades", projects: "Projetos", blog: "Blog", blogSoon: "no ar", contact: "Contato", resume: "Currículo" },
+    nav: { home: "Início", about: "Sobre", services: "Serviços", work: "Trabalhos", experience: "Experiência", skills: "Habilidades", projects: "Projetos", blog: "Blog", blogSoon: "em breve", contact: "Contato", resume: "Currículo" },
     tabAway: "volta aqui :(",
     modes: { prof: "Profissional", acad: "Acadêmica", courses: "Cursos & Certificações" },
     hero: { hello: "Olá, eu sou" },
@@ -384,10 +398,10 @@ Includes SEO, accessibility and performance optimization to elevate Inspire4U’
       statusLabel: "Status",
       statusValue: "Aberto a novos projetos",
       blogLabel: "Blog",
-      blogTag: "No ar",
+      blogTag: "Em breve",
       blogTitle: "Compartilhando o que aprendo no caminho.",
       blogDesc: "Estudos de caso, decisões técnicas e bastidores dos projetos.",
-      blogCta: "Acessar blog",
+      blogCta: "Em breve",
       cvLabel: "Currículo",
       cvTitle: "Trajetória completa em uma página.",
       cvCta: "Baixar currículo",
@@ -560,11 +574,21 @@ Sou apaixonado por tecnologia, por resolver problemas e por transformar ideias e
     },
 
     projects: {
+      soonKicker: "Projetos",
+      soonTitle: "Seção em <em>atualização</em>",
+      soonSub: "Estou finalizando o desenvolvimento de novos projetos pra mostrar aqui. Volte em breve!",
       title: "Projetos",
       sub: "Uma seleção concisa do meu trabalho recente em web, produto e mídia.",
       ctaTitle: "Mais no meu repositório",
       repoAll: "https://github.com/iannini25",
       ctas: { site: "Ver site", repo: "GitHub", viewMore: "Ver mais", viewAll: "Ver todos" },
+      showcase: {
+        kicker: "Construindo coisas que importam",
+        title: "Trabalhos em Destaque",
+        visitBtn: "Ver Projeto",
+        repoBtn: "Código",
+        scrollHint: "role para explorar"
+      },
       list: [
         {
           title: "Athena7 — Canal de Denúncias",
@@ -651,6 +675,10 @@ Inclui SEO, acessibilidade e performance ajustadas para posicionar melhor a Insp
       kicker: "Blog",
       heroTitle: "Mais do que código, <em>histórias.</em>",
       heroSub: "Estudos de caso, decisões técnicas e bastidores dos projetos que tenho construído.",
+      soonKicker: "Blog",
+      soonTitle: "Em <em>breve</em>",
+      soonSub: "Estou finalizando os primeiros conteúdos: estudos de caso, decisões técnicas e bastidores dos projetos. Volte logo!",
+      soonBack: "Voltar para home",
       profile: { kicker: "Autor" },
       stats: {
         title: "Em números",

@@ -109,6 +109,7 @@
 
 html, body { height: 100% }
 html {
+  overflow-x: clip;
   background:
     radial-gradient(1200px 700px at 0% -20%, var(--g-18), transparent 70%),
     radial-gradient(900px 500px at 100% -10%, var(--g-10), transparent 70%),
@@ -116,7 +117,10 @@ html {
   background-attachment: fixed, fixed, fixed;
 }
 body {
-  overflow-x: hidden;
+  /* 'clip' previne scroll horizontal IGUAL a 'hidden', porem NAO cria
+     um scroll-container — sem isso, position:sticky (section Projetos)
+     nao gruda. Troca segura, sem mudanca visual. */
+  overflow-x: clip;
   margin: 0;
   color: var(--text);
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
@@ -3818,5 +3822,998 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   .proj-modal-actions {
     flex-direction: column;
   }
+}
+
+/* ==========================================================================
+   PAGE TRANSITIONS — View Transitions API nativa (cross-document)
+   Carregado em TODAS as paginas (style.css e global). Browsers sem
+   suporte (Firefox/Safari) ignoram o at-rule e caem no fallback JS.
+   Clean: crossfade + leve translate-y, total <= 400ms.
+   ========================================================================== */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: bi-page-out 220ms cubic-bezier(.22,1,.36,1) both;
+}
+::view-transition-new(root) {
+  animation: bi-page-in 360ms cubic-bezier(.22,1,.36,1) both;
+}
+
+@keyframes bi-page-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-8px); }
+}
+@keyframes bi-page-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Acessibilidade: quem pediu menos movimento -> transicao instantanea */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}
+
+/* ==================================================================
+   PROJECTS SHOWCASE — sticky scroll premium
+   Escopo: .projects-showcase (toda regra comeca por .ps-*)
+   Adicionado em 2026-05-18 — pode ser removido isoladamente.
+   ================================================================== */
+
+.projects-showcase {
+  --ps-w: 1680px;           /* largura util — bem mais largo que antes */
+  --ps-gap: 64px;
+  --ps-card-radius: 24px;
+  --ps-card-h: 70vh;
+  --ps-card-min: 420px;
+  --ps-card-max: 680px;
+  --ps-accent: var(--green);
+  --ps-ease: cubic-bezier(.22, 1, .36, 1);
+  --ps-dur: 600ms;
+  padding: 96px clamp(20px, 4vw, 64px) 120px;
+
+  /* FULL-BLEED: estoura o max-width:1120px do <main> pra section ficar
+     larga de verdade (o conteudo interno mantem --ps-w centralizado). */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+
+  /* CRITICO p/ o sticky funcionar: este section (.projects) tinha
+     overflow:hidden, que QUEBRA position:sticky dos filhos. Voltamos
+     pra visible so aqui; a nevoa de fundo fica contida via clip-path. */
+  overflow: visible;
+}
+.projects-showcase::before { inset: 0; clip-path: inset(0); }
+
+/* sobe o conteudo acima da nevoa .projects::before (que continua ativa) */
+.ps-head,
+.ps-grid,
+.ps-repos { position: relative; z-index: 1; }
+
+/* ---------- HEAD ---------- */
+.ps-head { max-width: var(--ps-w); margin: 0 auto 56px; text-align: left; }
+.ps-kicker {
+  display: inline-block;
+  font-family: "JetBrains Mono", monospace;
+  font-size: .75rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--text-hint);
+  margin-bottom: 18px;
+}
+.ps-kicker::before { content: "● "; color: var(--green); }
+.ps-title {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: clamp(2.4rem, 6.5vw, 5.4rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: var(--text);
+  margin: 0;
+}
+.ps-progress {
+  margin-top: 28px;
+  height: 2px;
+  background: var(--w-05);
+  overflow: hidden;
+  border-radius: 2px;
+  position: relative;
+}
+.ps-progress__bar {
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-lime);
+  transform-origin: left center;
+  transform: scaleX(0);
+  will-change: transform;
+}
+
+/* ---------- GRID: esquerda rola normal, direita gruda (sticky) ----------
+   A coluna esquerda (.ps-list) e fluxo normal e rola com a pagina.
+   A direita (.ps-panel) e sticky: gruda centralizada na tela enquanto
+   os cards passam, e "solta" quando a lista acaba (scroll normal). */
+.ps-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, .85fr);
+  gap: var(--ps-gap);
+  width: 100%;
+  max-width: var(--ps-w);
+  margin: 0 auto;
+  align-items: start;
+}
+
+/* ---------- ESQUERDA — cards em fluxo normal (scroll natural) ---------- */
+.ps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14vh;
+  /* Respiro no topo/baixo = centro da tela − metade do header −
+     metade do card. Faz o 1o card JA nascer centralizado com o
+     painel da direita (que e centrado), e o ultimo tambem alinhar. */
+  padding-block: calc(50vh - (var(--nav-h) + var(--ps-card-h)) / 2);
+}
+
+.ps-card {
+  position: relative;
+  border-radius: var(--ps-card-radius);
+  overflow: hidden;
+  background: var(--rail);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-38);
+  transform: translateY(0);
+  transition:
+    transform 600ms var(--ps-ease),
+    box-shadow 600ms var(--ps-ease),
+    border-color 600ms var(--ps-ease);
+  will-change: transform;
+}
+.ps-card.is-active {
+  border-color: var(--g-35);
+  box-shadow: var(--shadow-45), 0 0 0 1px var(--g-22);
+}
+.ps-card__media {
+  position: relative;
+  width: 100%;
+  height: clamp(var(--ps-card-min), var(--ps-card-h), var(--ps-card-max));
+}
+.ps-card__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 8s var(--ps-ease);
+}
+.ps-card.is-active .ps-card__img { transform: scale(1.04); }
+.ps-card__img--placeholder { background: linear-gradient(135deg, var(--rail), var(--bg)); }
+.ps-card__veil {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(140% 70% at 50% 100%, rgba(0,0,0,.55), transparent 60%),
+    linear-gradient(180deg, transparent 0%, rgba(0,0,0,.25) 100%);
+  opacity: .8;
+  transition: opacity 600ms var(--ps-ease);
+}
+.ps-card.is-active .ps-card__veil { opacity: .5; }
+.ps-card__num {
+  position: absolute;
+  top: 22px;
+  left: 24px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: .85rem;
+  letter-spacing: .18em;
+  color: var(--text);
+  background: var(--glass);
+  backdrop-filter: blur(8px);
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--w-12);
+  z-index: 2;
+}
+.ps-card__mobile { display: none; }
+
+/* ---------- DIREITA — painel STICKY (gruda centralizado na tela) ----------
+   height = altura da viewport abaixo do header; align-items:center deixa
+   o conteudo no centro vertical. Enquanto a lista da esquerda for mais
+   alta, ele permanece grudado; quando acaba, "solta" e o scroll segue. */
+.ps-panel {
+  position: sticky;
+  top: var(--nav-h);
+  height: calc(100vh - var(--nav-h));
+  align-self: start;
+  display: flex;
+  align-items: center;
+}
+.ps-panel__inner {
+  width: 100%;
+  padding: 32px;
+  background: var(--glass-2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: var(--ps-card-radius);
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+  transition:
+    opacity 400ms var(--ps-ease),
+    transform 400ms var(--ps-ease),
+    filter 400ms var(--ps-ease);
+}
+.ps-panel__inner.is-leaving {
+  opacity: 0;
+  transform: translateY(-12px);
+  filter: blur(6px);
+  transition-duration: 200ms;
+}
+.ps-panel__num {
+  display: inline-block;
+  font-family: "JetBrains Mono", monospace;
+  font-size: .8rem;
+  letter-spacing: .22em;
+  color: var(--ps-accent);
+  margin-bottom: 14px;
+  padding: 4px 10px;
+  border: 1px solid var(--g-28);
+  border-radius: 999px;
+  background: var(--g-08);
+}
+.ps-panel__title {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -.015em;
+  color: var(--text);
+  margin: 0 0 18px;
+}
+.ps-panel__desc {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--text-soft);
+  margin: 0 0 28px;
+  max-width: 52ch;
+}
+.ps-panel__tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+.ps-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: .78rem;
+  letter-spacing: .03em;
+  color: var(--text-soft);
+  background: var(--w-05);
+  border: 1px solid var(--w-08);
+  border-radius: 999px;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: ps-pill-in 500ms var(--ps-ease) forwards;
+  animation-delay: calc(var(--i, 0) * 40ms + 250ms);
+}
+@keyframes ps-pill-in { to { opacity: 1; transform: translateY(0); } }
+
+.ps-panel__cta { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.ps-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: .92rem;
+  font-weight: 600;
+  border-radius: 999px;
+  transition: all 280ms var(--ps-ease);
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.ps-cta__arrow { display: inline-flex; transition: transform 280ms var(--ps-ease); }
+.ps-cta:hover .ps-cta__arrow { transform: translate(2px, -2px); }
+.ps-cta--primary { background: var(--green); color: #001408; border-color: var(--green); }
+.ps-cta--primary:hover {
+  background: var(--lime);
+  border-color: var(--lime);
+  box-shadow: 0 8px 22px rgba(34,197,94,.30);
+  transform: translateY(-1px);
+}
+.ps-cta--ghost { background: transparent; color: var(--text-soft); border-color: var(--w-12); }
+.ps-cta--ghost:hover { background: var(--w-05); border-color: var(--g-35); color: var(--text); }
+.ps-cta svg { width: 16px; height: 16px; }
+
+/* ---------- CTA TODOS OS REPOSITORIOS (fora do sticky) ---------- */
+.ps-repos {
+  max-width: var(--ps-w);
+  margin: 64px auto 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* ---------- SCROLL HINT ---------- */
+.ps-scrollhint {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: .72rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--text-hint);
+  background: var(--glass);
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--w-08);
+  backdrop-filter: blur(8px);
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 400ms var(--ps-ease);
+  pointer-events: none;
+}
+.ps-scrollhint:not(.is-hidden) { opacity: 1; }
+.ps-scrollhint__arrow { animation: ps-arrow-bob 1.6s ease-in-out infinite; }
+@keyframes ps-arrow-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
+
+/* ---------- RESPONSIVO ---------- */
+@media (max-width: 1280px) {
+  .projects-showcase { padding: 80px clamp(16px,3vw,40px) 100px; }
+  .ps-grid { gap: 40px; }
+}
+
+/* ----- ABAIXO DE 1024: desliga o sticky, vira cards empilhados ----- */
+@media (max-width: 1024px) {
+  .projects-showcase { padding: 64px 16px 80px; }
+  .ps-head { margin-bottom: 40px; }
+  .ps-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 720px;
+  }
+  .ps-list {
+    gap: 24px;
+    padding: 0;
+  }
+  .ps-panel {
+    position: static;
+    height: auto;
+    display: none;
+  }
+  .ps-card { display: flex; flex-direction: column; }
+  .ps-card__media {
+    height: clamp(280px, 50vh, 460px);
+    border-radius: var(--ps-card-radius) var(--ps-card-radius) 0 0;
+  }
+  .ps-card__mobile { display: block; padding: 24px; }
+  .ps-card__mobile .ps-card__title {
+    font-family: "Instrument Serif", Georgia, serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin: 0 0 12px;
+    color: var(--text);
+  }
+  .ps-card__mobile .ps-card__desc {
+    font-size: .95rem;
+    line-height: 1.6;
+    color: var(--text-soft);
+    margin: 0 0 16px;
+  }
+  .ps-card__mobile .ps-card__tech {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px;
+  }
+  .ps-card__mobile .ps-card__tech .ps-pill {
+    animation: none; opacity: 1; transform: none;
+  }
+  .ps-scrollhint { display: none; }
+}
+
+@media (max-width: 480px) {
+  .ps-card__media { height: 320px; }
+  .ps-card__num { font-size: .75rem; padding: 4px 9px; top: 16px; left: 16px; }
+}
+
+/* ---------- REDUCED MOTION ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .ps-card,
+  .ps-card__img,
+  .ps-card__veil,
+  .ps-panel__inner,
+  .ps-progress__bar,
+  .ps-cta,
+  .ps-cta__arrow,
+  .ps-pill,
+  .ps-scrollhint__arrow {
+    animation: none !important;
+    transition: none !important;
+  }
+  .ps-card.is-active .ps-card__img { transform: none; }
+  .ps-pill { opacity: 1; transform: none; }
+  /* Layout sticky e mantido (nao e "movimento"); so a troca de
+     conteudo do painel fica instantanea, sem fade/blur. */
+  .ps-panel__inner.is-leaving { opacity: 1; transform: none; filter: none; }
+  .ps-scrollhint { display: none; }
+}
+
+/* ==================================================================
+   NAV BLOG — badge "Em breve" e link desabilitado
+   ================================================================== */
+.nav-blog-link.is-soon {
+  position: relative;
+  cursor: not-allowed;
+  opacity: .92;
+}
+.nav-blog-link.is-soon:hover {
+  background: transparent !important;
+}
+.nav-blog-soon-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  border-radius: 6px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #08120c;
+  background: var(--lime);
+  box-shadow: 0 0 10px rgba(163, 230, 53, .3);
+  line-height: 1;
+  white-space: nowrap;
+}
+.mobile-nav .nav-blog-link.is-soon { justify-content: space-between; }
+.mobile-nav .nav-blog-soon-badge { font-size: 9px; padding: 2px 7px; }
+
+/* About card -> blog "Em breve" */
+.about-card.about-card--blog.is-soon {
+  opacity: .96;
+}
+.about-blog-tag--soon {
+  background: var(--lime) !important;
+  color: #08120c !important;
+}
+.about-blog-btn.about-blog-btn--soon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px dashed var(--g-45);
+  background: var(--g-08);
+  color: var(--text-mint);
+  font-family: inherit;
+  font-weight: 700;
+  font-size: .9rem;
+  cursor: not-allowed;
+  opacity: .9;
+}
+.about-blog-btn.about-blog-btn--soon:hover {
+  background: var(--g-10);
+}
+
+/* ==================================================================
+   PROJECTS SOON — placeholder "Em atualização"
+   ================================================================== */
+.projects-soon {
+  position: relative;
+  padding: clamp(64px, 9vw, 120px) clamp(20px, 4vw, 64px);
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ps-soon-wrap {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.ps-soon-card {
+  position: relative;
+  padding: clamp(32px, 5vw, 56px) clamp(24px, 4vw, 48px);
+  border-radius: 24px;
+  background: linear-gradient(180deg, var(--glass), var(--glass-2));
+  border: 1px solid var(--gline-35);
+  box-shadow: var(--shadow-45), inset 0 0 0 1px var(--w-02);
+  text-align: center;
+  overflow: hidden;
+  isolation: isolate;
+}
+.ps-soon-glow {
+  position: absolute;
+  inset: -30%;
+  background:
+    radial-gradient(45% 45% at 50% 0%, var(--g-18), transparent 70%),
+    radial-gradient(35% 35% at 50% 100%, rgba(163,230,53,.10), transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+  animation: ps-soon-pulse 4s ease-in-out infinite;
+}
+@keyframes ps-soon-pulse {
+  0%, 100% { opacity: .8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+.ps-soon-ico {
+  width: clamp(64px, 10vw, 88px);
+  height: clamp(64px, 10vw, 88px);
+  margin: 0 auto 20px;
+  display: grid;
+  place-items: center;
+  background: var(--g-08);
+  border: 1px solid var(--g-22);
+  border-radius: 20px;
+  animation: ps-soon-wrench 4.5s ease-in-out infinite;
+}
+.ps-soon-ico svg { width: 100%; height: 100%; }
+@keyframes ps-soon-wrench {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-8deg); }
+  50% { transform: rotate(0deg); }
+  75% { transform: rotate(8deg); }
+}
+.ps-soon-kicker {
+  display: inline-block;
+  font-family: "JetBrains Mono", monospace;
+  font-size: .75rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--text-hint);
+  margin-bottom: 14px;
+}
+.ps-soon-kicker::before { content: "● "; color: var(--green); }
+.ps-soon-title {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: clamp(2.4rem, 6vw, 4.4rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -.02em;
+  margin: 0 0 16px;
+  color: var(--text);
+}
+.ps-soon-title em {
+  font-style: italic;
+  background: var(--gradient-lime);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.ps-soon-sub {
+  font-size: clamp(.95rem, 1.5vw, 1.05rem);
+  line-height: 1.6;
+  color: var(--text-soft);
+  margin: 0 auto 28px;
+  max-width: 48ch;
+}
+.ps-soon-progress {
+  width: min(280px, 60%);
+  height: 3px;
+  margin: 0 auto 28px;
+  background: var(--w-05);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+.ps-soon-progress__bar {
+  position: absolute;
+  inset: 0;
+  width: 30%;
+  background: var(--gradient-lime);
+  border-radius: 3px;
+  animation: ps-soon-bar 2.4s ease-in-out infinite;
+}
+@keyframes ps-soon-bar {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(340%); }
+}
+.ps-soon-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+.ps-soon-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: .72rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-hint);
+  background: var(--w-05);
+  border: 1px solid var(--w-08);
+  border-radius: 999px;
+}
+
+/* ==================================================================
+   BLOG SOON — full page overlay
+   ================================================================== */
+body.blog-body { min-height: 100vh; }
+.blog-soon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: calc(var(--nav-h) + 80px) clamp(20px, 4vw, 64px) 80px;
+}
+.blog-soon-wrap {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.blog-soon-card {
+  position: relative;
+  padding: clamp(40px, 6vw, 72px) clamp(28px, 5vw, 56px);
+  border-radius: 28px;
+  background: linear-gradient(180deg, var(--glass), var(--glass-2));
+  border: 1px solid var(--gline-35);
+  box-shadow: var(--shadow-45), inset 0 0 0 1px var(--w-02);
+  text-align: center;
+  overflow: hidden;
+  isolation: isolate;
+}
+.blog-soon-glow {
+  position: absolute;
+  inset: -25%;
+  background:
+    radial-gradient(50% 50% at 50% 0%, var(--g-22), transparent 70%),
+    radial-gradient(40% 40% at 50% 100%, rgba(163,230,53,.10), transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+  animation: ps-soon-pulse 5s ease-in-out infinite;
+}
+.blog-soon-ico {
+  width: clamp(72px, 12vw, 110px);
+  height: clamp(72px, 12vw, 110px);
+  margin: 0 auto 24px;
+  display: grid;
+  place-items: center;
+  background: var(--g-08);
+  border: 1px solid var(--g-22);
+  border-radius: 24px;
+  animation: ps-soon-wrench 4s ease-in-out infinite;
+}
+.blog-soon-ico svg { width: 100%; height: 100%; padding: 14px; box-sizing: border-box; }
+.blog-soon-kicker {
+  display: inline-block;
+  font-family: "JetBrains Mono", monospace;
+  font-size: .8rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--text-hint);
+  margin-bottom: 16px;
+}
+.blog-soon-kicker::before { content: "● "; color: var(--green); }
+.blog-soon-title {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: clamp(3rem, 9vw, 6.2rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -.02em;
+  margin: 0 0 20px;
+  color: var(--text);
+}
+.blog-soon-title em {
+  font-style: italic;
+  background: var(--gradient-lime);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.blog-soon-sub {
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  line-height: 1.65;
+  color: var(--text-soft);
+  margin: 0 auto 32px;
+  max-width: 52ch;
+}
+.blog-soon-progress {
+  width: min(320px, 70%);
+  height: 3px;
+  margin: 0 auto 32px;
+  background: var(--w-05);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+.blog-soon-progress__bar {
+  position: absolute;
+  inset: 0;
+  width: 30%;
+  background: var(--gradient-lime);
+  border-radius: 3px;
+  animation: ps-soon-bar 2.6s ease-in-out infinite;
+}
+.blog-soon-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  border-radius: 999px;
+  background: var(--green);
+  color: #001408;
+  border: 1px solid var(--green);
+  font-family: inherit;
+  font-weight: 700;
+  font-size: .95rem;
+  text-decoration: none;
+  transition: all .25s cubic-bezier(.22, 1, .36, 1);
+  margin-bottom: 32px;
+}
+.blog-soon-cta:hover {
+  background: var(--lime);
+  border-color: var(--lime);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(34,197,94,.30);
+}
+.blog-soon-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+.blog-soon-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: .72rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-hint);
+  background: var(--w-05);
+  border: 1px solid var(--w-08);
+  border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ps-soon-glow,
+  .blog-soon-glow,
+  .ps-soon-ico,
+  .blog-soon-ico,
+  .ps-soon-progress__bar,
+  .blog-soon-progress__bar {
+    animation: none !important;
+  }
+}
+
+/* ==================================================================
+   RESPONSIVE — TABLETS & MOBILE (0–1024px)
+   Mantém o desktop intacto e ajusta tudo abaixo de 1024px:
+   - hero, about, services, experience, skills, contact, footer
+   - tipografia fluida, paddings menores, grids em coluna
+   ================================================================== */
+
+/* ====== TABLET LARGO (até 1024px) ====== */
+@media (max-width: 1024px) {
+  main { max-width: 100%; padding: 0; }
+  .section { padding: 48px 18px 64px; }
+
+  /* HERO: foto + texto verticalizado */
+  .hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 32px;
+    padding: 110px 20px 32px;
+    left: 0;
+    min-height: auto;
+  }
+  .hero .photo { margin: 0 auto; width: min(60vw, 360px); }
+  .hero .stack { align-items: center; }
+  .hero .rail {
+    position: static;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 16px;
+  }
+
+  /* ABOUT: terminal acima, painel abaixo */
+  .about-layout {
+    grid-template-columns: 1fr;
+    perspective: none;
+    gap: 24px;
+  }
+  .about-side { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .about-card { padding: 18px; }
+
+  /* SERVICES: 2 col já existe, otimizado */
+  .services-grid { gap: 18px !important; }
+
+  /* CONTACT */
+  .contact-hero { padding: 56px 20px; }
+}
+
+/* ====== TABLET (até 900px) ====== */
+@media (max-width: 900px) {
+  /* HERO: ajuste */
+  .name { font-size: clamp(48px, 10vw, 72px) !important; }
+  .tagline { font-size: clamp(18px, 4.5vw, 26px) !important; }
+
+  /* ABOUT side: volta a coluna única */
+  .about-side { grid-template-columns: 1fr; }
+
+  /* PROJECTS soon: caixa menor */
+  .projects-soon { min-height: 50vh; padding: 56px 18px; }
+
+  /* BLOG SOON */
+  .blog-soon { padding: 120px 18px 60px; min-height: 80vh; }
+}
+
+/* ====== MOBILE GRANDE (até 760px) ====== */
+@media (max-width: 760px) {
+  .section { padding: 40px 16px 56px; }
+
+  /* Hero: respiro */
+  .hero { padding: 100px 18px 28px; gap: 24px; }
+  .hero .photo { width: min(72vw, 320px); }
+
+  /* About */
+  .about-section { padding: 48px 16px 64px; }
+  .about-head { margin-bottom: 28px; }
+  .term-body { font-size: 12px; padding: 12px; max-height: 50vh; }
+  .term-bar { padding: 8px 12px; }
+  .term-bar .t-title { display: none; }
+
+  /* Section titles (compartilhado) */
+  .section-title { font-size: clamp(28px, 6vw, 40px) !important; }
+  .section-sub { font-size: .95rem; }
+
+  /* Services */
+  .services-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
+
+  /* Experience icons */
+  .xp-icons { gap: 14px; flex-wrap: wrap; justify-content: center; }
+  .xp-title { font-size: clamp(28px, 7vw, 36px); }
+  .xp-sub { font-size: .9rem; }
+
+  /* Timeline: já há rules existentes; reforça */
+  .tl { padding: 16px 8px; }
+
+  /* Skills already responsive but reforça tipo */
+  .skills-tiles .tiles-wrap.squares {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px !important;
+    max-width: 100% !important;
+  }
+
+  /* Contact */
+  .contact-hero { padding: 48px 16px; }
+  .contact-hero__title { font-size: clamp(32px, 8vw, 52px) !important; line-height: 1.05; }
+  .contact-hero__sub { font-size: 1rem; }
+
+  /* Modal de contato */
+  .ctm__shell { width: 95vw !important; padding: 24px 18px !important; }
+  .ctm__channels { grid-template-columns: 1fr !important; }
+  .ctm__form { grid-template-columns: 1fr !important; }
+
+  /* Projects soon */
+  .ps-soon-title { font-size: clamp(2rem, 8vw, 3.4rem); }
+  .ps-soon-sub { font-size: .95rem; }
+
+  /* Blog soon */
+  .blog-soon-title { font-size: clamp(2.6rem, 12vw, 4.6rem); }
+  .blog-soon-sub { font-size: .95rem; }
+  .blog-soon-card { padding: 36px 22px; }
+}
+
+/* ====== MOBILE PEQUENO (até 540px) ====== */
+@media (max-width: 540px) {
+  :root { --nav-h: 60px; }
+  header { top: max(6px, env(safe-area-inset-top, 0px)); margin-top: 16px; }
+
+  .section { padding: 36px 14px 48px; }
+
+  /* Hero */
+  .hero { padding: 96px 14px 24px; gap: 20px; }
+  .hero .photo { width: min(82vw, 280px); }
+  .hello { font-size: clamp(14px, 4vw, 18px); }
+  .name { font-size: clamp(42px, 12vw, 60px) !important; }
+  .name .break { display: block; }
+  .tagline { font-size: clamp(16px, 5vw, 22px) !important; }
+
+  /* Scroll cue mais discreto no mobile */
+  .scroll-cue { bottom: 16px; }
+  .scroll-cue__chev { width: 32px; height: 28px; }
+
+  /* About */
+  .about-section { padding: 40px 14px 56px; }
+  .about-title { font-size: clamp(26px, 7vw, 36px); }
+  .about-card { padding: 16px; border-radius: 14px; }
+  .about-card-value--big { font-size: .98rem !important; line-height: 1.4; }
+  .term-body { font-size: 11.5px; max-height: 44vh; }
+
+  /* Services */
+  .services-section { padding-left: 14px; padding-right: 14px; }
+  .section-title { font-size: clamp(26px, 7vw, 34px) !important; }
+
+  /* Experience */
+  .xp-title { font-size: clamp(26px, 8vw, 34px); }
+  .xp-icons { gap: 10px; }
+
+  /* Skills */
+  .skills-tiles .tiles-wrap.squares {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
+  }
+
+  /* Contact */
+  .contact-hero { padding: 40px 14px; min-height: auto; }
+  .contact-hero__title { font-size: clamp(28px, 9vw, 44px) !important; }
+  .contact-hero__sub { font-size: .92rem; }
+  .contact-hero__cta { padding: 12px 20px; font-size: .9rem; }
+
+  /* Projects soon */
+  .projects-soon { padding: 48px 14px; }
+  .ps-soon-card { padding: 28px 20px; border-radius: 18px; }
+  .ps-soon-title { font-size: clamp(1.9rem, 9vw, 2.8rem); }
+  .ps-soon-sub { font-size: .9rem; line-height: 1.5; }
+  .ps-soon-ico { width: 64px; height: 64px; border-radius: 16px; }
+  .ps-soon-tags { gap: 6px; }
+  .ps-soon-tag { font-size: .65rem; padding: 5px 10px; }
+
+  /* Blog soon */
+  .blog-soon { padding: 110px 14px 50px; }
+  .blog-soon-card { padding: 32px 18px; border-radius: 22px; }
+  .blog-soon-title { font-size: clamp(2.4rem, 14vw, 4rem); }
+  .blog-soon-sub { font-size: .9rem; line-height: 1.5; }
+  .blog-soon-ico { width: 72px; height: 72px; }
+  .blog-soon-cta { padding: 12px 20px; font-size: .9rem; }
+
+  /* Mobile nav blog badge — espaço */
+  .mobile-nav .nav-blog-link.is-soon { padding-right: 12px; }
+  .nav-blog-soon-badge { font-size: 8px; padding: 2px 5px; }
+}
+
+/* ====== MOBILE EXTRA PEQUENO (até 380px) ====== */
+@media (max-width: 380px) {
+  .name { font-size: clamp(36px, 13vw, 52px) !important; }
+  .hero .photo { width: 80vw; }
+  .about-title { font-size: clamp(24px, 7vw, 32px); }
+  .term-body { font-size: 10.5px; max-height: 38vh; }
+
+  /* Skills: 1 coluna se ficar muito apertado */
+  .skills-tiles .tiles-wrap.squares {
+    grid-template-columns: 1fr !important;
+  }
+
+  .blog-soon-title { font-size: clamp(2.2rem, 14vw, 3.4rem); }
+  .ps-soon-title { font-size: clamp(1.7rem, 9vw, 2.4rem); }
+}
+
+/* ====== ORIENTAÇÃO LANDSCAPE em celulares ====== */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero { min-height: auto; padding: 90px 18px 20px; }
+  .hero .photo { width: min(28vh, 220px); }
+  .blog-soon { padding: 90px 20px 40px; min-height: auto; }
+}
+
+/* ====== Contenção global: evita scroll horizontal nas seções ====== */
+.contact-hero,
+.aurora,
+.projects-soon,
+.blog-soon {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+/* Tablet/Mobile: zera o nudge negativo do hero (já estava em 1024, mas reforça) */
+@media (max-width: 1024px) {
+  :root { --hero-nudge: 0px; }
 }
 

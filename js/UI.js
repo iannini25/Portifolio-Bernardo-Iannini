@@ -365,6 +365,15 @@ document.querySelectorAll('a[data-scroll]').forEach(a => {
    Combinado com o anti-flicker no <head>, dá fade-out + fade-in.
    ========================================================= */
 (function pageTransitions() {
+  // Se o browser tem View Transitions cross-document (Chrome/Edge 126+),
+  // NAO interceptamos: deixamos a navegacao normal e o @view-transition
+  // do CSS faz a transicao nativa (GPU). Isso evita transicao dupla.
+  // 'onpagereveal' so existe em browsers com cross-document VT (Chrome
+  // 126+/Edge/Opera) — sinal confiavel, sem regredir Chromium 111-125.
+  const SUPPORTS_CROSS_DOC_VT =
+    'startViewTransition' in document && 'onpagereveal' in window;
+  if (SUPPORTS_CROSS_DOC_VT) return;
+
   const PAGE_PATHS = new Set(['/index.html', '/blog.html', '/post.html', '/', '/index', '/blog', '/post']);
 
   const isCrossPageLink = (a) => {
@@ -412,6 +421,29 @@ document.querySelectorAll('a[data-scroll]').forEach(a => {
     document.body.addEventListener('transitionend', go, { once: true });
     setTimeout(go, TRANSITION_MS + 80);
   });
+})();
+
+/* =========================================================
+   BLOG SOON — bloqueio de cliques nos links de blog
+   Intercepta cliques em qualquer link com [data-blog-soon]
+   ou href apontando pra blog.html/posts e impede navegação.
+   ========================================================= */
+(function blockBlogLinks(){
+  document.addEventListener('click', function (e) {
+    const anchor = e.target.closest('a, button');
+    if (!anchor) return;
+
+    const isMarked = anchor.hasAttribute('data-blog-soon') ||
+                     anchor.classList.contains('is-soon');
+    const href = anchor.getAttribute('href') || '';
+    const isBlogHref = /(^|\/)blog\.html(\?|#|$)/i.test(href) ||
+                       /\/posts\//i.test(href);
+
+    if (isMarked || (isBlogHref && anchor.classList.contains('nav-blog-link'))) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, true);
 })();
 
 /* =========================================================
