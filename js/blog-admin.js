@@ -4,59 +4,52 @@
    BLOG ADMIN — Dashboard + CRUD de posts
    ========================================================= */
 
-const STORAGE_KEY = 'bi_blog_posts';
-const STORAGE_VIEWS = 'bi_blog_views';
-const AUTH_KEY = 'bi_blog_auth';
-
-/* ---------- Auth guard ---------- */
-(function authGuard() {
-  let authed = false;
-  try { authed = sessionStorage.getItem(AUTH_KEY) === '1'; }
-  catch (e) { authed = !!window.__BI_AUTHED; }
-  if (!authed) location.replace('bernardolindao.html');
-})();
-
-/* ---------- API (fonte unica = data/posts/*.md via admin-server) ----------
-   O painel NAO usa mais localStorage para os posts. Ele le e grava nos
-   arquivos .md reais atraves do servidor local (npm run admin). Assim o
-   admin fica 100% alinhado com o blog: o que aparece aqui e o que esta
-   publicado, e "Publicar"/"Excluir" mexem no arquivo de verdade.        */
-const API = '/api/posts';
+/* ---------- Data layer = Supabase (window.BlogDB) ----------
+   O painel lê e grava direto no Supabase. CRUD instantâneo, sem build
+   nem deploy: o que você salva aqui já fica gravado no banco.
+   A autenticação é checada de forma assíncrona no init().            */
 
 async function apiGetPosts() {
-  const r = await fetch(API, { cache: 'no-store' });
-  if (!r.ok) throw new Error('GET /api/posts -> ' + r.status);
-  const j = await r.json();
-  if (!j.ok) throw new Error(j.error || 'falha ao listar posts');
-  return j.posts || [];
-}
-
-async function apiSavePost({ slug, oldSlug, markdown, featured }) {
-  const r = await fetch(API, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ slug, oldSlug, markdown, featured }),
-  });
-  const j = await r.json().catch(() => ({}));
-  if (!r.ok || !j.ok) throw new Error(j.error || ('POST -> ' + r.status));
-  return j.posts || [];
-}
-
-async function apiDeletePost(slug) {
-  const r = await fetch(API + '/' + encodeURIComponent(slug), { method: 'DELETE' });
-  const j = await r.json().catch(() => ({}));
-  if (!r.ok || !j.ok) throw new Error(j.error || ('DELETE -> ' + r.status));
-  return j.posts || [];
+  if (!window.BlogDB) throw new Error('Supabase não configurado — veja js/supabase-config.js');
+  return window.BlogDB.listAll();
 }
 
 async function reloadPosts() {
   state.posts = await apiGetPosts();
 }
 
+/* Mapa { id: views } montado a partir dos posts já carregados.
+   (a contagem de views agora mora na coluna `views` da tabela). */
 const loadViews = () => {
-  try { return JSON.parse(localStorage.getItem(STORAGE_VIEWS) || '{}'); }
-  catch { return {}; }
+  const m = {};
+  (state.posts || []).forEach(p => { m[p.id] = p.views || 0; });
+  return m;
 };
+
+/* Converte um data URL (imagem comprimida via canvas) num File nomeado,
+   pronto pra subir no Storage do Supabase. */
+function dataUrlToFile(dataUrl, baseName) {
+  const [head, b64] = String(dataUrl).split(',');
+  const mime = (head.match(/data:([^;]+)/) || [])[1] || 'image/jpeg';
+  const ext = (mime.split('/')[1] || 'jpg').replace('jpeg', 'jpg');
+  const bin = atob(b64 || '');
+  const arr = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+  const name = String(baseName || 'img').replace(/\.[^.]+$/, '') + '.' + ext;
+  return new File([arr], name, { type: mime });
+}
+
+/* Mensagem amigável pra falhas de upload no Storage. */
+function uploadErrorMsg(err) {
+  const m = (err && err.message || String(err)).toLowerCase();
+  if (m.includes('bucket') && m.includes('not found')) {
+    return 'Bucket "blog-images" não existe no Supabase. Crie em Storage → New bucket (público).';
+  }
+  if (m.includes('row-level security') || m.includes('policy')) {
+    return 'Sem permissão pra subir imagem — confira as policies do bucket blog-images.';
+  }
+  return err && err.message || 'Falha ao enviar imagem';
+}
 
 /* ---------- Utilities ---------- */
 const uid = () => 'p_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
@@ -1015,27 +1008,20 @@ function setupEditorEvents() {
     reader.readAsDataURL(file);
   });
 
-  // Capa agora vira ARQUIVO real (img/posts/<slug>/...), nao base64 no .md.
+  // Capa: comprime no navegador e sobe pro Storage do Supabase.
   const handleFile = async (file) => {
     if (!file) return;
     try {
       toast('Enviando capa...');
       const dataUrl = await compressImage(file);
-      const base64 = dataUrl.split(',')[1] || '';
-      const slug = slugify(slugInput.value || titleInput.value || 'post') || 'post';
-      const r = await fetch('/api/upload', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ slug, filename: file.name || 'capa.jpg', dataBase64: base64 }),
-      });
-      const j = await r.json().catch(() => ({}));
-      if (!r.ok || !j.ok) throw new Error(j.error || 'upload falhou');
-      state.form.cover = j.path;
-      renderCoverDropzone(j.path);
+      const named = dataUrlToFile(dataUrl, file.name || 'capa');
+      const url = await window.BlogDB.uploadImage(named, 'covers');
+      state.form.cover = url;
+      renderCoverDropzone(url);
       coverInput.value = ''; // limpa URL manual quando faz upload
       toast('Capa enviada.');
     } catch (err) {
-      toast(err.message || 'Falha ao enviar imagem', 'error');
+      toast(uploadErrorMsg(err), 'error');
     }
   };
 
@@ -1127,15 +1113,8 @@ function setupEditorEvents() {
 
   const uploadOne = async (file) => {
     const dataUrl = await compressImage(file);
-    const base64 = dataUrl.split(',')[1] || '';
-    const r = await fetch('/api/upload', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ slug: currentSlug(), filename: file.name || 'imagem.jpg', dataBase64: base64 }),
-    });
-    const j = await r.json().catch(() => ({}));
-    if (!r.ok || !j.ok) throw new Error(j.error || 'upload falhou');
-    return j.path;
+    const named = dataUrlToFile(dataUrl, file.name || 'imagem');
+    return window.BlogDB.uploadImage(named, 'gallery');
   };
 
   const handleImageFiles = async (files) => {
@@ -1474,16 +1453,17 @@ async function submitForm() {
     return;
   }
 
-  // Post sendo editado (pra saber o slug antigo do arquivo)
+  // Post sendo editado
   const editing = state.editingId ? state.posts.find(p => p.id === state.editingId) : null;
-  const oldSlug = editing ? editing.slug : '';
 
-  // Garante slug único contra os posts que já existem em data/posts/
+  // Garante slug único contra os posts que já existem
   let slug = data.slug;
   const clash = state.posts.find(p => p.slug === slug && (!editing || p.id !== editing.id));
   if (clash) slug = slug + '-' + Math.random().toString(36).slice(2, 5);
 
-  const now = new Date().toISOString();
+  // O banco só conhece draft/published — 'scheduled' entra como rascunho.
+  const status = data.status === 'scheduled' ? 'draft' : data.status;
+
   const post = {
     id: editing ? editing.id : uid(),
     title: data.title,
@@ -1495,33 +1475,27 @@ async function submitForm() {
     images: data.images,
     category: data.category,
     author: data.author,
-    status: data.status,
+    status,
     featured: data.featured,
-    linkedinUrl: (editing && editing.linkedinUrl) || '',
-    createdAt: editing ? editing.createdAt : now,
-    updatedAt: now,
     content: data.content,
   };
 
-  // Gera o markdown no formato exato esperado por scripts/build-posts.js
-  const markdown = postToMarkdown(post);
-
-  toast('Salvando no arquivo e gerando o site...');
+  toast('Salvando no Supabase...');
   try {
-    state.posts = await apiSavePost({
-      slug,
-      oldSlug,
-      markdown,
-      featured: post.featured,
-    });
+    if (editing) {
+      await window.BlogDB.update(editing.id, post);
+    } else {
+      await window.BlogDB.create(post);
+    }
+    state.posts = await window.BlogDB.listAll();
   } catch (err) {
-    toast('Erro ao salvar: ' + err.message + ' — o servidor admin está rodando? (npm run admin)', 'error');
+    toast('Erro ao salvar: ' + (err && err.message || err), 'error');
     return;
   }
 
-  toast(post.status === 'published'
+  toast(status === 'published'
     ? 'Post publicado! Já está no blog.'
-    : (post.status === 'scheduled' ? 'Post agendado (salvo como rascunho até a data).' : 'Rascunho salvo.'));
+    : (data.status === 'scheduled' ? 'Post agendado (salvo como rascunho).' : 'Rascunho salvo.'));
   state.editingId = null;
   state.view = 'posts';
   render();
@@ -1540,9 +1514,9 @@ function attachGlobalEvents() {
   });
 
   // Logout — escuta o botão da topbar E o botão da sidebar
-  const logoutHandler = () => {
+  const logoutHandler = async () => {
     if (confirm('Tem certeza que quer sair?')) {
-      sessionStorage.removeItem(AUTH_KEY);
+      try { await window.BlogDB.signOut(); } catch (e) { /* noop */ }
       location.href = 'bernardolindao.html';
     }
   };
@@ -1571,13 +1545,13 @@ function attachGlobalEvents() {
     if (delBtn) {
       const id = delBtn.dataset.delete;
       const post = state.posts.find(p => p.id === id);
-      if (post && confirm(`Excluir o post "${post.title}"? O arquivo data/posts/${post.slug}.md será apagado. Esta ação não pode ser desfeita.`)) {
-        apiDeletePost(post.slug).then((posts) => {
-          state.posts = posts;
-          toast('Post excluído do blog.');
+      if (post && confirm(`Excluir o post "${post.title}"? Esta ação não pode ser desfeita.`)) {
+        window.BlogDB.remove(id).then(async () => {
+          state.posts = await window.BlogDB.listAll();
+          toast('Post excluído.');
           if (state.editingId === id) { state.editingId = null; state.view = 'posts'; }
           render();
-        }).catch((err) => toast('Erro ao excluir: ' + err.message, 'error'));
+        }).catch((err) => toast('Erro ao excluir: ' + (err && err.message || err), 'error'));
       }
       return;
     }
@@ -1586,20 +1560,26 @@ function attachGlobalEvents() {
     if (dupBtn) {
       const post = state.posts.find(p => p.id === dupBtn.dataset.duplicate);
       if (post) {
-        const now = new Date().toISOString();
         const copy = {
-          ...post,
           id: uid(),
           title: post.title + ' (cópia)',
-          slug: post.slug + '-copia',
+          subtitle: post.subtitle || '',
+          slug: post.slug + '-copia-' + Math.random().toString(36).slice(2, 5),
+          cover: post.cover || '',
+          coverAlt: post.coverAlt || '',
+          tags: post.tags || [],
+          images: post.images || [],
+          category: post.category || '',
+          author: post.author || 'Bernardo Iannini',
           status: 'draft',
           featured: false,
-          createdAt: now,
-          updatedAt: now,
+          content: post.content || '',
         };
-        apiSavePost({ slug: copy.slug, markdown: postToMarkdown(copy), featured: false })
-          .then((posts) => { state.posts = posts; toast('Post duplicado (como rascunho).'); render(); })
-          .catch((err) => toast('Erro ao duplicar: ' + err.message, 'error'));
+        window.BlogDB.create(copy).then(async () => {
+          state.posts = await window.BlogDB.listAll();
+          toast('Post duplicado (como rascunho).');
+          render();
+        }).catch((err) => toast('Erro ao duplicar: ' + (err && err.message || err), 'error'));
       }
       return;
     }
@@ -1658,15 +1638,18 @@ function renderServerOffline(err) {
   el.innerHTML = `
     <header class="admin-header">
       <div>
-        <h1 class="admin-title">Servidor admin <em>offline</em></h1>
-        <p class="admin-title-sub">O painel agora lê e grava direto nos arquivos do blog.</p>
+        <h1 class="admin-title">Não consegui falar com o <em>Supabase</em></h1>
+        <p class="admin-title-sub">O painel lê e grava os posts no banco Supabase.</p>
       </div>
     </header>
     <section class="admin-card">
       <div class="admin-card-body" style="line-height:1.7">
-        <p>Para gerenciar os posts, inicie o servidor local no terminal:</p>
-        <pre style="background:#0e1410;color:#e7ffe7;padding:14px 16px;border-radius:10px;overflow:auto"><code>npm run admin</code></pre>
-        <p>Depois acesse <strong>http://localhost:4000/admin.html</strong> e atualize esta página.</p>
+        <p>Verifique:</p>
+        <ul style="margin:8px 0 12px 18px">
+          <li><code>js/supabase-config.js</code> com a URL e a chave anon corretas</li>
+          <li>o <code>schema.sql</code> rodado no SQL Editor do Supabase</li>
+          <li>conexão com a internet</li>
+        </ul>
         <p style="color:var(--text-hint);font-size:12.5px">Detalhe técnico: ${escapeHtml(err && err.message || String(err))}</p>
         <button class="admin-btn admin-btn--primary" type="button" onclick="location.reload()">Tentar de novo</button>
       </div>
@@ -1674,11 +1657,28 @@ function renderServerOffline(err) {
 }
 
 async function init() {
+  // Guard de autenticação via Supabase Auth
+  if (!window.BlogDB) {
+    renderServerOffline(new Error('Supabase não configurado (js/supabase-config.js).'));
+    return;
+  }
+  let session = null;
+  try {
+    session = await window.BlogDB.getSession();
+  } catch (err) {
+    renderServerOffline(err);
+    return;
+  }
+  if (!session) {
+    location.replace('bernardolindao.html');
+    return;
+  }
+
   attachGlobalEvents();
   try {
-    state.posts = await apiGetPosts();
+    state.posts = await window.BlogDB.listAll();
   } catch (err) {
-    console.error('[admin] API indisponível:', err);
+    console.error('[admin] Supabase indisponível:', err);
     renderServerOffline(err);
     return;
   }
