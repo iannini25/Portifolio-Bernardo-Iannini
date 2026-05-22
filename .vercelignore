@@ -1,16 +1,15 @@
-# Nao sobe pra producao (a Vercel e estatica; o admin so roda LOCAL)
+# Nao sobe pra producao.
 # Mantemos scripts/ e data/ porque o build (npm run build:posts) precisa deles.
 
 node_modules
 .git
 *.log
 
-# Painel admin: existe so na sua maquina via `npm run admin`.
-# Tirar daqui evita expor a tela de login/admin (inutil em estatico).
-admin.html
-bernardolindao.html
-js/blog-admin.js
-js/blog-auth.js
+# O painel admin AGORA roda em producao (CRUD via Supabase, client-side).
+# Por isso admin.html / bernardolindao.html / blog-admin.js / blog-auth.js
+# DEVEM ir pro deploy. O acesso e protegido por Supabase Auth + RLS.
+
+# Servidor admin LOCAL legado (substituido pelo Supabase) — nao precisa em prod.
 scripts/admin-server.js
 
 # Caches locais
