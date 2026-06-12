@@ -241,7 +241,7 @@ The system runs two independent channels — Women's Integrity and Corporate Int
           stack: ["TypeScript", "Node.js", "tRPC v11", "Drizzle ORM", "MySQL 8", "React 18", "Vite", "Wouter", "TailwindCSS", "shadcn/ui", "Resend", "OpenAI API", "PDFKit", "PM2", "Nginx"],
           link: "https://athena7.com.br",
           repo: "",
-          cover: "img/athena7.com.br.png"
+          cover: "img/athena7.com.br.webp"
         },
         {
           title: "Moeda Nobre — Digital Benefits Currency",
@@ -253,7 +253,7 @@ The system serves four distinct user profiles — platform operators, companies,
           stack: ["Next.js", "TypeScript", "TailwindCSS", "shadcn/ui", "Framer Motion", "React Query", "Zustand", "Prisma ORM", "PostgreSQL", "NextAuth", "html5-qrcode", "TipTap", "Docker", "AWS EC2", "Nginx", "Redis"],
           link: "https://moedanobre.com",
           repo: "",
-          cover: "img/moedanobre.com_.png",
+          cover: "img/moedanobre.com_.webp",
           featured: true
         },
         {
@@ -266,7 +266,7 @@ Includes SEO, accessibility and performance optimization to elevate Inspire4U’
           stack: ["WordPress", "Performance", "A11y", "Figma", "SEO", "Elementor"],
           link: "https://erpi4u.com",
           repo: "https://github.com/iannini25",
-          cover: "img/erpinspire4u.png"
+          cover: "img/erpinspire4u.webp"
         },
         {
           title: "Project Alpha",
@@ -600,7 +600,7 @@ O sistema opera com dois canais independentes — Integridade da Mulher e Integr
           stack: ["TypeScript", "Node.js", "tRPC v11", "Drizzle ORM", "MySQL 8", "React 18", "Vite", "Wouter", "TailwindCSS", "shadcn/ui", "Resend", "OpenAI API", "PDFKit", "PM2", "Nginx"],
           link: "https://athena7.com.br",
           repo: "",
-          cover: "img/athena7.com.br.png"
+          cover: "img/athena7.com.br.webp"
         },
         {
           title: "Moeda Nobre — Moeda Digital de Benefícios",
@@ -612,7 +612,7 @@ O sistema atende quatro perfis de usuário distintos — operadores da plataform
           stack: ["Next.js", "TypeScript", "TailwindCSS", "shadcn/ui", "Framer Motion", "React Query", "Zustand", "Prisma ORM", "PostgreSQL", "NextAuth", "html5-qrcode", "TipTap", "Docker", "AWS EC2", "Nginx", "Redis"],
           link: "https://moedanobre.com",
           repo: "",
-          cover: "img/moedanobre.com_.png",
+          cover: "img/moedanobre.com_.webp",
           featured: true
         },
         {
@@ -625,7 +625,7 @@ Inclui SEO, acessibilidade e performance ajustadas para posicionar melhor a Insp
           stack: ["WordPress", "Performance", "A11y", "Figma", "SEO", "Elementor"],
           link: "https://erpi4u.com",
           repo: "https://github.com/iannini25",
-          cover: "img/erpinspire4u.png"
+          cover: "img/erpinspire4u.webp"
         },
         {
           title: "Projeto Alpha",

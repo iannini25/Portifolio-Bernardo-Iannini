@@ -6,9 +6,11 @@
    Sem libs. Mobile: vira cards empilhados (CSS cuida).
    ========================================================= */
 
-let progressRaf = null;
-let progressBound = false;
 let activeProjectId = null;
+let psFitBound = false;
+
+const psReducedMotion = () =>
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const PS_ICONS = {
   arrowUpRight:
@@ -27,23 +29,33 @@ function psSlug(s) {
 }
 
 /* Só projetos reais entram na showcase: precisa de capa E link.
-   Deriva id (slug) e number ("01"...) quando faltarem. */
+   Deriva id (slug) quando faltar. */
 function psPrepare(list) {
   return (list || [])
     .filter(p => p && p.cover && p.link)
-    .map((p, i) => ({
+    .map(p => ({
       ...p,
       id: p.id || psSlug(p.title),
-      number: p.number || String(i + 1).padStart(2, '0'),
     }));
 }
 
-/* ---------- CARD DA ESQUERDA ---------- */
+/* hostname legivel a partir do link do projeto (pra barra do "browser") */
+function psHost(link) {
+  try {
+    return new URL(link).hostname.replace(/^www\./, '');
+  } catch {
+    return String(link || '').replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
+  }
+}
+
+/* ---------- CARD DA ESQUERDA ----------
+   A capa vive numa "janela de browser" minimalista (barra com dots +
+   URL mono) — irma do terminal do About. A area da imagem e um link
+   pro projeto; o scrollfx poe o wipe de render e o cursor-chip. */
 function buildShowcaseCard(p, labels) {
   const card = document.createElement('article');
   card.className = 'ps-card';
   card.dataset.id = p.id;
-  card.dataset.number = p.number;
 
   const cover = p.cover
     ? `<img class="ps-card__img" src="${p.cover}" alt="${p.title}" loading="lazy" decoding="async">`
@@ -51,14 +63,20 @@ function buildShowcaseCard(p, labels) {
 
   card.innerHTML = `
     <div class="ps-card__media">
-      ${cover}
-      <div class="ps-card__veil" aria-hidden="true"></div>
-      <span class="ps-card__num">${p.number}</span>
+      <div class="ps-frame__bar" aria-hidden="true">
+        <span class="ps-frame__dots"><i></i><i></i><i></i></span>
+        <span class="ps-frame__url">${psHost(p.link)}</span>
+      </div>
+      <a class="ps-frame__view" href="${p.link}" target="_blank" rel="noopener noreferrer"
+         aria-label="${p.title} — ${labels.visitBtn}">
+        ${cover}
+        <div class="ps-card__veil" aria-hidden="true"></div>
+      </a>
     </div>
 
     <div class="ps-card__mobile">
       <h3 class="ps-card__title">${p.title}</h3>
-      <p class="ps-card__desc">${p.longDesc || p.shortDesc || p.desc || ''}</p>
+      <p class="ps-card__desc">${p.desc || p.shortDesc || p.longDesc || ''}</p>
       <div class="ps-card__tech">
         ${(p.stack || []).map((t, i) =>
           `<span class="ps-pill" style="--i:${i}">${t}</span>`).join('')}
@@ -71,6 +89,52 @@ function buildShowcaseCard(p, labels) {
   return card;
 }
 
+/* ---------- FIT-CHECK: o conteudo do painel NUNCA corta ----------
+   tier 1 (--compact): tipografia compacta; tier 2 (--scroll): rola com
+   fade nas bordas. Classes definidas no CSS da showcase. */
+function psFitCheck() {
+  const panel = document.querySelector('.ps-panel');
+  const inner = document.querySelector('[data-ps-panel]');
+  if (!panel || !inner) return;
+  if (getComputedStyle(panel).display === 'none') return; // mobile: sem painel
+
+  panel.classList.remove('ps-panel--compact', 'ps-panel--scroll');
+  const fits = () => inner.scrollHeight <= panel.clientHeight - 16;
+  if (fits()) return;
+  panel.classList.add('ps-panel--compact');
+  if (!fits()) panel.classList.add('ps-panel--scroll');
+}
+
+/* altura REAL da media (imagem 16:9) -> --ps-card-real no CSS, que
+   centraliza o 1o/ultimo card com o painel sticky */
+function psMeasureCard() {
+  const section = document.querySelector('.projects-showcase');
+  const media = document.querySelector('.ps-card__media');
+  if (!section || !media) return;
+  const h = media.offsetHeight;
+  if (h) section.style.setProperty('--ps-card-real', `${h}px`);
+}
+
+/* entrada do conteudo novo do painel — GSAP quando disponivel (stagger +
+   rule que se desenha); sem GSAP/reduced-motion, fica o fade do CSS */
+function psPanelEnterFx(panel) {
+  if (!window.gsap || psReducedMotion()) return;
+
+  const tech = panel.querySelector('[data-ps-tech]');
+  if (tech) tech.classList.add('is-fx'); // keyframe CSS das pills sai do caminho
+
+  const parts = ['[data-ps-title-detail]', '[data-ps-desc]',
+    '[data-ps-tech]', '.ps-panel__cta']
+    .map(sel => panel.querySelector(sel)).filter(Boolean);
+  const rule = panel.querySelector('[data-ps-rule]');
+
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out', overwrite: 'auto' } });
+  tl.fromTo(parts,
+    { y: 16, autoAlpha: 0 },
+    { y: 0, autoAlpha: 1, duration: .55, stagger: .055, clearProps: 'visibility' }, 0);
+  if (rule) tl.fromTo(rule, { scaleX: 0 }, { scaleX: 1, duration: .7 }, .08);
+}
+
 /* ---------- PAINEL DIREITA (STICKY) ---------- */
 function updatePanelTo(project, labels) {
   const panel = document.querySelector('[data-ps-panel]');
@@ -81,16 +145,14 @@ function updatePanelTo(project, labels) {
   panel.classList.add('is-leaving');
 
   setTimeout(() => {
-    const numEl   = panel.querySelector('[data-ps-num]');
     const titleEl = panel.querySelector('[data-ps-title-detail]');
     const descEl  = panel.querySelector('[data-ps-desc]');
     const techEl  = panel.querySelector('[data-ps-tech]');
     const linkEl  = panel.querySelector('[data-ps-link]');
     const repoEl  = panel.querySelector('[data-ps-repo]');
 
-    if (numEl)   numEl.textContent   = project.number;
     if (titleEl) titleEl.textContent = project.title;
-    if (descEl)  descEl.textContent  = project.longDesc || project.shortDesc || project.desc || '';
+    if (descEl)  descEl.textContent  = project.desc || project.shortDesc || project.longDesc || '';
 
     if (techEl) {
       techEl.innerHTML = (project.stack || [])
@@ -127,6 +189,8 @@ function updatePanelTo(project, labels) {
     }
 
     panel.classList.remove('is-leaving');
+    psFitCheck();
+    psPanelEnterFx(panel.closest('.ps-panel') || panel);
   }, 200);
 }
 
@@ -154,47 +218,20 @@ function setupObserver(projects, labels) {
     projectsObserver.observe(card));
 }
 
-/* ---------- PROGRESS BAR (progresso ao longo da lista) ---------- */
-function setupProgressBar() {
-  const listEl = document.querySelector('[data-ps-list]');
-  const bar = document.querySelector('[data-ps-bar]');
-  if (!listEl || !bar) return;
-
-  const update = () => {
-    progressRaf = null;
-    const rect = listEl.getBoundingClientRect();
-    const vh = window.innerHeight;
-    // 0 quando o topo da lista chega ao centro; 1 quando o fim passa
-    const span = rect.height - vh * 0.5;
-    const passed = (vh * 0.5) - rect.top;
-    const pct = span > 0 ? Math.max(0, Math.min(1, passed / span)) : 0;
-    bar.style.transform = `scaleX(${pct.toFixed(4)})`;
-  };
-
-  if (!progressBound) {
-    window.addEventListener('scroll', () => {
-      if (progressRaf) return;
-      progressRaf = requestAnimationFrame(update);
-    }, { passive: true });
-    window.addEventListener('resize', () => {
-      if (progressRaf) return;
-      progressRaf = requestAnimationFrame(update);
-    }, { passive: true });
-    progressBound = true;
-  }
-  update();
-}
-
 /* ---------- SCROLL HINT ---------- */
+let hintObserver = null;
+
 function setupScrollHint() {
   const hint = document.querySelector('[data-ps-hint]');
   const head = document.querySelector('.ps-head');
   if (!hint || !head) return;
 
-  const obs = new IntersectionObserver((entries) => {
+  // re-render (i18n) chama de novo: desconecta o anterior pra nao acumular
+  if (hintObserver) hintObserver.disconnect();
+  hintObserver = new IntersectionObserver((entries) => {
     entries.forEach(e => hint.classList.toggle('is-hidden', !e.isIntersecting));
   }, { threshold: 0.1 });
-  obs.observe(head);
+  hintObserver.observe(head);
 }
 
 /* ---------- CTA: todos os repositórios ---------- */
@@ -219,6 +256,13 @@ function renderProjects(lang) {
   const list = document.querySelector('[data-ps-list]');
   if (!list) return;
 
+  /* PLACEHOLDER "em construção" (data-ps-soon na section): a showcase
+     fica oculta pelo CSS e nada precisa ser montado — o placeholder é
+     HTML estático traduzido pelo applyI18n. PARA REATIVAR os projetos
+     basta remover o atributo data-ps-soon da <section id="projects">;
+     todo o código abaixo volta a rodar normalmente. */
+  if (document.querySelector('#projects[data-ps-soon]')) return;
+
   const data = I18N[lang].projects;
   const projects = psPrepare(data.list);
   const labels = data.showcase || {
@@ -236,6 +280,9 @@ function renderProjects(lang) {
   if (titleEl)  titleEl.textContent  = labels.title;
   if (hintLbl)  hintLbl.textContent  = labels.scrollHint;
 
+  // label do cursor-chip que segue o mouse sobre as capas (scrollfx)
+  list.dataset.visitLabel = labels.visitBtn;
+
   list.innerHTML = '';
   projects.forEach(p => list.appendChild(buildShowcaseCard(p, labels)));
 
@@ -243,9 +290,21 @@ function renderProjects(lang) {
   if (projects[0]) updatePanelTo(projects[0], labels);
 
   setupObserver(projects, labels);
-  setupProgressBar();
   setupScrollHint();
   setupReposCta(data);
+
+  // mede a media 16:9 (centragem do sticky) e garante painel sem corte;
+  // refaz nos resizes
+  psMeasureCard();
+  psFitCheck();
+  if (!psFitBound) {
+    let fitRaf = null;
+    window.addEventListener('resize', () => {
+      if (fitRaf) return;
+      fitRaf = requestAnimationFrame(() => { fitRaf = null; psMeasureCard(); psFitCheck(); });
+    }, { passive: true });
+    psFitBound = true;
+  }
 }
 
 /* expor pro language.js */

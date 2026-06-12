@@ -84,7 +84,7 @@ function contentCardHtml(e) {
       <dialog id="${e.cert.id}" class="cert-modal">
         <div class="cert-content">
           <button class="cert-close" type="button" aria-label="Close certificate">×</button>
-          <img src="${imgSrc}" alt="${label} - ${e.title}">
+          <img src="${imgSrc}" alt="${label} - ${e.title}" loading="lazy" decoding="async">
         </div>
       </dialog>`;
   }

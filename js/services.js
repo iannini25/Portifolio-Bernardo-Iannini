@@ -66,7 +66,7 @@ const SERVICE_ICONS = {
     '</svg>',
 };
 
-function buildServiceCard(item) {
+function buildServiceCard(item, ctaLabel) {
   const card = document.createElement('article');
   card.className = 'service-card';
 
@@ -89,7 +89,24 @@ function buildServiceCard(item) {
     <p class="service-desc">${item.desc || ''}</p>
 
     ${features ? `<ul class="service-features">${features}</ul>` : ''}
+
+    <a class="service-cta" href="#contato">
+      <span>${ctaLabel}</span>
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
   `;
+
+  // scroll suave próprio (o bind global de a[data-scroll] do UI.js roda
+  // antes deste render; scroll-margin-top da section compensa o header)
+  card.querySelector('.service-cta').addEventListener('click', e => {
+    const target = document.querySelector('#contato');
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 
   return card;
 }
@@ -106,6 +123,9 @@ function renderServices(lang) {
   if (titleEl) titleEl.textContent = data.title;
   if (subEl)   subEl.textContent   = data.sub;
 
+  // CTA de venda no rodapé de cada card (fallback se o i18n não tiver)
+  const ctaLabel = data.ctaLabel || (lang === 'pt' ? 'Solicitar proposta' : 'Get a quote');
+
   grid.innerHTML = '';
-  (data.list || []).forEach(item => grid.appendChild(buildServiceCard(item)));
+  (data.list || []).forEach(item => grid.appendChild(buildServiceCard(item, ctaLabel)));
 }
