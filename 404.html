@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>404 · Página não encontrada · Bernardo Iannini</title>
+  <meta name="description" content="A página que você procura não existe ou foi movida. Volte para o portfólio ou para o blog do Bernardo Iannini." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href="https://bernardoiannini.com/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;600;700&family=Instrument+Serif:ital@0;1&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/blog.css">
+
+  <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/favicon-48.png" sizes="48x48">
+  <link rel="icon" type="image/png" href="/favicon_192px.png" sizes="192x192">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any">
+  <meta name="theme-color" content="#060807">
+
+  <style>
+    .nf-main {
+      min-height: calc(100vh - 80px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 24px 48px;
+      text-align: center;
+    }
+    .nf-card {
+      max-width: 560px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+    .nf-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(72px, 18vw, 140px);
+      line-height: 1;
+      font-weight: 700;
+      background: linear-gradient(135deg, #22c55e, #a3e635);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -.04em;
+    }
+    .nf-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(28px, 6vw, 38px);
+      color: #fff;
+      margin: 0;
+    }
+    .nf-text {
+      color: rgba(255,255,255,.7);
+      font-size: 15.5px;
+      line-height: 1.6;
+      margin: 0;
+    }
+    .nf-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .nf-btn {
+      padding: 11px 22px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      transition: transform .25s ease, background .25s ease, border-color .25s ease, box-shadow .25s ease;
+    }
+    .nf-btn--primary {
+      background: linear-gradient(180deg, #22c55e, #16a34a);
+      color: #06180c;
+      border: 1px solid rgba(163,230,53,.55);
+    }
+    .nf-btn--primary:hover { transform: translateY(-1px); box-shadow: 0 14px 30px -16px rgba(34,197,94,.7); }
+    .nf-btn--ghost {
+      background: rgba(255,255,255,.04);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.18);
+    }
+    .nf-btn--ghost:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.32); }
+  </style>
+</head>
+
+<body class="blog-body">
+
+  <header>
+    <div class="nav">
+      <div class="nav-center">
+        <nav class="pill">
+          <a href="/index.html#home">Home</a>
+          <a href="/blog.html">Blog</a>
+          <a href="/index.html#contato">Contact</a>
+        </nav>
+      </div>
+      <div class="nav-right">
+        <a class="resume-btn" href="/Curriculo_Bernardo_Iannini.pdf" download>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3v11m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span>Currículo</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="nf-main">
+    <div class="nf-card">
+      <div class="nf-code" aria-hidden="true">404</div>
+      <h1 class="nf-title">Essa página não existe.</h1>
+      <p class="nf-text">
+        Pode ser que o link esteja quebrado ou a página tenha sido movida.
+        Aqui vão os dois caminhos certos:
+      </p>
+      <div class="nf-actions">
+        <a class="nf-btn nf-btn--primary" href="/">← Voltar para o portfólio</a>
+        <a class="nf-btn nf-btn--ghost" href="/blog.html">Ir para o blog</a>
+      </div>
+    </div>
+  </main>
+
+  <script defer src="/js/transitions.js"></script>
+</body>
+
+</html>

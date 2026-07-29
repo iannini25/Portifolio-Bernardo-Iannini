@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Painel de administração e endpoints internos
+Disallow: /admin.html
+
+# Página legada de redirect — apontamos pros novos /posts/<slug>.html
+Disallow: /post.html
+
+Sitemap: https://bernardoiannini.com/sitemap.xml

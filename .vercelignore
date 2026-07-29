@@ -1,0 +1,23 @@
+# Nao sobe pra producao.
+# Mantemos scripts/ e data/ porque o build (npm run build:posts) precisa deles.
+
+node_modules
+.git
+*.log
+
+# O painel admin AGORA roda em producao (CRUD via Supabase, client-side).
+# Por isso admin.html / bernardolindao.html / blog-admin.js / blog-auth.js
+# DEVEM ir pro deploy. O acesso e protegido por Supabase Auth + RLS.
+
+# Servidor admin LOCAL legado (substituido pelo Supabase) — nao precisa em prod.
+scripts/admin-server.js
+
+# Biblioteca pessoal de fontes (centenas de arquivos) — o deploy usa só
+# o peso self-hosted copiado em /fonts. NAO subir a lib inteira.
+fonts-woff2
+
+# Caches locais
+.claude
+.DS_Store
+Thumbs.db
+desktop.ini

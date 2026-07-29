@@ -1,0 +1,60 @@
+# ===========================================================
+#  .gitignore — Portfolio Bernardo Iannini
+#  IMPORTANTE: os arquivos GERADOS pelo build (blog.html,
+#  posts/*.html, data/posts.json, sitemap.xml, js/blog-seed.js)
+#  e as imagens (img/posts/**) DEVEM ser commitados — e o que
+#  a Vercel serve. Por isso NAO estao ignorados aqui.
+# ===========================================================
+
+# Dependencias / instalacao
+node_modules/
+*.log
+npm-debug.log*
+
+# Vercel local
+.vercel/
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Claude / IA caches locais
+.claude/
+CLAUDE.md
+
+# Bibliotecas de referencia (clones de component libraries/animacao) —
+# usadas so pra consulta durante o desenvolvimento, nunca deployadas nem
+# importadas pelo site. Pesam MUITO (centenas de MB) e nao devem ir pro
+# repositorio.
+_ref/
+vendor/
+
+# Biblioteca PESSOAL de fontes (centenas de arquivos, ~165MB) — usada so
+# localmente pra testar/escolher tipografia. O site usa Google Fonts;
+# ja excluida do deploy Vercel via .vercelignore.
+fonts-woff2/
+
+# Copia/pasta duplicada aninhada do proprio projeto (tem .git proprio —
+# nao e um submodule real, nao ha .gitmodules). Nunca deveria ter sido
+# adicionada ao repositorio.
+/Portifolio-Bernardo-Iannini/
+
+# Ferramentas internas do estudio (definicoes de agentes/skills) — usadas so
+# no desenvolvimento local, NAO fazem parte do site.
+.agents/
+skills-lock.json
+
+# Notas internas / rascunhos de conteudo — material de apoio, nao vai pro site.
+ANIMACAO.md
+CONTEUDO-PARA-EDITAR.md
+PROJETOS-EM-CONSTRUCAO.md
+MIGRATION-NOTES.md
+
+# Assets de TRABALHO (screenshots, highlights, referencias visuais soltas) —
+# apoio local, nao servido pelo site.
+docs-highlights/
+logos-highlights/
+shots-notag/

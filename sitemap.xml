@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://bernardoiannini.com/</loc>
+    <lastmod>2026-06-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://bernardoiannini.com/blog.html</loc>
+    <lastmod>2026-06-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://bernardoiannini.com/posts/novooo-testedz.html</loc>
+    <lastmod>2026-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/posts/post/eu.jpg</image:loc>
+      <image:caption>novooo testedz - Bernardo Iannini</image:caption>
+      <image:title>novooo testedz</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/posts/post/geminigeneratedimagelfzyotlfzyotlfzy.png</image:loc>
+      <image:caption>novooo testedz</image:caption>
+      <image:title>novooo testedz</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/posts/post/geminigeneratedimagehjefwmhjefwmhjef.png</image:loc>
+      <image:caption>novooo testedz</image:caption>
+      <image:title>novooo testedz</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/posts/post/geminigeneratedimageblijdcblijdcblij.png</image:loc>
+      <image:caption>novooo testedz</image:caption>
+      <image:title>novooo testedz</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/posts/post/geminigeneratedimagedf11nvdf11nvdf11.png</image:loc>
+      <image:caption>novooo testedz</image:caption>
+      <image:title>novooo testedz</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/posts/post/projeto-caixa.png</image:loc>
+      <image:caption>novooo testedz</image:caption>
+      <image:title>novooo testedz</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bernardoiannini.com/posts/teste.html</loc>
+    <lastmod>2026-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/posts/teste/cover.png</image:loc>
+      <image:caption>teste - Bernardo Iannini</image:caption>
+      <image:title>teste</image:title>
+    </image:image>
+  </url>
+</urlset>
