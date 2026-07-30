@@ -67,7 +67,7 @@
     galleries.forEach(g => {
       g.querySelectorAll('img[data-gallery-index]').forEach(img => {
         all.push({
-          src: img.currentSrc || img.src,
+          el: img,
           alt: img.alt || '',
           caption: img.closest('figure')?.querySelector('figcaption')?.textContent || '',
         });
@@ -79,7 +79,8 @@
       if (!all.length) return;
       current = (i + all.length) % all.length;
       const item = all[current];
-      imgEl.src = item.src;
+      // currentSrc na hora de exibir: pega o WebP ja resolvido pelo <picture>
+      imgEl.src = item.el.currentSrc || item.el.src;
       imgEl.alt = item.alt;
       capEl.textContent = item.caption || '';
       capEl.style.display = item.caption ? '' : 'none';
@@ -91,8 +92,8 @@
         if (!img) return;
         e.preventDefault();
         const idx = Number(img.dataset.galleryIndex || 0);
-        // Encontra o índice global dessa imagem em `all`
-        const globalIdx = all.findIndex(x => x.src === (img.currentSrc || img.src));
+        // Encontra o índice global dessa imagem em `all` (por elemento, nao por URL)
+        const globalIdx = all.findIndex(x => x.el === img);
         show(globalIdx >= 0 ? globalIdx : idx);
         if (typeof dialog.showModal === 'function') dialog.showModal();
         else dialog.setAttribute('open', '');
@@ -144,14 +145,19 @@
     'startViewTransition' in document && 'onpagereveal' in window;
   if (!SUPPORTS_CROSS_DOC_VT)
   document.addEventListener('click', (e) => {
+    // UI.js (pageTransitions) ja tratou este clique: nao duplica o fade
+    if (e.defaultPrevented) return;
+    // Permite Ctrl/Cmd/Shift/Alt-click e botao do meio (abrir em nova aba)
+    if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || e.button !== 0) return;
     const a = e.target.closest('a[href]');
     if (!a) return;
+    if (a.hasAttribute('download') || a.hasAttribute('target')) return;
     const href = a.getAttribute('href') || '';
-    if (a.target === '_blank') return;
-    if (href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+    if (href.startsWith('#') || /^(mailto|tel|javascript):/i.test(href)) return;
     try {
       const url = new URL(href, location.href);
       if (url.origin !== location.origin) return;
+      if (url.pathname === location.pathname) return;
       e.preventDefault();
       document.body.classList.add('page-leaving');
       setTimeout(() => { location.href = url.href; }, 220);

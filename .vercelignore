@@ -5,8 +5,12 @@ node_modules
 .git
 *.log
 
+# Copia acidental e desatualizada do site aninhada dentro do repo
+# (inclui .git proprio). NUNCA subir pro deploy.
+/Portifolio-Bernardo-Iannini/
+
 # O painel admin AGORA roda em producao (CRUD via Supabase, client-side).
-# Por isso admin.html / bernardolindao.html / blog-admin.js / blog-auth.js
+# Por isso admin.html, a pagina de login e blog-admin.js / blog-auth.js
 # DEVEM ir pro deploy. O acesso e protegido por Supabase Auth + RLS.
 
 # Servidor admin LOCAL legado (substituido pelo Supabase) — nao precisa em prod.

@@ -30,8 +30,9 @@
 
     <form class="login-form" id="loginForm" autocomplete="off">
       <div class="login-field">
-        <label for="loginUser">E-mail</label>
-        <input type="email" id="loginUser" name="user" required autocomplete="username" spellcheck="false"/>
+        <label for="loginUser">Usuário</label>
+        <input type="text" id="loginUser" name="user" required autocomplete="username" spellcheck="false"
+               autocapitalize="off" placeholder="bernardo"/>
       </div>
       <div class="login-field">
         <label for="loginPass">Senha</label>
@@ -40,7 +41,7 @@
       <button type="submit" class="login-submit">Entrar</button>
     </form>
 
-    <p class="login-error" id="loginError" hidden>Usuário ou senha incorretos.</p>
+    <p class="login-error" id="loginError" hidden role="alert" aria-live="polite">Usuário ou senha incorretos.</p>
 
     <a href="/" class="login-back">← voltar ao site</a>
   </main>

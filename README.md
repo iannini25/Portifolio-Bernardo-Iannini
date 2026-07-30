@@ -27,8 +27,9 @@ npm install
 npm run admin
 ```
 
-Abra **http://localhost:4000/bernardolindao.html**
-Acesso do painel: credenciais no gerenciador de senhas (nunca neste arquivo).
+Abra a URL de login que o terminal mostra ao subir o servidor.
+O acesso é protegido por Supabase Auth (o caminho da página de
+login não fica documentado aqui de propósito).
 
 No painel você cria/edita/publica posts e anexa várias imagens
 (elas vão pro topo do post, em grade estilo LinkedIn). Cada

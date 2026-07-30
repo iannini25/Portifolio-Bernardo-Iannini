@@ -5,7 +5,7 @@
    Fonte de dados (em ordem de preferência):
      1) window.BI_POSTS      — injetado pelo build em blog.html
      2) window.BI_SEED_POSTS — gerado por scripts/build-posts.js
-     3) array inline abaixo  — fallback de emergência
+     3) array vazio: sem posts fake, o empty state real assume
    Views (popularidade) ainda usam localStorage local.
    ========================================================= */
 
@@ -13,209 +13,7 @@ const STORAGE_KEY = 'bi_blog_posts';   // legado, preservado pra compat
 const STORAGE_VIEWS = 'bi_blog_views';
 
 /* ---------- Default seed posts (fallback de emergência) ---------- */
-const SEED_POSTS = (typeof window !== 'undefined' && (window.BI_POSTS || window.BI_SEED_POSTS)) || [
-  {
-    id: 'seed-1',
-    title: 'Como construí esse portfólio do zero',
-    subtitle: 'Decisões técnicas, atalhos, e o que aprendi pelo caminho.',
-    slug: 'como-construi-esse-portfolio',
-    cover: 'img/eufoto1.webp',
-    tags: ['frontend', 'css', 'design'],
-    category: 'Engenharia',
-    author: 'Bernardo Iannini',
-    status: 'published',
-    featured: true,
-    createdAt: '2026-05-10T10:00:00Z',
-    updatedAt: '2026-05-10T10:00:00Z',
-    content: `# Como construí esse portfólio do zero
-
-Quando comecei a desenhar esse portfólio, queria algo que **não parecesse mais um template**.
-
-## Decisões de design
-
-A primeira coisa foi escolher uma paleta consistente: verde (#22c55e) + lime (#a3e635) sobre fundo escuro (#060807). O contraste é alto, mas o glow lime amacia as bordas.
-
-> "Um portfólio bom é como um café bom: simples, mas com personalidade."
-
-## Stack
-
-- HTML / CSS / Vanilla JS
-- Sem frameworks (queria controle total sobre o CSS)
-- Animações com \`transform\` e \`opacity\` pra performance
-
-## O que eu faria diferente
-
-1. Modularizaria o CSS desde o início
-2. Usaria CSS variables com mais agressividade
-3. Talvez Astro pra próxima versão
-
-E você, qual stack escolheria pra um portfólio em 2026?`
-  },
-  {
-    id: 'seed-2',
-    title: 'AI Designer: o que faz e por que importa',
-    subtitle: 'Uma profissão nova nascendo no cruzamento entre design e engenharia.',
-    slug: 'ai-designer-o-que-faz',
-    cover: 'img/memoriacache.webp',
-    tags: ['ia', 'design', 'carreira'],
-    category: 'IA',
-    author: 'Bernardo Iannini',
-    status: 'published',
-    featured: false,
-    createdAt: '2026-05-05T14:30:00Z',
-    updatedAt: '2026-05-05T14:30:00Z',
-    content: `# AI Designer: o que faz e por que importa
-
-A função de **AI Designer** ainda é nova — e por isso confunde muita gente.
-
-## Não é prompt engineer
-
-Prompt engineer otimiza prompts. AI Designer **desenha o sistema inteiro**: dados, prompts, fluxos, agentes, UX.
-
-## O que entrega no dia a dia
-
-- Mapeia onde IA agrega valor real (e onde não agrega)
-- Define personas, tom e guardrails dos agentes
-- Trabalha com engenheiros pra integrar modelos
-- Testa qualidade, viés e edge cases
-
-## Como entrei nessa área
-
-Aos 17 anos, percebi que sabia escrever código *e* sabia explicar o problema pro modelo. Isso virou meu diferencial.`
-  },
-  {
-    id: 'seed-3',
-    title: 'O fim do CSS-in-JS?',
-    subtitle: 'A discussão que voltou em 2026 e por que eu mudei de lado.',
-    slug: 'fim-do-css-in-js',
-    cover: 'img/athena7.com.br.webp',
-    tags: ['css', 'frontend', 'react'],
-    category: 'Engenharia',
-    author: 'Bernardo Iannini',
-    status: 'published',
-    featured: false,
-    createdAt: '2026-04-28T09:15:00Z',
-    updatedAt: '2026-04-28T09:15:00Z',
-    content: `# O fim do CSS-in-JS?
-
-Spoiler: não, **CSS-in-JS não morreu**. Mas mudou de papel.
-
-## O que aconteceu
-
-Tailwind v4 ficou tão expressivo que muita gente abandonou styled-components. CSS Modules voltou com força. E o suporte nativo a CSS Nesting tirou a última vantagem técnica de runtime CSS-in-JS.
-
-## Quando ainda vale a pena
-
-\`\`\`tsx
-const Button = styled.button\`
-  background: \${props => props.variant === 'primary' ? 'green' : 'gray'};
-\`
-\`\`\`
-
-Em libraries de componentes (com tokens dinâmicos), ainda compensa. Em apps, raramente.
-
-## Minha escolha hoje
-
-**Tailwind + CSS modules** quando preciso de scope.`
-  },
-  {
-    id: 'seed-4',
-    title: 'Erp Inspire4U: lições de um projeto real',
-    subtitle: 'Construindo software pra colégio, do MVP em 3 semanas até produção.',
-    slug: 'erp-inspire4u-licoes',
-    cover: 'img/erpinspire4u.webp',
-    tags: ['produto', 'backend', 'sql'],
-    category: 'Projetos',
-    author: 'Bernardo Iannini',
-    status: 'published',
-    featured: false,
-    createdAt: '2026-04-20T16:00:00Z',
-    updatedAt: '2026-04-20T16:00:00Z',
-    content: `# ERP Inspire4U: lições de um projeto real
-
-O **Inspire4U** é um colégio em Belo Horizonte. Eles precisavam de um ERP que controlasse matrículas, mensalidades, professores e turmas. Tudo isso em **3 semanas**.
-
-## O MVP
-
-- C# + SQL Server no backend
-- Vue.js no frontend
-- Auth simples com JWT
-
-## O que deu errado
-
-A primeira versão **não tinha logs decentes**. Quando um boleto sumiu, perdemos 4 horas debugando.
-
-## A correção
-
-Adicionei logs estruturados (Serilog) e um dashboard simples de auditoria. Nunca mais sumiu nada.
-
-## Aprendizado
-
-> Antes de qualquer feature nova, pergunte: "como vou debugar isso em produção?"`
-  },
-  {
-    id: 'seed-5',
-    title: 'Por que escrever ainda importa em 2026',
-    subtitle: 'Mesmo com IA escrevendo tudo, a clareza continua sendo o diferencial.',
-    slug: 'por-que-escrever-ainda-importa',
-    cover: 'img/joselopes.webp',
-    tags: ['escrita', 'carreira', 'comunicação'],
-    category: 'Carreira',
-    author: 'Bernardo Iannini',
-    status: 'published',
-    featured: false,
-    createdAt: '2026-04-12T11:20:00Z',
-    updatedAt: '2026-04-12T11:20:00Z',
-    content: `# Por que escrever ainda importa em 2026
-
-Você pode pedir pra IA escrever qualquer coisa. Mas **você ainda precisa saber se o texto está bom**.
-
-## A nova habilidade do dev
-
-Não é mais "saber escrever em inglês". É **saber distinguir um texto medíocre de um bom**.
-
-## Como pratico
-
-1. Escrevo o draft à mão
-2. Peço pra IA criticar (não corrigir)
-3. Reescrevo com base na crítica
-
-## O resultado
-
-Textos mais curtos, mais diretos, e que **soam como eu**.`
-  },
-  {
-    id: 'seed-6',
-    title: 'Memoriacache: o jogo que virou portfólio',
-    subtitle: 'Como um joguinho de memória virou projeto-chave no meu CV.',
-    slug: 'memoriacache-jogo-portfolio',
-    cover: 'img/memoriacache.webp',
-    tags: ['jogo', 'react', 'animação'],
-    category: 'Projetos',
-    author: 'Bernardo Iannini',
-    status: 'published',
-    featured: false,
-    createdAt: '2026-04-02T20:00:00Z',
-    updatedAt: '2026-04-02T20:00:00Z',
-    content: `# Memoriacache: o jogo que virou portfólio
-
-Comecei o **Memoriacache** como um exercício de fim de semana. Hoje, é um dos projetos que mais abre portas em entrevistas.
-
-## A ideia
-
-Um jogo da memória onde as cartas representam estruturas de dados (cache, heap, stack...) — combina diversão com aprendizado.
-
-## A stack
-
-- React + TypeScript
-- Framer Motion (animações)
-- LocalStorage pra ranking
-
-## Por que funciona como portfólio
-
-Recrutadores **jogam** antes de ler o CV. Engajamento > leitura.`
-  }
-];
+const SEED_POSTS = (typeof window !== 'undefined' && (window.BI_POSTS || window.BI_SEED_POSTS)) || [];
 
 /* ---------- Carregamento de posts ----------
    Prioriza window.BI_POSTS (gerado pelo build), depois window.BI_SEED_POSTS
@@ -234,21 +32,15 @@ const loadViews = () => {
   catch { return {}; }
 };
 
-const saveViews = (views) => {
-  localStorage.setItem(STORAGE_VIEWS, JSON.stringify(views));
-};
-
-const incrementViews = (id) => {
-  const views = loadViews();
-  views[id] = (views[id] || 0) + 1;
-  saveViews(views);
-  return views[id];
-};
+/* Quem grava as views é a página do post (por slug); aqui só lemos. */
 
 /* ---------- Utility ---------- */
+const activeLang = () => (typeof LANG !== 'undefined' && LANG) || 'en';
+
 const formatDate = (iso) => {
   const d = new Date(iso);
-  return d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
+  const locale = activeLang() === 'pt' ? 'pt-BR' : 'en-US';
+  return d.toLocaleDateString(locale, { day: '2-digit', month: 'short', year: 'numeric' });
 };
 
 const estimateReadTime = (content) => {
@@ -260,133 +52,340 @@ const escapeHtml = (s) => String(s || '').replace(/[&<>"']/g, c => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
 }[c]));
 
-/* ---------- Ícones do design system (mesmos do admin) ---------- */
-const POST_ICONS = {
-  rocket:  '<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>',
-  code:    '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
-  bolt:    '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
-  chart:   '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
-  check:   '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
-  clock:   '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
-  flag:    '<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>',
-  heart:   '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>',
-  star:    '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
-  target:  '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
-  shield:  '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
-  zap:     '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
-  info:    '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>',
-  warn:    '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
-  danger:  '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>',
+/* =========================================================
+   Markdown → HTML (GFM)
+   ---------------------------------------------------------
+   Markdown padrão, saída semântica e simples: h1..h6, p, ul/ol/li,
+   pre/code, blockquote, hr, table, a, img, strong, em, del, code, br.
+   Não existe mais shortcode de card/callout/ícone: post é texto.
+   Mesmo contrato do build canônico (scripts/build-posts.js, marked).
+
+   Segurança: o markdown do autor é escapado ANTES do parse, então
+   nenhum HTML cru sobrevive (nem <script>, nem onerror=). Links e
+   imagens passam por mdSafeUrl, que bloqueia javascript:/data:.
+   ========================================================= */
+
+const MD_SAFE_SCHEMES = ['http', 'https', 'mailto', 'tel'];
+const MD_SITE_HOST = 'bernardoiannini.com';
+const MD_ITEM_RE = /^(\s*)([-*+]|\d{1,9}[.)])(\s+)(.*)$/;
+
+/* '' quando a URL não é segura (javascript:, data:, vbscript:…). */
+const mdSafeUrl = (href) => {
+  const raw = String(href == null ? '' : href).trim();
+  if (!raw) return '';
+  const flat = raw.replace(/[\x00-\x20]+/g, '').toLowerCase();
+  const colon = flat.indexOf(':');
+  if (colon === -1) return raw;               // relativo, âncora ou query
+  const sep = flat.search(/[/?#]/);
+  if (sep !== -1 && sep < colon) return raw;  // ex: /pasta/arquivo:1
+  return MD_SAFE_SCHEMES.indexOf(flat.slice(0, colon)) !== -1 ? raw : '';
 };
 
-const svgIcon = (name) => {
-  const p = POST_ICONS[name] || POST_ICONS.star;
-  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+/* Externo = http(s) fora do domínio. Link interno nunca abre em nova aba. */
+const mdIsExternalUrl = (href) => {
+  const url = String(href || '');
+  if (!/^(?:https?:)?\/\//i.test(url)) return false;
+  const host = url
+    .replace(/^(?:https?:)?\/\//i, '')
+    .split(/[/?#]/)[0]
+    .replace(/^www\./i, '')
+    .toLowerCase();
+  return host !== MD_SITE_HOST;
 };
 
-const parseShortcodeAttrs = (raw) => {
-  const attrs = {};
-  if (!raw) return attrs;
-  const re = /(\w+)=(?:"([^"]*)"|'([^']*)'|(\S+))/g;
-  let m;
-  while ((m = re.exec(raw))) attrs[m[1]] = m[2] || m[3] || m[4] || '';
-  return attrs;
-};
+/* Ênfase, negrito e riscado. Espera texto sem tags. */
+function mdEmphasis(text) {
+  return String(text == null ? '' : text)
+    .replace(/\*\*\*([^*]+)\*\*\*/g, '<em><strong>$1</strong></em>')
+    .replace(/___([^_]+)___/g, '<em><strong>$1</strong></em>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/(^|[^\w])__([^_]+)__(?!\w)/g, '$1<strong>$2</strong>')
+    .replace(/\*([^*\n]+)\*/g, '<em>$1</em>')
+    .replace(/(^|[^\w*])_([^_\n]+)_(?!\w)/g, '$1<em>$2</em>')
+    .replace(/~~([^~]+)~~/g, '<del>$1</del>');
+}
 
-const inlineMd = (md) => {
-  let html = escapeHtml(md);
-  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-  html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-  html = html.replace(/`([^`\n]+)`/g, '<code>$1</code>');
-  html = html.replace(/\[([^\]]+)\]\((https?:[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
-  return html.split(/\n{2,}/).map(p => `<p>${p.replace(/\n/g, '<br/>')}</p>`).join('');
-};
+/* Nível inline. Recebe texto JÁ escapado e devolve HTML. */
+function mdInline(text) {
+  const slots = [];
+  const slot = (html) => `\x00MD${slots.push(html) - 1}\x00`;
+  let out = String(text == null ? '' : text);
 
-const renderCard = (attrs, content) => {
-  const icon = attrs.icon ? `<div class="post-card-icon">${svgIcon(attrs.icon)}</div>` : '';
-  const title = attrs.title ? `<h4 class="post-card-title">${escapeHtml(attrs.title)}</h4>` : '';
-  const body = content ? `<div class="post-card-body">${inlineMd(content)}</div>` : '';
-  return `<!--HTMLBLOCK--><div class="post-card">${icon}<div class="post-card-content">${title}${body}</div></div><!--/HTMLBLOCK-->`;
-};
+  // Quebra dura do GFM: dois espaços ou "\" no fim da linha.
+  out = out.replace(/(?: {2,}|\\)\n/g, '<br>');
 
-const renderCallout = (type, content, iconName) =>
-  `<!--HTMLBLOCK--><div class="post-callout post-callout--${type}"><div class="post-callout-icon">${svgIcon(iconName)}</div><div class="post-callout-body">${inlineMd(content)}</div></div><!--/HTMLBLOCK-->`;
+  // Escapes de barra invertida saem da disputa (\* vira * literal).
+  out = out.replace(/\\([\\`*_{}[\]()#+\-.!~|])/g, (_, ch) => slot(ch));
 
-const processShortcodes = (md) => {
-  md = md.replace(/^:::cards\s*\n([\s\S]*?)^:::$/gm, (_, inner) => {
-    const cards = [];
-    inner.replace(/^:::card\s*(.*?)\n([\s\S]*?)^:::$/gm, (_m, attrs, content) => {
-      cards.push({ attrs: parseShortcodeAttrs(attrs), content: content.trim() });
-      return '';
+  // Código inline: guardado antes de tudo, não sofre outra transformação.
+  out = out.replace(/(`+)([\s\S]*?[^`])\1(?!`)/g, (_, ticks, code) =>
+    slot(`<code>${code.replace(/^ | $/g, '')}</code>`));
+
+  // Imagem: ![alt](src "título") — a URL aceita um nível de parênteses.
+  out = out.replace(/!\[([^\]]*)\]\(\s*((?:[^\s()]|\([^\s()]*\))+)(?:\s+&quot;([\s\S]*?)&quot;)?\s*\)/g,
+    (_, alt, src, title) => {
+      const url = mdSafeUrl(src);
+      if (!url) return alt;
+      return slot(`<img src="${url}" alt="${alt}"${title ? ` title="${title}"` : ''} loading="lazy"/>`);
     });
-    if (!cards.length) return '';
-    const html = cards.map(c => renderCard(c.attrs, c.content)).join('');
-    return `<!--GRID_START-->${html}<!--GRID_END-->`;
-  });
-  md = md.replace(/^:::card\s*(.*?)\n([\s\S]*?)^:::$/gm, (_, attrs, content) =>
-    renderCard(parseShortcodeAttrs(attrs), content.trim())
-  );
-  const calloutIcons = { info: 'info', success: 'check', warn: 'warn', danger: 'danger' };
-  md = md.replace(/^:::(info|success|warn|danger)\s*\n([\s\S]*?)^:::$/gm, (_, type, content) =>
-    renderCallout(type, content.trim(), calloutIcons[type])
-  );
-  return md;
-};
 
-/* ---------- Markdown → HTML ---------- */
+  // Link: [texto](url "título") — a URL aceita um nível de parênteses.
+  out = out.replace(/\[([^\]]*)\]\(\s*((?:[^\s()]|\([^\s()]*\))+)(?:\s+&quot;([\s\S]*?)&quot;)?\s*\)/g,
+    (_, label, href, title) => {
+      const url = mdSafeUrl(href);
+      if (!url) return mdEmphasis(label);
+      const ext = mdIsExternalUrl(url) ? ' target="_blank" rel="noopener"' : '';
+      return slot(`<a href="${url}"${title ? ` title="${title}"` : ''}${ext}>${mdEmphasis(label)}</a>`);
+    });
+
+  out = mdEmphasis(out);
+
+  // Autolink GFM: URL nua e e-mail.
+  out = out.replace(/(^|[\s(])(https?:\/\/[^\s<>()]+[^\s<>()[\].,;:!?'"])/g, (m, pre, raw) => {
+    const url = mdSafeUrl(raw);
+    if (!url) return m;
+    const ext = mdIsExternalUrl(url) ? ' target="_blank" rel="noopener"' : '';
+    return pre + slot(`<a href="${url}"${ext}>${url}</a>`);
+  });
+  out = out.replace(/(^|[\s(])([A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+)/g,
+    (_, pre, mail) => pre + slot(`<a href="mailto:${mail}">${mail}</a>`));
+
+  // Devolve os pedaços guardados (um link pode conter código inline).
+  for (let pass = 0; pass < 5 && out.indexOf('\x00MD') !== -1; pass++) {
+    out = out.replace(/\x00MD(\d+)\x00/g, (_, n) => slots[n] || '');
+  }
+  return out;
+}
+
+/* Uma linha de tabela → células (sem os pipes das pontas). */
+function mdTableCells(row) {
+  return String(row).replace(/^\s*\|/, '').replace(/\|\s*$/, '').split('|').map(c => c.trim());
+}
+
+/* Tabela GFM: cabeçalho + linha de alinhamento + corpo.
+   Devolve null quando as linhas não formam uma tabela. */
+function mdTable(lines, start) {
+  const head = lines[start];
+  const sep  = lines[start + 1];
+  if (!head || !sep || head.indexOf('|') === -1 || sep.indexOf('|') === -1) return null;
+
+  const sepCells = mdTableCells(sep);
+  if (!sepCells.length || !sepCells.every(c => /^:?-+:?$/.test(c))) return null;
+
+  const align = sepCells.map(c => {
+    if (/^:-+:$/.test(c)) return 'center';
+    if (/^:-+$/.test(c))  return 'left';
+    if (/^-+:$/.test(c))  return 'right';
+    return '';
+  });
+  const cell = (content, tag, a) =>
+    `<${tag}${a ? ` align="${a}"` : ''}>${mdInline(content || '')}</${tag}>`;
+
+  const headCells = mdTableCells(head);
+  const rows = [];
+  let i = start + 2;
+  while (i < lines.length && lines[i].trim() && lines[i].indexOf('|') !== -1) {
+    const cells = mdTableCells(lines[i]);
+    rows.push('<tr>\n' + align.map((a, k) => cell(cells[k], 'td', a)).join('\n') + '\n</tr>');
+    i++;
+  }
+  const thead = '<thead>\n<tr>\n' + align.map((a, k) => cell(headCells[k], 'th', a)).join('\n') + '\n</tr>\n</thead>';
+  return {
+    html: `<table>\n${thead}\n<tbody>\n${rows.join('\n')}\n</tbody>\n</table>`,
+    next: i,
+  };
+}
+
+/* Lista ul/ol: aninhamento por indentação + itens de tarefa do GFM. */
+function mdList(lines, start) {
+  const first = lines[start].match(MD_ITEM_RE);
+  const baseIndent = first[1].length;
+  const ordered = /^\d/.test(first[2]);
+  const startAt = ordered ? parseInt(first[2], 10) : 1;
+  const items = [];
+  let loose = false;
+  let i = start;
+
+  while (i < lines.length) {
+    const line = lines[i];
+    const item = line.match(MD_ITEM_RE);
+
+    if (item && item[1].length <= baseIndent + 1) {
+      if (items.length && ordered !== /^\d/.test(item[2])) break;   // ul ↔ ol
+      items.push({
+        indent: item[1].length + item[2].length + item[3].length,
+        lines: [item[4]],
+      });
+      i++;
+      continue;
+    }
+    if (!items.length) break;
+
+    if (!line.trim()) {
+      // Linha em branco: só continua se o que vem depois ainda pertence
+      // à lista (item do mesmo tipo, ou conteúdo indentado do item).
+      const next = lines[i + 1];
+      if (!next || !next.trim()) break;
+      const nextItem = next.match(MD_ITEM_RE);
+      const nextIndent = next.match(/^\s*/)[0].length;
+      const sameList = !!nextItem &&
+        nextItem[1].length <= baseIndent + 1 &&
+        ordered === /^\d/.test(nextItem[2]);
+      if (!sameList && nextIndent <= baseIndent) break;
+      loose = true;
+      items[items.length - 1].lines.push('');
+      i++;
+      continue;
+    }
+
+    // Linha indentada (sub-lista, parágrafo ou código do item).
+    const cur = items[items.length - 1];
+    const indent = line.match(/^\s*/)[0].length;
+    cur.lines.push(indent >= cur.indent ? line.slice(cur.indent) : line.trim());
+    i++;
+  }
+
+  const body = items.map(it => {
+    let text = it.lines.join('\n');
+    let box = '';
+    const task = text.match(/^\[([ xX])\]\s+/);
+    if (task) {
+      box = `<input ${/[xX]/.test(task[1]) ? 'checked="" ' : ''}disabled="" type="checkbox"> `;
+      text = text.slice(task[0].length);
+    }
+    let inner = mdBlocks(text);
+    // Lista tight (sem linha em branco) deixa o texto solto no <li>,
+    // como no GFM. Lista loose mantém o <p>.
+    if (!loose) inner = inner.replace(/^<p>([\s\S]*?)<\/p>\n?/, '$1');
+    return `<li>${box}${inner}</li>`;
+  }).join('\n');
+
+  const tag = ordered ? 'ol' : 'ul';
+  const attr = ordered && startAt !== 1 ? ` start="${startAt}"` : '';
+  return { html: `<${tag}${attr}>\n${body}\n</${tag}>`, next: i };
+}
+
+/* Nível de bloco. Recebe markdown JÁ escapado. */
+function mdBlocks(src) {
+  const lines = String(src == null ? '' : src).replace(/\r\n?/g, '\n').split('\n');
+  const out = [];
+  let i = 0;
+
+  const isBlockStart = (l) =>
+    /^\s{0,3}(?:#{1,6}\s|&gt;|```|~~~)/.test(l) ||
+    /^\s{0,3}(?:(?:-\s*){3,}|(?:\*\s*){3,}|(?:_\s*){3,})$/.test(l) ||
+    MD_ITEM_RE.test(l);
+
+  while (i < lines.length) {
+    const line = lines[i];
+
+    if (!line.trim()) { i++; continue; }
+
+    // Sentinela de bloco HTML preservado (galeria).
+    const held = line.match(/^\s*(\x00HTMLBLOCK_\d+\x00)\s*$/);
+    if (held) { out.push(held[1]); i++; continue; }
+
+    // Código cercado: ``` ou ~~~
+    const fence = line.match(/^\s{0,3}(`{3,}|~{3,})\s*([A-Za-z0-9_+#.-]*)/);
+    if (fence) {
+      const close = new RegExp('^\\s{0,3}' + fence[1][0] + '{' + fence[1].length + ',}\\s*$');
+      const code = [];
+      i++;
+      while (i < lines.length && !close.test(lines[i])) { code.push(lines[i]); i++; }
+      i++;
+      const cls = fence[2] ? ` class="language-${fence[2]}"` : '';
+      out.push(`<pre><code${cls}>${code.join('\n')}\n</code></pre>`);
+      continue;
+    }
+
+    // Código indentado com 4 espaços (markdown padrão).
+    if (/^(?: {4}|\t)/.test(line)) {
+      const code = [];
+      while (i < lines.length && (/^(?: {4}|\t)/.test(lines[i]) || !lines[i].trim())) {
+        code.push(lines[i].replace(/^(?: {4}|\t)/, ''));
+        i++;
+      }
+      while (code.length && !code[code.length - 1].trim()) code.pop();
+      out.push(`<pre><code>${code.join('\n')}\n</code></pre>`);
+      continue;
+    }
+
+    // Título ATX: # até ######
+    const head = line.match(/^\s{0,3}(#{1,6})\s+(.*?)\s*#*\s*$/);
+    if (head) {
+      const level = head[1].length;
+      out.push(`<h${level}>${mdInline(head[2])}</h${level}>`);
+      i++;
+      continue;
+    }
+
+    // Régua
+    if (/^\s{0,3}(?:(?:-\s*){3,}|(?:\*\s*){3,}|(?:_\s*){3,})$/.test(line)) {
+      out.push('<hr>');
+      i++;
+      continue;
+    }
+
+    // Citação (o ">" chega escapado como "&gt;")
+    if (/^\s{0,3}&gt;/.test(line)) {
+      const quoted = [];
+      while (i < lines.length && lines[i].trim()) {
+        quoted.push(lines[i].replace(/^\s{0,3}&gt;\s?/, ''));
+        i++;
+      }
+      out.push(`<blockquote>\n${mdBlocks(quoted.join('\n'))}\n</blockquote>`);
+      continue;
+    }
+
+    // Tabela GFM
+    const table = mdTable(lines, i);
+    if (table) { out.push(table.html); i = table.next; continue; }
+
+    // Lista
+    if (MD_ITEM_RE.test(line)) {
+      const list = mdList(lines, i);
+      if (list.next > i) { out.push(list.html); i = list.next; continue; }
+    }
+
+    // Parágrafo (ou título setext, quando a linha seguinte é === / ---)
+    const buf = [];
+    let setext = 0;
+    while (i < lines.length && lines[i].trim()) {
+      const l = lines[i];
+      if (buf.length && /^\s{0,3}=+\s*$/.test(l)) { setext = 1; i++; break; }
+      if (buf.length && /^\s{0,3}-+\s*$/.test(l)) { setext = 2; i++; break; }
+      if (buf.length && isBlockStart(l)) break;
+      buf.push(l);
+      i++;
+    }
+    const text = mdInline(buf.join('\n'));
+    out.push(setext ? `<h${setext}>${text}</h${setext}>` : `<p>${text}</p>`);
+  }
+
+  return out.join('\n');
+}
+
+/* Markdown → HTML. Ponto de entrada único. */
 function markdownToHtml(md) {
   if (!md) return '';
 
-  // Shortcodes ANTES de escapar HTML
-  md = processShortcodes(md);
-
-  // Salva blocos pré-renderizados pra não escaparem
+  // 1) Blocos HTML prontos ficam atrás de sentinelas NUL ANTES de
+  //    escapar, senão o próprio marcador seria escapado.
   const blocks = [];
-  md = md.replace(/<!--HTMLBLOCK-->([\s\S]*?)<!--\/HTMLBLOCK-->/g, (_, b) => {
+  let src = String(md).replace(/<!--HTMLBLOCK-->([\s\S]*?)<!--\/HTMLBLOCK-->/g, (_, b) => {
     blocks.push(b);
     return `\x00HTMLBLOCK_${blocks.length - 1}\x00`;
   });
 
-  let html = escapeHtml(md);
+  // 2) :::gallery depende do front-matter (images:) e só é montada no
+  //    build (scripts/build-posts.js). Aqui a cerca sai pra não vazar.
+  src = src.replace(/^:::gallery[^\n]*\n?[\s\S]*?^:::[ \t]*$/gm, '');
 
-  // Code blocks
-  html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) =>
-    `<pre><code class="lang-${lang || 'text'}">${code.trim()}</code></pre>`
-  );
+  // 3) Escapa tudo e 4) parseia bloco por bloco.
+  const html = mdBlocks(escapeHtml(src));
 
-  // HR
-  html = html.replace(/^---+$/gm, '<hr/>');
-
-  html = html.replace(/`([^`\n]+)`/g, '<code>$1</code>');
-  html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
-  html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
-  html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
-  html = html.replace(/^&gt; (.+)$/gm, '<blockquote>$1</blockquote>');
-  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-  html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-  html = html.replace(/\[([^\]]+)\]\((https?:[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
-  html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1"/>');
-  html = html.replace(/(?:^- .+(?:\n|$))+/gm, (m) =>
-    '<ul>' + m.trim().split('\n').map(l => `<li>${l.replace(/^- /, '')}</li>`).join('') + '</ul>'
-  );
-  html = html.replace(/(?:^\d+\. .+(?:\n|$))+/gm, (m) =>
-    '<ol>' + m.trim().split('\n').map(l => `<li>${l.replace(/^\d+\. /, '')}</li>`).join('') + '</ol>'
-  );
-
-  // Parágrafos
-  html = html.split(/\n{2,}/).map(block => {
-    block = block.trim();
-    if (!block) return '';
-    if (/^<(h\d|ul|ol|pre|blockquote|img|hr)/i.test(block)) return block;
-    if (/^\x00HTMLBLOCK_\d+\x00$/.test(block)) return block;
-    return `<p>${block.replace(/\n/g, '<br/>')}</p>`;
-  }).join('\n');
-
-  html = html.replace(/\x00HTMLBLOCK_(\d+)\x00/g, (_, i) => blocks[i] || '');
-  html = html.replace(/<!--GRID_START-->/g, '<div class="post-cards-grid">')
-             .replace(/<!--GRID_END-->/g, '</div>');
-
-  return html;
+  // 5) Devolve os blocos preservados.
+  return html.replace(/\x00HTMLBLOCK_(\d+)\x00/g, (_, i) => blocks[i] || '');
 }
 
 /* ---------- State ---------- */
@@ -459,15 +458,28 @@ function planLayout(total) {
    Os posts usam URL pública estática `/posts/<slug>.html`. O título também
    é um <a> real pra compatibilidade SEO + crawlers que ignoram JS. */
 const postUrl = (post) => post.url || `/posts/${post.slug || post.id}.html`;
-// Versao .webp da capa (toda capa tem webp gerado pelo build). So pra exibicao.
-const toWebp = (p) => String(p || '').replace(/\.(jpe?g|png)$/i, '.webp');
+/* Versao .webp da capa (o build gera webp de toda capa LOCAL). So pra exibicao.
+   Capa remota (Storage do Supabase, de post feito no painel) volta intacta:
+   o .webp dela nao existe no bucket, e trocar a extensao quebraria a imagem
+   em todo re-render do cliente (filtro, busca, ordenacao, troca de idioma).
+   Mesma regra do isRemoteUrl de scripts/build-posts.js. */
+const isRemoteUrl = (p) => /^(?:https?:)?\/\//i.test(String(p || ''));
+const toWebp = (p) => isRemoteUrl(p)
+  ? String(p || '')
+  : String(p || '').replace(/\.(jpe?g|png)$/i, '.webp');
 
 function postCardHtml(post, layout, views) {
+  const lang = activeLang();
+  const t = (I18N?.[lang]?.blog) || {};
   const content = post.excerpt || post.content || '';
   const readTime = post.readTimeMin || estimateReadTime(post.content);
   const hasCover = !!post.cover;
-  const viewCount = views[post.id] || 0;
+  // Views são gravadas pela página do post por SLUG (fallback pro id legado)
+  const viewCount = views[post.slug] || views[post.id] || 0;
   const url = postUrl(post);
+  const badgeLabel = t.featured?.badge || (lang === 'pt' ? 'Destaque' : 'Featured');
+  const viewsLabel = lang === 'pt' ? 'Visualizações' : 'Views';
+  const readLabel = lang === 'pt' ? 'min de leitura' : 'min read';
   return `
     <article class="blog-post-card ${layout} ${hasCover ? '' : 'blog-post-card--no-image'}"
              data-id="${post.id}" data-slug="${escapeHtml(post.slug || post.id)}"
@@ -482,12 +494,12 @@ function postCardHtml(post, layout, views) {
       ${post.featured ? `
         <span class="blog-post-featured-badge">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 6.6L21 9.2l-5 4.6L17.4 21 12 17.7 6.6 21 8 13.8 3 9.2l6.6-.6z"/></svg>
-          Destaque
+          ${escapeHtml(badgeLabel)}
         </span>
       ` : ''}
 
       ${viewCount > 0 ? `
-        <span class="blog-post-views" title="Visualizações">
+        <span class="blog-post-views" title="${escapeHtml(viewsLabel)}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           ${viewCount}
         </span>
@@ -497,7 +509,7 @@ function postCardHtml(post, layout, views) {
         <div class="blog-post-meta">
           ${post.category ? `<span class="blog-post-category">${escapeHtml(post.category)}</span>` : ''}
           <span class="blog-post-date">${formatDate(post.createdAt)}</span>
-          <span class="blog-post-readtime">${readTime} min de leitura</span>
+          <span class="blog-post-readtime">${readTime} ${readLabel}</span>
         </div>
         <h3 class="blog-post-title"><a href="${url}">${escapeHtml(post.title)}</a></h3>
         ${post.subtitle ? `<p class="blog-post-excerpt">${escapeHtml(post.subtitle)}</p>` : ''}
@@ -550,7 +562,7 @@ function renderIdentityFeatured() {
     return;
   }
 
-  const readTime = estimateReadTime(featured.content);
+  const readTime = Number(featured.readTimeMin) || estimateReadTime(featured.content);
   const hasCover = !!featured.cover;
   const badgeText = featured.featured
     ? (t.featured?.spotlight || 'Spotlight')
@@ -594,7 +606,8 @@ function renderIdentityTags() {
   });
   const sorted = Object.entries(tagFreq).sort((a, b) => b[1] - a[1]).slice(0, 12);
   if (!sorted.length) {
-    wrap.innerHTML = '<p style="color:var(--text-hint);font-size:12px;">Nenhuma tag ainda.</p>';
+    const noTags = activeLang() === 'pt' ? 'Nenhuma tag ainda.' : 'No tags yet.';
+    wrap.innerHTML = `<p style="color:var(--text-hint);font-size:12px;">${noTags}</p>`;
     return;
   }
   const max = sorted[0][1];
@@ -626,6 +639,15 @@ function setupCenterPreview() {
 
   /* Fade out → swap → fade in. Sem flash. */
   const setPreview = (post) => {
+    // Mesmo post já exibido: não reinicia o fade (evita piscar ao mover
+    // o mouse entre os filhos do card; o pause já foi renovado no hover).
+    // Cancela swap pendente pra outro post e restaura o estado visível.
+    if (post && currentPost && post.id === currentPost.id) {
+      if (centerSwapTimer) { clearTimeout(centerSwapTimer); centerSwapTimer = null; }
+      img.classList.add('active');
+      if (meta) meta.classList.toggle('is-visible', !!post.title);
+      return;
+    }
     if (centerSwapTimer) clearTimeout(centerSwapTimer);
 
     if (!post || !post.cover) {
@@ -649,7 +671,8 @@ function setupCenterPreview() {
       // Marca o tile como link clicável pro post atual
       center.dataset.action = 'open';
       center.dataset.id = post.id;
-      center.setAttribute('aria-label', `Abrir post: ${post.title}`);
+      const openLabel = activeLang() === 'pt' ? 'Abrir post' : 'Open post';
+      center.setAttribute('aria-label', `${openLabel}: ${post.title}`);
       if (meta) {
         meta.innerHTML = post.title
           ? `<span class="bid-center-meta-title">${escapeHtml(post.title)}</span>${post.subtitle ? `<span class="bid-center-meta-sub">${escapeHtml(post.subtitle)}</span>` : ''}`
@@ -748,6 +771,16 @@ function setupCenterPreview() {
     }
   });
 
+  // Aba oculta: pausa o carrossel (e o resume pendente); retoma ao voltar
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      stopCarousel();
+      if (centerResumeTimer) clearTimeout(centerResumeTimer);
+    } else {
+      startCarousel();
+    }
+  });
+
   // Inicia o carrossel
   startCarousel();
 }
@@ -822,7 +855,8 @@ function renderTopicsRotator() {
 
   const items = [...categories, ...topTags];
   if (!items.length) {
-    current.textContent = '—';
+    // Blog zerado: placeholder neutro no lugar da rotação
+    current.textContent = activeLang() === 'pt' ? 'Em breve' : 'Coming soon';
     return;
   }
 
@@ -831,6 +865,7 @@ function renderTopicsRotator() {
 
   let idx = 0;
   const swap = () => {
+    if (document.hidden) return; // aba oculta: não gasta DOM à toa
     current.classList.add('is-leaving');
     setTimeout(() => {
       idx = (idx + 1) % items.length;
@@ -847,6 +882,7 @@ function startClock() {
   const el = document.getElementById('bidClock');
   if (!el) return;
   const tick = () => {
+    if (document.hidden) return; // aba oculta: não gasta DOM à toa
     const now = new Date();
     const hh = String(now.getHours()).padStart(2, '0');
     const mm = String(now.getMinutes()).padStart(2, '0');
@@ -854,6 +890,8 @@ function startClock() {
   };
   tick();
   setInterval(tick, 30 * 1000);
+  // Ao voltar pra aba, atualiza na hora (o tick pode ter sido pulado)
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) tick(); });
 }
 
 function renderFilters() {
@@ -889,17 +927,18 @@ function applyFilters() {
     list = list.filter(p =>
       p.title.toLowerCase().includes(q) ||
       (p.subtitle || '').toLowerCase().includes(q) ||
-      (p.content || '').toLowerCase().includes(q) ||
+      (p.excerpt || p.content || '').toLowerCase().includes(q) ||
       (p.tags || []).some(t => t.toLowerCase().includes(q))
     );
   }
 
-  // sort
+  // sort (views por slug com fallback pro id legado; readtime vem do build)
+  const views = loadViews();
   const sortFn = {
     recent:   (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
     oldest:   (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
-    popular:  (a, b) => (loadViews()[b.id] || 0) - (loadViews()[a.id] || 0),
-    readtime: (a, b) => estimateReadTime(a.content) - estimateReadTime(b.content),
+    popular:  (a, b) => (views[b.slug] || views[b.id] || 0) - (views[a.slug] || views[a.id] || 0),
+    readtime: (a, b) => (Number(a.readTimeMin) || estimateReadTime(a.content)) - (Number(b.readTimeMin) || estimateReadTime(b.content)),
   }[state.sort] || ((a, b) => 0);
 
   list.sort(sortFn);
@@ -994,6 +1033,7 @@ function renderBlog(lang) {
   renderIdentityFeatured();
   renderFilters();
   renderBento();
+  renderIdentityTags();
   renderTopicsRotator();
   // Stats já foram animadas; só atualiza o valor final
   renderStats();

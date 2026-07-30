@@ -4,23 +4,26 @@
 /* =========================================================
    admin-server.js
    ---------------------------------------------------------
-   Servidor LOCAL do painel admin. Roda na sua maquina com:
+   Servidor LOCAL de desenvolvimento. Roda na sua maquina com:
 
        npm run admin
 
    O que ele faz:
      - Serve o site estatico (admin.html, blog.html, css, js...)
-     - Expoe uma API REST que le/grava DIRETO em data/posts/*.md
-       (essa pasta e a UNICA fonte de verdade dos posts)
-     - Apos cada gravacao/exclusao roda scripts/build-posts.js
-       sozinho, mantendo blog.html / posts/ / sitemap em sincronia
+     - Expoe uma API REST local (GET/POST/DELETE /api/posts,
+       POST /api/upload) que le/grava em data/posts/*.md e roda
+       scripts/build-posts.js apos cada gravacao/exclusao
 
-   Resultado: o painel admin fica 100% alinhado com o blog.
-   "Publicar" publica de verdade. "Excluir" apaga de verdade.
+   ATENCAO: hoje o painel admin (js/blog-admin.js) NAO consome
+   essa API; ele fala so com o Supabase via window.BlogDB. As
+   rotas /api/* seguem funcionais para uso manual/testes ate a
+   arquitetura hibrida entrar no ar (admin salva no Supabase e
+   o publicar dispara rebuild na Vercel puxando do banco).
 
-   IMPORTANTE: isto roda so localmente. O deploy continua sendo
-   o site estatico gerado (GitHub Pages / Netlify / Vercel) -
-   voce edita aqui, comita o resultado e faz deploy normal.
+   IMPORTANTE: isto roda so localmente (127.0.0.1). O deploy
+   continua sendo o site estatico gerado (GitHub Pages /
+   Netlify / Vercel) - voce edita aqui, comita o resultado e
+   faz deploy normal.
    ========================================================= */
 
 const http   = require('http');
@@ -57,6 +60,11 @@ const MIME = {
   '.woff2':'font/woff2',
   '.ttf':  'font/ttf',
   '.txt':  'text/plain; charset=utf-8',
+  '.md':   'text/markdown; charset=utf-8',
+  '.mp4':  'video/mp4',
+  '.webm': 'video/webm',
+  '.avif': 'image/avif',
+  '.map':  'application/json; charset=utf-8',
 };
 
 const slugify = (s) => String(s || '')
@@ -68,6 +76,7 @@ const slugify = (s) => String(s || '')
   .slice(0, 80);
 
 function sendJson(res, status, obj) {
+  if (res.headersSent) return; // ja respondido (ex: 413 do readBody)
   const body = JSON.stringify(obj);
   res.writeHead(status, {
     'Content-Type': 'application/json; charset=utf-8',
@@ -76,14 +85,20 @@ function sendJson(res, status, obj) {
   res.end(body);
 }
 
-function readBody(req) {
+function readBody(req, res) {
   return new Promise((resolve, reject) => {
     let data = '';
     req.on('data', (c) => {
       data += c;
       if (data.length > 12 * 1024 * 1024) {     // 12MB hard cap
+        // Responde 413 antes de derrubar o socket, senao o cliente ve so connection reset
+        req.removeAllListeners('data');
+        res.writeHead(413, {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Connection': 'close',
+        });
+        res.end(JSON.stringify({ ok: false, error: 'Corpo da requisicao grande demais' }), () => req.destroy());
         reject(new Error('Corpo da requisicao grande demais'));
-        req.destroy();
       }
     });
     req.on('end', () => resolve(data));
@@ -172,7 +187,19 @@ function runBuild() {
 
 /* ---------- API ---------- */
 
+// Escrita so de paginas locais: se veio Origin/Referer de fora de localhost, recusa
+function isCrossSiteWrite(req) {
+  if (req.method === 'GET') return false;
+  const src = req.headers.origin || req.headers.referer || '';
+  if (!src) return false; // sem Origin/Referer = curl/scripts locais, deixa passar
+  return !/^https?:\/\/(localhost|127\.0\.0\.1|\[::1\])(:\d+)?([/?#]|$)/i.test(src);
+}
+
 async function handleApi(req, res, pathname) {
+  if (isCrossSiteWrite(req)) {
+    return sendJson(res, 403, { ok: false, error: 'origem nao permitida' });
+  }
+
   // GET /api/posts  -> lista TODOS (inclui rascunhos) = espelho de data/posts/
   if (req.method === 'GET' && pathname === '/api/posts') {
     return sendJson(res, 200, { ok: true, posts: loadAllPosts() });
@@ -181,7 +208,7 @@ async function handleApi(req, res, pathname) {
   // POST /api/posts -> cria/atualiza. Body: { slug, oldSlug, markdown, featured }
   if (req.method === 'POST' && pathname === '/api/posts') {
     let payload;
-    try { payload = JSON.parse(await readBody(req)); }
+    try { payload = JSON.parse(await readBody(req, res)); }
     catch { return sendJson(res, 400, { ok: false, error: 'JSON invalido' }); }
 
     const slug = slugify(payload.slug || '');
@@ -214,7 +241,7 @@ async function handleApi(req, res, pathname) {
   // Body: { slug, filename, dataBase64 }  (dataBase64 = conteudo cru, sem o data:)
   if (req.method === 'POST' && pathname === '/api/upload') {
     let payload;
-    try { payload = JSON.parse(await readBody(req)); }
+    try { payload = JSON.parse(await readBody(req, res)); }
     catch { return sendJson(res, 400, { ok: false, error: 'JSON invalido' }); }
 
     const slug = slugify(payload.slug || '');
@@ -260,18 +287,28 @@ async function handleApi(req, res, pathname) {
 
 /* ---------- static ---------- */
 
+// Escapa HTML antes de ecoar qualquer coisa vinda da URL (evita XSS refletido)
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+  }[c]));
+}
+
 function serveStatic(req, res, pathname) {
-  let rel = decodeURIComponent(pathname);
+  let rel;
+  // percent-encoding invalido (ex: /%ZZ) lanca URIError; responde 400 em vez de derrubar
+  try { rel = decodeURIComponent(pathname); }
+  catch { res.writeHead(400); return res.end('Bad Request'); }
   if (rel === '/' || rel === '') rel = '/index.html';
-  // normaliza e garante que fica dentro do ROOT
+  // normaliza e garante que fica dentro do ROOT (com separador, pra nao vazar pra pasta irma com mesmo prefixo)
   const abs = path.normalize(path.join(ROOT, rel));
-  if (!abs.startsWith(ROOT)) {
+  if (abs !== ROOT && !abs.startsWith(ROOT + path.sep)) {
     res.writeHead(403); return res.end('Forbidden');
   }
   fs.stat(abs, (err, st) => {
     if (err || !st.isFile()) {
       res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
-      return res.end('<h1>404</h1><p>Nao encontrado: ' + rel + '</p>');
+      return res.end('<h1>404</h1><p>Nao encontrado: ' + escapeHtml(rel) + '</p>');
     }
     res.writeHead(200, {
       'Content-Type': MIME[path.extname(abs).toLowerCase()] || 'application/octet-stream',
@@ -295,7 +332,13 @@ const server = http.createServer((req, res) => {
   serveStatic(req, res, pathname);
 });
 
-server.listen(PORT, () => {
+// Rede de seguranca: erro inesperado loga em vez de matar o servidor inteiro
+process.on('uncaughtException', (err) => {
+  console.error('[admin-server] erro nao tratado:', err);
+});
+
+// Bind so em loopback: servidor sem autenticacao nao pode escutar a rede toda
+server.listen(PORT, '127.0.0.1', () => {
   console.log('');
   console.log('==================================================');
   console.log('  Painel admin local rodando');

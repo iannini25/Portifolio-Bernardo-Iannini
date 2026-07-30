@@ -16,13 +16,17 @@
       if (slug) {
         // Sanitiza o slug pra evitar open-redirect via aspas/quebras
         slug = String(slug).replace(/[^a-zA-Z0-9_-]/g, '');
-        location.replace('/posts/' + slug + '.html');
-      } else {
-        location.replace('/blog.html');
       }
+      if (!slug) { location.replace('/blog.html'); return; }
+      var destino = '/posts/' + slug + '.html';
+      // Verifica se o post existe antes de redirecionar;
+      // slug de post removido ou typo cai no blog em vez do 404 cru do host
+      fetch(destino, { method: 'HEAD' })
+        .then(function (res) { location.replace(res.ok ? destino : '/blog.html'); })
+        .catch(function () { location.replace('/blog.html'); });
     })();
   </script>
-  <meta http-equiv="refresh" content="0; url=/blog.html">
+  <noscript><meta http-equiv="refresh" content="0; url=/blog.html"></noscript>
 </head>
 <body>
   <p>Redirecionando para o <a href="/blog.html">blog</a>...</p>

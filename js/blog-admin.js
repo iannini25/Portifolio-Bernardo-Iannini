@@ -5,8 +5,11 @@
    ========================================================= */
 
 /* ---------- Data layer = Supabase (window.BlogDB) ----------
-   O painel lê e grava direto no Supabase. CRUD instantâneo, sem build
-   nem deploy: o que você salva aqui já fica gravado no banco.
+   O painel lê e grava direto no Supabase: o que você salva aqui já fica
+   gravado no banco na hora. Só que o site público é estático, então
+   publicar ou excluir também dispara POST /api/rebuild (triggerRebuild
+   logo abaixo): o build roda de novo, puxa os posts do banco e regera as
+   páginas com o SEO intacto.
    A autenticação é checada de forma assíncrona no init().            */
 
 async function apiGetPosts() {
@@ -16,6 +19,90 @@ async function apiGetPosts() {
 
 async function reloadPosts() {
   state.posts = await apiGetPosts();
+}
+
+/* ---------- Rebuild do site (POST /api/rebuild) ----------
+   Contrato do endpoint (a resposta é sempre JSON):
+     200 { ok: true, triggered: true }
+     401 { ok: false, error: 'unauthorized' }
+     405 { ok: false, error: 'method_not_allowed' }
+     501 { ok: false, error: 'not_configured' }   -> falta DEPLOY_HOOK_URL
+     502 { ok: false, error: 'hook_failed', detail }
+
+   404 (servidor estático local, sem serverless) e falha de rede contam
+   como 'not_configured': pro usuário dá no mesmo, não existe rebuild.
+
+   NUNCA lança: devolve { ok, reason, detail? } pra quem chamou decidir a
+   mensagem. Falha aqui não desfaz nada: o post já está salvo no banco. */
+async function triggerRebuild(reason) {
+  let token = '';
+  try {
+    const session = window.BlogDB ? await window.BlogDB.getSession() : null;
+    token = (session && session.access_token) || '';
+  } catch (e) {
+    token = '';   // sessão ilegível cai no unauthorized abaixo
+  }
+  if (!token) return { ok: false, reason: 'unauthorized' };
+
+  let res;
+  try {
+    res = await fetch('/api/rebuild', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      },
+      body: JSON.stringify({ reason: reason || '' }),
+    });
+  } catch (e) {
+    /* fetch só rejeita em falha de rede / servidor fora do ar. */
+    return { ok: false, reason: 'not_configured', detail: (e && e.message) || 'sem rede' };
+  }
+
+  let body = null;
+  try { body = await res.json(); } catch (e) { body = null; }   // resposta não-JSON (HTML de 404, por ex.)
+  const erro = (body && body.error) || '';
+
+  if (res.ok) {
+    /* Servidor estático pode devolver 200 com HTML pra rota inexistente:
+       sem { ok: true } no corpo, nenhum rebuild foi disparado. */
+    if (body && body.ok) return { ok: true, reason: 'ok' };
+    return { ok: false, reason: 'not_configured' };
+  }
+  /* 404 e 405 sem corpo JSON: o endpoint não existe aqui (servidor estático
+     local costuma responder 405 no POST em vez de 404). Não é falha de hook. */
+  if (res.status === 404) return { ok: false, reason: 'not_configured' };
+  if (res.status === 405 && !body) return { ok: false, reason: 'not_configured' };
+  if (res.status === 501 || erro === 'not_configured') return { ok: false, reason: 'not_configured' };
+  if (res.status === 401 || res.status === 403 || erro === 'unauthorized') {
+    return { ok: false, reason: 'unauthorized' };
+  }
+  /* 502, 405 e qualquer outra resposta: o post está salvo, o rebuild não rodou. */
+  return {
+    ok: false,
+    reason: 'hook_failed',
+    detail: (body && body.detail) || erro || ('HTTP ' + res.status),
+  };
+}
+
+/* Traduz o resultado do triggerRebuild numa mensagem honesta de toast.
+     feito: o que dizer quando o rebuild foi disparado ('Post publicado')
+     salvo: o que já está garantido no banco quando o rebuild não rodou
+   Devolve { msg, type } pronto pro toast(). */
+function rebuildMessage(feito, salvo, rebuild) {
+  if (!rebuild) return { msg: salvo + '.', type: 'success' };
+
+  if (rebuild.ok) {
+    return { msg: feito + '. O site atualiza em cerca de 1 minuto.', type: 'success' };
+  }
+  if (rebuild.reason === 'not_configured') {
+    return { msg: salvo + '. A atualização automática do site não respondeu, então ele entra no ar no próximo deploy (veja PUBLICAR.md).', type: 'error' };
+  }
+  if (rebuild.reason === 'unauthorized') {
+    return { msg: salvo + ', mas não deu pra confirmar sua sessão para atualizar o site. Recarregue a página; se persistir, entre de novo. O site atualiza no próximo deploy.', type: 'error' };
+  }
+  const detalhe = rebuild.detail ? ' (' + rebuild.detail + ')' : '';
+  return { msg: salvo + ', mas o rebuild do site falhou' + detalhe + '. O site atualiza no próximo deploy.', type: 'error' };
 }
 
 /* Mapa { id: views } montado a partir dos posts já carregados.
@@ -75,148 +162,292 @@ const escapeHtml = (s) => String(s || '').replace(/[&<>"']/g, c => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
 }[c]));
 
-/* ---------- Ícones do design system (usados em :::card icon=...) ---------- */
-const POST_ICONS = {
-  rocket:  '<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>',
-  code:    '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
-  bolt:    '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
-  chart:   '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
-  check:   '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
-  clock:   '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
-  flag:    '<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>',
-  heart:   '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>',
-  star:    '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
-  target:  '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
-  shield:  '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
-  zap:     '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
-  info:    '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>',
-  warn:    '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
-  danger:  '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>',
+/* =========================================================
+   MARKDOWN (.md) - preview do editor
+   ---------------------------------------------------------
+   O site publica os posts com a lib `marked` (ver scripts/build-posts.js),
+   então o preview usa a MESMA lib, carregada da CDN uma vez só e sob
+   demanda. Se a CDN falhar, cai no renderizador simples aqui embaixo:
+   o painel nunca fica em branco por causa disso.
+
+   Nota: os blocos customizados do design system (cartoes com icone e
+   caixas de destaque) sairam do editor. Aqui o conteudo e .md puro (GFM),
+   igual ao arquivo que vive em data/posts/<slug>.md.
+   ========================================================= */
+const MARKED_CDN = 'https://cdn.jsdelivr.net/npm/marked@12/marked.min.js';
+const MARKED_OPTS = { gfm: true, breaks: false, mangle: false, headerIds: false };
+let markedLoad = null;
+let markedWarned = false;
+
+/* Devolve parse(md) se a lib já estiver na página; senão null. */
+function getMarkedParser() {
+  const lib = window.marked;
+  if (!lib) return null;
+  if (typeof lib.parse === 'function') return (md) => lib.parse(md, MARKED_OPTS);
+  if (typeof lib === 'function') return (md) => lib(md, MARKED_OPTS);
+  if (lib.marked && typeof lib.marked.parse === 'function') return (md) => lib.marked.parse(md, MARKED_OPTS);
+  return null;
+}
+
+/* Carrega o marked uma única vez. Resolve com o parser ou com null
+   (nunca rejeita: falha de CDN só faz o preview usar o fallback). */
+function ensureMarked() {
+  const ready = getMarkedParser();
+  if (ready) return Promise.resolve(ready);
+  if (markedLoad) return markedLoad;
+  markedLoad = new Promise((resolve) => {
+    let settled = false;
+    const finish = () => { if (settled) return; settled = true; resolve(getMarkedParser()); };
+    const s = document.createElement('script');
+    s.src = MARKED_CDN;
+    s.async = true;
+    s.onload = finish;
+    s.onerror = finish;
+    document.head.appendChild(s);
+    setTimeout(finish, 8000); // CDN lenta não trava o preview
+  });
+  return markedLoad;
+}
+
+/* ---------- Sanitização do preview ----------
+   O markdown pode vir de qualquer lugar (colado, importado de um .md),
+   e o marked deixa HTML cru passar. Então todo HTML gerado passa por uma
+   allowlist antes de entrar no DOM: sem <script>, sem atributo on*, sem
+   href javascript:, sem tag fora da lista.                              */
+const PREVIEW_DROP_TAGS = 'script,style,iframe,object,embed,link,meta,base,form,noscript,template,svg,math,audio,video,source,track,canvas,button,select,textarea,frame,frameset,applet';
+
+const PREVIEW_TAGS = new Set([
+  'p', 'br', 'hr', 'strong', 'b', 'em', 'i', 'del', 's', 'strike', 'code', 'pre',
+  'blockquote', 'ul', 'ol', 'li', 'a', 'img', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+  'table', 'thead', 'tbody', 'tfoot', 'tr', 'th', 'td', 'caption', 'span', 'div',
+  'input', 'sup', 'sub', 'abbr', 'figure', 'figcaption', 'details', 'summary',
+  'dl', 'dt', 'dd', 'kbd', 'mark', 'small',
+]);
+
+/* `id` fica de fora de propósito: conteúdo colado não pode colidir com
+   os ids do painel. */
+const PREVIEW_GLOBAL_ATTRS = ['class', 'title'];
+
+const PREVIEW_TAG_ATTRS = {
+  a:       ['href', 'target', 'rel'],
+  img:     ['src', 'alt', 'width', 'height', 'loading'],
+  input:   ['type', 'checked', 'disabled'],
+  th:      ['align', 'colspan', 'rowspan', 'scope'],
+  td:      ['align', 'colspan', 'rowspan'],
+  ol:      ['start'],
+  li:      ['value'],
+  code:    ['class'],
+  details: ['open'],
 };
 
-function svgIcon(name) {
-  const p = POST_ICONS[name] || POST_ICONS.star;
-  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+/* Aceita http(s), mailto, tel, âncora e caminho relativo.
+   Para imagem aceita também data:image (menos svg, que executa script). */
+function isSafeUrl(url, kind) {
+  const raw = String(url || '').trim();
+  if (!raw) return false;
+  // tira espaços e caracteres de controle antes de olhar o esquema
+  const bare = raw.replace(/[\u0000-\u0020]+/g, '').toLowerCase();
+  if (kind === 'img' && /^data:image\/(png|jpe?g|gif|webp|avif);base64,/.test(bare)) return true;
+  if (/^[a-z][a-z0-9+.-]*:/.test(bare)) return /^(https?|mailto|tel):/.test(bare);
+  return true; // relativo: img/blog/foto.png, /post.html, #ancora
 }
 
-/* Parse atributos do shortcode: icon=name title="texto longo" key=val */
-function parseShortcodeAttrs(raw) {
-  const attrs = {};
-  if (!raw) return attrs;
-  const re = /(\w+)=(?:"([^"]*)"|'([^']*)'|(\S+))/g;
-  let m;
-  while ((m = re.exec(raw))) {
-    attrs[m[1]] = m[2] || m[3] || m[4] || '';
+/* Troca o elemento pelos próprios filhos (mantém o texto, joga a tag fora). */
+function unwrapElement(el) {
+  const parent = el.parentNode;
+  if (!parent) { el.remove(); return; }
+  while (el.firstChild) parent.insertBefore(el.firstChild, el);
+  parent.removeChild(el);
+}
+
+function sanitizeHtml(dirty) {
+  const html = String(dirty || '');
+  if (!html) return '';
+  // Sem DOMParser não tem como limpar: mostra o markdown escapado
+  if (typeof DOMParser === 'undefined') return escapeHtml(html);
+  try {
+    return sanitizeWithDom(html);
+  } catch (err) {
+    console.warn('[admin] limpeza do preview falhou:', err);
+    return escapeHtml(html);
   }
-  return attrs;
 }
 
-/* Processa shortcodes :::card / :::cards / :::info|success|warn|danger
-   ANTES do escapeHtml para preservar a sintaxe.  */
-function processShortcodes(md) {
-  // Grid de cards: :::cards ... :::
-  md = md.replace(/^:::cards\s*\n([\s\S]*?)^:::$/gm, (_, inner) => {
-    // Processa cards internos
-    const cards = [];
-    inner.replace(/^:::card\s*(.*?)\n([\s\S]*?)^:::$/gm, (_m, attrs, content) => {
-      cards.push({ attrs: parseShortcodeAttrs(attrs), content: content.trim() });
-      return '';
+function sanitizeWithDom(html) {
+  // DOMParser não executa script nem baixa imagem: parse offline e seguro
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const body = doc && doc.body;
+  if (!body) return '';
+
+  body.querySelectorAll(PREVIEW_DROP_TAGS).forEach(el => el.remove());
+
+  Array.from(body.querySelectorAll('*')).forEach(el => {
+    if (!el.parentNode) return; // já saiu do documento junto com o pai
+    const tag = el.tagName.toLowerCase();
+    if (!PREVIEW_TAGS.has(tag)) { unwrapElement(el); return; }
+
+    const allowed = PREVIEW_GLOBAL_ATTRS.concat(PREVIEW_TAG_ATTRS[tag] || []);
+    Array.from(el.attributes).forEach(attr => {
+      const name = attr.name.toLowerCase();
+      if (name.startsWith('on') || !allowed.includes(name)) el.removeAttribute(attr.name);
     });
-    if (!cards.length) return '<!--GRID_EMPTY-->';
-    const html = cards.map(c => renderCard(c.attrs, c.content)).join('');
-    return `<!--GRID_START-->${html}<!--GRID_END-->`;
+
+    if (tag === 'a') {
+      const href = el.getAttribute('href');
+      if (!isSafeUrl(href, 'a')) el.removeAttribute('href');
+      if (el.hasAttribute('href')) {
+        el.setAttribute('target', '_blank');
+        el.setAttribute('rel', 'noopener noreferrer');
+      }
+    } else if (tag === 'img') {
+      if (!isSafeUrl(el.getAttribute('src'), 'img')) { el.remove(); return; }
+      el.setAttribute('loading', 'lazy');
+    } else if (tag === 'input') {
+      // só a checkbox das task lists do GFM, sempre travada
+      if ((el.getAttribute('type') || '').toLowerCase() !== 'checkbox') { el.remove(); return; }
+      el.setAttribute('disabled', '');
+      // hooks de estilo (o marked não marca as task lists com classe)
+      const li = el.closest('li');
+      if (li) {
+        li.classList.add('task-list-item');
+        const list = li.parentElement;
+        if (list && /^(ul|ol)$/i.test(list.tagName)) list.classList.add('contains-task-list');
+      }
+    }
   });
 
-  // Card individual: :::card ... :::
-  md = md.replace(/^:::card\s*(.*?)\n([\s\S]*?)^:::$/gm, (_, attrs, content) => {
-    return renderCard(parseShortcodeAttrs(attrs), content.trim());
-  });
-
-  // Callouts: :::info|success|warn|danger
-  const calloutMap = { info: 'info', success: 'check', warn: 'warn', danger: 'danger' };
-  md = md.replace(/^:::(info|success|warn|danger)\s*\n([\s\S]*?)^:::$/gm, (_, type, content) => {
-    return renderCallout(type, content.trim(), calloutMap[type]);
-  });
-
-  return md;
+  return body.innerHTML;
 }
 
-function renderCard(attrs, content) {
-  const icon = attrs.icon ? svgIcon(attrs.icon) : '';
-  const title = attrs.title ? `<h4 class="post-card-title">${escapeHtml(attrs.title)}</h4>` : '';
-  const body = content ? `<div class="post-card-body">${markdownInline(content)}</div>` : '';
-  return `<!--HTMLBLOCK--><div class="post-card">${icon ? `<div class="post-card-icon">${icon}</div>` : ''}<div class="post-card-content">${title}${body}</div></div><!--/HTMLBLOCK-->`;
-}
-
-function renderCallout(type, content, iconName) {
-  return `<!--HTMLBLOCK--><div class="post-callout post-callout--${type}"><div class="post-callout-icon">${svgIcon(iconName)}</div><div class="post-callout-body">${markdownInline(content)}</div></div><!--/HTMLBLOCK-->`;
-}
-
-/* Markdown inline simples (sem block-level) — usado dentro de cards/callouts */
-function markdownInline(md) {
-  let html = escapeHtml(md);
-  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-  html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-  html = html.replace(/`([^`\n]+)`/g, '<code>$1</code>');
-  html = html.replace(/\[([^\]]+)\]\((https?:[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
-  return html.split(/\n{2,}/).map(p => `<p>${p.replace(/\n/g, '<br/>')}</p>`).join('');
-}
-
-/* ---------- Markdown preview ---------- */
+/* ---------- Markdown -> HTML ---------- */
 function markdownToHtml(md) {
-  if (!md) return '<p class="admin-preview-empty">Sem conteúdo ainda.</p>';
+  const src = String(md || '');
+  if (!src.trim()) return '<p class="admin-preview-empty">Sem conteúdo ainda.</p>';
+  const parse = getMarkedParser();
+  let html;
+  try {
+    html = parse ? parse(src) : markdownToHtmlSimple(src);
+  } catch (err) {
+    console.warn('[admin] marked falhou, usando renderizador simples:', err);
+    html = markdownToHtmlSimple(src);
+  }
+  return sanitizeHtml(html);
+}
 
-  // Processa shortcodes ANTES de escapar HTML — gera markers <!--HTMLBLOCK-->
-  md = processShortcodes(md);
-
-  // Separa blocos HTML pré-renderizados pra não escaparem
-  const blocks = [];
-  md = md.replace(/<!--HTMLBLOCK-->([\s\S]*?)<!--\/HTMLBLOCK-->/g, (_, b) => {
-    blocks.push(b);
-    return `\x00HTMLBLOCK_${blocks.length - 1}\x00`;
-  });
-
+/* Renderizador de emergência (CDN fora do ar). Cobre o básico do markdown
+   e é sempre escapado antes, então não injeta HTML. */
+function markdownToHtmlSimple(md) {
   let html = escapeHtml(md);
 
-  // Code blocks
   html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) =>
-    `<pre><code class="lang-${lang || 'text'}">${code.trim()}</code></pre>`);
+    `<pre><code class="language-${lang || 'text'}">${code.trim()}</code></pre>`);
 
-  // HR
-  html = html.replace(/^---+$/gm, '<hr/>');
-
-  // Inline
+  html = html.replace(/^(?:---+|\*\*\*+)$/gm, '<hr/>');
   html = html.replace(/`([^`\n]+)`/g, '<code>$1</code>');
+  html = html.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
   html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
   html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
   html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
-  html = html.replace(/^&gt; (.+)$/gm, '<blockquote>$1</blockquote>');
+  html = html.replace(/^&gt;\s?(.+)$/gm, '<blockquote>$1</blockquote>');
+  html = html.replace(/~~([^~]+)~~/g, '<del>$1</del>');
   html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-  html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-  html = html.replace(/\[([^\]]+)\]\((https?:[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
-  html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1"/>');
-  html = html.replace(/(?:^- .+(?:\n|$))+/gm, (m) =>
-    '<ul>' + m.trim().split('\n').map(l => `<li>${l.replace(/^- /, '')}</li>`).join('') + '</ul>');
-  html = html.replace(/(?:^\d+\. .+(?:\n|$))+/gm, (m) =>
-    '<ol>' + m.trim().split('\n').map(l => `<li>${l.replace(/^\d+\. /, '')}</li>`).join('') + '</ol>');
+  html = html.replace(/\*([^*\n]+)\*/g, '<em>$1</em>');
+  html = html.replace(/!\[([^\]]*)\]\(([^)\s]+)[^)]*\)/g, '<img src="$2" alt="$1"/>');
+  html = html.replace(/\[([^\]]+)\]\(([^)\s]+)[^)]*\)/g, '<a href="$2">$1</a>');
 
-  // Parágrafos
-  html = html.split(/\n{2,}/).map(block => {
+  const listItem = (line) => {
+    const text = line.replace(/^\s*(?:[-*+] |\d+[.)] )/, '');
+    const task = text.match(/^\[([ xX])\]\s?(.*)$/);
+    if (!task) return `<li>${text}</li>`;
+    const checked = task[1].toLowerCase() === 'x' ? ' checked' : '';
+    return `<li class="task-list-item"><input type="checkbox" disabled${checked}/> ${task[2]}</li>`;
+  };
+
+  html = html.replace(/(?:^[-*+] .+(?:\n|$))+/gm, (block) =>
+    '<ul>' + block.trim().split('\n').map(listItem).join('') + '</ul>');
+  html = html.replace(/(?:^\d+[.)] .+(?:\n|$))+/gm, (block) =>
+    '<ol>' + block.trim().split('\n').map(listItem).join('') + '</ol>');
+
+  return html.split(/\n{2,}/).map(block => {
     block = block.trim();
     if (!block) return '';
-    if (/^<(h\d|ul|ol|pre|blockquote|img|hr)/i.test(block)) return block;
-    if (/^\x00HTMLBLOCK_\d+\x00$/.test(block)) return block;
+    if (/^<(h\d|ul|ol|pre|blockquote|img|hr|table|div)/i.test(block)) return block;
     return `<p>${block.replace(/\n/g, '<br/>')}</p>`;
   }).join('\n');
+}
 
-  // Substitui markers de volta pelos blocos HTML originais
-  html = html.replace(/\x00HTMLBLOCK_(\d+)\x00/g, (_, i) => blocks[i] || '');
-  // Trata grid wrappers
-  html = html.replace(/<!--GRID_START-->/g, '<div class="post-cards-grid">')
-             .replace(/<!--GRID_END-->/g, '</div>')
-             .replace(/<!--GRID_EMPTY-->/g, '');
+/* =========================================================
+   FRONT-MATTER YAML - parser local (sem dependência nova)
+   ---------------------------------------------------------
+   Cobre exatamente o que existe em data/posts/*.md:
+     chave: valor · chave: "valor com espaço" · booleanos · listas
+     simples (tags) e listas de objetos (images: - src/alt/caption).
+   ========================================================= */
+function parseYamlScalar(raw) {
+  let v = String(raw == null ? '' : raw).trim();
+  if (!/^["'[]/.test(v)) v = v.replace(/\s+#.*$/, '').trim(); // comentário à direita
+  if (v === '') return '';
+  if (/^".*"$/.test(v)) return v.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+  if (/^'.*'$/.test(v)) return v.slice(1, -1).replace(/''/g, "'");
+  if (/^\[.*\]$/.test(v)) {
+    return v.slice(1, -1).split(',').map(s => parseYamlScalar(s)).filter(s => s !== '');
+  }
+  if (v === 'true') return true;
+  if (v === 'false') return false;
+  if (v === 'null' || v === '~') return '';
+  return v;
+}
 
-  return html;
+function parseYamlBlock(block) {
+  const data = {};
+  const lines = String(block || '').split('\n');
+  let i = 0;
+
+  while (i < lines.length) {
+    const line = lines[i];
+    if (!line.trim() || /^\s*#/.test(line)) { i++; continue; }
+
+    const entry = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
+    if (!entry) { i++; continue; }
+
+    const key = entry[1];
+    const inline = entry[2].trim();
+    i++;
+
+    if (inline !== '') { data[key] = parseYamlScalar(inline); continue; }
+
+    // valor vazio: pode ser uma lista nas linhas seguintes
+    const list = [];
+    while (i < lines.length && /^\s+-\s+/.test(lines[i])) {
+      const first = lines[i].replace(/^\s+-\s+/, '');
+      const pair = first.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
+      i++;
+      if (!pair) { list.push(parseYamlScalar(first)); continue; }
+
+      const obj = {};
+      obj[pair[1]] = parseYamlScalar(pair[2]);
+      // propriedades extra do mesmo item (indentadas, sem hífen)
+      while (i < lines.length && /^\s{2,}[A-Za-z0-9_-]+:/.test(lines[i]) && !/^\s*-\s/.test(lines[i])) {
+        const extra = lines[i].match(/^\s+([A-Za-z0-9_-]+):\s*(.*)$/);
+        if (!extra) break;
+        obj[extra[1]] = parseYamlScalar(extra[2]);
+        i++;
+      }
+      list.push(obj);
+    }
+    data[key] = list.length ? list : '';
+  }
+
+  return data;
+}
+
+/* Separa front-matter e corpo. Sem front-matter, devolve data: null e o
+   arquivo inteiro como corpo. */
+function parseFrontMatter(text) {
+  const src = String(text || '').replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n');
+  const match = src.match(/^---[ \t]*\n([\s\S]*?)\n---[ \t]*(?:\n|$)/);
+  if (!match) return { data: null, body: src };
+  return { data: parseYamlBlock(match[1]), body: src.slice(match[0].length).replace(/^\n+/, '') };
 }
 
 /* ---------- State ---------- */
@@ -226,20 +457,33 @@ const state = {
   posts: [],
   search: '',
   form: null,
+  saving: false,
 };
 
 /* ---------- Toast ---------- */
+/* Toast unico. Antes existia uma SEGUNDA declaracao de toast() mais abaixo no
+   arquivo; por hoisting ela vencia e ignorava o parametro `type`, entao as ~10
+   chamadas com 'error' apareciam como sucesso. A duplicata saiu e esta versao
+   (que usa .admin-toast/.admin-toast--error do blog.css) e a unica.
+   Reaproveita um unico elemento: .admin-toast e fixed no canto, dois toasts
+   simultaneos ficariam empilhados um sobre o outro. */
 function toast(message, type = 'success') {
+  const isError = type === 'error';
+  document.getElementById('adminToast')?.remove();   // nunca empilha
+
   const el = document.createElement('div');
-  el.className = 'admin-toast' + (type === 'error' ? ' admin-toast--error' : '');
+  el.id = 'adminToast';
+  el.className = 'admin-toast' + (isError ? ' admin-toast--error' : '');
   el.textContent = message;
   document.body.appendChild(el);
-  setTimeout(() => {
+
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => {
     el.style.transition = 'opacity .3s ease, transform .3s ease';
     el.style.opacity = '0';
     el.style.transform = 'translateY(10px)';
     setTimeout(() => el.remove(), 300);
-  }, 2200);
+  }, isError ? 4200 : 2400);   // erro fica mais tempo: da tempo de ler
 }
 
 /* ---------- HTML helpers ---------- */
@@ -289,8 +533,10 @@ function renderDashboard() {
   const totalViews = Object.values(views).reduce((a, b) => a + b, 0);
   const totalReadtime = posts.reduce((acc, p) => acc + estimateReadTime(p.content), 0);
 
+  /* Ranking só com views reais: com tudo zerado cai no empty state honesto
+     em vez de listar os posts mais recentes fingindo ranking. */
   const mostRead = posts
-    .slice()
+    .filter(p => (views[p.id] || 0) > 0)
     .sort((a, b) => (views[b.id] || 0) - (views[a.id] || 0))
     .slice(0, 5);
 
@@ -464,7 +710,9 @@ function renderPostsList() {
 
 function renderEditor(post) {
   const isEditing = !!post && !!post.id;
-  state.form = post || {
+  /* Cópia profunda: editar nunca mexe no objeto que vive em state.posts.
+     Cancelar descarta capa, tags e imagens; a lista só muda após o save. */
+  state.form = post ? JSON.parse(JSON.stringify(post)) : {
     title: '',
     subtitle: '',
     slug: '',
@@ -484,16 +732,23 @@ function renderEditor(post) {
 
   const seedContent = `# Comece a escrever aqui
 
-Use **negrito**, *itálico*, ou \`código inline\`.
+Use **negrito**, *itálico*, ~~riscado~~ ou \`código inline\`.
 
 ## Subtítulos com ##
 
 - Listas com hífen
 - Outra linha
 
+- [ ] tarefa pendente
+- [x] tarefa concluída
+
 > Citação com >
 
 [Link](https://exemplo.com)
+
+| Coluna | Valor |
+| --- | --- |
+| markdown | puro |
 
 \`\`\`js
 // blocos de código
@@ -544,16 +799,34 @@ const ola = "mundo";
           <header class="admin-card-head">
             <div class="admin-card-head-text">
               <h3 class="admin-card-title">Conteúdo</h3>
-              <p class="admin-card-sub">Markdown + shortcodes · Ctrl+S salva</p>
+              <p class="admin-card-sub">Markdown puro (.md) com GFM · Ctrl+S salva</p>
             </div>
             <div class="admin-card-actions">
               <div class="admin-editor-tabs">
                 <button type="button" class="admin-editor-tab active" data-tab="write">Escrever</button>
                 <button type="button" class="admin-editor-tab" data-tab="preview">Preview</button>
-                <button type="button" class="admin-editor-tab" data-tab="help">Ajuda</button>
+                <button type="button" class="admin-editor-tab" data-tab="help">Guia .md</button>
               </div>
             </div>
           </header>
+
+          <!-- Barra .md: importar arquivo / baixar arquivo ====== -->
+          <div class="editor-md-io" id="mdIoBar">
+            <div class="editor-md-io-text">
+              <strong>Este editor fala .md</strong>
+              <span>Importe um arquivo com front-matter YAML (ou arraste ele aqui). Baixar é o caminho manual, opcional: publicar aqui já sobe pro site sozinho.</span>
+            </div>
+            <div class="editor-md-io-actions">
+              <input type="file" id="mdFileInput" accept=".md,.markdown,text/markdown" hidden/>
+              <button type="button" class="admin-btn admin-btn--ghost admin-btn--sm" id="importMdBtn" title="Carregar um arquivo .md neste editor">
+                ${ICONS.inbox} Importar .md
+              </button>
+              <button type="button" class="admin-btn admin-btn--ghost admin-btn--sm" id="exportMdBarBtn" title="Baixar este post como arquivo .md">
+                ${ICONS.save} Baixar .md
+              </button>
+            </div>
+            <p class="editor-md-io-msg" id="mdIoMsg" hidden></p>
+          </div>
 
           <!-- Toolbar de formatação ============================ -->
           <div class="editor-toolbar" id="editorToolbar">
@@ -573,6 +846,9 @@ const ola = "mundo";
               <button type="button" class="editor-toolbar-btn" data-md="italic" title="Itálico (Ctrl+I)">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="4" x2="10" y2="4"/><line x1="14" y1="20" x2="5" y2="20"/><line x1="15" y1="4" x2="9" y2="20"/></svg>
               </button>
+              <button type="button" class="editor-toolbar-btn" data-md="strike" title="Riscado (~~texto~~)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="12" x2="20" y2="12"/><path d="M16.5 6.5C16.5 5 14.4 4 12 4S7.5 5 7.5 6.8c0 1.9 2 2.5 4.5 3.2M7.5 17.4C7.5 19 9.6 20 12 20s4.5-1 4.5-2.6c0-1.5-1.3-2.3-3.5-2.9"/></svg>
+              </button>
               <button type="button" class="editor-toolbar-btn" data-md="code" title="Código inline">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
               </button>
@@ -584,6 +860,9 @@ const ola = "mundo";
               </button>
               <button type="button" class="editor-toolbar-btn" data-md="ol" title="Lista numerada">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4M4 10h2M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+              </button>
+              <button type="button" class="editor-toolbar-btn" data-md="task" title="Lista de tarefas (- [ ])">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2 7 4 9 8 4.5"/><polyline points="2 16 4 18 8 13.5"/><line x1="12" y1="7" x2="21" y2="7"/><line x1="12" y1="17" x2="21" y2="17"/></svg>
               </button>
               <button type="button" class="editor-toolbar-btn" data-md="quote" title="Citação">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.75-2-2-2H4c-1.25 0-2 .75-2 2v4c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .5-1 1v2c0 .5.5 1 1 1zM15 21c3 0 7-1 7-8V5c0-1.25-.75-2-2-2h-4c-1.25 0-2 .75-2 2v4c0 1.25.75 2 2 2h.5c.5 0 .5 0 .5 1v1c0 1-1 2-2 2s-1 .5-1 1v2c0 .5.5 1 1 1z"/></svg>
@@ -600,38 +879,11 @@ const ola = "mundo";
               <button type="button" class="editor-toolbar-btn" data-md="codeblock" title="Bloco de código">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="14" y1="4" x2="10" y2="20"/></svg>
               </button>
+              <button type="button" class="editor-toolbar-btn" data-md="table" title="Tabela (GFM)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="10" y1="4" x2="10" y2="20"/></svg>
+              </button>
               <button type="button" class="editor-toolbar-btn" data-md="hr" title="Divisor">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/></svg>
-              </button>
-            </div>
-            <span class="editor-toolbar-sep"></span>
-            <div class="editor-toolbar-group">
-              <button type="button" class="editor-toolbar-btn editor-toolbar-btn--accent" data-md="callout-info" title="Callout · Info">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                <span>Info</span>
-              </button>
-              <button type="button" class="editor-toolbar-btn editor-toolbar-btn--accent" data-md="callout-success" title="Callout · Sucesso">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                <span>OK</span>
-              </button>
-              <button type="button" class="editor-toolbar-btn editor-toolbar-btn--accent" data-md="callout-warn" title="Callout · Atenção">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                <span>Atenção</span>
-              </button>
-              <button type="button" class="editor-toolbar-btn editor-toolbar-btn--accent" data-md="callout-danger" title="Callout · Perigo">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-                <span>Perigo</span>
-              </button>
-            </div>
-            <span class="editor-toolbar-sep"></span>
-            <div class="editor-toolbar-group">
-              <button type="button" class="editor-toolbar-btn editor-toolbar-btn--card" data-md="card" title="Card com ícone">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
-                <span>Card</span>
-              </button>
-              <button type="button" class="editor-toolbar-btn editor-toolbar-btn--card" data-md="cards-grid" title="Grid de cards">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="9" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-                <span>Grid</span>
               </button>
             </div>
           </div>
@@ -640,48 +892,61 @@ const ola = "mundo";
             <textarea id="f-content" name="content" class="admin-content-editor" placeholder="# Comece com um título...">${escapeHtml(contentValue)}</textarea>
             <div class="admin-preview" id="previewBox"></div>
             <div class="admin-preview" id="helpBox">
-              <h3>Markdown básico</h3>
+              <h3>Como este editor trabalha</h3>
+              <p>O post é um arquivo <code>.md</code>: front-matter YAML no topo, markdown no corpo.
+                 Igual aos arquivos de <code>data/posts/&lt;slug&gt;.md</code>.</p>
+              <p><strong>Publicar</strong> salva no banco e já dispara o rebuild do site: em cerca de
+                 1 minuto o post está no ar, sem você abrir terminal nenhum. Excluir faz o mesmo
+                 caminho e tira a página do ar. Rascunho fica só no banco.</p>
+              <p><strong>Importar .md</strong> lê o front-matter, preenche os campos da direita e joga o
+                 resto do arquivo aqui no corpo. <strong>Baixar .md</strong> faz o caminho de volta: é o
+                 jeito manual, pra quando você quiser versionar o post em <code>data/posts/</code> e
+                 rodar <code>npm run build:posts</code> na mão. Continua funcionando, mas já não é
+                 obrigatório pra publicar.</p>
+              <p>Também dá pra arrastar um arquivo <code>.md</code> direto pra cima do editor.</p>
+
+              <h3>Front-matter reconhecido</h3>
+              <pre><code>---
+title: "Título do post"
+subtitle: "Uma frase de resumo"
+slug: titulo-do-post
+date: "2026-01-31T12:00:00.000Z"
+updated: "2026-01-31T12:00:00.000Z"
+category: "Engenharia"
+tags:
+  - markdown
+  - blog
+cover: "img/blog/capa.png"
+coverAlt: "Descrição da capa"
+images:
+  - src: "img/blog/foto-1.png"
+    alt: "Descrição da foto"
+    caption: "Legenda opcional"
+linkedinUrl: ""
+featured: false
+status: draft
+author: "Bernardo Iannini"
+---</code></pre>
+
+              <h3>Markdown do corpo</h3>
               <p><code># Título</code> · <code>## Subtítulo</code> · <code>### Seção</code></p>
-              <p><code>**negrito**</code> · <code>*itálico*</code> · <code>\`código\`</code></p>
+              <p><code>**negrito**</code> · <code>*itálico*</code> · <code>~~riscado~~</code> · <code>\`código\`</code></p>
               <p><code>&gt; citação</code> em linha separada</p>
-              <p><code>- item</code> ou <code>1. item</code> pra listas</p>
-              <p><code>[texto](url)</code> pra link · <code>![alt](url)</code> pra imagem</p>
-              <p>Blocos de código com três crases:</p>
+              <p><code>- item</code> · <code>1. item</code> · <code>- [ ] tarefa</code> · <code>- [x] tarefa feita</code></p>
+              <p><code>[texto](url)</code> pra link · <code>![alt](url)</code> pra imagem · <code>---</code> pra divisor</p>
+              <p>Parágrafo novo pede uma linha em branco. Uma quebra só continua o mesmo parágrafo,
+                 exatamente como o build renderiza.</p>
+              <p>Bloco de código com três crases:</p>
               <pre><code>\`\`\`js
 console.log("código");
 \`\`\`</code></pre>
-
-              <h3>Shortcodes do design system</h3>
-              <p><strong>Callouts</strong> — destacam informação importante:</p>
-              <pre><code>:::info
-Conteúdo informativo
-:::
-
-:::success
-Algo deu certo
-:::
-
-:::warn
-Atenção a isso
-:::
-
-:::danger
-Cuidado, perigoso
-:::</code></pre>
-              <p><strong>Card com ícone</strong> — bloco com título, ícone e descrição:</p>
-              <pre><code>:::card icon=rocket title="Lançamento"
-Conteúdo do card.
-:::</code></pre>
-              <p>Ícones disponíveis: <code>rocket</code>, <code>code</code>, <code>bolt</code>, <code>chart</code>, <code>check</code>, <code>clock</code>, <code>flag</code>, <code>heart</code>, <code>star</code>, <code>target</code>, <code>shield</code>, <code>zap</code>.</p>
-              <p><strong>Grid de cards</strong> — vários cards lado-a-lado:</p>
-              <pre><code>:::cards
-:::card icon=rocket title="Velocidade"
-3x mais rápido.
-:::
-:::card icon=shield title="Seguro"
-Auth com JWT.
-:::
-:::</code></pre>
+              <p>Tabela no estilo GFM:</p>
+              <pre><code>| Coluna | Valor |
+| --- | --- |
+| linha 1 | 10 |
+| linha 2 | 20 |</code></pre>
+              <p>O preview usa a mesma lib do build (marked, com GFM), então o que aparece aqui
+                 é o que sai no post publicado.</p>
             </div>
             <div class="admin-content-stats">
               <span id="wordCount">0 palavras</span>
@@ -841,8 +1106,8 @@ Auth com JWT.
           <span>${isEditing ? 'Editando rascunho · alterações não são salvas automaticamente' : 'Novo post · revise antes de publicar'}</span>
         </div>
         <button class="admin-btn admin-btn--ghost" type="button" data-nav="posts">Cancelar</button>
-        <button class="admin-btn" type="button" id="exportMdBtn" title="Backup: baixa o post em Markdown (data/posts/)">
-          ${ICONS.save} Exportar .md
+        <button class="admin-btn" type="button" id="exportMdBtn" title="Baixa este post como arquivo .md pra data/posts/">
+          ${ICONS.save} Baixar .md
         </button>
         <button class="admin-btn" type="button" id="saveDraftBtn">
           ${ICONS.save} Salvar rascunho
@@ -936,6 +1201,11 @@ function setupEditorEvents() {
   // Auto-slug
   let slugManuallyEdited = !!state.form.slug;
   slugInput.addEventListener('input', () => { slugManuallyEdited = true; });
+
+  // Slug digitado vira kebab-case no blur (sem acento, espaço ou caractere YAML)
+  slugInput.addEventListener('blur', () => {
+    if (slugInput.value.trim()) slugInput.value = slugify(slugInput.value);
+  });
 
   titleInput.addEventListener('input', () => {
     if (!slugManuallyEdited) slugInput.value = slugify(titleInput.value);
@@ -1169,7 +1439,29 @@ function setupEditorEvents() {
   // Status toggle scheduled
   statusSelect.addEventListener('change', () => {
     scheduleField.hidden = statusSelect.value !== 'scheduled';
+    // Aviso honesto: agendamento ainda não publica sozinho nem grava a data.
+    if (statusSelect.value === 'scheduled') {
+      toast('Agendamento ainda não está ativo: o post será salvo como rascunho e a data não fica gravada.', 'error');
+    }
   });
+
+  /* Preview: pinta na hora com o que estiver disponível e, se o marked
+     ainda não chegou da CDN, repinta quando ele carregar. */
+  const renderPreview = () => {
+    const md = contentEditor.value;
+    previewBox.innerHTML = markdownToHtml(md);
+    if (getMarkedParser()) return;
+    ensureMarked().then((parser) => {
+      if (!parser) {
+        if (!markedWarned) {
+          markedWarned = true;
+          toast('Preview em modo simples: não consegui carregar o marked da CDN.', 'error');
+        }
+        return;
+      }
+      if (previewBox.classList.contains('active')) previewBox.innerHTML = markdownToHtml(md);
+    });
+  };
 
   // Tabs (write/preview/help)
   document.querySelectorAll('.admin-editor-tab').forEach(tab => {
@@ -1180,35 +1472,33 @@ function setupEditorEvents() {
       contentEditor.classList.toggle('hidden', which !== 'write');
       previewBox.classList.toggle('active', which === 'preview');
       helpBox.classList.toggle('active', which === 'help');
-      if (which === 'preview') {
-        previewBox.innerHTML = markdownToHtml(contentEditor.value);
-      }
+      if (which === 'preview') renderPreview();
     });
   });
+
+  // Deixa o marked pronto antes do primeiro clique em Preview
+  ensureMarked();
 
   // Word count update
   contentEditor.addEventListener('input', updateCounts);
 
-  /* ===== Toolbar do editor — insere snippets markdown no cursor ===== */
+  /* ===== Toolbar do editor: só markdown de verdade (GFM) ===== */
   const SNIPPETS = {
     heading2:  { wrap: ['## ', ''], placeholder: 'Subtítulo' },
     heading3:  { wrap: ['### ', ''], placeholder: 'Seção' },
     bold:      { wrap: ['**', '**'], placeholder: 'texto em negrito' },
     italic:    { wrap: ['*', '*'], placeholder: 'texto em itálico' },
+    strike:    { wrap: ['~~', '~~'], placeholder: 'texto riscado' },
     code:      { wrap: ['`', '`'], placeholder: 'código' },
     link:      { wrap: ['[', '](https://)'], placeholder: 'texto do link' },
     image:     { wrap: ['![', '](https://)'], placeholder: 'alt da imagem' },
     quote:     { wrap: ['> ', ''], placeholder: 'citação aqui' },
     ul:        { block: '- item\n- outro item\n- mais um' },
     ol:        { block: '1. primeiro\n2. segundo\n3. terceiro' },
+    task:      { block: '- [ ] tarefa pendente\n- [x] tarefa concluída' },
     hr:        { block: '---' },
     codeblock: { block: '```js\n// código\n```' },
-    'callout-info':    { block: ':::info\nInformação importante aqui.\n:::' },
-    'callout-success': { block: ':::success\nDeu tudo certo.\n:::' },
-    'callout-warn':    { block: ':::warn\nAtenção a este ponto.\n:::' },
-    'callout-danger':  { block: ':::danger\nCuidado, isto é perigoso.\n:::' },
-    card:              { block: ':::card icon=rocket title="Título do Card"\nDescrição curta do card.\n:::' },
-    'cards-grid':      { block: ':::cards\n:::card icon=rocket title="Velocidade"\n3x mais rápido.\n:::\n:::card icon=shield title="Seguro"\nAuth com JWT.\n:::\n:::card icon=zap title="Produtividade"\nMenos cliques, mais código.\n:::\n:::' },
+    table:     { block: '| Coluna | Valor |\n| --- | --- |\n| linha 1 | 10 |\n| linha 2 | 20 |' },
   };
 
   const insertSnippet = (key) => {
@@ -1327,17 +1617,201 @@ function setupEditorEvents() {
     submitForm();
   });
 
-  // ===== Export .md =====
-  // Gera um arquivo .md com front-matter no formato esperado por
-  // scripts/build-posts.js. O arquivo é baixado pelo navegador; o usuário
-  // só precisa mover pra data/posts/ e rodar `npm run build:posts`.
-  document.getElementById('exportMdBtn')?.addEventListener('click', () => {
-    const data = gatherFormData();
-    const md = postToMarkdown(data);
-    const filename = (data.slug || slugify(data.title || 'post')) + '.md';
-    downloadAsFile(filename, md, 'text/markdown');
-    toast(`📦 Baixado ${filename} — mova para data/posts/ e rode npm run build:posts`);
+  /* ===== .md: importar e baixar =====
+     O editor trabalha no formato de data/posts/<slug>.md. Importar lê o
+     front-matter YAML e preenche o formulário; baixar devolve o mesmo
+     formato, pronto pra rodar `npm run build:posts`. Isso é o caminho
+     MANUAL: publicar pelo painel já dispara o rebuild sozinho. */
+  const mdFileInput = document.getElementById('mdFileInput');
+  const mdIoBar = document.getElementById('mdIoBar');
+  const mdIoMsg = document.getElementById('mdIoMsg');
+
+  const setMdMsg = (text, kind) => {
+    if (!mdIoMsg) return;
+    mdIoMsg.textContent = text || '';
+    mdIoMsg.classList.toggle('is-error', kind === 'error');
+    mdIoMsg.classList.toggle('is-ok', kind === 'ok');
+    mdIoMsg.hidden = !text;
+  };
+
+  const isMarkdownFile = (file) =>
+    /\.(md|markdown)$/i.test(file.name || '') ||
+    /^text\/(markdown|x-markdown)$/i.test(file.type || '');
+
+  /* Joga o front-matter nos campos do formulário.
+     Devolve a lista do que foi preenchido (só pra mensagem). */
+  const applyFrontMatter = (data) => {
+    const applied = [];
+    const setInput = (el, value, label) => {
+      if (!el || value === undefined || value === null || value === '') return;
+      el.value = String(value);
+      applied.push(label);
+    };
+
+    setInput(titleInput, data.title, 'título');
+    setInput(document.getElementById('f-subtitle'), data.subtitle, 'subtítulo');
+    setInput(document.getElementById('f-author'), data.author, 'autor');
+
+    if (data.slug) {
+      slugInput.value = String(data.slug);
+      slugManuallyEdited = true;
+      applied.push('slug');
+    }
+
+    if (data.category) {
+      const cat = String(data.category);
+      const catSelect = document.getElementById('f-category');
+      if (catSelect) {
+        if (!Array.from(catSelect.options).some(o => o.value === cat)) {
+          catSelect.appendChild(new Option(cat, cat));
+        }
+        catSelect.value = cat;
+        applied.push('categoria');
+      }
+    }
+
+    if (data.status) {
+      const st = String(data.status).toLowerCase();
+      if (['draft', 'published', 'scheduled'].includes(st)) {
+        statusSelect.value = st;
+        scheduleField.hidden = st !== 'scheduled';
+        applied.push('status');
+      }
+    }
+
+    if (typeof data.featured === 'boolean') {
+      const featuredChk = document.getElementById('f-featured');
+      if (featuredChk) {
+        featuredChk.checked = data.featured;
+        applied.push('destaque');
+      }
+    }
+
+    if (data.cover) {
+      state.form.cover = String(data.cover);
+      coverInput.value = state.form.cover;
+      renderCoverDropzone(state.form.cover);
+      applied.push('capa');
+    }
+    if (data.coverAlt) state.form.coverAlt = String(data.coverAlt);
+    if (data.linkedinUrl) state.form.linkedinUrl = String(data.linkedinUrl);
+
+    /* id e datas do arquivo ficam guardados só pra voltar no download.
+       Nunca sobrescrevem state.form.id: o id do banco manda no CRUD. */
+    if (data.id) state.form.importedId = String(data.id);
+    if (data.date) state.form.importedDate = String(data.date);
+    if (data.updated) state.form.importedUpdated = String(data.updated);
+
+    if (Array.isArray(data.tags)) {
+      state.form.tags = data.tags.map(t => String(t).trim().toLowerCase()).filter(Boolean);
+      renderTags();
+      document.getElementById('f-tags-input')?.blur();
+      applied.push('tags');
+    }
+
+    if (Array.isArray(data.images)) {
+      state.form.images = data.images
+        .map(im => (typeof im === 'string' ? { src: im } : im))
+        .filter(im => im && im.src)
+        .map(im => ({ src: String(im.src), alt: String(im.alt || ''), caption: String(im.caption || '') }));
+      imagesRender();
+      applied.push('imagens');
+    }
+
+    return applied;
+  };
+
+  const applyMarkdownText = (text, filename) => {
+    const parsed = parseFrontMatter(text);
+    contentEditor.value = parsed.body;
+    state.form.content = parsed.body;
+    updateCounts();
+    if (previewBox.classList.contains('active')) renderPreview();
+
+    if (!parsed.data) {
+      setMdMsg(`Corpo carregado de ${filename}. Não achei front-matter, então os campos ficaram como estavam.`, 'ok');
+      toast('Markdown carregado no corpo do post.');
+      return;
+    }
+
+    const applied = applyFrontMatter(parsed.data);
+    if (!parsed.data.slug && !slugInput.value) {
+      const fromName = slugify(String(filename || '').replace(/\.(md|markdown)$/i, ''));
+      if (fromName) {
+        slugInput.value = fromName;
+        slugManuallyEdited = true;
+        applied.push('slug (do nome do arquivo)');
+      }
+    }
+    setMdMsg(
+      applied.length
+        ? `${filename} importado. Preenchi: ${applied.join(', ')}.`
+        : `${filename} importado. Só o corpo veio preenchido.`,
+      'ok'
+    );
+    toast('Arquivo .md importado.');
+  };
+
+  const readMarkdownFile = (file) => {
+    if (!file) return;
+    if (!isMarkdownFile(file)) {
+      setMdMsg(`"${file.name}" não é um arquivo .md. Aceito só .md ou .markdown.`, 'error');
+      toast('Arquivo ignorado: use .md ou .markdown.', 'error');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => applyMarkdownText(String(reader.result || ''), file.name);
+    reader.onerror = () => {
+      setMdMsg('Não consegui ler esse arquivo. Tente de novo.', 'error');
+      toast('Falha ao ler o arquivo .md', 'error');
+    };
+    reader.readAsText(file, 'utf-8');
+  };
+
+  document.getElementById('importMdBtn')?.addEventListener('click', () => mdFileInput?.click());
+  mdFileInput?.addEventListener('change', (e) => {
+    readMarkdownFile(e.target.files?.[0]);
+    e.target.value = ''; // deixa reimportar o mesmo arquivo
   });
+
+  /* Drag and drop de .md sobre o editor (textarea e barra .md) */
+  const dragHasFiles = (e) => Array.from(e.dataTransfer?.types || []).includes('Files');
+  const setMdDragState = (on) => {
+    contentEditor.classList.toggle('is-md-dragover', on);
+    mdIoBar?.classList.toggle('is-md-dragover', on);
+  };
+
+  [contentEditor, mdIoBar].filter(Boolean).forEach(zone => {
+    ['dragenter', 'dragover'].forEach(ev => {
+      zone.addEventListener(ev, (e) => {
+        if (!dragHasFiles(e)) return; // arrastar texto continua normal
+        e.preventDefault();
+        setMdDragState(true);
+      });
+    });
+    zone.addEventListener('dragleave', (e) => {
+      // ignora a saída pra dentro de um filho (senão o destaque pisca)
+      if (e.relatedTarget && zone.contains(e.relatedTarget)) return;
+      setMdDragState(false);
+    });
+    zone.addEventListener('drop', (e) => {
+      if (!dragHasFiles(e)) return;
+      e.preventDefault();
+      setMdDragState(false);
+      readMarkdownFile(e.dataTransfer.files[0]);
+    });
+  });
+
+  /* Baixa o post como data/posts/<slug>.md */
+  const exportMd = () => {
+    const data = gatherExportPost();
+    const filename = (data.slug || slugify(data.title || 'post') || 'post') + '.md';
+    downloadAsFile(filename, postToMarkdown(data), 'text/markdown');
+    setMdMsg(`${filename} baixado. Coloque em data/posts/ e rode npm run build:posts.`, 'ok');
+    toast(`Baixei ${filename}`);
+  };
+  document.getElementById('exportMdBtn')?.addEventListener('click', exportMd);
+  document.getElementById('exportMdBarBtn')?.addEventListener('click', exportMd);
 
   // Submit por Enter/Ctrl+S: usa o status que estiver selecionado
   form.addEventListener('submit', (e) => {
@@ -1364,7 +1838,7 @@ function postToMarkdown(post) {
   if (post.category) fm.push(`category: "${escapeFrontMatterString(post.category)}"`);
   if (post.tags?.length) {
     fm.push('tags:');
-    post.tags.forEach(t => fm.push(`  - ${t}`));
+    post.tags.forEach(t => fm.push(`  - "${escapeFrontMatterString(t)}"`));
   }
   if (post.cover) fm.push(`cover: "${escapeFrontMatterString(post.cover)}"`);
   fm.push(`coverAlt: "${escapeFrontMatterString(post.coverAlt || (post.title ? post.title + ' - Bernardo Iannini' : 'Bernardo Iannini'))}"`);
@@ -1400,20 +1874,6 @@ function downloadAsFile(filename, content, mime = 'text/plain') {
   setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 200);
 }
 
-function toast(msg) {
-  // Toast minimalista — usa o status existente se houver
-  let t = document.getElementById('biAdminToast');
-  if (!t) {
-    t = document.createElement('div');
-    t.id = 'biAdminToast';
-    t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0e1410;color:#e7ffe7;border:1px solid rgba(163,230,53,.4);padding:12px 18px;border-radius:999px;font-size:13.5px;font-family:Inter,sans-serif;box-shadow:0 14px 36px -16px rgba(0,0,0,.7);z-index:9999;max-width:90vw;opacity:0;transition:opacity .25s ease, transform .25s ease;pointer-events:none;';
-    document.body.appendChild(t);
-  }
-  t.textContent = msg;
-  requestAnimationFrame(() => { t.style.opacity = '1'; t.style.transform = 'translateX(-50%) translateY(-4px)'; });
-  clearTimeout(toast._t);
-  toast._t = setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(-50%) translateY(0)'; }, 4000);
-}
 
 function gatherFormData() {
   const form = document.getElementById('postForm');
@@ -1426,7 +1886,7 @@ function gatherFormData() {
   return {
     title: fd.get('title')?.trim() || '',
     subtitle: fd.get('subtitle')?.trim() || '',
-    slug: fd.get('slug')?.trim() || slugify(fd.get('title')) || uid(),
+    slug: slugify(fd.get('slug')) || slugify(fd.get('title')) || uid(),
     cover,
     tags: state.form.tags || [],
     images: state.form.images || [],
@@ -1439,7 +1899,22 @@ function gatherFormData() {
   };
 }
 
+/* Payload do download .md: o formulário + os campos que só existem no
+   arquivo (id, date, updated, coverAlt, linkedinUrl). Assim um .md
+   importado volta completo, sem perder nada no caminho. */
+function gatherExportPost() {
+  const data = gatherFormData();
+  const f = state.form || {};
+  data.id = f.id || f.importedId || '';
+  data.createdAt = f.createdAt || f.importedDate || '';
+  data.updatedAt = f.updatedAt || f.importedUpdated || '';
+  data.coverAlt = f.coverAlt || '';
+  data.linkedinUrl = f.linkedinUrl || '';
+  return data;
+}
+
 async function submitForm() {
+  if (state.saving) return;   // duplo clique / Ctrl+S repetido não salva duas vezes
   const data = gatherFormData();
 
   if (!data.title) {
@@ -1480,6 +1955,21 @@ async function submitForm() {
     content: data.content,
   };
 
+  /* Trava anti duplo clique (mesmo padrão do login em blog-auth.js):
+     desabilita os botões enquanto o save está pendente e libera no finally. */
+  state.saving = true;
+  const saveBtns = ['saveDraftBtn', 'publishBtn']
+    .map(id => document.getElementById(id)).filter(Boolean);
+  saveBtns.forEach(b => { b.disabled = true; });
+
+  /* O mesmo guard cobre o rebuild: o botão só volta quando o site já foi
+     avisado, senão dá pra clicar em publicar duas vezes no meio do caminho. */
+  const publishBtn = document.getElementById('publishBtn');
+  const publishLabel = publishBtn ? publishBtn.innerHTML : '';
+
+  let featuredWarn = '';
+  let rebuild = null;
+  let desativado = false;   // saiu do ar (era publicado, virou rascunho)
   toast('Salvando no Supabase...');
   try {
     if (editing) {
@@ -1487,15 +1977,55 @@ async function submitForm() {
     } else {
       await window.BlogDB.create(post);
     }
+    // Destaque único: o banco não impõe, então desmarca o featured dos outros.
+    if (post.featured) {
+      const { error } = await window.BlogDB.raw
+        .from('posts')
+        .update({ featured: false })
+        .eq('featured', true)
+        .neq('id', post.id);
+      if (error) featuredWarn = ' Atenção: não consegui desmarcar o destaque dos outros posts (' + (error.message || error) + ').';
+    }
     state.posts = await window.BlogDB.listAll();
+
+    /* Precisa avisar o build (quem gera a página estática) em DOIS casos:
+       publicando, e DESPUBLICANDO um post que estava no ar. Sem o segundo,
+       virar rascunho deixaria a página antiga acessível no site até o
+       próximo deploy. Rascunho que nunca foi publicado não gasta deploy.
+       triggerRebuild não lança: se falhar, o post continua salvo. */
+    const despublicando = !!editing && editing.status === 'published' && status !== 'published';
+    if (status === 'published' || despublicando) {
+      if (publishBtn) publishBtn.innerHTML = ICONS.paperplane + ' Publicando...';
+      toast(despublicando ? 'Tirando do site...' : 'Publicando no site...');
+      const motivo = despublicando
+        ? 'post despublicado: '
+        : (editing ? 'post atualizado: ' : 'post publicado: ');
+      rebuild = await triggerRebuild(motivo + slug);
+      desativado = despublicando;
+    }
   } catch (err) {
     toast('Erro ao salvar: ' + (err && err.message || err), 'error');
     return;
+  } finally {
+    state.saving = false;
+    saveBtns.forEach(b => { b.disabled = false; });
+    if (publishBtn) publishBtn.innerHTML = publishLabel;
   }
 
-  toast(status === 'published'
-    ? 'Post publicado! Já está no blog.'
-    : (data.status === 'scheduled' ? 'Post agendado (salvo como rascunho).' : 'Rascunho salvo.'));
+  /* Toast honesto: rascunho fica só no banco; publicado depende do rebuild
+     pra virar página estática no ar. */
+  let aviso;
+  if (status === 'published') {
+    aviso = rebuildMessage('Post publicado', 'Post salvo', rebuild);
+  } else if (desativado) {
+    // Era publicado e virou rascunho: o rebuild é o que tira a página do ar.
+    aviso = rebuildMessage('Post tirado do site', 'Post salvo como rascunho', rebuild);
+  } else if (data.status === 'scheduled') {
+    aviso = { msg: 'Agendamento ainda não está ativo: salvei como rascunho e a data não foi gravada.', type: 'error' };
+  } else {
+    aviso = { msg: 'Rascunho salvo. Ele não vai pro site.', type: 'success' };
+  }
+  toast(aviso.msg + featuredWarn, (featuredWarn || aviso.type === 'error') ? 'error' : 'success');
   state.editingId = null;
   state.view = 'posts';
   render();
@@ -1546,12 +2076,30 @@ function attachGlobalEvents() {
       const id = delBtn.dataset.delete;
       const post = state.posts.find(p => p.id === id);
       if (post && confirm(`Excluir o post "${post.title}"? Esta ação não pode ser desfeita.`)) {
+        /* Mesmo guard de duplo clique do save: o botão fica travado até o
+           rebuild responder. */
+        delBtn.disabled = true;
+        toast('Excluindo...');
         window.BlogDB.remove(id).then(async () => {
-          state.posts = await window.BlogDB.listAll();
-          toast('Post excluído.');
+          /* Quem tira posts/<slug>.html do ar é o build, não o banco: sem
+             rebuild a página continua publicada mesmo com o post apagado.
+             Vem ANTES do listAll: se recarregar a lista falhar, o post já
+             saiu do banco e a página não pode ficar no ar por causa disso. */
+          const rebuild = await triggerRebuild('post excluido: ' + (post.slug || post.id));
+          const aviso = rebuildMessage('Post excluído', 'Post excluído do banco', rebuild);
+          try {
+            state.posts = await window.BlogDB.listAll();
+          } catch (e) {
+            // Excluiu e avisou o site; só a lista da tela ficou velha.
+            state.posts = (state.posts || []).filter(p => p.id !== id);
+          }
+          toast(aviso.msg, aviso.type);
           if (state.editingId === id) { state.editingId = null; state.view = 'posts'; }
           render();
-        }).catch((err) => toast('Erro ao excluir: ' + (err && err.message || err), 'error'));
+        }).catch((err) => {
+          delBtn.disabled = false;
+          toast('Erro ao excluir: ' + (err && err.message || err), 'error');
+        });
       }
       return;
     }
@@ -1632,14 +2180,38 @@ function attachGlobalEvents() {
 }
 
 /* ---------- Init ---------- */
+
+/* Erro de rede/DNS (backend fora do ar), e não credencial ou dado inválido. */
+const isNetworkError = (err) => {
+  const m = (err && err.message || String(err || '')).toLowerCase();
+  return (err && err.name === 'TypeError') || /failed to fetch|networkerror|fetch|network|dns/.test(m);
+};
+
+/* Sidebar: mostra quem está logado de verdade (email da sessão). */
+function renderSidebarUser(session) {
+  const email = session && session.user && session.user.email || '';
+  const name = email ? email.split('@')[0] : 'admin';
+  const nameEl = document.querySelector('.admin-user-name');
+  const avatarEl = document.querySelector('.admin-user-avatar');
+  if (nameEl) { nameEl.textContent = name; nameEl.title = email; }
+  if (avatarEl) avatarEl.textContent = (name.charAt(0) || 'B').toUpperCase();
+}
+
+function setSidebarStatus(text) {
+  const el = document.querySelector('.admin-user-status');
+  if (el) el.textContent = text;
+}
+
 function renderServerOffline(err) {
   const el = document.getElementById('adminContent');
   if (!el) return;
+  const net = isNetworkError(err);
+  setSidebarStatus('offline');
   el.innerHTML = `
     <header class="admin-header">
       <div>
-        <h1 class="admin-title">Não consegui falar com o <em>Supabase</em></h1>
-        <p class="admin-title-sub">O painel lê e grava os posts no banco Supabase.</p>
+        <h1 class="admin-title">${net ? 'Servidor de dados <em>indisponível</em>' : 'Não consegui falar com o <em>Supabase</em>'}</h1>
+        <p class="admin-title-sub">${net ? 'O banco Supabase não respondeu (falha de rede ou DNS). Sem ele o painel não lê nem grava posts.' : 'O painel lê e grava os posts no banco Supabase.'}</p>
       </div>
     </header>
     <section class="admin-card">
@@ -1670,10 +2242,19 @@ async function init() {
     return;
   }
   if (!session) {
+    /* Sem sessão local. Se o backend estiver fora do ar o login também não
+       funcionaria: avisa aqui em vez de redirecionar mudo pro login. */
+    try {
+      const { error: pingErr } = await window.BlogDB.raw.from('posts').select('id').limit(1);
+      if (pingErr && isNetworkError(pingErr)) { renderServerOffline(pingErr); return; }
+    } catch (err) {
+      if (isNetworkError(err)) { renderServerOffline(err); return; }
+    }
     location.replace('bernardolindao.html');
     return;
   }
 
+  renderSidebarUser(session);
   attachGlobalEvents();
   try {
     state.posts = await window.BlogDB.listAll();
@@ -1682,6 +2263,7 @@ async function init() {
     renderServerOffline(err);
     return;
   }
+  setSidebarStatus('online');
   render();
 }
 

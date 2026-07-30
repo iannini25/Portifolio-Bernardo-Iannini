@@ -7,7 +7,7 @@
      1. <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
      2. <script src="/js/supabase-config.js"></script>
 
-   Expõe window.BlogDB com a API usada por blog.js / blog-post.js /
+   Expõe window.BlogDB com a API usada por blog.js /
    blog-admin.js / blog-auth.js. Tudo assíncrono (Promises).
 
    Mapeamento: o banco usa snake_case (cover_alt, created_at) e o app
@@ -167,7 +167,25 @@
     },
 
     async signOut() {
-      try { await sb.auth.signOut(); } catch (e) { /* noop */ }
+      /* signOut do supabase-js não lança: retorna {error}. Em falha de
+         rede o gotrue NÃO limpa a sessão local, então removemos as
+         chaves sb-* do localStorage na mão pra garantir o logout
+         mesmo com o backend fora do ar. */
+      let falhou = false;
+      try {
+        const { error } = await sb.auth.signOut();
+        falhou = !!error;
+      } catch (e) { falhou = true; }
+      if (falhou) {
+        try {
+          const chaves = [];
+          for (let i = 0; i < localStorage.length; i++) {
+            const k = localStorage.key(i);
+            if (k && k.indexOf('sb-') === 0) chaves.push(k);
+          }
+          chaves.forEach((k) => localStorage.removeItem(k));
+        } catch (e2) { /* noop */ }
+      }
     },
 
     async getSession() {

@@ -7,14 +7,20 @@
 /* =============================
    0) BASE
    ============================= */
+/* SEM FUNDO: a pagina do blog nao tem fundo nenhum — nem gradiente, nem
+   textura, nem grain, nem vinheta, nem camada WebGL. Fica so a cor base da
+   pagina (--bg, no html do style.css). `background: none` deixa o body
+   transparente sobre ela. */
 .blog-body {
-  background:
-    radial-gradient(900px 600px at 12% 8%, rgba(34, 197, 94, .14), transparent 60%),
-    radial-gradient(700px 500px at 88% 20%, rgba(163, 230, 53, .08), transparent 60%),
-    var(--bg);
-  background-attachment: fixed;
+  background: none;
   min-height: 100vh;
 }
+/* O style.css global tem DUAS camadas fixas de fundo em todo body:
+   `body::before` (vinheta radial no topo) e `body::after` (grain de ruido
+   fractal). Aqui elas sao desligadas SO nas paginas do blog — o resto do
+   site (home, projeto) continua com as duas. */
+.blog-body::before,
+.blog-body::after { content: none; }
 
 .blog-main {
   max-width: 1280px;
@@ -23,6 +29,7 @@
   z-index: 1;
   padding: 120px 24px 0;
 }
+
 
 /* Estado ATIVO do link "Blog" — indicador sutil sem fundo verde.
    NÃO mexe em padding/font-size/altura: precisa ficar IDÊNTICO em tamanho
@@ -45,8 +52,15 @@
   opacity: .7;
 }
 
-.blog-body .nav-blog-link.active-link:hover {
-  background: var(--w-08);
+/* No hover, o link ativo recebe o MESMO preenchimento lime dos vizinhos
+   (.pill > a::before, em style.css). Como `.blog-body .nav-blog-link.active-link`
+   fixa color:var(--text) com especificidade maior que `.pill > a:hover`, a tinta
+   precisa ser reafirmada aqui — senao ficaria texto claro sobre lime (ilegivel).
+   O tracinho indicador tambem escurece pra continuar visivel sobre o lime. */
+.blog-body .nav-blog-link.active-link:hover { color: #08120c; }
+.blog-body .nav-blog-link.active-link:hover::after {
+  background: #08120c;
+  opacity: .55;
 }
 
 /* =============================
@@ -130,6 +144,39 @@
 
 .bid-tile:hover {
   border-color: var(--g-50, rgba(34, 197, 94, .5));
+}
+
+/* mesmo contorno-que-segue-o-cursor dos cards de post (padroniza o bento
+   com o resto do site). Fica ACIMA do conteudo do tile mas sem capturar
+   o mouse; --mx/--my vem do js/blog-fx.js.
+   .bid-center fica FORA: o ::after dele ja e o scrim da imagem de preview
+   (e ele nao e alvo de hover, e a superficie que mostra o tile visitado). */
+.bid-tile:not(.bid-center)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  border-radius: inherit;
+  padding: 1px;
+  z-index: 4;
+  background: radial-gradient(160% 160% at var(--mx, 50%) var(--my, 50%),
+    color-mix(in oklab, var(--lime) 92%, var(--green)) 0%, transparent 46%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: 0;
+  transition: opacity .4s ease;
+  pointer-events: none;
+}
+.bid-tile:not(.bid-center):hover::after { opacity: 1; }
+@media (hover: none) {
+  .blog-post-card::before,
+  .bid-tile:not(.bid-center)::after { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .blog-post-card::before,
+  .bid-tile:not(.bid-center)::after { transition: none; }
 }
 
 /* 1) Perfil — avatar com sweep + nome (canto sup. esq.) */
@@ -571,7 +618,7 @@
   font-size: 11px;
   font-weight: 600;
   cursor: pointer;
-  transition: all .18s ease;
+  transition: border-color .18s ease, color .18s ease, background .18s ease, transform .18s ease;
 }
 
 .bid-tag:hover {
@@ -721,7 +768,10 @@
   .bid-topics { grid-column: span 1; grid-row: auto; min-height: 220px; }
   .bid-location { grid-column: span 1; grid-row: auto; min-height: 160px; }
   .bid-center { grid-column: span 2; grid-row: auto; min-height: 240px; }
-  .bid-profile { min-height: 110px; }
+  /* .bid-profile ocupava 1 coluna e o .bid-featured seguinte pede 2: num grid
+     de 2 colunas o featured nao cabia ao lado, descia, e deixava a celula
+     r1c2 vazia (110px de buraco). Ocupando as 2, a linha fecha. */
+  .bid-profile { grid-column: span 2; min-height: 110px; }
 }
 
 @media (max-width: 540px) {
@@ -750,7 +800,8 @@
   background: rgba(10, 18, 14, .72);
   border: 1px solid var(--gline-28);
   border-radius: 18px;
-  backdrop-filter: blur(14px);
+  /* blur mais leve: a toolbar e sticky e refiltra o fundo a cada frame de scroll */
+  backdrop-filter: blur(8px);
   box-shadow: 0 14px 40px rgba(0, 0, 0, .25);
 }
 
@@ -768,9 +819,11 @@
 }
 
 .blog-search:focus-within {
-  border-color: var(--g-50, rgba(34, 197, 94, .5));
+  border-color: var(--lime);
   background: var(--input-bg-focus);
-  box-shadow: 0 0 0 4px var(--g-10, rgba(34, 197, 94, .1));
+  /* --g-10 rendia 1.15:1 contra a barra: indicador de foco invisivel
+     (WCAG 2.2 SC 1.4.11 pede 3:1). --g-70 mede 4.61:1. */
+  box-shadow: 0 0 0 3px var(--g-70);
 }
 
 .blog-search svg { color: var(--text-hint); flex-shrink: 0; }
@@ -787,15 +840,8 @@
 
 .blog-search input::placeholder { color: var(--text-hint); }
 
-.blog-search-kbd {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 11px;
-  padding: 3px 7px;
-  border-radius: 6px;
-  background: var(--w-06);
-  border: 1px solid var(--w-10);
-  color: var(--text-hint);
-}
+/* (o badge "⌘ K" saiu da barra de busca; o atalho de teclado continua
+   funcionando em js/blog.js, so nao e mais anunciado visualmente) */
 
 .blog-filters {
   display: flex;
@@ -820,7 +866,7 @@
   font-size: 12px;
   letter-spacing: .04em;
   cursor: pointer;
-  transition: all .18s ease;
+  transition: border-color .18s ease, background .18s ease, color .18s ease, box-shadow .18s ease;
 }
 
 .blog-chip:hover {
@@ -829,11 +875,22 @@
   color: var(--text);
 }
 
+/* CHIP ATIVO: gradiente OFICIAL da casa (green -> lime), igual ao resto do
+   site. Antes era green -> green-2 (verde escuro, barrento) + um box-shadow
+   verde largo e desfocado (0 6px 18px) que vazava e lia como bug/halo. Agora
+   a profundidade vem de uma sombra NEUTRA curta + um fio de luz interno. */
 .blog-chip--active {
-  background: linear-gradient(135deg, var(--green), var(--green-2));
-  border-color: var(--green);
-  color: #04130a;
-  box-shadow: 0 6px 18px rgba(34, 197, 94, .35);
+  background: var(--gradient-lime);
+  border-color: transparent;
+  color: #08120c;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, .35),
+    inset 0 1px 0 rgba(255, 255, 255, .25);
+}
+.blog-chip--active:hover {
+  background: var(--gradient-lime);
+  color: #08120c;
+  border-color: transparent;
 }
 
 .blog-sort {
@@ -850,6 +907,8 @@
   font-weight: 700;
 }
 
+/* <select> nativo: fica como FALLBACK sem JS. O js/blog-sort.js o esconde
+   (.blog-sort-select--native) e desenha o listbox da casa por cima. */
 .blog-sort-select {
   height: 40px;
   padding: 0 14px;
@@ -865,6 +924,130 @@
 }
 
 .blog-sort-select:hover { border-color: var(--g-35, rgba(65, 110, 84, .35)); }
+
+/* ==================================================================
+   ORDENAR — listbox proprio (o <select> nativo abria o menu do SISTEMA:
+   lista cinza, realce azul, impossivel de estilizar por dentro).
+   Segue o MESMO padrao do switch de idioma do header (.lang-switch +
+   .lang-menu no style.css): pill de gatilho, painel com blur, e o
+   circulo lime que sobe preenchendo o item no hover. Assim o blog nao
+   inventa um componente novo.
+   ================================================================== */
+.blog-sort-select--native {
+  /* escondido do olho e do teclado, mas segue sendo a fonte da verdade
+     (o js escreve nele e dispara 'change' -> blog.js reordena) */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.blog-sort-ui { position: relative; }
+
+.blog-sort-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 12px 0 14px;
+  border-radius: 10px;
+  border: 1px solid var(--gline-28);
+  background: var(--input-bg);
+  color: var(--text);
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color .2s ease, background .2s ease;
+}
+.blog-sort-trigger:hover { border-color: var(--g-35, rgba(65, 110, 84, .35)); }
+.blog-sort-trigger:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+.blog-sort-value { white-space: nowrap; }
+.blog-sort-caret {
+  opacity: .7;
+  flex: 0 0 auto;
+  transition: transform .24s cubic-bezier(.22, 1, .36, 1);
+}
+.blog-sort-trigger[aria-expanded="true"] .blog-sort-caret { transform: rotate(180deg); }
+
+.blog-sort-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 40;
+  min-width: 100%;
+  width: max-content;
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  border-radius: 12px;
+  border: 1px solid var(--w-10);
+  background: color-mix(in oklab, #0b120f 88%, transparent);
+  box-shadow:
+    0 18px 44px rgba(0, 0, 0, .45),
+    inset 0 1px 0 var(--w-06);
+  backdrop-filter: blur(10px);
+  display: none;
+}
+.blog-sort-menu.open {
+  display: block;
+  animation: blog-sort-in .2s cubic-bezier(.22, 1, .36, 1) both;
+}
+@keyframes blog-sort-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* item: mesmo circulo lime que sobe do rodape (idioma da casa) */
+.blog-sort-option {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding: 9px 12px;
+  border-radius: 8px;
+  color: var(--text-soft);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color .26s cubic-bezier(.4, 0, .2, 1);
+}
+.blog-sort-option::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 135%;
+  aspect-ratio: 1;
+  transform: translate(-50%, 50%) scale(0);
+  background: var(--gradient-lime);
+  border-radius: 50%;
+  z-index: -1;
+  pointer-events: none;
+  transition: transform .42s cubic-bezier(.34, 1.2, .5, 1);
+}
+/* .is-active = item sob o cursor OU navegado pelo teclado (mesmo destaque) */
+.blog-sort-option.is-active { color: #08120c; }
+.blog-sort-option.is-active::before { transform: translate(-50%, 50%) scale(1); }
+.blog-sort-option[aria-selected="true"] { color: var(--lime); }
+.blog-sort-option[aria-selected="true"].is-active { color: #08120c; }
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-sort-menu.open { animation: none; }
+  .blog-sort-option,
+  .blog-sort-option::before,
+  .blog-sort-caret { transition: none; }
+  /* sem o circulo animado, o destaque vira fundo solido */
+  .blog-sort-option.is-active::before { transform: translate(-50%, 50%) scale(1); }
+}
 
 @media (max-width: 900px) {
   .blog-toolbar { grid-template-columns: 1fr; }
@@ -916,28 +1099,43 @@
   background: linear-gradient(135deg, rgba(15, 25, 20, .55), rgba(10, 18, 14, .85));
   overflow: hidden;
   cursor: pointer;
-  transition: all .32s cubic-bezier(.22, .61, .36, 1);
+  transition: transform .32s cubic-bezier(.22, .61, .36, 1),
+              border-color .32s cubic-bezier(.22, .61, .36, 1),
+              box-shadow .32s cubic-bezier(.22, .61, .36, 1);
   isolation: isolate;
 }
 
+/* CONTORNO QUE ACENDE NA DIRECAO DO CURSOR — mesmo efeito dos cards de
+   Projetos (.pj-card__frame::before) e de Experiencia (.tl-card::before):
+   js/blog-fx.js escreve --mx/--my (em %) no card e o radial e mascarado no
+   anel de 1px da borda. Padroniza o blog com o resto do site (antes era um
+   gradiente diagonal estatico). */
 .blog-post-card::before {
   content: "";
   position: absolute;
   inset: 0;
+  box-sizing: border-box;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(135deg, rgba(34, 197, 94, .25), transparent 40%, transparent 60%, rgba(163, 230, 53, .2));
+  z-index: 3;
+  background: radial-gradient(160% 160% at var(--mx, 50%) var(--my, 50%),
+    color-mix(in oklab, var(--lime) 92%, var(--green)) 0%, transparent 46%);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
-  mask-composite: exclude;
+          mask-composite: exclude;
   opacity: 0;
-  transition: opacity .3s ease;
+  transition: opacity .4s ease;
   pointer-events: none;
 }
 
 .blog-post-card:hover {
   transform: translateY(-4px);
-  border-color: var(--g-50, rgba(34, 197, 94, .5));
+  /* a borda ZERA no hover: o unico desenho de borda passa a ser o contorno que
+     segue o cursor (::before). Antes --g-50 acendia o anel INTEIRO de verde no
+     mesmo instante, o que lavava o gradiente direcional por cima. Mesma decisao
+     que .post-related-card:hover ja tomava. */
+  border-color: transparent;
   box-shadow: 0 22px 60px rgba(0, 0, 0, .45);
 }
 
@@ -962,7 +1160,16 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(6, 8, 7, .15) 0%, rgba(6, 8, 7, .6) 55%, rgba(6, 8, 7, .92) 100%);
+  /* O bloco de texto do card fica entre ~54% e ~78% da altura. Com o scrim
+     antigo (.60 em 55%) uma capa CLARA derrubava a meta de 11px pra 2.39:1 e o
+     resumo pra 4.13:1. Chegando a .82 ANTES do texto, o pior caso (capa branca)
+     vira 5.51:1 na meta e 9.50:1 no resumo. */
+  background: linear-gradient(180deg,
+    rgba(6, 8, 7, .10) 0%,
+    rgba(6, 8, 7, .55) 34%,
+    rgba(6, 8, 7, .82) 52%,
+    rgba(6, 8, 7, .95) 78%,
+    rgba(6, 8, 7, .97) 100%);
 }
 
 .blog-post-card--no-image .blog-post-cover {
@@ -1041,15 +1248,28 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  /* Espaco RESERVADO (2 linhas) em vez de animar max-height: animar altura
+     reflowava o card a cada frame do hover e o 0->60px cortava o texto no meio.
+     E o revelar nao pode depender SO de :hover, senao no toque e no teclado o
+     resumo de todo post ficava inalcancavel. */
+  height: calc(13px * 1.5 * 2);
   opacity: 0;
-  max-height: 0;
-  transition: opacity .3s ease, max-height .3s ease;
+  transform: translateY(4px);
+  transition: opacity .28s cubic-bezier(.22, .61, .36, 1),
+              transform .28s cubic-bezier(.22, .61, .36, 1);
+}
+.blog-post-card:hover .blog-post-excerpt,
+.blog-post-card:focus-within .blog-post-excerpt {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* sem hover (toque): o resumo nasce visivel */
+@media (hover: none) {
+  .blog-post-excerpt { opacity: 1; transform: none; }
 }
 
-.blog-post-card:hover .blog-post-excerpt {
-  opacity: 1;
-  max-height: 60px;
-}
+/* (a regra antiga de max-height saiu: o revelar agora e por opacity com
+   espaco reservado, e cobre hover, focus-within e toque) */
 
 .blog-post-tags {
   margin-top: 12px;
@@ -1079,11 +1299,17 @@
   grid-column: span 4;
   grid-row: span 2;
 }
+/* POST UNICO: o plano do blog.js manda --featured (4 de 6 colunas) e sobravam
+   2 colunas x 2 linhas de grid vazias ao lado. Com um post so, ocupa a largura
+   toda. E exatamente o layout do dia em que o primeiro post e publicado. */
+.blog-bento > .blog-post-card--featured:only-child { grid-column: span 6; }
 .blog-post-card--featured .blog-post-title { font-size: clamp(24px, 3vw, 36px); }
 .blog-post-card--featured .blog-post-excerpt {
   font-size: 15px;
   opacity: 1;
-  max-height: none;
+  transform: none;
+  /* 3 linhas no destacado (o base reserva 2 na altura de 13px) */
+  height: calc(15px * 1.5 * 3);
   display: -webkit-box;
   -webkit-line-clamp: 3;
 }
@@ -1158,7 +1384,10 @@
   .blog-post-card--featured { grid-column: span 4; grid-row: span 2; }
   .blog-post-card--tall { grid-column: span 2; grid-row: span 2; }
   .blog-post-card--normal { grid-column: span 2; grid-row: span 1; }
-  .blog-post-card--wide { grid-column: span 4; grid-row: span 1; }
+  /* era span 4 (= a linha inteira em 4 colunas): o --tall anterior ocupa
+     r3-4/c1-2 e o wide nao cabia nas 2 colunas restantes, descia de linha e
+     deixava 2col x 2row vazias. Com span 2, dois wides fecham a linha. */
+  .blog-post-card--wide { grid-column: span 2; grid-row: span 1; }
   .blog-post-card--full { grid-column: span 4; grid-row: span 1; }
 }
 
@@ -1322,7 +1551,7 @@
   font-size: 12px;
   font-weight: 700;
   text-decoration: none;
-  transition: all .2s ease;
+  transition: border-color .2s ease, color .2s ease, background .2s ease, transform .2s ease;
 }
 
 .blog-author-btn svg {
@@ -1382,296 +1611,6 @@
 @media (max-width: 540px) {
   .blog-footer-inner { flex-direction: column; text-align: center; }
 }
-
-/* =============================
-   7) MODAL DE POST
-   ============================= */
-.blog-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: grid;
-  place-items: center;
-  padding: 24px;
-}
-
-.blog-modal[hidden] { display: none; }
-
-.blog-modal-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(6, 8, 7, .82);
-  backdrop-filter: blur(12px);
-  animation: blog-fade-in .3s ease;
-}
-
-.blog-modal-card {
-  position: relative;
-  width: min(820px, 100%);
-  max-height: 88vh;
-  overflow-y: auto;
-  padding: 36px clamp(20px, 4vw, 48px);
-  border-radius: 22px;
-  border: 1px solid var(--gline-35);
-  background: linear-gradient(135deg, rgba(15, 25, 20, .95), rgba(8, 18, 12, .98));
-  box-shadow: 0 30px 80px rgba(0, 0, 0, .6);
-  animation: blog-modal-up .35s cubic-bezier(.22, .61, .36, 1);
-}
-
-.blog-modal-close {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 36px;
-  height: 36px;
-  display: grid;
-  place-items: center;
-  border-radius: 10px;
-  border: 1px solid var(--w-10);
-  background: var(--w-05);
-  color: var(--text);
-  cursor: pointer;
-  transition: all .2s ease;
-  z-index: 1;
-}
-
-.blog-modal-close:hover {
-  background: var(--g-15, rgba(34, 197, 94, .15));
-  border-color: var(--green);
-  color: var(--lime);
-}
-
-@keyframes blog-fade-in { from { opacity: 0; } to { opacity: 1; } }
-@keyframes blog-modal-up {
-  from { opacity: 0; transform: translateY(20px) scale(.97); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.blog-modal-content h1 {
-  margin: 0 0 12px;
-  font-size: clamp(26px, 3.4vw, 38px);
-  font-weight: 900;
-  letter-spacing: -.02em;
-  line-height: 1.1;
-}
-
-.blog-modal-content .blog-modal-meta {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--gline-28);
-  font-size: 12px;
-  color: var(--text-hint);
-}
-
-.blog-modal-content .blog-modal-cover {
-  width: 100%;
-  border-radius: 14px;
-  margin: 16px 0 24px;
-  border: 1px solid var(--gline-28);
-}
-
-.blog-modal-content p {
-  font-size: 15px;
-  line-height: 1.75;
-  color: var(--text-soft);
-  margin: 0 0 18px;
-}
-
-.blog-modal-content h2 { margin: 28px 0 12px; font-size: 22px; font-weight: 800; }
-.blog-modal-content h3 { margin: 22px 0 10px; font-size: 18px; font-weight: 800; }
-
-.blog-modal-content code {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 13px;
-  padding: 2px 6px;
-  border-radius: 6px;
-  background: var(--w-06);
-  border: 1px solid var(--w-10);
-  color: var(--lime);
-}
-
-.blog-modal-content pre {
-  padding: 16px;
-  border-radius: 12px;
-  background: rgba(6, 8, 7, .8);
-  border: 1px solid var(--gline-28);
-  overflow-x: auto;
-  margin: 16px 0;
-}
-
-.blog-modal-content pre code { padding: 0; background: transparent; border: 0; color: var(--text); }
-
-.blog-modal-content ul, .blog-modal-content ol {
-  padding-left: 24px;
-  margin: 0 0 18px;
-  color: var(--text-soft);
-}
-
-.blog-modal-content li { margin-bottom: 8px; line-height: 1.7; }
-
-.blog-modal-content blockquote {
-  margin: 20px 0;
-  padding: 14px 18px;
-  border-left: 3px solid var(--green);
-  background: var(--g-08, rgba(34, 197, 94, .08));
-  border-radius: 0 12px 12px 0;
-  color: var(--text);
-  font-style: italic;
-}
-
-.blog-modal-content a {
-  color: var(--lime);
-  text-decoration: underline;
-  text-decoration-color: var(--g-50, rgba(34, 197, 94, .5));
-  text-underline-offset: 3px;
-}
-
-.blog-modal-content a:hover { text-decoration-color: var(--lime); }
-
-.blog-modal-content img {
-  max-width: 100%;
-  border-radius: 12px;
-  margin: 16px 0;
-  border: 1px solid var(--gline-28);
-}
-
-.blog-modal-tags {
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px solid var(--gline-28);
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-/* =============================
-   8) PÁGINA DE POST INDIVIDUAL
-   ============================= */
-.blog-post-page {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.blog-post-page-header { text-align: center; padding: 40px 0; }
-
-.blog-post-page-back {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  margin-bottom: 24px;
-  border-radius: 999px;
-  border: 1px solid var(--gline-28);
-  color: var(--text-soft);
-  font-size: 12px;
-  font-weight: 700;
-  transition: all .2s ease;
-}
-
-.blog-post-page-back:hover {
-  border-color: var(--green);
-  color: var(--lime);
-  transform: translateX(-2px);
-}
-
-.blog-post-page-title {
-  margin: 8px 0 14px;
-  font-size: clamp(32px, 5vw, 56px);
-  font-weight: 900;
-  letter-spacing: -.025em;
-  line-height: 1.05;
-}
-
-.blog-post-page-subtitle {
-  margin: 0 auto;
-  max-width: 620px;
-  color: var(--text-soft);
-  font-size: clamp(15px, 1.6vw, 19px);
-  line-height: 1.6;
-}
-
-.blog-post-page-meta {
-  margin-top: 24px;
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  padding: 12px 22px;
-  border-radius: 999px;
-  border: 1px solid var(--gline-28);
-  background: var(--w-03);
-  font-size: 12px;
-  color: var(--text-hint);
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.blog-post-page-cover {
-  margin: 36px 0;
-  border-radius: 22px;
-  overflow: hidden;
-  border: 1px solid var(--gline-28);
-}
-
-.blog-post-page-cover img { width: 100%; display: block; }
-
-.blog-post-page-body {
-  padding: 0 0 60px;
-  font-size: 17px;
-  line-height: 1.8;
-  color: var(--text-soft);
-}
-
-.blog-post-page-body h2,
-.blog-post-page-body h3 { color: var(--text); }
-
-.blog-share-bar {
-  margin: 40px 0;
-  padding: 18px;
-  border-radius: 18px;
-  border: 1px solid var(--gline-28);
-  background: var(--w-02);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.blog-share-label {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--text-hint);
-}
-
-.blog-share-buttons { display: flex; gap: 8px; }
-
-.blog-share-btn {
-  width: 38px;
-  height: 38px;
-  display: grid;
-  place-items: center;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--rail);
-  color: var(--text-icon);
-  cursor: pointer;
-  transition: all .2s ease;
-}
-
-.blog-share-btn:hover {
-  border-color: var(--green);
-  background: var(--g-10, rgba(34, 197, 94, .1));
-  color: var(--lime);
-  transform: translateY(-2px);
-}
-
-.blog-share-btn svg { width: 16px; height: 16px; fill: currentColor; }
 
 /* =============================
    9) LOGIN PAGE
@@ -2006,7 +1945,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  transition: all .18s ease;
+  transition: border-color .18s ease, color .18s ease, background .18s ease;
   width: 100%;
   text-align: left;
   line-height: 1;
@@ -2143,7 +2082,7 @@
   align-items: center;
   gap: 8px;
   text-decoration: none;
-  transition: all .18s ease;
+  transition: border-color .18s ease, background .18s ease, color .18s ease;
 }
 
 .admin-topbar-btn > svg {
@@ -2253,7 +2192,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  transition: all .2s ease;
+  transition: border-color .2s ease, background .2s ease, transform .2s ease, box-shadow .2s ease;
 }
 
 .admin-btn:hover {
@@ -2411,6 +2350,10 @@
 
 .admin-stat {
   position: relative;
+  /* empilha label em cima e valor embaixo (spans inline dividiam a mesma linha
+     e o margin-top do valor era ignorado) */
+  display: flex;
+  flex-direction: column;
   padding: 22px;
   border-radius: 16px;
   border: 1px solid var(--gline-28);
@@ -2622,7 +2565,7 @@
   background: var(--w-03);
   color: var(--text-soft);
   cursor: pointer;
-  transition: all .18s ease;
+  transition: border-color .18s ease, color .18s ease, background .18s ease;
 }
 
 .admin-icon-btn:hover {
@@ -2860,7 +2803,7 @@
   font-weight: 700;
   font-size: 12px;
   cursor: pointer;
-  transition: all .18s ease;
+  transition: background .18s ease, color .18s ease;
 }
 
 .admin-editor-tab.active {
@@ -2909,6 +2852,59 @@
   background: var(--g-08, rgba(34, 197, 94, .08));
   border-radius: 0 8px 8px 0;
 }
+
+/* ------------------------------------------------------------------
+   PREVIEW — construcoes GFM que antes nao apareciam (o editor agora e
+   markdown puro: tabela, tarefa, riscado, imagem, hr, listas)
+   ------------------------------------------------------------------ */
+.admin-preview h4 { margin: 14px 0 8px; font-size: 14px; }
+.admin-preview ul, .admin-preview ol { margin: 0 0 12px; padding-left: 22px; }
+.admin-preview li { margin: 4px 0; }
+.admin-preview li > p { margin: 0; }
+.admin-preview del { opacity: .6; }
+.admin-preview hr { margin: 20px 0; border: 0; border-top: 1px solid var(--gline-28); }
+.admin-preview img { display: block; max-width: 100%; height: auto; margin: 12px 0; border-radius: 10px; }
+.admin-preview pre { overflow-x: auto; }
+
+.admin-preview table {
+  display: block; width: 100%; overflow-x: auto;
+  border-collapse: collapse; margin: 14px 0; font-size: 13px;
+}
+.admin-preview th, .admin-preview td {
+  padding: 8px 10px; border: 1px solid var(--gline-28); text-align: left;
+}
+.admin-preview th { background: var(--w-05); color: var(--text); font-weight: 700; }
+
+.admin-preview .contains-task-list { list-style: none; padding-left: 4px; }
+.admin-preview .task-list-item { display: flex; align-items: flex-start; gap: 8px; }
+.admin-preview .task-list-item input[type="checkbox"] { margin-top: 4px; accent-color: var(--green); }
+
+/* ==================================================================
+   BARRA .md — importar / baixar (entre o head do card e a toolbar)
+   ================================================================== */
+.editor-md-io {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--gline-28);
+  background: var(--w-02);
+}
+.editor-md-io-text { flex: 1 1 260px; min-width: 0; display: grid; gap: 2px; }
+.editor-md-io-text strong { font-size: 12px; font-weight: 800; color: var(--lime); }
+.editor-md-io-text span { font-size: 11.5px; line-height: 1.5; color: var(--text-hint); }
+.editor-md-io-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.editor-md-io-msg {
+  flex: 1 1 100%; margin: 0;
+  padding: 8px 10px; border-radius: 8px;
+  font-size: 11.5px; line-height: 1.5; color: var(--text-soft);
+  background: var(--w-03); border: 1px solid var(--gline-28);
+}
+.editor-md-io-msg.is-ok { color: var(--lime); background: var(--g-08); border-color: var(--gline-35); }
+.editor-md-io-msg.is-error { color: var(--msg-red); background: rgba(248, 113, 113, .08); border-color: rgba(248, 113, 113, .32); }
+
+/* feedback do arrastar-e-soltar um .md */
+.editor-md-io.is-md-dragover { background: var(--g-08); border-color: var(--gline-42); }
+.admin-content-editor.is-md-dragover { border-color: var(--lime); box-shadow: inset 0 0 0 3px var(--g-15); }
 
 /* ==================================================================
    EDITOR TOOLBAR — barra de formatação acima do textarea
@@ -3005,165 +3001,6 @@
   border-top-right-radius: 0;
 }
 
-/* ==================================================================
-   PREVIEW — Callouts e Cards customizados
-   Os mesmos estilos servem para o preview do editor E para o post real
-   ================================================================== */
-
-/* ----- CALLOUTS ----- */
-.post-callout {
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
-  padding: 16px 18px;
-  margin: 18px 0;
-  border-radius: 14px;
-  border: 1px solid var(--gline-28);
-  background: linear-gradient(135deg, rgba(15, 25, 20, .65), rgba(10, 18, 14, .85));
-  position: relative;
-  overflow: hidden;
-}
-
-.post-callout::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: var(--green);
-}
-
-.post-callout-icon {
-  flex-shrink: 0;
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  display: grid;
-  place-items: center;
-  background: var(--g-10);
-  color: var(--green);
-}
-
-.post-callout-icon svg { width: 18px; height: 18px; }
-
-.post-callout-body {
-  flex: 1;
-  color: var(--text-soft);
-  line-height: 1.65;
-  min-width: 0;
-}
-
-.post-callout-body p { margin: 0 0 8px; }
-.post-callout-body p:last-child { margin: 0; }
-.post-callout-body code {
-  background: var(--w-06);
-  padding: 1px 6px;
-  border-radius: 5px;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
-  color: var(--lime);
-}
-
-/* Variantes de cor */
-.post-callout--info::before    { background: #60a5fa; }
-.post-callout--info .post-callout-icon    { background: rgba(96, 165, 250, .15); color: #60a5fa; }
-
-.post-callout--success::before { background: var(--green); }
-.post-callout--success .post-callout-icon { background: var(--g-15); color: var(--lime); }
-
-.post-callout--warn::before    { background: #fbbf24; }
-.post-callout--warn .post-callout-icon    { background: rgba(251, 191, 36, .15); color: #fbbf24; }
-
-.post-callout--danger::before  { background: #f87171; }
-.post-callout--danger .post-callout-icon  { background: rgba(248, 113, 113, .15); color: #f87171; }
-
-/* ----- CARDS ----- */
-.post-card {
-  display: flex;
-  gap: 16px;
-  align-items: flex-start;
-  padding: 22px;
-  margin: 18px 0;
-  border-radius: 18px;
-  border: 1px solid var(--gline-28);
-  background: linear-gradient(135deg, rgba(15, 25, 20, .65), rgba(10, 18, 14, .9));
-  transition: border-color .25s ease, transform .25s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.post-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(135deg, var(--g-22), transparent 40%, transparent 60%, rgba(163, 230, 53, .15));
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity .3s ease;
-  pointer-events: none;
-}
-
-.post-card:hover {
-  border-color: var(--g-35);
-  transform: translateY(-2px);
-}
-
-.post-card:hover::after { opacity: 1; }
-
-.post-card-icon {
-  flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(135deg, var(--green), var(--lime));
-  color: #04130a;
-  box-shadow: 0 8px 20px rgba(34, 197, 94, .25);
-}
-
-.post-card-icon svg { width: 22px; height: 22px; }
-
-.post-card-content {
-  flex: 1;
-  min-width: 0;
-}
-
-.post-card-title {
-  margin: 0 0 6px;
-  font-size: 16px;
-  font-weight: 800;
-  color: var(--text);
-  letter-spacing: -.01em;
-}
-
-.post-card-body {
-  color: var(--text-soft);
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-.post-card-body p { margin: 0; }
-
-/* Grid de cards */
-.post-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 14px;
-  margin: 18px 0;
-}
-
-.post-cards-grid .post-card { margin: 0; }
-
-/* Aplicar estilos no preview do editor também */
-.admin-preview .post-callout,
-.admin-preview .post-card,
-.admin-preview .post-cards-grid { /* já herdados; sem ajuste necessário */ }
 
 .admin-tags {
   display: flex;
@@ -3577,18 +3414,9 @@ body.post-body {
   color: var(--text);
   position: relative;
 }
-body.post-body::after {
-  content: "";
-  position: fixed;
-  inset: auto 0 0 0;
-  height: 50vh;
-  background:
-    radial-gradient(60% 60% at 22% 100%, rgba(34, 197, 94, .08), transparent 70%),
-    radial-gradient(60% 60% at 78% 100%, rgba(163, 230, 53, .06), transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-  mix-blend-mode: screen;
-}
+/* (o brilho radial fixo no rodape saiu junto com os outros fundos do blog:
+   as paginas de post compartilham a classe .blog-body e ficariam com um fundo
+   que a listagem nao tem mais) */
 
 /* ---------- Wrapper principal (respeita o nav-h global) ---------- */
 .post-main {
@@ -3645,26 +3473,6 @@ body.post-body::after {
 .post-back:focus-visible {
   outline: 2px solid var(--svc-color);
   outline-offset: 3px;
-}
-
-/* ---------- Skeleton ---------- */
-.post-skeleton { padding: 8px 0 100px; animation: post-skel-in .4s ease both; }
-@keyframes post-skel-in { from { opacity: 0; } to { opacity: 1; } }
-.post-skeleton > * {
-  background: linear-gradient(90deg, var(--w-03), var(--w-08), var(--w-03));
-  background-size: 200% 100%;
-  animation: post-skel-shimmer 1.6s linear infinite;
-  border-radius: 8px;
-}
-.post-skeleton-eyebrow       { width: 200px; height: 14px; margin-bottom: 18px; }
-.post-skeleton-title         { height: 48px; margin-bottom: 12px; }
-.post-skeleton-title--short  { width: 70%; }
-.post-skeleton-cover         { width: 100%; height: clamp(220px, 38vw, 360px); border-radius: 22px; margin: 32px 0; }
-.post-skeleton-line          { height: 16px; margin-bottom: 14px; }
-.post-skeleton-line--short   { width: 80%; }
-@keyframes post-skel-shimmer {
-  from { background-position: 200% 0; }
-  to   { background-position: -200% 0; }
 }
 
 /* ---------- Hero do post ----------
@@ -4006,6 +3814,148 @@ body.post-body::after {
   background: linear-gradient(90deg, transparent, var(--gline-42), transparent);
 }
 
+/* ------------------------------------------------------------------
+   MARKDOWN COMPLETO (GFM) — o corpo do post e markdown puro, entao
+   TODO elemento que o markdown gera tem estilo aqui: h5/h6, tabelas,
+   riscado, listas de tarefa, listas aninhadas, figure/figcaption.
+   Mesma linguagem visual do resto do site (gradiente oficial na borda,
+   hairlines verdes, mono pro codigo).
+   ------------------------------------------------------------------ */
+
+/* h5/h6: fecham a escala (o markdown pode ir ate ######) */
+.post-page-body h5,
+.post-page-body h6 {
+  font-family: Inter, system-ui, sans-serif;
+  color: var(--text);
+  letter-spacing: -.01em;
+  line-height: 1.25;
+  scroll-margin-top: calc(var(--nav-h) + 80px);
+  position: relative;
+}
+.post-page-body h5 { font-size: 14.5px; font-weight: 700; margin: 24px 0 8px; }
+.post-page-body h6 {
+  font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin: 22px 0 8px;
+}
+
+/* riscado (~~texto~~) */
+.post-page-body del,
+.post-page-body s {
+  color: var(--text-hint);
+  text-decoration: line-through;
+  text-decoration-color: var(--g-45);
+}
+
+/* listas aninhadas: respiro menor que o da lista raiz */
+.post-page-body li > ul,
+.post-page-body li > ol { margin: 10px 0 0; }
+.post-page-body li > p { margin: 0 0 10px; }
+
+/* LISTA DE TAREFAS (- [ ] / - [x]): sem bolinha, checkbox verde da casa */
+.post-page-body li:has(> input[type="checkbox"]),
+.post-page-body li.task-list-item { list-style: none; margin-left: -20px; }
+.post-page-body input[type="checkbox"] {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  margin: 0 9px 0 0;
+  vertical-align: -2px;
+  border: 1.5px solid var(--gline-42);
+  border-radius: 4px;
+  background: var(--g-10);
+  position: relative;
+  cursor: default;
+}
+.post-page-body input[type="checkbox"]:checked {
+  border-color: var(--green);
+  background: var(--green);
+}
+.post-page-body input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 4px;
+  height: 8px;
+  border: solid #08120c;
+  border-width: 0 2px 2px 0;
+  transform: translateY(-1px) rotate(45deg);
+}
+
+/* TABELAS (GFM) — borda no gradiente oficial, cabecalho em mono, zebra
+   discreta. O wrapper rola sozinho: tabela larga NUNCA estoura a pagina. */
+.post-page-body .post-table-wrap,
+.post-page-body table {
+  margin: 28px 0;
+  max-width: 100%;
+}
+.post-page-body .post-table-wrap { overflow-x: auto; }
+.post-page-body .post-table-wrap table { margin: 0; }
+.post-page-body table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14.5px;
+  line-height: 1.55;
+  /* borda-gradiente com cantos: gradiente no border-box, fundo opaco no
+     padding-box (mesma tecnica das caixas de data da timeline) */
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, #080e0b, #0b120f) padding-box,
+    var(--post-grad) border-box;
+  overflow: hidden;
+}
+.post-page-body thead th {
+  font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--green);
+  text-align: left;
+  padding: 12px 16px;
+  background: var(--g-10);
+  border-bottom: 1px solid var(--gline-35);
+  white-space: nowrap;
+}
+.post-page-body tbody td {
+  padding: 12px 16px;
+  color: var(--text-soft);
+  border-bottom: 1px solid var(--gline-28);
+  vertical-align: top;
+}
+.post-page-body tbody tr:last-child td { border-bottom: 0; }
+.post-page-body tbody tr:nth-child(even) td { background: rgba(255, 255, 255, .015); }
+.post-page-body table code { font-size: .85em; }
+
+/* ALINHAMENTO DA TABELA GFM (`|:---|:---:|---:|`): o marked emite o atributo
+   legado align="left|center|right" nas celulas. Atributo de apresentacao perde
+   de qualquer regra CSS, entao o text-align acima anularia o alinhamento
+   escolhido no markdown — estas regras devolvem o controle pro autor. */
+.post-page-body th[align="left"],
+.post-page-body td[align="left"]   { text-align: left; }
+.post-page-body th[align="center"],
+.post-page-body td[align="center"] { text-align: center; }
+.post-page-body th[align="right"],
+.post-page-body td[align="right"]  { text-align: right; }
+
+/* imagem com legenda (![alt](src "titulo") vira figure em alguns renders) */
+.post-page-body figure { margin: 26px 0; }
+.post-page-body figure img { margin: 0; }
+.post-page-body figcaption {
+  margin-top: 10px;
+  font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 11.5px;
+  letter-spacing: .03em;
+  color: var(--text-hint);
+  text-align: center;
+}
+
 /* ---------- Tags ---------- */
 .post-page-tags {
   display: flex;
@@ -4025,7 +3975,7 @@ body.post-body::after {
   background: var(--w-03);
   border: 1px solid var(--w-10);
   color: var(--text-soft);
-  transition: all .2s;
+  transition: border-color .2s, background .2s, color .2s, transform .2s;
 }
 .post-page-tag:hover {
   border-color: var(--svc-40);
@@ -4078,7 +4028,7 @@ body.post-body::after {
   background: var(--w-03);
   color: var(--text-soft);
   cursor: pointer;
-  transition: all .25s;
+  transition: border-color .25s, background .25s, color .25s, transform .25s, box-shadow .25s;
 }
 .post-share-btn:hover {
   border-color: var(--svc-40);
@@ -4120,24 +4070,34 @@ body.post-body::after {
   overflow: hidden;
   border: 1px solid var(--gline-35);
   background: linear-gradient(180deg, var(--glass), var(--glass-2));
-  transition: all .3s cubic-bezier(.22,.61,.36,1);
+  transition: transform .3s cubic-bezier(.22,.61,.36,1),
+              border-color .3s cubic-bezier(.22,.61,.36,1),
+              box-shadow .3s cubic-bezier(.22,.61,.36,1);
   position: relative;
   min-width: 0;
 }
+/* mesmo contorno-que-segue-o-cursor dos cards do blog e da landing
+   (--mx/--my vem do js/blog-fx.js) */
 .post-related-card::after {
   content: "";
   position: absolute;
   inset: 0;
+  box-sizing: border-box;
   border-radius: inherit;
   padding: 1px;
-  background: var(--post-grad-soft);
+  z-index: 3;
+  background: radial-gradient(160% 160% at var(--mx, 50%) var(--my, 50%),
+    color-mix(in oklab, var(--lime) 92%, var(--green)) 0%, transparent 46%);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
-  mask-composite: exclude;
+          mask-composite: exclude;
   opacity: 0;
-  transition: opacity .3s ease;
+  transition: opacity .4s ease;
   pointer-events: none;
 }
+@media (hover: none) { .post-related-card::after { display: none; } }
+@media (prefers-reduced-motion: reduce) { .post-related-card::after { transition: none; } }
 .post-related-card:hover {
   transform: translateY(-4px);
   border-color: transparent;
@@ -4248,7 +4208,7 @@ body.post-body::after {
   border: 1px solid var(--gline-28);
   background: var(--w-03);
   color: var(--text);
-  transition: all .2s;
+  transition: border-color .2s, color .2s, background .2s;
 }
 .post-author-card-actions a:hover {
   border-color: var(--svc-40);
@@ -4321,22 +4281,6 @@ body.post-body::after {
 .post-footer-links a { transition: color .2s; }
 .post-footer-links a:hover { color: var(--svc-color); }
 
-/* ---------- Cards/callouts (shortcodes) padronizados ---------- */
-.post-body .post-card {
-  background: linear-gradient(180deg, var(--glass), var(--glass-2));
-  border-color: var(--gline-35);
-}
-.post-body .post-card:hover { border-color: var(--svc-40); }
-.post-body .post-card-icon {
-  background: var(--post-grad);
-  color: #04130a;
-}
-.post-body .post-card-title { color: var(--text); }
-.post-body .post-callout {
-  background: linear-gradient(180deg, var(--glass), var(--glass-2));
-  border-color: var(--gline-35);
-}
-
 /* ---------- Responsivo ---------- */
 @media (max-width: 768px) {
   .post-main { padding: calc(var(--nav-h) + 64px) 16px 0; }
@@ -4363,9 +4307,20 @@ body.post-body::after {
   .post-share-label { font-size: 11px; }
 }
 
+/* tabela larga no mobile: rola dentro de si mesma em vez de estourar a pagina
+   (o markdown gera <table> puro, sem wrapper garantido) */
+@media (max-width: 720px) {
+  .post-page-body table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .post-page-body thead th,
+  .post-page-body tbody td { white-space: nowrap; }
+}
+
 /* ---------- Print (PDF-friendly) ---------- */
 @media print {
-  body.post-body::after,
   header,
   .post-back-row,
   .post-share-bar,
@@ -4660,3 +4615,125 @@ body.post-body::after {
 }
 .post-linkedin-btn svg { color: #0a66c2; }
 
+/* =========================================================
+   PREFERS-REDUCED-MOTION (camada blog / post / admin / login)
+   Mesmo padrao do style.css: para os loops decorativos e zera
+   as transicoes que movem ou escalam elementos. Fades simples
+   de cor/opacidade continuam; os estados finais ficam visiveis.
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  /* loops infinitos (shimmer, rotate, pulse) e entrada do toast */
+  .blog-hero-title em,
+  .bid-name span,
+  .bid-location-glow,
+  .bid-location-pulse::before,
+  .blog-author-card::before,
+  .login-card::before,
+  .admin-toast { animation: none !important; }
+
+  /* sparkline aparece ja desenhada (sem o keyframe, o dashoffset
+     inicial esconderia a linha para sempre) */
+  .bid-stats-spark polyline {
+    animation: none !important;
+    stroke-dashoffset: 0;
+  }
+
+  /* transicoes com movimento (transform / tamanho) viram troca instantanea */
+  .bid-stat,
+  .bid-tag,
+  .bid-featured-img img,
+  .bid-center-img,
+  .bid-center-meta,
+  .bid-topic-current,
+  .blog-post-card,
+  .blog-post-cover img,
+  .blog-post-excerpt,
+  .blog-author-photo img,
+  .blog-author-btn,
+  .login-submit,
+  .admin-stat,
+  .admin-btn,
+  .post-back,
+  .post-back-arrow,
+  .post-page-tag,
+  .post-share-btn,
+  .post-related-card,
+  .post-related-card-cover img,
+  .post-notfound-cta,
+  .post-gallery-item,
+  .post-gallery-item img,
+  .post-media-item img,
+  .post-lightbox-close,
+  .post-lightbox-nav,
+  .post-linkedin-btn,
+  .post-progress-bar { transition: none !important; }
+}
+
+
+/* ==================================================================
+   FOCO VISIVEL — o site tem UM anel de foco (style.css), mas nenhum
+   controle do blog estava na lista: chips, tags, busca, cards, botoes
+   do autor e do compartilhar caiam no anel do navegador ou em nada.
+   Onde o container tem overflow (chips e cards recortam), o anel vai
+   pra DENTRO com outline-offset negativo, senao seria cortado.
+   ================================================================== */
+.blog-sort-trigger:focus-visible,
+.bid-tag:focus-visible,
+.blog-author-btn:focus-visible,
+.blog-post-title a:focus-visible,
+.post-page-tag:focus-visible,
+.post-share-btn:focus-visible,
+.post-related-card:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+.blog-chip:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: -3px;   /* .blog-filters tem overflow: anel pra dentro */
+  border-radius: 999px;
+}
+.blog-post-card:focus-within,
+.bid-center:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: -2px;   /* card tem overflow: hidden */
+  border-radius: 22px;
+}
+
+/* ==================================================================
+   PREFERS-REDUCED-MOTION — o blog tinha 7 animacoes infinitas sem
+   nenhuma guarda (shimmer de texto, dois halos girando, pulse, spark,
+   sweep do avatar). Nada aqui carrega informacao, entao tudo pode
+   parar; o conteudo continua 100% visivel.
+   ================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  /* shimmer congela no meio da varredura, com a cor cheia */
+  .blog-hero-title em,
+  .bid-name span { animation: none; background-position: 50% 0; }
+
+  /* halos que giram sem parar */
+  .bid-location-glow,
+  .blog-author-card::before,
+  .login-card::before { animation: none; }
+
+  /* o pulse do "writing from" vira ponto estatico */
+  .bid-location-pulse::before { animation: none; opacity: .3; transform: none; }
+
+  /* sparkline nasce desenhada */
+  .bid-stats-spark polyline { animation: none; stroke-dashoffset: 0; }
+
+  /* sweep diagonal do avatar sai; a troca de foto fica instantanea */
+  .bid-avatar-sweep { display: none; }
+  .bid-avatar-img { transition-duration: 1ms; }
+
+  /* lifts, zooms e o revelar do resumo */
+  .blog-post-card,
+  .post-related-card,
+  .blog-post-cover img,
+  .bid-featured-img img,
+  .blog-author-photo img,
+  .post-related-card-cover img,
+  .blog-post-excerpt { transition: none; }
+  .blog-post-card:hover,
+  .post-related-card:hover { transform: none; }
+}

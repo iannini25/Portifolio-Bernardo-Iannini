@@ -3,10 +3,25 @@
 /* =========================================================
    BLOG AUTH — Login via Supabase Auth
    ---------------------------------------------------------
-   Login por e-mail + senha. A conta é criada no painel do
+   Login por usuário + senha. A conta é criada no painel do
    Supabase (Authentication → Users). A sessão é persistida
    pelo próprio supabase-js (localStorage) e renovada sozinha.
+
+   O Supabase Auth exige e-mail, mas o campo aceita o apelido
+   curto: USER_ALIASES traduz "bernardo" pro e-mail real da
+   conta. Digitar o e-mail completo também funciona.
    ========================================================= */
+
+const USER_ALIASES = {
+  bernardo: 'bernardo.iannini14@gmail.com',
+};
+
+/* Apelido -> e-mail. Qualquer coisa com @ passa direto. */
+const resolveEmail = (input) => {
+  const v = String(input || '').trim();
+  if (v.includes('@')) return v;
+  return USER_ALIASES[v.toLowerCase()] || v;
+};
 
 document.addEventListener('DOMContentLoaded', async () => {
   const form     = document.getElementById('loginForm');
@@ -58,10 +73,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const email = userInp.value.trim();
+    const email = resolveEmail(userInp.value);
     const pass  = passInp.value;
 
-    if (!email || !pass) { showError('Preencha e-mail e senha.'); return; }
+    if (!email || !pass) { showError('Preencha usuário e senha.'); return; }
 
     errorEl.hidden = true;
     if (submitBt) { submitBt.disabled = true; submitBt.textContent = 'Entrando...'; }
@@ -72,8 +87,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (err) {
       const m = (err && err.message || '').toLowerCase();
       showError(
-        m.includes('invalid') ? 'E-mail ou senha incorretos.'
+        m.includes('invalid') ? 'Usuário ou senha incorretos.'
         : m.includes('not confirmed') ? 'E-mail ainda não confirmado no Supabase.'
+        : (m.includes('failed to fetch') || m.includes('networkerror'))
+          ? 'Servidor do blog indisponível. Tente de novo em instantes.'
         : ('Erro ao entrar: ' + (err.message || 'tente de novo')));
       if (submitBt) { submitBt.disabled = false; submitBt.textContent = 'Entrar'; }
     }

@@ -4,7 +4,8 @@
 /* =========================================================
    build-posts.js
    ---------------------------------------------------------
-   Le data/posts/*.md, parseia o front-matter e gera:
+   Le data/posts/*.md + os posts publicados no Supabase, mescla
+   as duas fontes (banco vence em conflito de slug) e gera:
      - /posts/<slug>.html  (paginas estaticas completas com OG/Twitter/JSON-LD)
      - /data/posts.json    (lista publica usada pela home do blog)
      - sitemap.xml         (com image sitemap)
@@ -16,7 +17,8 @@
 const fs    = require('fs');
 const path  = require('path');
 const matter = require('gray-matter');
-const { marked } = require('marked');
+const { Marked } = require('marked');
+const { fetchSupabasePosts, slugify } = require('./lib/supabase-posts');
 
 let sharp = null;
 try { sharp = require('sharp'); }
@@ -66,27 +68,42 @@ const escapeXml = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;'
 }[c]));
 
-const slugify = (s) => String(s || '')
-  .normalize('NFD').replace(/[̀-ͯ]/g, '')
-  .toLowerCase()
-  .replace(/[^a-z0-9]+/g, '-')
-  .replace(/^-|-$/g, '');
+// slugify vive em scripts/lib/supabase-posts.js: as duas fontes (md e
+// banco) precisam sanear o slug com a MESMA regra.
+
+// Imagem remota = URL absoluta http(s) ou protocolo-relativa. Posts
+// escritos no admin apontam pro Storage do Supabase, que e outro host:
+// nada de prefixar dominio, inventar .webp ou tentar ler do disco.
+const isRemoteUrl = (p) => /^(?:https?:)?\/\//i.test(String(p || ''));
 
 const absoluteUrl = (p) => {
   if (!p) return '';
-  if (/^https?:/i.test(p)) return p;
+  if (isRemoteUrl(p)) return p;   // ja e absoluta (Storage/CDN): nao prefixa
   return SITE_URL + (p.startsWith('/') ? '' : '/') + p;
 };
 
-// Caminho .webp equivalente (toda capa/imagem ganha versao webp via
+// Caminho .webp equivalente (toda capa/imagem LOCAL ganha versao webp via
 // generateWebpForPosts). Usado SO em <img> de exibicao — OG/JSON-LD seguem
 // com o original (png/jpg) para compatibilidade com scrapers sociais.
-const toWebp = (p) => String(p || '').replace(/\.(jpe?g|png)$/i, '.webp');
+// Imagem remota volta intacta: o .webp dela nao existe em lugar nenhum.
+const toWebp = (p) => isRemoteUrl(p)
+  ? String(p || '')
+  : String(p || '').replace(/\.(jpe?g|png)$/i, '.webp');
+
+/* JSON pra dentro de <script>: o parser de HTML fecha a tag em '</script'
+   (e um '<!--' abre comentario), entao um titulo ou corpo com essas
+   sequencias quebraria o BI_POSTS e o JSON-LD da pagina. Escapar o '<'
+   como < e valido em JSON e em JS, e o dado chega intacto no parse.
+   Vale mais agora que o conteudo vem do painel direto pra producao. */
+const jsonForScript = (value, indent) =>
+  JSON.stringify(value, null, indent).replace(/</g, '\\u003c');
 
 const stripMd = (md) => String(md || '')
-  .replace(/^:::.+?:::$/gms, '')
+  .replace(/^:::[\s\S]*?^:::[ \t]*$/gm, '')
   .replace(/```[\s\S]*?```/g, '')
-  .replace(/[#>*_`~]/g, ' ')
+  .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+  .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+  .replace(/[#>*_`~|]/g, ' ')
   .replace(/\s+/g, ' ')
   .trim();
 
@@ -96,7 +113,9 @@ const readTimeMin = (content) => Math.max(1, Math.ceil(wordCount(content) / 200)
 
 const formatDatePt = (iso) => {
   try {
-    return new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+    // timeZone fixo em UTC: a data exibida sai identica em qualquer
+    // maquina de build (local GMT-3 vs Vercel UTC).
+    return new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric', timeZone: 'UTC' });
   } catch { return iso || ''; }
 };
 
@@ -127,7 +146,9 @@ function loadPosts() {
     try {
       const raw = fs.readFileSync(file, 'utf8');
       const { data, content } = matter(raw);
-      const slug = (data.slug || slugify(path.basename(file, '.md'))).toLowerCase();
+      // slugify sempre, mesmo com slug declarado no front-matter:
+      // kebab-case, sem espaco, / ou ../ (nao escreve fora de posts/)
+      const slug = slugify(data.slug || path.basename(file, '.md'));
       const date    = data.date    || data.createdAt || new Date().toISOString();
       const updated = data.updated || data.updatedAt || date;
       const id   = data.id || slug;
@@ -163,54 +184,99 @@ function loadPosts() {
 }
 
 /* =========================================================
-   Markdown -> HTML (com shortcodes + galeria)
+   Markdown -> HTML
+   ---------------------------------------------------------
+   Markdown padrao (GFM) renderizado pelo marked: titulos, enfase,
+   codigo inline e cercado, listas (inclusive de tarefas), citacoes,
+   regua, tabelas, imagens e links. A saida e HTML semantico simples
+   (h2, p, pre, table, blockquote...) — sem cards, callouts ou icones.
+
+   Unico bloco especial que sobrou: :::gallery, que injeta a grade de
+   midia montada a partir do front-matter (images:).
    ========================================================= */
 
-const POST_ICONS = {
-  rocket:  '<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>',
-  code:    '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
-  bolt:    '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
-  chart:   '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
-  check:   '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
-  clock:   '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
-  star:    '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
-  info:    '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>',
-  warn:    '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
-  danger:  '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>',
-};
-const svgIcon = (name) => {
-  const p = POST_ICONS[name] || POST_ICONS.star;
-  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
-};
+const SAFE_URL_SCHEMES = new Set(['http', 'https', 'mailto', 'tel']);
 
-function parseShortcodeAttrs(raw) {
-  const attrs = {};
-  if (!raw) return attrs;
-  const re = /(\w+)=(?:"([^"]*)"|'([^']*)'|(\S+))/g;
-  let m;
-  while ((m = re.exec(raw))) attrs[m[1]] = m[2] || m[3] || m[4] || '';
-  return attrs;
+/* Devolve '' quando a URL nao e segura (javascript:, data:, vbscript: e
+   variantes disfarcadas com espaco/controle no meio do esquema). */
+function safeUrl(href) {
+  const raw = String(href ?? '').trim();
+  if (!raw) return '';
+  const flat = raw.replace(/[\x00-\x20]+/g, '').toLowerCase();
+  const colon = flat.indexOf(':');
+  if (colon === -1) return raw;               // relativo, ancora ou query
+  const sep = flat.search(/[/?#]/);
+  if (sep !== -1 && sep < colon) return raw;  // ex: /pasta/arquivo:1
+  return SAFE_URL_SCHEMES.has(flat.slice(0, colon)) ? raw : '';
 }
 
-function inlineMd(md) {
-  let html = escapeHtml(md);
-  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-  html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-  html = html.replace(/`([^`\n]+)`/g, '<code>$1</code>');
-  html = html.replace(/\[([^\]]+)\]\((https?:[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
-  return html.split(/\n{2,}/).map(p => `<p>${p.replace(/\n/g, '<br/>')}</p>`).join('');
+const SITE_HOST = SITE_URL
+  .replace(/^https?:\/\//i, '')
+  .replace(/\/.*$/, '')
+  .replace(/^www\./i, '')
+  .toLowerCase();
+
+/* Externo = http(s) (ou protocolo-relativo) apontando pra fora do dominio.
+   Link interno/relativo NUNCA recebe target=_blank. */
+function isExternalUrl(href) {
+  const url = String(href || '');
+  if (!/^(?:https?:)?\/\//i.test(url)) return false;
+  const host = url
+    .replace(/^(?:https?:)?\/\//i, '')
+    .split(/[/?#]/)[0]
+    .replace(/^www\./i, '')
+    .toLowerCase();
+  return host !== SITE_HOST;
 }
 
-function renderCard(attrs, content) {
-  const icon  = attrs.icon  ? `<div class="post-card-icon">${svgIcon(attrs.icon)}</div>` : '';
-  const title = attrs.title ? `<h4 class="post-card-title">${escapeHtml(attrs.title)}</h4>` : '';
-  const body  = content     ? `<div class="post-card-body">${inlineMd(content)}</div>` : '';
-  return `<!--HTMLBLOCK--><div class="post-card">${icon}<div class="post-card-content">${title}${body}</div></div><!--/HTMLBLOCK-->`;
-}
+/* Escapa sem escapar duas vezes — o marked entrega alguns campos
+   (alt, title de link) ja escapados. */
+const escapeOnce = (s) => String(s ?? '')
+  .replace(/&(?!#?\w+;)/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;')
+  .replace(/'/g, '&#39;');
 
-function renderCallout(type, content, iconName) {
-  return `<!--HTMLBLOCK--><div class="post-callout post-callout--${type}"><div class="post-callout-icon">${svgIcon(iconName)}</div><div class="post-callout-body">${inlineMd(content)}</div></div><!--/HTMLBLOCK-->`;
-}
+/* Instancia propria do marked (nao mexe em opcoes globais).
+   gfm: tabelas, strike, task list e autolink. breaks: false — uma
+   quebra de linha simples nao virou <br>, so linha em branco separa. */
+const mdParser = new Marked({ gfm: true, breaks: false, pedantic: false });
+
+/* ATENCAO: renderers abaixo usam a assinatura POSICIONAL do marked v12
+   (link(href, title, text)...). O marked 13+ passa um unico objeto token
+   e quebraria links/imagens em silencio. Versao fixada (sem ^) no
+   package.json; ao atualizar, migrar para a assinatura por token. */
+mdParser.use({
+  renderer: {
+    link(href, title, text) {
+      const url = safeUrl(href);
+      if (!url) return text;                  // link perigoso vira texto puro
+      const attrs = [`href="${escapeOnce(url)}"`];
+      if (title) attrs.push(`title="${escapeOnce(title)}"`);
+      if (isExternalUrl(url)) attrs.push('target="_blank"', 'rel="noopener"');
+      return `<a ${attrs.join(' ')}>${text}</a>`;
+    },
+    image(href, title, text) {
+      const url = safeUrl(href);
+      if (!url) return text || '';
+      const attrs = [`src="${escapeOnce(url)}"`, `alt="${escapeOnce(text || '')}"`];
+      if (title) attrs.push(`title="${escapeOnce(title)}"`);
+      attrs.push('loading="lazy"');
+      return `<img ${attrs.join(' ')}/>`;
+    },
+    /* HTML cru escrito no .md vira TEXTO: markdown de post nao injeta
+       script/iframe/onclick. Mesma politica dos renderizadores do
+       cliente (js/blog.js escapa antes de parsear).
+       Em nivel de bloco o texto entra num <p> pra nao ficar solto
+       dentro de .post-page-body. */
+    html(raw, block) {
+      const text = escapeHtml(String(raw ?? '').trim());
+      if (!text) return '';
+      return block ? `<p>${text}</p>\n` : text;
+    },
+  },
+});
 
 /* Grade adaptativa estilo LinkedIn/Twitter:
    1 img = grande · 2 = lado a lado · 3 = uma alta + duas ·
@@ -227,12 +293,16 @@ function mediaGridHtml(post) {
     const w   = img.width  || 1200;
     const h   = img.height || 800;
     const cap = img.caption || '';
-    const webp = src.replace(/\.(jpe?g|png)$/i, '.webp');
+    // So emite <source webp> quando existe um .webp gerado por nos: imagem
+    // remota (Storage) ou que ja e .webp/.svg volta igual do toWebp.
+    const webp = toWebp(src);
+    const webpSource = (webp && webp !== src)
+      ? `<source type="image/webp" srcset="${escapeAttr(webp)}"/>` : '';
     const moreBadge = (extra && i === 3)
       ? `<span class="post-media-more" aria-hidden="true">+${extra}</span>` : '';
     return `<figure class="post-media-item" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
       <picture>
-        <source type="image/webp" srcset="${escapeAttr(webp)}"/>
+        ${webpSource}
         <img src="${escapeAttr(src)}" alt="${escapeAttr(alt)}" loading="lazy" width="${w}" height="${h}" itemprop="contentUrl" data-gallery-index="${i}"/>
       </picture>
       ${moreBadge}
@@ -250,59 +320,50 @@ function renderGallery(post) {
   return grid ? `<!--HTMLBLOCK-->${grid}<!--/HTMLBLOCK-->` : '';
 }
 
-function processShortcodes(md, post) {
-  // :::gallery -> grid de images do front-matter
-  md = md.replace(/^:::gallery\s*\n?[\s\S]*?^:::$/gm, () => renderGallery(post));
+/* :::gallery -> grade de midia montada com o front-matter (images:).
+   Unico bloco especial que sobrou: e midia, nao widget de conteudo.
 
-  // :::cards / :::card
-  md = md.replace(/^:::cards\s*\n([\s\S]*?)^:::$/gm, (_, inner) => {
-    const cards = [];
-    inner.replace(/^:::card\s*(.*?)\n([\s\S]*?)^:::$/gm, (_m, attrs, content) => {
-      cards.push({ attrs: parseShortcodeAttrs(attrs), content: content.trim() });
-      return '';
-    });
-    if (!cards.length) return '';
-    const html = cards.map(c => renderCard(c.attrs, c.content)).join('');
-    return `<!--GRID_START-->${html}<!--GRID_END-->`;
-  });
-  md = md.replace(/^:::card\s*(.*?)\n([\s\S]*?)^:::$/gm, (_, attrs, content) =>
-    renderCard(parseShortcodeAttrs(attrs), content.trim())
-  );
-
-  // Callouts
-  const icons = { info: 'info', success: 'check', warn: 'warn', danger: 'danger' };
-  md = md.replace(/^:::(info|success|warn|danger)\s*\n([\s\S]*?)^:::$/gm, (_, type, content) =>
-    renderCallout(type, content.trim(), icons[type])
-  );
-  return md;
+   Aceita as duas formas, com e sem a linha de fechamento:
+     :::gallery          e     :::gallery
+     :::                        (nada)
+   Antes so a forma fechada era substituida, mas quem suprime a grade do
+   topo (galleryInBody) casa com a linha de abertura sozinha. Resultado:
+   escrever ":::gallery" sem fechar publicava o texto cru no post E matava
+   a grade automatica, ou seja, post no ar sem imagem nenhuma. Forma aberta
+   consome so a propria linha. */
+function processGallery(md, post) {
+  return md
+    .replace(/^:::gallery[^\n]*\n?[\s\S]*?^:::[ \t]*$/gm, () => renderGallery(post))
+    .replace(/^:::gallery[^\n]*$/gm, () => renderGallery(post));
 }
 
 function markdownToHtml(md, post) {
   if (!md) return '';
-  // 1) Shortcodes -> HTMLBLOCK placeholders
-  md = processShortcodes(md, post);
 
-  // 2) Preserva blocos HTML
+  // 1) :::gallery -> HTML pronto, envolto em <!--HTMLBLOCK-->
+  md = processGallery(md, post);
+
+  // 2) Esconde o HTML que nos mesmos geramos atras de sentinelas NUL,
+  //    pra o marked nao reescrever nem escapar essa parte.
   const blocks = [];
   md = md.replace(/<!--HTMLBLOCK-->([\s\S]*?)<!--\/HTMLBLOCK-->/g, (_, b) => {
     blocks.push(b);
-    return ` HTMLBLOCK_${blocks.length - 1} `;
+    return `\x00HTMLBLOCK_${blocks.length - 1}\x00`;
   });
 
-  // 3) Marked render padrao
-  marked.setOptions({ mangle: false, headerIds: false });
-  let html = marked.parse(md);
+  // 3) Markdown padrao (GFM) -> HTML semantico
+  let html = mdParser.parse(md);
 
-  // 4) Restaura blocos HTML
-  html = html.replace(/ HTMLBLOCK_(\d+) /g, (_, i) => blocks[i] || '');
-  html = html.replace(/<!--GRID_START-->/g, '<div class="post-cards-grid">')
-             .replace(/<!--GRID_END-->/g, '</div>');
+  // 4) Devolve os blocos. A sentinela sozinha vira um paragrafo no
+  //    marked: tira o <p> antes, senao a galeria (<div>) fica dentro
+  //    de um <p> e o navegador quebra a arvore.
+  html = html
+    .replace(/<p>\s*\x00HTMLBLOCK_(\d+)\x00\s*<\/p>/g, (_, i) => blocks[i] || '')
+    .replace(/\x00HTMLBLOCK_(\d+)\x00/g, (_, i) => blocks[i] || '');
 
-  // 5) <img> em paragrafos: garantir loading/lazy + sem decorar dimensoes
-  html = html.replace(/<img\s+([^>]*?)>/gi, (m, attrs) => {
-    if (/loading=/.test(attrs)) return m;
-    return `<img ${attrs} loading="lazy"/>`;
-  });
+  // 5) Rede de seguranca: todo <img> sai com loading="lazy"
+  html = html.replace(/<img\s+([^>]*?)\/?>/gi, (m, attrs) =>
+    /loading=/i.test(attrs) ? m : `<img ${attrs.trim()} loading="lazy"/>`);
 
   return html;
 }
@@ -417,8 +478,9 @@ function navbarHtml() {
 function postPageHtml(post, related) {
   const url = `${SITE_URL}/posts/${post.slug}.html`;
   const desc = (post.subtitle || stripMd(post.content)).slice(0, 158).trim();
+  // absoluteUrl NAO reprefixa URL do Storage: og:image/twitter:image saem
+  // com um dominio so.
   const cover = post.cover ? absoluteUrl(post.cover) : `${SITE_URL}/img/eufoto1.png`;
-  const coverWebp = (post.cover || '').replace(/\.(jpe?g|png)$/i, '.webp');
   const readMin = readTimeMin(post.content);
   const articleBody = markdownToHtml(post.content, post);
 
@@ -559,8 +621,11 @@ function postPageHtml(post, related) {
 
   // A CAPA fica SO na capa (card/destaque do blog). Ela nao aparece
   // dentro do post. As imagens do post vao para o TOPO, antes do texto.
+  // Se o corpo ja usa :::gallery, a grade fica so onde o autor colocou
+  // (senao a galeria sairia duplicada, com data-gallery repetido).
   const hasMedia = !!(post.images && post.images.length);
-  const topMedia = hasMedia
+  const galleryInBody = /^:::gallery/m.test(post.content);
+  const topMedia = (hasMedia && !galleryInBody)
     ? mediaGridHtml(post)
     : '<div class="post-page-cover-spacer"></div>';
 
@@ -574,9 +639,6 @@ function postPageHtml(post, related) {
   <meta name="author" content="${escapeAttr(AUTHOR.name)}"/>
   <meta name="robots" content="index, follow, max-image-preview:large"/>
   <link rel="canonical" href="${url}"/>
-  <link rel="alternate" hreflang="pt-BR" href="${url}"/>
-  <link rel="alternate" hreflang="en" href="${url}"/>
-  <link rel="alternate" hreflang="x-default" href="${url}"/>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -623,6 +685,8 @@ function postPageHtml(post, related) {
       main, body.page-leaving main { transition: none; transform: none; filter: none; }
     }
   </style>
+  <!-- Sem JS a classe i18n-ready nunca chega: desfaz a mascara anti-flicker -->
+  <noscript><style>body{opacity:1!important}main{transform:none!important;filter:none!important}</style></noscript>
   <script>
     (function () {
       try {
@@ -641,10 +705,10 @@ function postPageHtml(post, related) {
   </script>
 
   <script type="application/ld+json">
-${JSON.stringify(jsonLdPost, null, 2)}
+${jsonForScript(jsonLdPost, 2)}
   </script>
   <script type="application/ld+json">
-${JSON.stringify(jsonLdCrumbs, null, 2)}
+${jsonForScript(jsonLdCrumbs, 2)}
   </script>
 </head>
 
@@ -756,6 +820,8 @@ ${articleBody}
   <script src="/js/language.js" defer></script>
   <script src="/js/UI.js" defer></script>
   <script src="/js/post-static.js" defer></script>
+  <!-- contorno que segue o cursor nos cards de "leia tambem" (mesmo do blog) -->
+  <script src="/js/blog-fx.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
   <script src="/js/modal-fx.js" defer></script>
 </body>
@@ -769,6 +835,9 @@ ${articleBody}
 
 async function ensureWebp(srcRel) {
   if (!sharp || !srcRel) return;
+  // Imagem hospedada fora (Storage do Supabase, CDN): nao esta no disco
+  // do build e o Vercel nao publica nada por cima dela. Pula.
+  if (isRemoteUrl(srcRel)) return;
   if (!/\.(jpe?g|png)$/i.test(srcRel)) return;
   const srcAbs = path.join(ROOT, srcRel.replace(/^\//, ''));
   const dstAbs = srcAbs.replace(/\.(jpe?g|png)$/i, '.webp');
@@ -810,19 +879,23 @@ async function generateWebpForPosts(posts) {
    ========================================================= */
 
 function buildSitemap(posts) {
-  const today = dateOnly(new Date().toISOString());
+  // lastmod da home/blog = post mais recente, nao a data do build:
+  // build sem mudanca de conteudo nao suja o git diff. Sem posts, omite.
+  const latest = posts.length
+    ? dateOnly(posts.reduce((max, p) =>
+        new Date(p.updated) > new Date(max) ? p.updated : max, posts[0].updated))
+    : '';
+  const lastmodTag = latest ? `\n    <lastmod>${latest}</lastmod>` : '';
   const entries = [];
 
   entries.push(`<url>
-    <loc>${SITE_URL}/</loc>
-    <lastmod>${today}</lastmod>
+    <loc>${SITE_URL}/</loc>${lastmodTag}
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>`);
 
   entries.push(`<url>
-    <loc>${SITE_URL}/blog.html</loc>
-    <lastmod>${today}</lastmod>
+    <loc>${SITE_URL}/blog.html</loc>${lastmodTag}
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>`);
@@ -1023,7 +1096,9 @@ function replaceBetween(html, startMarker, endMarker, replacement) {
     console.warn(`[build-posts] marcador nao encontrado: ${startMarker}`);
     return html;
   }
-  return html.replace(re, `$1\n${replacement}\n$2`);
+  // Funcao de substituicao: conteudo com $1/$&/$' entra literal,
+  // sem ser interpretado como referencia de captura.
+  return html.replace(re, (m, start, end) => `${start}\n${replacement}\n${end}`);
 }
 
 function updateBlogHtml(posts) {
@@ -1040,7 +1115,7 @@ function updateBlogHtml(posts) {
   html = replaceBetween(html, '<!--BUILD:FEATURED-->',    '<!--/BUILD:FEATURED-->',    buildFeaturedHtml(posts));
   html = replaceBetween(html, '<!--BUILD:FILTERS-->',     '<!--/BUILD:FILTERS-->',     buildFiltersHtml(posts));
   html = replaceBetween(html, '<!--BUILD:TAG_CLOUD-->',   '<!--/BUILD:TAG_CLOUD-->',   buildTagCloudHtml(posts));
-  html = replaceBetween(html, '<!--BUILD:JSONLD-->',      '<!--/BUILD:JSONLD-->', `<script type="application/ld+json">\n${JSON.stringify(jsonLd, null, 2)}\n</script>`);
+  html = replaceBetween(html, '<!--BUILD:JSONLD-->',      '<!--/BUILD:JSONLD-->', `<script type="application/ld+json">\n${jsonForScript(jsonLd, 2)}\n</script>`);
 
   // Stats: grava o valor REAL tanto no texto quanto em data-count.
   // data-count vira a fonte de verdade que o blog.js anima (ele NAO
@@ -1073,7 +1148,7 @@ function updateBlogHtml(posts) {
     excerpt: stripMd(p.content).slice(0, 200),
   }));
   html = replaceBetween(html, '<!--BUILD:WINDOW_POSTS-->', '<!--/BUILD:WINDOW_POSTS-->',
-    `<script>window.BI_POSTS=${JSON.stringify(liteList)};</script>`);
+    `<script>window.BI_POSTS=${jsonForScript(liteList)};</script>`);
 
   fs.writeFileSync(blogPath, html, 'utf8');
 }
@@ -1123,10 +1198,26 @@ function writeBlogSeed(posts) {
   }));
   const out = `'use strict';
 // AUTO-GERADO por scripts/build-posts.js - nao edite manualmente.
-// Fonte canonica: data/posts/*.md
+// Fontes: tabela posts do Supabase (painel) + data/posts/*.md
 window.BI_SEED_POSTS = ${JSON.stringify(seed, null, 2)};
 `;
   fs.writeFileSync(path.join(ROOT, 'js', 'blog-seed.js'), out, 'utf8');
+}
+
+/* =========================================================
+   Merge das duas fontes
+   ========================================================= */
+
+/* Junta .md local + banco. Em conflito de slug o SUPABASE VENCE: ele e o
+   editor ao vivo, o .md e historico/fallback. Ordena por data desc e
+   mantem o filtro de publicados. */
+function mergePosts(localPosts, remotePosts) {
+  const bySlug = new Map();
+  for (const p of localPosts)  bySlug.set(p.slug, p);
+  for (const p of remotePosts) bySlug.set(p.slug, p);
+  return [...bySlug.values()]
+    .filter(p => p.status === 'published')
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
 /* =========================================================
@@ -1138,9 +1229,31 @@ async function main() {
   if (!fs.existsSync(POSTS_OUT)) fs.mkdirSync(POSTS_OUT, { recursive: true });
   if (!fs.existsSync(POSTS_SRC)) fs.mkdirSync(POSTS_SRC, { recursive: true });
 
-  const posts = loadPosts();
-  if (!posts.length) {
-    console.warn('[build-posts] Nenhum post encontrado em data/posts/*.md');
+  // 0) Fontes: .md do repo + posts publicados no Supabase.
+  const localPosts = loadPosts();
+  const remote     = await fetchSupabasePosts();
+  const posts = mergePosts(localPosts, remote.posts);
+
+  /* MODO DEGRADADO: o banco nao respondeu (DNS, timeout, chave rotacionada,
+     RLS mexido). Como o banco e a fonte principal, seguir em frente aqui
+     apagaria do site todo post que veio dele: a limpeza de orfaos derrubaria
+     os HTML do checkout e sitemap/posts.json/blog.html seriam reescritos
+     vazios, com exit 0 e ninguem percebendo. Entao: gera o que der dos .md
+     e NAO destroi nada que ja esta publicado. */
+  const degraded = !remote.ok;
+  if (degraded) {
+    console.warn('[build-posts] MODO DEGRADADO: o banco nao respondeu. Preservando as paginas ja publicadas');
+    console.warn('             (nao vou remover orfaos nem reescrever sitemap, posts.json, seed e blog.html).');
+  }
+
+  const fromSupabase = posts.filter(p => p.source === 'supabase').length;
+  const fromMarkdown = posts.length - fromSupabase;
+  // Quantos .md perderam o dedup para um post do banco com o mesmo slug.
+  const overridden = localPosts.filter(p =>
+    remote.posts.some(r => r.slug === p.slug)).length;
+
+  if (!posts.length && !degraded) {
+    console.warn('[build-posts] Nenhum post publicado (data/posts/*.md vazio e nada publicado no Supabase)');
   }
 
   // 1) Gerar /posts/<slug>.html
@@ -1153,16 +1266,31 @@ async function main() {
     writtenPosts++;
   }
 
-  // 2) Sitemap
-  const sitemap = buildSitemap(posts);
-  fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sitemap, 'utf8');
+  // 1b) Remover HTML orfaos: post deletado ou despublicado nao pode
+  //     continuar no ar (a Vercel publica o diretorio inteiro).
+  //     Em modo degradado NAO limpa: sem saber o que o banco tem, todo
+  //     post publicado pareceria orfao.
+  const validFiles = new Set(posts.map(p => `${p.slug}.html`));
+  let removedOrphans = 0;
+  if (!degraded) {
+    for (const f of fs.readdirSync(POSTS_OUT).filter(f => f.endsWith('.html'))) {
+      if (!validFiles.has(f)) {
+        fs.unlinkSync(path.join(POSTS_OUT, f));
+        removedOrphans++;
+      }
+    }
+  }
 
-  // 3) data/posts.json + js/blog-seed.js
-  writePostsJson(posts);
-  writeBlogSeed(posts);
-
-  // 4) blog.html
-  updateBlogHtml(posts);
+  // 2 a 4) Indices (sitemap, posts.json, seed, blog.html). Todos derivam da
+  //        lista completa, entao em modo degradado ficam como estao: melhor
+  //        um indice do ultimo deploy bom que um indice vazio.
+  if (!degraded) {
+    const sitemap = buildSitemap(posts);
+    fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sitemap, 'utf8');
+    writePostsJson(posts);
+    writeBlogSeed(posts);
+    updateBlogHtml(posts);
+  }
 
   // 5) WebP
   const webpCount = await generateWebpForPosts(posts);
@@ -1173,15 +1301,41 @@ async function main() {
   console.log('  build-posts.js -- resumo');
   console.log('================================================');
   console.log(`  posts gerados:    ${writtenPosts}`);
+  console.log(`    do supabase:    ${fromSupabase}`);
+  console.log(`    dos .md:        ${fromMarkdown}`);
+  if (overridden > 0) {
+    console.log(`    .md sobrescritos pelo banco (mesmo slug): ${overridden}`);
+  }
+  console.log(`  orfaos removidos: ${degraded ? 'pulado (modo degradado)' : removedOrphans}`);
   console.log(`  imagens .webp:    ${webpCount}`);
-  console.log(`  sitemap:          ${path.relative(ROOT, path.join(ROOT, 'sitemap.xml'))}`);
-  console.log(`  posts json:       ${path.relative(ROOT, path.join(ROOT, 'data', 'posts.json'))}`);
-  console.log(`  blog.html:        atualizado`);
+  if (degraded) {
+    console.log(`  sitemap:          PRESERVADO (banco fora do ar)`);
+    console.log(`  posts json:       PRESERVADO (banco fora do ar)`);
+    console.log(`  blog.html:        PRESERVADO (banco fora do ar)`);
+  } else {
+    console.log(`  sitemap:          ${path.relative(ROOT, path.join(ROOT, 'sitemap.xml'))}`);
+    console.log(`  posts json:       ${path.relative(ROOT, path.join(ROOT, 'data', 'posts.json'))}`);
+    console.log(`  blog.html:        atualizado`);
+  }
   console.log(`  tempo:            ${elapsed}s`);
   console.log('================================================');
+  if (degraded) {
+    console.log('');
+    console.log('  ATENCAO: build rodou em MODO DEGRADADO. O site continua com o');
+    console.log('  conteudo do ultimo deploy bom. Confira o Supabase e refaca o deploy.');
+  }
 }
 
-main().catch(err => {
-  console.error('[build-posts] erro fatal:', err);
-  process.exit(1);
-});
+/* Rodou direto (`node scripts/build-posts.js`): builda.
+   Foi importado (require): so expoe as funcoes, sem efeito colateral. */
+if (require.main === module) {
+  main().catch(err => {
+    console.error('[build-posts] erro fatal:', err);
+    process.exit(1);
+  });
+}
+
+module.exports = {
+  markdownToHtml, stripMd, safeUrl, isExternalUrl, isRemoteUrl,
+  absoluteUrl, toWebp, loadPosts, mergePosts, main,
+};
