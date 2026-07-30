@@ -25,3 +25,19 @@ fonts-woff2
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# ===========================================================
+#  NAO SERVIR COMO ARQUIVO PUBLICO
+#  A Vercel publica o diretorio inteiro (outputDirectory ".").
+#  Tudo que fica no repositorio e baixavel por URL direta, tipo
+#  bernardoiannini.com/ARQUIVO.md. Entao documentacao interna,
+#  relatorio e SQL do banco NAO podem subir.
+#  Barra na frente = so a raiz. Sem a barra, "*.md" pegaria
+#  data/posts/*.md e quebraria os posts escritos a mao.
+# ===========================================================
+
+# Documentacao e relatorios internos (tutorial, auditoria, notas)
+/*.md
+
+# Estrutura e policies do banco: mapa de como o backend e protegido
+supabase/

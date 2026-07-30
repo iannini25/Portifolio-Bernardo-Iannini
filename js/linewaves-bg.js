@@ -356,6 +356,11 @@ function initLineWaves(container, opts = {}) {
   // desktop-only (perf) — mobile fica sem o fundo, igual glow-wire/xp-pulse.
   // O CSS tambem esconde .linewaves-bg abaixo de 1024px se a janela encolher.
   if (!window.matchMedia('(min-width: 1025px)').matches) return;
+  // ...e desktop LARGO nao quer dizer desktop POTENTE: um notebook antigo com
+  // grafico integrado abria os dois shaders (este + ferrofluid) e engasgava.
+  // Aqui o fundo simplesmente nao liga em maquina fraca; o layout nao depende
+  // dele (e um layer decorativo atras do conteudo), entao nada quebra.
+  if (typeof podeRodarWebGLPesado === 'function' && !podeRodarWebGLPesado()) return;
 
   let layer = section.querySelector('.linewaves-bg');
   if (!layer) {

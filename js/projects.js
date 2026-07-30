@@ -135,8 +135,14 @@ function pjMediaHTML(p, imgClass) {
     /* sites = preview é um scroll-through do site inteiro; roda mais devagar
        que o padrão (data-rate lido no scrollfx). Logos dos sistemas ficam 1x. */
     const rate = p.category === 'site' ? ' data-rate="0.5"' : '';
+    /* preload="none" e nao "metadata": sao 11 previews somando 54MB, e
+       "metadata" fazia o browser abrir requisicao pra TODOS eles no load,
+       mesmo os que nunca aparecem na tela. O poster (a capa .webp) e o que
+       o usuario ve parado, e quem toca chama .play() (pjMediaHTML e usado
+       pela pilha, que da play so no card da frente). Visual identico,
+       11 requisicoes de video a menos no carregamento. */
     return `<video class="${imgClass}" src="${p.preview}" poster="${p.cover}"${rate}
-      muted loop playsinline preload="metadata" aria-label="${p.title}"></video>`;
+      muted loop playsinline preload="none" aria-label="${p.title}"></video>`;
   }
   return `<img class="${imgClass}" src="${p.cover}" alt="${p.title}" loading="lazy" decoding="async">`;
 }

@@ -10,10 +10,16 @@
 
    Contrato (a resposta e SEMPRE JSON):
      200 { ok: true,  triggered: true }
-     401 { ok: false, error: 'unauthorized' }
+     401 { ok: false, error: 'unauthorized' }              // sem token ou token invalido
+     403 { ok: false, error: 'forbidden' }                 // token valido, mas nao e o dono
      405 { ok: false, error: 'method_not_allowed' }
      501 { ok: false, error: 'not_configured' }            // falta DEPLOY_HOOK_URL
      502 { ok: false, error: 'hook_failed', detail: '...' }
+
+   Sobre o 403: estar autenticado no projeto Supabase NAO basta pra disparar
+   um deploy. O token e trocado pelo usuario no /auth/v1/user e o id precisa
+   bater com a allowlist de um unico dono (ADMIN_USER_ID). Sem isso, qualquer
+   conta criada no projeto conseguiria disparar deploys em serie.
 
    Sem dependencias externas: usa o fetch global do Node 18+.
    ========================================================= */
@@ -27,6 +33,16 @@
 const SUPABASE_URL_PADRAO = 'https://rnupfyzpwwvspiwnttsl.supabase.co';
 const SUPABASE_ANON_PADRAO =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJudXBmeXpwd3d2c3Bpd250dHNsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNzU1ODMsImV4cCI6MjA5NDk1MTU4M30.iJitU6bkENP69GSq3B1UQhuZ9f1HEVe2QjK2-LBwwZs';
+
+/* Allowlist de quem pode disparar deploy: o UID do dono do painel.
+   Vem de process.env.ADMIN_USER_ID quando existir; senao cai no UID do unico
+   usuario do projeto. Nao e segredo (e so um identificador), o segredo e o
+   token de sessao que o cliente manda no Authorization. */
+const ADMIN_USER_ID_PADRAO = '1d6251aa-8ee4-48b0-aafe-22540cd14338';
+
+function adminUserId() {
+  return String(process.env.ADMIN_USER_ID || '').trim() || ADMIN_USER_ID_PADRAO;
+}
 
 /* Timeout curto nas duas chamadas de rede (validar token + chamar o hook).
    Duas x 8s = 16s no pior caso, com folga dentro do maxDuration 30 do
@@ -72,11 +88,12 @@ function lerTokenBearer(req) {
   return m ? m[1].trim() : '';
 }
 
-/* Valida o token de verdade contra o Supabase Auth.
-   Precisa voltar 200 com um user.id, senao trata como nao autorizado. */
-async function tokenPertenceAUsuario(token) {
+/* Troca o token pelo usuario de verdade no Supabase Auth.
+   Devolve o id do usuario, ou '' quando o token nao vale (ou a checagem nao
+   pode ser feita: timeout e rede fora contam como nao autorizado). */
+async function idDoUsuarioDoToken(token) {
   const { base, anonKey } = configSupabase();
-  if (!base || !anonKey) return false;
+  if (!base || !anonKey) return '';
 
   try {
     const resp = await fetchComTimeout(base + '/auth/v1/user', {
@@ -86,12 +103,12 @@ async function tokenPertenceAUsuario(token) {
         Authorization: 'Bearer ' + token,
       },
     });
-    if (!resp.ok) return false;
+    if (!resp.ok) return '';
     const user = await resp.json().catch(() => null);
-    return Boolean(user && user.id);
+    return user && typeof user.id === 'string' ? user.id : '';
   } catch (err) {
     // Timeout ou rede fora: sem confirmacao, nao autoriza.
-    return false;
+    return '';
   }
 }
 
@@ -118,9 +135,17 @@ module.exports = async (req, res) => {
     return responderJson(res, 401, { ok: false, error: 'unauthorized' });
   }
 
-  const autorizado = await tokenPertenceAUsuario(token);
-  if (!autorizado) {
+  const userId = await idDoUsuarioDoToken(token);
+  if (!userId) {
     return responderJson(res, 401, { ok: false, error: 'unauthorized' });
+  }
+
+  /* Autenticado no projeto nao e o mesmo que ser o dono do painel: so o UID
+     da allowlist dispara deploy. Loga um prefixo do id (o suficiente pra
+     investigar sem escrever o UID inteiro no log). */
+  if (userId !== adminUserId()) {
+    console.warn('[rebuild] usuario fora da allowlist tentou disparar deploy (id ' + userId.slice(0, 8) + '...)');
+    return responderJson(res, 403, { ok: false, error: 'forbidden' });
   }
 
   const hookUrl = String(process.env.DEPLOY_HOOK_URL || '').trim();

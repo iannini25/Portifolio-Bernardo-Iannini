@@ -24,7 +24,8 @@ async function reloadPosts() {
 /* ---------- Rebuild do site (POST /api/rebuild) ----------
    Contrato do endpoint (a resposta é sempre JSON):
      200 { ok: true, triggered: true }
-     401 { ok: false, error: 'unauthorized' }
+     401 { ok: false, error: 'unauthorized' }      -> sem token ou token inválido
+     403 { ok: false, error: 'forbidden' }         -> logado, mas não é o dono
      405 { ok: false, error: 'method_not_allowed' }
      501 { ok: false, error: 'not_configured' }   -> falta DEPLOY_HOOK_URL
      502 { ok: false, error: 'hook_failed', detail }
@@ -74,7 +75,11 @@ async function triggerRebuild(reason) {
   if (res.status === 404) return { ok: false, reason: 'not_configured' };
   if (res.status === 405 && !body) return { ok: false, reason: 'not_configured' };
   if (res.status === 501 || erro === 'not_configured') return { ok: false, reason: 'not_configured' };
-  if (res.status === 401 || res.status === 403 || erro === 'unauthorized') {
+  /* 403 é diferente de 401 e NÃO é 'not_configured': o endpoint existe, o
+     token vale, mas a conta não está na allowlist do dono (ADMIN_USER_ID).
+     Recarregar ou entrar de novo não resolve, então a mensagem é outra. */
+  if (res.status === 403 || erro === 'forbidden') return { ok: false, reason: 'forbidden' };
+  if (res.status === 401 || erro === 'unauthorized') {
     return { ok: false, reason: 'unauthorized' };
   }
   /* 502, 405 e qualquer outra resposta: o post está salvo, o rebuild não rodou. */
@@ -101,6 +106,9 @@ function rebuildMessage(feito, salvo, rebuild) {
   if (rebuild.reason === 'unauthorized') {
     return { msg: salvo + ', mas não deu pra confirmar sua sessão para atualizar o site. Recarregue a página; se persistir, entre de novo. O site atualiza no próximo deploy.', type: 'error' };
   }
+  if (rebuild.reason === 'forbidden') {
+    return { msg: salvo + ', mas esta conta não tem permissão para atualizar o site (só o dono do painel dispara deploy). Confira ADMIN_USER_ID nas variáveis de ambiente da Vercel. O site atualiza no próximo deploy.', type: 'error' };
+  }
   const detalhe = rebuild.detail ? ' (' + rebuild.detail + ')' : '';
   return { msg: salvo + ', mas o rebuild do site falhou' + detalhe + '. O site atualiza no próximo deploy.', type: 'error' };
 }
@@ -109,7 +117,7 @@ function rebuildMessage(feito, salvo, rebuild) {
    (a contagem de views agora mora na coluna `views` da tabela). */
 const loadViews = () => {
   const m = {};
-  (state.posts || []).forEach(p => { m[p.id] = p.views || 0; });
+  (state.posts || []).forEach(p => { m[p.id] = Number(p.views) || 0; });
   return m;
 };
 
@@ -161,6 +169,69 @@ const estimateReadTime = (content) =>
 const escapeHtml = (s) => String(s || '').replace(/[&<>"']/g, c => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
 }[c]));
+
+/* ---------- Status: allowlist ----------
+   O banco tem CHECK (draft|published) e o painel usa 'scheduled' só na tela.
+   O valor entra numa CLASSE CSS (admin-table-status--X), então vem de uma
+   lista fechada: valor estranho no banco não escolhe classe nenhuma.
+   O texto exibido é o valor real, escapado, pra não mentir na tela. */
+const STATUS_CONHECIDOS = ['draft', 'published', 'scheduled'];
+const statusClass = (s) => STATUS_CONHECIDOS.includes(String(s || '')) ? String(s) : 'draft';
+
+/* ---------- Endereço de imagem: allowlist de esquema ----------
+   Vale pro campo "URL ou caminho" da capa e pro src das imagens do post.
+   Passa:
+     - caminho do próprio site: img/blog/foto.png ou /img/blog/foto.png
+     - endereço http:// ou https:// (é o que o Storage do Supabase devolve)
+   Não passa: javascript:, vbscript:, data:, blob:, file:, //outro-host e
+   qualquer outro esquema. Esse valor vira src no painel e no site publicado,
+   e um dia pode virar href, então o esquema é decidido aqui e não na hora
+   de imprimir. */
+/* Tira espaço, tab e caractere de controle antes de olhar o esquema: é assim
+   que "java<tab>script:" engana uma checagem ingênua. A comparação é por
+   código do caractere pra não deixar caractere de controle literal no fonte. */
+const semEspacos = (v) => Array.prototype.filter
+  .call(String(v == null ? '' : v), (ch) => {
+    const code = ch.charCodeAt(0);
+    return code > 32 && code !== 127;
+  })
+  .join('');
+
+/* Bitmap em data URL: o upload antigo do painel gravava a capa comprimida
+   assim. data:image de bitmap não executa script (svg executaria, e está
+   fora da lista de propósito). */
+const DATA_URL_BITMAP = /^data:image\/(png|jpe?g|gif|webp|avif);base64,[A-Za-z0-9+/=]+$/;
+
+function isCaminhoDoSite(valor) {
+  const raw = String(valor == null ? '' : valor).trim();
+  if (!raw) return false;
+  if (raw.startsWith('//')) return false;                            // herda o protocolo e sai do site
+  if (/^[a-z][a-z0-9+.-]*:/i.test(semEspacos(raw))) return false;    // tem esquema: não é relativo
+  return raw.startsWith('/') || raw.startsWith('img/');
+}
+
+function isEnderecoHttp(valor) {
+  return /^https?:\/\/[^/\s]/i.test(semEspacos(valor));
+}
+
+/* O que o campo "URL ou caminho" aceita. */
+function isEnderecoImagemAceito(valor) {
+  return isCaminhoDoSite(valor) || isEnderecoHttp(valor);
+}
+
+/* src pronto pra <img>: devolve '' quando o endereço não passa na allowlist.
+   Melhor uma imagem quebrada do que um src hostil no DOM. Aceita também o
+   data:image de bitmap, que é o formato das capas antigas. */
+function safeImageSrc(valor) {
+  const raw = String(valor == null ? '' : valor).trim();
+  if (!raw) return '';
+  if (DATA_URL_BITMAP.test(semEspacos(raw))) return raw;
+  return isEnderecoImagemAceito(raw) ? raw : '';
+}
+
+const AVISO_ENDERECO_IMAGEM =
+  'Endereço de imagem não aceito. Use um caminho do site (img/blog/foto.png ou /img/blog/foto.png) ' +
+  'ou um endereço http(s). Endereços javascript:, data: e vbscript: são recusados.';
 
 /* =========================================================
    MARKDOWN (.md) - preview do editor
@@ -474,6 +545,10 @@ function toast(message, type = 'success') {
   const el = document.createElement('div');
   el.id = 'adminToast';
   el.className = 'admin-toast' + (isError ? ' admin-toast--error' : '');
+  /* textContent, NUNCA innerHTML: metade das chamadas de toast() concatena
+     mensagem de erro do Supabase, e mensagem de servidor é dado externo. Com
+     textContent o texto aparece como texto, sem virar marcação. Se algum dia
+     alguém precisar de negrito aqui, monte elementos e use textContent neles. */
   el.textContent = message;
   document.body.appendChild(el);
 
@@ -550,7 +625,7 @@ function renderDashboard() {
          <table class="admin-table admin-table--compact">
            <tbody>
              ${mostRead.map(p => `
-               <tr class="is-clickable" data-edit="${p.id}">
+               <tr class="is-clickable" data-edit="${escapeHtml(p.id)}">
                  <td>
                    <div class="admin-table-title">${escapeHtml(p.title)}</div>
                    <div class="admin-table-slug">/${escapeHtml(p.slug || p.id)}</div>
@@ -571,13 +646,13 @@ function renderDashboard() {
          <table class="admin-table admin-table--compact">
            <tbody>
              ${recent.map(p => `
-               <tr class="is-clickable" data-edit="${p.id}">
+               <tr class="is-clickable" data-edit="${escapeHtml(p.id)}">
                  <td>
                    <div class="admin-table-title">${escapeHtml(p.title)}</div>
                    <div class="admin-table-slug">${formatDateTime(p.updatedAt || p.createdAt)}</div>
                  </td>
                  <td class="is-right is-nowrap">
-                   <span class="admin-table-status admin-table-status--${p.status}">${p.status}</span>
+                   <span class="admin-table-status admin-table-status--${statusClass(p.status)}">${escapeHtml(p.status)}</span>
                  </td>
                </tr>
              `).join('')}
@@ -638,15 +713,15 @@ function postsTableRow(p, views) {
         <div class="admin-table-slug">/${escapeHtml(p.slug || p.id)}</div>
       </td>
       <td>${p.category ? `<span class="blog-post-tag">${escapeHtml(p.category)}</span>` : '<span class="admin-table-dash">—</span>'}</td>
-      <td><span class="admin-table-status admin-table-status--${p.status}">${p.status}</span></td>
+      <td><span class="admin-table-status admin-table-status--${statusClass(p.status)}">${escapeHtml(p.status)}</span></td>
       <td class="is-meta is-nowrap">${formatDateTime(p.updatedAt || p.createdAt)}</td>
       <td class="is-views is-nowrap">${v}</td>
       <td class="is-right is-nowrap">
         <div class="admin-table-actions">
-          <button class="admin-icon-btn" data-view-post="${p.slug || p.id}" title="Ver">${ICONS.eye}</button>
-          <button class="admin-icon-btn" data-edit="${p.id}" title="Editar">${ICONS.edit}</button>
-          <button class="admin-icon-btn" data-duplicate="${p.id}" title="Duplicar">${ICONS.copy}</button>
-          <button class="admin-icon-btn admin-icon-btn--danger" data-delete="${p.id}" title="Excluir">${ICONS.trash}</button>
+          <button class="admin-icon-btn" data-view-post="${escapeHtml(p.slug || p.id)}" title="Ver">${ICONS.eye}</button>
+          <button class="admin-icon-btn" data-edit="${escapeHtml(p.id)}" title="Editar">${ICONS.edit}</button>
+          <button class="admin-icon-btn" data-duplicate="${escapeHtml(p.id)}" title="Duplicar">${ICONS.copy}</button>
+          <button class="admin-icon-btn admin-icon-btn--danger" data-delete="${escapeHtml(p.id)}" title="Excluir">${ICONS.trash}</button>
         </div>
       </td>
     </tr>
@@ -727,6 +802,18 @@ function renderEditor(post) {
   };
   if (!Array.isArray(state.form.images)) state.form.images = [];
 
+  /* Capa e imagens que vêm do banco também passam pela allowlist. Um post
+     gravado antes dessa checagem (ou por fora do painel) entra no editor sem
+     o endereço recusado; se ficasse, o save travaria e o post viraria um post
+     que não dá pra editar. */
+  const capaRecusada = !!state.form.cover && !safeImageSrc(state.form.cover);
+  if (capaRecusada) state.form.cover = '';
+  const imagensAntes = state.form.images.length;
+  state.form.images = state.form.images.filter(im => im && safeImageSrc(im.src));
+  if (capaRecusada || state.form.images.length < imagensAntes) {
+    toast('Este post tinha endereço de imagem fora do aceito e ele foi retirado do formulário. ' + AVISO_ENDERECO_IMAGEM, 'error');
+  }
+
   const categories = ['Engenharia', 'IA', 'Projetos', 'Carreira', 'Design', 'Vida', 'Outro'];
   const f = state.form;
 
@@ -766,7 +853,7 @@ const ola = "mundo";
       <div class="admin-header-actions">
         <button class="admin-btn admin-btn--ghost" data-nav="posts" type="button">Cancelar</button>
         ${isEditing ? `
-          <button class="admin-btn admin-btn--danger" id="deleteBtn" type="button" data-delete="${post.id}">
+          <button class="admin-btn admin-btn--danger" id="deleteBtn" type="button" data-delete="${escapeHtml(post.id)}">
             ${ICONS.trash} Excluir
           </button>
         ` : ''}
@@ -975,7 +1062,7 @@ console.log("código");
 
           <div class="admin-field" id="scheduleField" ${f.status === 'scheduled' ? '' : 'hidden'}>
             <label for="f-scheduledAt">Data de publicação</label>
-            <input type="datetime-local" id="f-scheduledAt" name="scheduledAt" value="${f.scheduledAt ? f.scheduledAt.slice(0, 16) : ''}"/>
+            <input type="datetime-local" id="f-scheduledAt" name="scheduledAt" value="${escapeHtml(f.scheduledAt ? String(f.scheduledAt).slice(0, 16) : '')}"/>
           </div>
 
           <div class="admin-field admin-field-row">
@@ -1037,8 +1124,8 @@ console.log("código");
             <div class="admin-dropzone" id="coverDropzone" tabindex="0">
               <input type="file" id="coverFile" accept="image/*" hidden/>
               <div class="admin-dropzone-content" id="coverDropzoneContent">
-                ${f.cover ? `
-                  <img src="${escapeHtml(f.cover)}" alt="capa" class="admin-dropzone-preview"/>
+                ${safeImageSrc(f.cover) ? `
+                  <img src="${escapeHtml(safeImageSrc(f.cover))}" alt="capa" class="admin-dropzone-preview"/>
                   <div class="admin-dropzone-actions">
                     <button type="button" class="admin-btn admin-btn--ghost admin-btn--sm" data-action="change-cover">Trocar</button>
                     <button type="button" class="admin-btn admin-btn--danger admin-btn--sm" data-action="remove-cover">Remover</button>
@@ -1063,7 +1150,7 @@ console.log("código");
               URL ou caminho
               <span class="admin-field-hint">opcional · use img/blog/foto.png</span>
             </label>
-            <input type="text" id="f-cover" name="cover" value="${escapeHtml(f.cover && !f.cover.startsWith('data:') ? f.cover : '')}" placeholder="https://... ou img/blog/foto.png"/>
+            <input type="text" id="f-cover" name="cover" value="${escapeHtml(isEnderecoImagemAceito(f.cover) ? f.cover : '')}" placeholder="https://... ou img/blog/foto.png"/>
           </div>
         </div>
 
@@ -1221,9 +1308,10 @@ function setupEditorEvents() {
   const renderCoverDropzone = (src) => {
     const content = document.getElementById('coverDropzoneContent');
     if (!content) return;
-    if (src) {
+    const seguro = safeImageSrc(src);
+    if (seguro) {
       content.innerHTML = `
-        <img src="${escapeHtml(src)}" alt="capa" class="admin-dropzone-preview"/>
+        <img src="${escapeHtml(seguro)}" alt="capa" class="admin-dropzone-preview"/>
         <div class="admin-dropzone-actions">
           <button type="button" class="admin-btn admin-btn--ghost admin-btn--sm" data-action="change-cover">Trocar</button>
           <button type="button" class="admin-btn admin-btn--danger admin-btn--sm" data-action="remove-cover">Remover</button>
@@ -1336,18 +1424,43 @@ function setupEditorEvents() {
     if (file) handleFile(file);
   });
 
-  // URL manual — sobrescreve a imagem inline (não pode ter os dois ao mesmo tempo)
+  /* Marca o campo como inválido. A borda vai inline porque o blog.css não tem
+     estado de inválido pra esse input (e o CSS não é deste grupo de arquivos). */
+  const marcarCoverInvalido = (invalido) => {
+    coverInput.classList.toggle('is-invalid', invalido);
+    coverInput.style.borderColor = invalido ? '#e05260' : '';
+    if (invalido) coverInput.setAttribute('aria-invalid', 'true');
+    else coverInput.removeAttribute('aria-invalid');
+  };
+
+  /* URL manual — sobrescreve a imagem enviada (não pode ter as duas).
+     O endereço passa pela allowlist de esquema ANTES de virar a capa: enquanto
+     o que está digitado não é aceito, a capa não muda, o campo fica marcado
+     como inválido e o aviso aparece quando o campo perde o foco (avisar a cada
+     tecla enquanto se digita "https://" seria só barulho). Salvar com endereço
+     inválido é bloqueado no submitForm. */
   coverInput.addEventListener('input', () => {
     const v = coverInput.value.trim();
-    if (v) {
+    if (!v) {
+      marcarCoverInvalido(false);
+      if (!DATA_URL_BITMAP.test(state.form.cover || '')) {
+        // Não havia upload guardado: limpar o campo limpa a capa.
+        state.form.cover = '';
+        renderCoverDropzone(null);
+      }
+      return;
+    }
+    const aceito = isEnderecoImagemAceito(v);
+    marcarCoverInvalido(!aceito);
+    if (aceito) {
       state.form.cover = v;
       renderCoverDropzone(v);
-    } else if (state.form.cover && state.form.cover.startsWith('data:')) {
-      // Mantém o upload — só limpou a URL
-    } else {
-      state.form.cover = '';
-      renderCoverDropzone(null);
     }
+  });
+
+  coverInput.addEventListener('blur', () => {
+    const v = coverInput.value.trim();
+    if (v && !isEnderecoImagemAceito(v)) toast(AVISO_ENDERECO_IMAGEM, 'error');
   });
 
   /* ===== Imagens do post (multi, estilo LinkedIn) ===== */
@@ -1366,7 +1479,7 @@ function setupEditorEvents() {
     }
     imagesGrid.innerHTML = imgs.map((im, i) => `
       <div class="admin-image-item" data-idx="${i}">
-        <img src="${escapeHtml(im.src)}" alt="" loading="lazy"/>
+        <img src="${escapeHtml(safeImageSrc(im && im.src))}" alt="" loading="lazy"/>
         <div class="admin-image-item-body">
           <input type="text" class="admin-image-caption" data-idx="${i}"
                  value="${escapeHtml(im.caption || '')}" placeholder="Legenda (opcional)"/>
@@ -1687,14 +1800,27 @@ function setupEditorEvents() {
       }
     }
 
+    /* Arquivo .md é entrada não confiável: a capa e as imagens passam pela
+       mesma allowlist do campo digitado antes de entrar no formulário. */
     if (data.cover) {
-      state.form.cover = String(data.cover);
-      coverInput.value = state.form.cover;
-      renderCoverDropzone(state.form.cover);
-      applied.push('capa');
+      const capa = String(data.cover);
+      if (safeImageSrc(capa)) {
+        state.form.cover = capa;
+        coverInput.value = isEnderecoImagemAceito(capa) ? capa : '';
+        renderCoverDropzone(capa);
+        applied.push('capa');
+      } else {
+        toast('A capa do arquivo .md foi ignorada. ' + AVISO_ENDERECO_IMAGEM, 'error');
+      }
     }
     if (data.coverAlt) state.form.coverAlt = String(data.coverAlt);
-    if (data.linkedinUrl) state.form.linkedinUrl = String(data.linkedinUrl);
+    /* linkedinUrl só existe no arquivo .md (o banco não tem essa coluna), mas
+       o build imprime esse valor como href, então só http(s) entra. */
+    if (data.linkedinUrl) {
+      const link = String(data.linkedinUrl);
+      if (isEnderecoHttp(link)) state.form.linkedinUrl = link;
+      else toast('O linkedinUrl do arquivo .md foi ignorado: use um endereço http(s).', 'error');
+    }
 
     /* id e datas do arquivo ficam guardados só pra voltar no download.
        Nunca sobrescrevem state.form.id: o id do banco manda no CRUD. */
@@ -1710,11 +1836,17 @@ function setupEditorEvents() {
     }
 
     if (Array.isArray(data.images)) {
-      state.form.images = data.images
+      const brutas = data.images
         .map(im => (typeof im === 'string' ? { src: im } : im))
-        .filter(im => im && im.src)
+        .filter(im => im && im.src);
+      const aceitas = brutas.filter(im => safeImageSrc(im.src));
+      state.form.images = aceitas
         .map(im => ({ src: String(im.src), alt: String(im.alt || ''), caption: String(im.caption || '') }));
       imagesRender();
+      const recusadas = brutas.length - aceitas.length;
+      if (recusadas > 0) {
+        toast(recusadas + ' imagem(ns) do .md ignorada(s). ' + AVISO_ENDERECO_IMAGEM, 'error');
+      }
       applied.push('imagens');
     }
 
@@ -1829,7 +1961,10 @@ function escapeFrontMatterString(s) {
 function postToMarkdown(post) {
   const fm = [];
   fm.push('---');
-  if (post.id) fm.push(`id: ${post.id}`);
+  /* id entre aspas: é o único campo do front-matter que não passa por
+     slugify nem por um select, e sem aspas um valor com `:` ou `#` quebraria
+     o YAML do arquivo baixado. */
+  if (post.id) fm.push(`id: "${escapeFrontMatterString(post.id)}"`);
   fm.push(`title: "${escapeFrontMatterString(post.title || '')}"`);
   if (post.subtitle) fm.push(`subtitle: "${escapeFrontMatterString(post.subtitle)}"`);
   fm.push(`slug: ${post.slug || slugify(post.title || 'post')}`);
@@ -1925,6 +2060,22 @@ async function submitForm() {
   if (!data.content || data.content.trim().length < 10) {
     toast('Conteúdo muito curto.', 'error');
     document.getElementById('f-content')?.focus();
+    return;
+  }
+
+  /* Endereço de imagem: última barreira antes de gravar no banco. Esse valor
+     sai daqui direto pro site publicado (src da capa e da galeria), então
+     endereço fora da allowlist não é salvo, nem com aviso, nem "por enquanto".
+     safeImageSrc ainda aceita a capa antiga em data:image de bitmap pra não
+     travar a edição de post velho. */
+  if (data.cover && !safeImageSrc(data.cover)) {
+    toast('Capa não salva. ' + AVISO_ENDERECO_IMAGEM, 'error');
+    document.getElementById('f-cover')?.focus();
+    return;
+  }
+  const imagemRuim = (data.images || []).findIndex(im => !im || !safeImageSrc(im.src));
+  if (imagemRuim >= 0) {
+    toast('A imagem ' + (imagemRuim + 1) + ' do post tem endereço não aceito. ' + AVISO_ENDERECO_IMAGEM, 'error');
     return;
   }
 
@@ -2112,11 +2263,12 @@ function attachGlobalEvents() {
           id: uid(),
           title: post.title + ' (cópia)',
           subtitle: post.subtitle || '',
-          slug: post.slug + '-copia-' + Math.random().toString(36).slice(2, 5),
-          cover: post.cover || '',
+          slug: slugify(post.slug || post.title) + '-copia-' + Math.random().toString(36).slice(2, 5),
+          /* A cópia não reintroduz endereço de imagem recusado. */
+          cover: safeImageSrc(post.cover) ? post.cover : '',
           coverAlt: post.coverAlt || '',
           tags: post.tags || [],
-          images: post.images || [],
+          images: (post.images || []).filter(im => im && safeImageSrc(im.src)),
           category: post.category || '',
           author: post.author || 'Bernardo Iannini',
           status: 'draft',
@@ -2134,7 +2286,11 @@ function attachGlobalEvents() {
 
     const viewBtn = e.target.closest('[data-view-post]');
     if (viewBtn) {
-      window.open(`post.html?slug=${viewBtn.dataset.viewPost}`, '_blank');
+      /* encodeURIComponent no slug: o valor vem do banco e vai pra query
+         string. post.html já filtra o parâmetro, mas o painel não manda
+         caractere solto pra URL. */
+      const slug = encodeURIComponent(viewBtn.dataset.viewPost || '');
+      window.open('post.html?slug=' + slug, '_blank', 'noopener');
       return;
     }
 
@@ -2177,6 +2333,118 @@ function attachGlobalEvents() {
       render();
     }
   });
+}
+
+/* =========================================================
+   SESSÃO — logout automático por inatividade
+   ---------------------------------------------------------
+   O token do Supabase se renova sozinho, então uma aba do painel esquecida
+   aberta continuaria valendo por tempo indeterminado. Depois de 60 minutos
+   SEM nenhuma interação (mouse, teclado, toque, rolagem) a sessão é encerrada
+   de verdade (signOut, que apaga as chaves sb-* do localStorage), a tela é
+   limpa e aparece a explicação com o caminho de volta pro login.
+
+   60 minutos é longo de propósito: ficar meia hora escrevendo em silêncio é
+   normal e derrubar a sessão no meio do texto seria pior que o problema que
+   isso resolve. Qualquer interação reinicia a contagem.
+
+   O timer é reiniciado no máximo uma vez a cada 30 segundos: mousemove
+   dispara centenas de vezes por segundo e não vale trocar o timeout em todas.
+   Na prática o limite fica entre 60 e 60,5 minutos.
+   ========================================================= */
+const IDLE_LIMITE_MS = 60 * 60 * 1000;
+const IDLE_RESET_THROTTLE_MS = 30 * 1000;
+const IDLE_EVENTOS = ['mousedown', 'mousemove', 'keydown', 'wheel', 'touchstart', 'touchmove', 'scroll'];
+
+let idleTimer = null;
+let idleUltimoReset = 0;
+let idleEncerrando = false;
+
+function reiniciarIdle() {
+  if (idleEncerrando) return;
+  const agora = Date.now();
+  if (idleTimer && (agora - idleUltimoReset) < IDLE_RESET_THROTTLE_MS) return;
+  idleUltimoReset = agora;
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(encerrarPorInatividade, IDLE_LIMITE_MS);
+}
+
+function pararRelogioIdle() {
+  clearTimeout(idleTimer);
+  idleTimer = null;
+  IDLE_EVENTOS.forEach(ev => window.removeEventListener(ev, reiniciarIdle, true));
+  document.removeEventListener('visibilitychange', idleVisibilidade);
+}
+
+function idleVisibilidade() {
+  if (!document.hidden) reiniciarIdle();
+}
+
+function iniciarRelogioIdle() {
+  IDLE_EVENTOS.forEach(ev => window.addEventListener(ev, reiniciarIdle, { passive: true, capture: true }));
+  document.addEventListener('visibilitychange', idleVisibilidade);
+  idleUltimoReset = 0;
+  reiniciarIdle();
+}
+
+async function encerrarPorInatividade() {
+  if (idleEncerrando) return;
+  /* Salvando agora: não derruba a sessão no meio da gravação. Espera mais um
+     minuto e tenta de novo. */
+  if (state.saving) {
+    idleTimer = setTimeout(encerrarPorInatividade, 60 * 1000);
+    idleUltimoReset = Date.now();
+    return;
+  }
+  idleEncerrando = true;
+  pararRelogioIdle();
+  try {
+    await window.BlogDB.signOut();
+  } catch (e) {
+    /* signOut não lança; e mesmo em falha de rede ele limpa as chaves sb-*. */
+  }
+  mostrarSessaoEncerrada();
+}
+
+/* Limpa a tela (nada do post fica visível pra quem chegar depois) e explica
+   o que aconteceu. Sem redirecionamento automático de propósito: se a aba
+   ficou sozinha, a mensagem precisa estar aqui quando alguém voltar. */
+function mostrarSessaoEncerrada() {
+  setSidebarStatus('sessão encerrada');
+  const conteudo = document.getElementById('adminContent');
+  if (conteudo) conteudo.innerHTML = '';
+  document.getElementById('adminToast')?.remove();
+  document.getElementById('adminIdleOverlay')?.remove();
+
+  const overlay = document.createElement('div');
+  overlay.id = 'adminIdleOverlay';
+  overlay.setAttribute('role', 'alertdialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.style.cssText = [
+    'position:fixed', 'inset:0', 'z-index:9999',
+    'display:flex', 'align-items:center', 'justify-content:center',
+    'padding:24px', 'background:#0b0b0f', 'color:#f4f4f6',
+    'font-family:inherit', 'text-align:center',
+  ].join(';');
+  overlay.innerHTML = `
+    <div style="max-width:460px">
+      <h2 style="font-size:22px;margin:0 0 12px">Sessão encerrada por inatividade</h2>
+      <p style="line-height:1.7;margin:0 0 8px;opacity:.85">
+        Passou 1 hora sem nenhuma interação, então o painel encerrou a sessão sozinho
+        para que ninguém continue de onde você parou.
+      </p>
+      <p style="line-height:1.7;margin:0 0 20px;opacity:.6;font-size:13px">
+        Alterações que você não tinha salvo foram perdidas. Entre de novo para continuar.
+      </p>
+      <button type="button" id="adminIdleLoginBtn"
+        style="cursor:pointer;border:0;border-radius:10px;padding:12px 20px;font-size:14px;font-weight:600;background:#f4f4f6;color:#0b0b0f">
+        Entrar de novo
+      </button>
+    </div>`;
+  document.body.appendChild(overlay);
+  const btn = document.getElementById('adminIdleLoginBtn');
+  btn?.addEventListener('click', () => { location.replace('bernardolindao.html'); });
+  btn?.focus();
 }
 
 /* ---------- Init ---------- */
@@ -2265,6 +2533,9 @@ async function init() {
   }
   setSidebarStatus('online');
   render();
+
+  /* Relógio de inatividade só depois que a sessão foi confirmada. */
+  iniciarRelogioIdle();
 }
 
 document.addEventListener('DOMContentLoaded', init);

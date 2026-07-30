@@ -693,11 +693,16 @@ function postPageHtml(post, related) {
         var l = localStorage.getItem('lang');
         if (l === 'pt' || l === 'en') {
           document.documentElement.lang = (l === 'pt') ? 'pt-BR' : 'en';
-          // Visitante recorrente: revela o conteudo ja no 1o paint pra
-          // a View Transition nativa nao capturar um body opacity:0.
-          document.documentElement.classList.add('i18n-ready');
         }
       } catch (e) {}
+      /* PAINT LIBERADO SEMPRE (ver index.html): antes a classe so era
+         adicionada quando havia idioma salvo, entao visitante novo e crawler
+         encaravam tela branca ate executar o language.js. Sem preferencia
+         salva o HTML ja esta no idioma default, logo nao ha texto pra piscar.
+         FORA do try de proposito: se o localStorage lancar (modo privado com
+         storage bloqueado), o catch engoliria o add e a pagina ficaria
+         invisivel justamente no navegador mais restritivo. */
+      document.documentElement.classList.add('i18n-ready');
     })();
     window.addEventListener('pageshow', function () {
       document.body && document.body.classList.remove('page-leaving');

@@ -47,11 +47,47 @@ fonts-woff2/
 .agents/
 skills-lock.json
 
-# Notas internas / rascunhos de conteudo — material de apoio, nao vai pro site.
+# Notas internas / rascunhos de conteudo - material de apoio, nao vai pro site.
 ANIMACAO.md
 CONTEUDO-PARA-EDITAR.md
 PROJETOS-EM-CONSTRUCAO.md
 MIGRATION-NOTES.md
+
+# ===========================================================
+#  ESTE REPOSITORIO E PUBLICO NO GITHUB.
+#  Tudo commitado aqui fica visivel pra qualquer pessoa, PARA
+#  SEMPRE (fica no historico mesmo depois de apagar o arquivo).
+#  Nunca commite: senha, token, chave service_role, string de
+#  conexao do banco, URL de deploy hook, nem documento que
+#  descreva como o painel e protegido.
+# ===========================================================
+
+# Manual de uso do painel e relatorios internos. Ficam so na sua
+# maquina: descrevem o caminho do login e o funcionamento interno.
+PUBLICAR.md
+REVISAO-BLOG.md
+RELATORIO-SEO.md
+
+# Segredos (nunca commitar). A anon key do Supabase e a UNICA chave
+# publica por design e mora em js/supabase-config.js.
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Dumps e backups de banco
+*.sql.gz
+*.dump
+*.bak
+*.backup
+
+# Saida de ferramenta / temporarios
+*.tmp
+*.temp
+.cache/
+coverage/
 
 # Assets de TRABALHO (screenshots, highlights, referencias visuais soltas) —
 # apoio local, nao servido pelo site.

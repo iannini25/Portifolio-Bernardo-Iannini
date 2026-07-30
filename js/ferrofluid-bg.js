@@ -372,6 +372,9 @@ function initFerrofluid(container, opts = {}) {
   if (!wrap) return;
   // desktop-only (perf) — mobile fica sem, igual os outros fx do site.
   if (!window.matchMedia('(min-width: 1025px)').matches) return;
+  // ...e desktop LARGO nao quer dizer desktop POTENTE (ver js/gpu-gate.js):
+  // em maquina fraca o fundo nao liga. E camada decorativa, nada quebra.
+  if (typeof podeRodarWebGLPesado === 'function' && !podeRodarWebGLPesado()) return;
 
   let layer = wrap.querySelector(':scope > .ferrofluid-bg');
   if (!layer) {

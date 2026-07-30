@@ -5,7 +5,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Acesso Restrito</title>
-  <meta name="robots" content="noindex, nofollow" />
+  <!-- Fora de qualquer índice e sem cache de snippet: esta página não
+       deve aparecer em busca nem em arquivo público. O header
+       X-Robots-Tag no vercel.json reforça isso pra quem ignora a meta. -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <!-- Nenhum Referer sai desta página. Sem isso, um clique em link
+       externo ou o carregamento de um recurso de fora entregaria a URL
+       do painel pra terceiros, e ela é o primeiro passo de quem quer
+       tentar entrar. -->
+  <meta name="referrer" content="no-referrer" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -28,15 +36,24 @@
     </h1>
     <p class="login-sub">Acesso reservado ao autor do blog.</p>
 
-    <form class="login-form" id="loginForm" autocomplete="off">
+    <!-- method="post" é proposital. O JS chama preventDefault e envia
+         pelo supabase-js, mas se js/blog-auth.js falhar em carregar o
+         navegador faria o submit nativo: com o GET padrão a senha iria
+         pra barra de endereço, pro histórico e pro Referer. Com POST,
+         nunca aparece na URL. Não troque pra GET.
+         autocomplete ligado de propósito: gerenciador de senhas é
+         aliado da segurança, ele é que permite uma senha longa e
+         aleatória em vez de uma que dê pra decorar. -->
+    <form class="login-form" id="loginForm" method="post" action="bernardolindao.html" autocomplete="on">
       <div class="login-field">
         <label for="loginUser">Usuário</label>
         <input type="text" id="loginUser" name="user" required autocomplete="username" spellcheck="false"
-               autocapitalize="off" placeholder="bernardo"/>
+               autocapitalize="off" autocorrect="off" placeholder="bernardo"/>
       </div>
       <div class="login-field">
         <label for="loginPass">Senha</label>
-        <input type="password" id="loginPass" name="pass" required autocomplete="current-password"/>
+        <input type="password" id="loginPass" name="pass" required autocomplete="current-password"
+               spellcheck="false"/>
       </div>
       <button type="submit" class="login-submit">Entrar</button>
     </form>

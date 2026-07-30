@@ -7,9 +7,12 @@
 # REGRA INVIOLAVEL: nenhum bloco deste arquivo pode conter "Disallow: /"
 # sozinho. Uma linha assim tira o site inteiro do indice.
 #
-# As tres paginas negadas no final tambem carregam
-# <meta name="robots" content="noindex"> no proprio HTML, que e o que de
-# fato impede a indexacao, independente de qual grupo o crawler siga.
+# SEGURANCA: o painel e a pagina de login NAO sao listados aqui de
+# proposito. robots.txt e publico e e a primeira coisa que um invasor le,
+# entao "Disallow: /pagina-secreta" funciona como um mapa do caminho.
+# Quem impede a indexacao dessas paginas e o <meta name="robots"
+# content="noindex, nofollow"> no HTML delas mais o header X-Robots-Tag
+# do vercel.json, que valem sem precisar anunciar o endereco.
 
 
 # ---------------------------------------------------------------------
@@ -107,15 +110,9 @@ Allow: /
 User-agent: *
 Allow: /
 
-# Painel administrativo, protegido por Supabase Auth.
-Disallow: /admin.html
-
 # Template legado de post, servido so via ?slug=. O conteudo real esta
 # em /posts/<slug>.html.
 Disallow: /post.html
-
-# Pagina pessoal, fora do site publico.
-Disallow: /bernardolindao.html
 
 
 Sitemap: https://bernardoiannini.com/sitemap-imagens.xml
