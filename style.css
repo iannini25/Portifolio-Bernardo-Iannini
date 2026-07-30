@@ -256,12 +256,15 @@ body.pc-nav-hidden header {
 /* ===== PillNav (React Bits) adaptado ao estilo do site =====
    Um círculo lime SOBE de baixo e preenche o link no hover; o texto vira
    escuro. Puro CSS (sem mexer no i18n/dropdown), cor da casa (gradient-lime). */
-.pill > a:not(.nav-blog-link) {
+/* TODOS os itens do pill entram no efeito — inclusive o "Blog" (antes ele
+   ficava de fora por causa do estado "em breve", e por isso tinha um hover
+   diferente do resto da nav). */
+.pill > a {
   position: relative;
   overflow: hidden;
   isolation: isolate;
 }
-.pill > a:not(.nav-blog-link)::before {
+.pill > a::before {
   content: "";
   position: absolute;
   left: 50%;
@@ -275,47 +278,22 @@ body.pc-nav-hidden header {
   pointer-events: none;
   transition: transform .5s cubic-bezier(.34, 1.25, .5, 1);
 }
-.pill > a:not(.nav-blog-link):hover {
+.pill > a:hover {
   color: #08120c;
   opacity: 1;
 }
-.pill > a:not(.nav-blog-link):hover::before {
+.pill > a:hover::before {
   transform: translate(-50%, 50%) scale(1);
 }
-/* blog "em breve" fica de fora: mantém o hover discreto */
-.pill a.nav-blog-link:hover { background: var(--w-08); opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
-  .pill > a:not(.nav-blog-link)::before { transition: none; }
+  .pill > a::before { transition: none; }
 }
 
-/* Link "Blog" no nav (desktop + mobile) com badge "em breve" inline */
+/* Link "Blog" no nav (desktop + mobile) — igual aos vizinhos */
 .nav-blog-link {
-  display: inline-flex !important;
-  align-items: center;
-  gap: 8px;
-}
-.nav-blog-badge {
   display: inline-flex;
   align-items: center;
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: #08120c;
-  background: #a3e635;
-  box-shadow: 0 0 8px rgba(163, 230, 53, .3);
-  line-height: 1;
-}
-/* Mobile drop: badge fica menor e mais discreta */
-.mobile-nav .nav-blog-link {
-  justify-content: space-between;
-}
-.mobile-nav .nav-blog-badge {
-  font-size: 9px;
-  padding: 2px 7px;
 }
 
 /* ===== Work dropdown (desktop) ===== */
@@ -2717,6 +2695,11 @@ body.pc-nav-hidden header {
     var(--green) 100%
   );
   -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  /* o padrao (sem -webkit-) faltava: sem ele o Firefox ignora a mascara e o
+     anel virava um bloco solido cobrindo o card */
+          mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -8408,4 +8391,79 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
     transition: none !important;
   }
   .skills-tiles .status-dot { animation: none !important; }
+}
+/* ==================================================================
+   ENTITY HOME (/sobre.html e /en/about.html) — paginas estaticas
+   geradas por scripts/build-about.js. Classes novas, nenhuma regra
+   existente e tocada. So o basico: respiro sob a navbar fixa, medida
+   de linha legivel e ritmo entre secoes.
+   ================================================================== */
+.ab-main {
+  max-width: 720px;              /* ~70ch: medida de leitura */
+  margin: 0 auto;
+  /* header do site e position:fixed (top 20 + margin-top 30 + nav 56) */
+  padding: calc(50px + var(--nav-h) + 28px) 20px 80px;
+}
+.ab-main h1 {
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 900;
+  letter-spacing: -.02em;
+  line-height: 1.1;
+  margin: 0 0 18px;
+}
+.ab-lead {
+  font-size: clamp(16px, 2vw, 19px);
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0 0 28px;
+}
+.ab-photo {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin: 0 0 36px;
+  border: 1px solid var(--gline-35);
+}
+.ab-main h2 {
+  font-size: clamp(19px, 2.4vw, 24px);
+  font-weight: 800;
+  letter-spacing: -.01em;
+  margin: 44px 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--gline-28);
+}
+.ab-main h3 { font-size: 16px; font-weight: 700; margin: 24px 0 6px; }
+.ab-main p  { color: var(--text-soft); line-height: 1.75; margin: 0 0 16px; }
+.ab-main a  { color: var(--lime); text-decoration: underline; text-underline-offset: 3px; }
+
+.ab-list { margin: 0 0 16px; padding-left: 22px; color: var(--text-soft); line-height: 1.7; }
+.ab-list li { margin: 0 0 8px; }
+.ab-list li::marker { color: var(--green); }
+
+.ab-entry { margin: 0 0 26px; }
+.ab-entry__meta {
+  font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 12px;
+  color: var(--text-hint);
+  margin: 0 0 10px !important;
+}
+.ab-entry__bullets { margin: 0 0 10px; padding-left: 20px; color: var(--text-soft); line-height: 1.65; }
+.ab-entry__bullets li { margin: 0 0 6px; }
+.ab-entry__bullets li::marker { color: var(--green); }
+.ab-entry__skills { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; }
+.ab-entry__skills li {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--gline-28);
+  color: var(--text-hint);
+}
+.ab-faq__item { margin: 0 0 20px; }
+
+@media (max-width: 640px) {
+  .ab-main { padding-top: calc(50px + var(--nav-h) + 16px); }
+  .ab-photo { width: 150px; height: 150px; }
 }
