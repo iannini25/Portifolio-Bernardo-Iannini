@@ -26,45 +26,102 @@
     </image:image>
   </url>
   <url>
-    <loc>https://bernardoiannini.com/projetos/amarofy.html</loc>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/amarofy.webp</image:loc>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://bernardoiannini.com/projetos/athena7.html</loc>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/athena7-cover.webp</image:loc>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://bernardoiannini.com/projetos/automotiva-express.html</loc>
+    <loc>https://bernardoiannini.com/en/projects/amarofy.html</loc>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/automotiva-express.webp</image:loc>
     </image:image>
   </url>
   <url>
-    <loc>https://bernardoiannini.com/projetos/brasa.html</loc>
+    <loc>https://bernardoiannini.com/en/projects/athena7.html</loc>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/brasa-restaurante.webp</image:loc>
+      <image:loc>https://bernardoiannini.com/img/moedanobre-cover.webp</image:loc>
     </image:image>
   </url>
   <url>
-    <loc>https://bernardoiannini.com/projetos/iba.html</loc>
+    <loc>https://bernardoiannini.com/en/projects/automotiva-express.html</loc>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/iba-cover.webp</image:loc>
+      <image:loc>https://bernardoiannini.com/img/portfolio-cover.webp</image:loc>
     </image:image>
   </url>
   <url>
-    <loc>https://bernardoiannini.com/projetos/modulo-engenharia.html</loc>
+    <loc>https://bernardoiannini.com/en/projects/brasa.html</loc>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/sereno.webp</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bernardoiannini.com/en/projects/iba.html</loc>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/modulo-engenharia.webp</image:loc>
     </image:image>
   </url>
   <url>
-    <loc>https://bernardoiannini.com/projetos/moedanobre.html</loc>
+    <loc>https://bernardoiannini.com/en/projects/modulo-engenharia.html</loc>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/brasa-restaurante.webp</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bernardoiannini.com/en/projects/moedanobre.html</loc>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/iba-cover.webp</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bernardoiannini.com/en/projects/portfolio.html</loc>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/portfolio-cover.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/athena7-cover.webp</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bernardoiannini.com/en/projects/sereno.html</loc>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/amarofy.webp</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bernardoiannini.com/projetos/amarofy.html</loc>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/automotiva-express.webp</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bernardoiannini.com/projetos/athena7.html</loc>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/moedanobre-cover.webp</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bernardoiannini.com/projetos/automotiva-express.html</loc>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/portfolio-cover.webp</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bernardoiannini.com/projetos/brasa.html</loc>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/sereno.webp</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bernardoiannini.com/projetos/iba.html</loc>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/modulo-engenharia.webp</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bernardoiannini.com/projetos/modulo-engenharia.html</loc>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/brasa-restaurante.webp</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bernardoiannini.com/projetos/moedanobre.html</loc>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/iba-cover.webp</image:loc>
     </image:image>
   </url>
   <url>
@@ -72,11 +129,14 @@
     <image:image>
       <image:loc>https://bernardoiannini.com/img/portfolio-cover.webp</image:loc>
     </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/athena7-cover.webp</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://bernardoiannini.com/projetos/sereno.html</loc>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/sereno.webp</image:loc>
+      <image:loc>https://bernardoiannini.com/img/amarofy.webp</image:loc>
     </image:image>
   </url>
   <url>
