@@ -99,6 +99,31 @@
 </head>
 
 <body class="pc-body">
+  <!-- NAV estatica: os rotulos ja vem no idioma da rota, sem data-i18n,
+       porque idioma aqui e URL e nao estado de cliente. -->
+  <header>
+    <div class="nav">
+      <div class="nav-center">
+        <nav class="pill">
+          <a href="/">Início</a>
+          <a href="/#sobre">Sobre</a>
+          <a href="/#services">Serviços</a>
+          <a href="/#projects">Trabalhos</a>
+          <a href="/blog.html" class="nav-blog-link">Blog</a>
+          <a href="/#contato">Contato</a>
+        </nav>
+      </div>
+      <div class="nav-right">
+        <a class="resume-btn" href="/Curriculo_Bernardo_Iannini.pdf" download>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3v11m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Currículo</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
   <main class="pc-main">
     <div class="pc-top">
       <a class="pc-back" href="/#projects">
@@ -112,8 +137,8 @@
     <article class="pc-hero">
       <p class="pc-reg">em produção · bernardoiannini.com · 2026</p>
       <h1 class="pc-hero__title">bernardoiannini.com · Este Site</h1>
-      <p class="pc-hero__desc">O site em que você está agora: 100% HTML, CSS e JS puros, sem frameworks, com design system próprio. Este portfólio é um site estático escrito à mão em HTML, CSS e JavaScript puros, sem nenhum framework na stack. Cada decisão visual vive num design system próprio guiado por tokens CSS, e a camada de movimento roda em GSAP 3…</p>
-      <div class="pc-hero__tech"><span class="pc-tech">HTML5</span><span class="pc-tech">CSS3</span><span class="pc-tech">JavaScript (vanilla)</span><span class="pc-tech">GSAP 3</span><span class="pc-tech">ScrollTrigger</span><span class="pc-tech">Lenis</span><span class="pc-tech">Node.js</span><span class="pc-tech">Markdown</span><span class="pc-tech">Supabase</span><span class="pc-tech">Vercel</span></div>
+      <p class="pc-hero__desc">Este portfólio é um site estático escrito à mão em HTML, CSS e JavaScript puros, sem nenhum framework na stack. Cada decisão visual vive num design system próprio guiado por tokens CSS, e a camada de movimento roda em GSAP 3 com ScrollTrigger e rolagem suave via Lenis.</p>
+      <div class="pc-hero__tech"><span class="ps-pill" style="--i:0">HTML5</span><span class="ps-pill" style="--i:1">CSS3</span><span class="ps-pill" style="--i:2">JavaScript (vanilla)</span><span class="ps-pill" style="--i:3">GSAP 3</span><span class="ps-pill" style="--i:4">ScrollTrigger</span><span class="ps-pill" style="--i:5">Lenis</span><span class="ps-pill" style="--i:6">Node.js</span><span class="ps-pill" style="--i:7">Markdown</span><span class="ps-pill" style="--i:8">Supabase</span><span class="ps-pill" style="--i:9">Vercel</span></div>
       <div class="pc-hero__cta">
         <a class="ps-cta ps-cta--primary" href="https://bernardoiannini.com" target="_blank" rel="noopener noreferrer">Ver site</a>
         <a class="ps-cta ps-cta--ghost" href="https://github.com/iannini25/iannini-Frontend-Studio" target="_blank" rel="noopener noreferrer">Código</a>
@@ -143,6 +168,11 @@
     </nav>
   </main>
 
+  <!-- language.js ANTES do UI.js: o UI.js chama applyI18n() no init.
+       Os rotulos da nav ja vem estaticos no HTML acima (idioma e rota,
+       nao estado de cliente), o language.js entra so pra nao quebrar
+       essa dependencia e pro switch continuar funcionando. -->
+  <script src="/js/language.js" defer></script>
   <script src="/js/UI.js" defer></script>
 </body>
 </html>

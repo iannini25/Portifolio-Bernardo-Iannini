@@ -68,6 +68,8 @@ const L = {
     back: 'Todos os projetos', crumbHome: 'Início', crumbList: 'Projetos',
     visit: 'Ver site', source: 'Código', built: 'Como foi construído',
     stackLabel: 'Stack', specsLabel: 'Ficha técnica', nextLabel: 'Próximo projeto',
+    nav: { home: 'Início', about: 'Sobre', services: 'Serviços', work: 'Trabalhos',
+           blog: 'Blog', contact: 'Contato', resume: 'Currículo' },
   },
   en: {
     dir: () => path.join(ROOT, 'en', 'projects'),
@@ -76,6 +78,8 @@ const L = {
     back: 'All projects', crumbHome: 'Home', crumbList: 'Projects',
     visit: 'Visit live site', source: 'Source', built: 'How it was built',
     stackLabel: 'Stack', specsLabel: 'Technical specs', nextLabel: 'Next project',
+    nav: { home: 'Home', about: 'About', services: 'Services', work: 'Work',
+           blog: 'Blog', contact: 'Contact', resume: 'Resume' },
   },
 };
 
@@ -85,14 +89,37 @@ const L = {
    frase mais proxima da faixa. Se nem assim chegar a 40 palavras,
    entregamos o que existe e o relatorio marca [PREENCHER]. */
 function answerBlock(p) {
-  const first = String(p.longDesc || '').split(/\n\s*\n/)[0] || '';
-  const seed = [String(p.desc || '').trim(), first.trim()].filter(Boolean).join(' ');
-  const sentences = seed.split(/(?<=[.!?])\s+/);
+  const norm = (s) => String(s || '').toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+
+  // quantas palavras de `cand` ja aparecem em `have` (evita repetir a mesma
+  // frase: varios projetos abrem o longDesc reescrevendo o desc)
+  const overlap = (have, cand) => {
+    const H = new Set(norm(have).split(' ').filter(w => w.length > 3));
+    const C = norm(cand).split(' ').filter(w => w.length > 3);
+    if (!C.length) return 1;
+    return C.filter(w => H.has(w)).length / C.length;
+  };
+
   const out = [];
-  for (const s of sentences) {
+  const push = (s) => {
+    s = String(s || '').trim();
+    if (!s) return;
+    if (out.length && overlap(out.join(' '), s) > 0.6) return;   // repeticao: descarta
     out.push(s);
+  };
+
+  /* Fonte PRIMARIA e o longDesc: e o texto mais completo do autor. Costurar
+     desc + longDesc repetia a abertura (vários projetos reescrevem o desc na
+     1a frase do longDesc). O desc entra so pra completar se faltar palavra. */
+  const first = String(p.longDesc || '').split(/\n\s*\n/)[0] || '';
+  for (const s of first.split(/(?<=[.!?])\s+/)) {
     if (words(out.join(' ')).length >= 40) break;
+    push(s);
   }
+  if (words(out.join(' ')).length < 40) push(p.desc);
+
   let text = out.join(' ').trim();
   const w = words(text);
   if (w.length > 60) text = w.slice(0, 60).join(' ').replace(/[,;:]$/, '') + '…';
@@ -160,7 +187,7 @@ function page(p, lang, next) {
   const title = `${p.title} · Bernardo Iannini`;
 
   const stack = Array.isArray(p.stack) && p.stack.length
-    ? `<div class="pc-hero__tech">${p.stack.map(s => `<span class="pc-tech">${esc(s)}</span>`).join('')}</div>`
+    ? `<div class="pc-hero__tech">${p.stack.map((s, i) => `<span class="ps-pill" style="--i:${i}">${esc(s)}</span>`).join('')}</div>`
     : '';
 
   const specs = Array.isArray(p.specs) && p.specs.length
@@ -252,6 +279,31 @@ ${jsonLd(p, lang, url)}
 </head>
 
 <body class="pc-body">
+  <!-- NAV estatica: os rotulos ja vem no idioma da rota, sem data-i18n,
+       porque idioma aqui e URL e nao estado de cliente. -->
+  <header>
+    <div class="nav">
+      <div class="nav-center">
+        <nav class="pill">
+          <a href="${t.home}">${esc(t.nav.home)}</a>
+          <a href="${t.home}#sobre">${esc(t.nav.about)}</a>
+          <a href="${t.home}#services">${esc(t.nav.services)}</a>
+          <a href="${t.list}">${esc(t.nav.work)}</a>
+          <a href="${lang === 'en' ? '/en/blog.html' : '/blog.html'}" class="nav-blog-link">${esc(t.nav.blog)}</a>
+          <a href="${t.home}#contato">${esc(t.nav.contact)}</a>
+        </nav>
+      </div>
+      <div class="nav-right">
+        <a class="resume-btn" href="/Curriculo_Bernardo_Iannini.pdf" download>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3v11m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>${esc(t.nav.resume)}</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
   <main class="pc-main">
     <div class="pc-top">
       <a class="pc-back" href="${t.list}">
@@ -280,6 +332,11 @@ ${jsonLd(p, lang, url)}
     ${nextLink}
   </main>
 
+  <!-- language.js ANTES do UI.js: o UI.js chama applyI18n() no init.
+       Os rotulos da nav ja vem estaticos no HTML acima (idioma e rota,
+       nao estado de cliente), o language.js entra so pra nao quebrar
+       essa dependencia e pro switch continuar funcionando. -->
+  <script src="/js/language.js" defer></script>
   <script src="/js/UI.js" defer></script>
 </body>
 </html>

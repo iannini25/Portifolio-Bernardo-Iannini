@@ -101,6 +101,31 @@
 </head>
 
 <body class="pc-body">
+  <!-- NAV estatica: os rotulos ja vem no idioma da rota, sem data-i18n,
+       porque idioma aqui e URL e nao estado de cliente. -->
+  <header>
+    <div class="nav">
+      <div class="nav-center">
+        <nav class="pill">
+          <a href="/">Início</a>
+          <a href="/#sobre">Sobre</a>
+          <a href="/#services">Serviços</a>
+          <a href="/#projects">Trabalhos</a>
+          <a href="/blog.html" class="nav-blog-link">Blog</a>
+          <a href="/#contato">Contato</a>
+        </nav>
+      </div>
+      <div class="nav-right">
+        <a class="resume-btn" href="/Curriculo_Bernardo_Iannini.pdf" download>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3v11m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Currículo</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
   <main class="pc-main">
     <div class="pc-top">
       <a class="pc-back" href="/#projects">
@@ -114,8 +139,8 @@
     <article class="pc-hero">
       <p class="pc-reg">em produção · ibanetwork.org · 2026 · full-stack, produto inteiro</p>
       <h1 class="pc-hero__title">IBA · Rede de Inovação Cross-Border</h1>
-      <p class="pc-hero__desc">Plataforma internacional de networking que conecta fintechs, instituições e reguladores de Brasil, Irlanda e Reino Unido, no lugar de grupos de WhatsApp dispersos. A IBA é a plataforma digital da Innovation Business Alliance, uma aliança membership-led e invitation-only que conecta líderes de fintech, instituições financeiras, investidores e reguladores entre Brasil, Irlanda e Reino Unido.</p>
-      <div class="pc-hero__tech"><span class="pc-tech">NestJS</span><span class="pc-tech">Next.js 16</span><span class="pc-tech">React 19</span><span class="pc-tech">TypeScript</span><span class="pc-tech">Prisma</span><span class="pc-tech">PostgreSQL</span><span class="pc-tech">Redis</span><span class="pc-tech">BullMQ</span><span class="pc-tech">Socket.IO</span><span class="pc-tech">OpenAI</span><span class="pc-tech">Anthropic</span><span class="pc-tech">Resend</span><span class="pc-tech">Twilio</span><span class="pc-tech">next-intl</span><span class="pc-tech">Docker</span><span class="pc-tech">Nginx</span></div>
+      <p class="pc-hero__desc">A IBA é a plataforma digital da Innovation Business Alliance, uma aliança membership-led e invitation-only que conecta líderes de fintech, instituições financeiras, investidores e reguladores entre Brasil, Irlanda e Reino Unido. No lugar de grupos de mensagens espalhados, ela traz toda a rede pra um só lugar: aprovação curada de membros, eventos com check-in, comitês temáticos, diretório e memória institucional.</p>
+      <div class="pc-hero__tech"><span class="ps-pill" style="--i:0">NestJS</span><span class="ps-pill" style="--i:1">Next.js 16</span><span class="ps-pill" style="--i:2">React 19</span><span class="ps-pill" style="--i:3">TypeScript</span><span class="ps-pill" style="--i:4">Prisma</span><span class="ps-pill" style="--i:5">PostgreSQL</span><span class="ps-pill" style="--i:6">Redis</span><span class="ps-pill" style="--i:7">BullMQ</span><span class="ps-pill" style="--i:8">Socket.IO</span><span class="ps-pill" style="--i:9">OpenAI</span><span class="ps-pill" style="--i:10">Anthropic</span><span class="ps-pill" style="--i:11">Resend</span><span class="ps-pill" style="--i:12">Twilio</span><span class="ps-pill" style="--i:13">next-intl</span><span class="ps-pill" style="--i:14">Docker</span><span class="ps-pill" style="--i:15">Nginx</span></div>
       <div class="pc-hero__cta">
         <a class="ps-cta ps-cta--primary" href="https://ibanetwork.org" target="_blank" rel="noopener noreferrer">Ver site</a>
       </div>
@@ -160,6 +185,11 @@
     </nav>
   </main>
 
+  <!-- language.js ANTES do UI.js: o UI.js chama applyI18n() no init.
+       Os rotulos da nav ja vem estaticos no HTML acima (idioma e rota,
+       nao estado de cliente), o language.js entra so pra nao quebrar
+       essa dependencia e pro switch continuar funcionando. -->
+  <script src="/js/language.js" defer></script>
   <script src="/js/UI.js" defer></script>
 </body>
 </html>

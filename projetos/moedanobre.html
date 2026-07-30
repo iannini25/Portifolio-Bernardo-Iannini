@@ -101,6 +101,31 @@
 </head>
 
 <body class="pc-body">
+  <!-- NAV estatica: os rotulos ja vem no idioma da rota, sem data-i18n,
+       porque idioma aqui e URL e nao estado de cliente. -->
+  <header>
+    <div class="nav">
+      <div class="nav-center">
+        <nav class="pill">
+          <a href="/">Início</a>
+          <a href="/#sobre">Sobre</a>
+          <a href="/#services">Serviços</a>
+          <a href="/#projects">Trabalhos</a>
+          <a href="/blog.html" class="nav-blog-link">Blog</a>
+          <a href="/#contato">Contato</a>
+        </nav>
+      </div>
+      <div class="nav-right">
+        <a class="resume-btn" href="/Curriculo_Bernardo_Iannini.pdf" download>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3v11m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Currículo</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
   <main class="pc-main">
     <div class="pc-top">
       <a class="pc-back" href="/#projects">
@@ -114,8 +139,8 @@
     <article class="pc-hero">
       <p class="pc-reg">em produção · moedanobre.com · 2026 · desenvolvimento da plataforma</p>
       <h1 class="pc-hero__title">Moeda Nobre · Moeda Digital de Benefícios</h1>
-      <p class="pc-hero__desc">Moeda digital de benefícios que faz o dinheiro circular entre as empresas, os colaboradores e a economia local em volta deles. Moeda Nobre é uma fintech de benefícios corporativos com moeda digital própria. Empresas contratantes depositam valores na plataforma e entregam aos colaboradores como saldos mensais, que são gastos numa rede de comércios credenciados pagando por QR Code com confirmação…</p>
-      <div class="pc-hero__tech"><span class="pc-tech">Next.js 16</span><span class="pc-tech">TypeScript</span><span class="pc-tech">TailwindCSS</span><span class="pc-tech">shadcn/ui</span><span class="pc-tech">Framer Motion</span><span class="pc-tech">TanStack Query</span><span class="pc-tech">Zustand</span><span class="pc-tech">Prisma ORM</span><span class="pc-tech">PostgreSQL</span><span class="pc-tech">NextAuth</span><span class="pc-tech">html5-qrcode</span><span class="pc-tech">TipTap</span><span class="pc-tech">Docker</span><span class="pc-tech">Nginx</span><span class="pc-tech">Redis</span><span class="pc-tech">VPS privada</span></div>
+      <p class="pc-hero__desc">Moeda Nobre é uma fintech de benefícios corporativos com moeda digital própria. Empresas contratantes depositam valores na plataforma e entregam aos colaboradores como saldos mensais, que são gastos numa rede de comércios credenciados pagando por QR Code com confirmação por PIN.</p>
+      <div class="pc-hero__tech"><span class="ps-pill" style="--i:0">Next.js 16</span><span class="ps-pill" style="--i:1">TypeScript</span><span class="ps-pill" style="--i:2">TailwindCSS</span><span class="ps-pill" style="--i:3">shadcn/ui</span><span class="ps-pill" style="--i:4">Framer Motion</span><span class="ps-pill" style="--i:5">TanStack Query</span><span class="ps-pill" style="--i:6">Zustand</span><span class="ps-pill" style="--i:7">Prisma ORM</span><span class="ps-pill" style="--i:8">PostgreSQL</span><span class="ps-pill" style="--i:9">NextAuth</span><span class="ps-pill" style="--i:10">html5-qrcode</span><span class="ps-pill" style="--i:11">TipTap</span><span class="ps-pill" style="--i:12">Docker</span><span class="ps-pill" style="--i:13">Nginx</span><span class="ps-pill" style="--i:14">Redis</span><span class="ps-pill" style="--i:15">VPS privada</span></div>
       <div class="pc-hero__cta">
         <a class="ps-cta ps-cta--primary" href="https://moedanobre.com" target="_blank" rel="noopener noreferrer">Ver site</a>
       </div>
@@ -159,6 +184,11 @@
     </nav>
   </main>
 
+  <!-- language.js ANTES do UI.js: o UI.js chama applyI18n() no init.
+       Os rotulos da nav ja vem estaticos no HTML acima (idioma e rota,
+       nao estado de cliente), o language.js entra so pra nao quebrar
+       essa dependencia e pro switch continuar funcionando. -->
+  <script src="/js/language.js" defer></script>
   <script src="/js/UI.js" defer></script>
 </body>
 </html>
