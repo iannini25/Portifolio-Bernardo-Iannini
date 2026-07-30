@@ -581,10 +581,14 @@ function postPageHtml(post, related) {
       </div>
     </div>`;
 
-  // LinkedIn original link
-  const linkedinLink = post.linkedinUrl ? `
+  /* LinkedIn original link.
+     safeUrl e nao escapeAttr: escapar so impede sair do atributo, nao impede
+     um esquema perigoso (javascript:) virar link clicavel. Este era o unico
+     href do build que nao passava pelo filtro de esquema. */
+  const linkedinUrlSeguro = safeUrl(post.linkedinUrl);
+  const linkedinLink = linkedinUrlSeguro ? `
     <div class="post-linkedin-link">
-      <a href="${escapeAttr(post.linkedinUrl)}" target="_blank" rel="noopener" class="post-linkedin-btn">
+      <a href="${escapeAttr(linkedinUrlSeguro)}" target="_blank" rel="noopener" class="post-linkedin-btn">
         <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor">
           <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.05c.53-1 1.84-2.2 3.8-2.2 4.06 0 4.8 2.67 4.8 6.15V24h-4v-7.1c0-1.7-.03-3.9-2.4-3.9-2.4 0-2.77 1.87-2.77 3.8V24h-4V8z"/>
         </svg>
@@ -825,6 +829,7 @@ ${articleBody}
   <script src="/js/language.js" defer></script>
   <script src="/js/UI.js" defer></script>
   <script src="/js/post-static.js" defer></script>
+  <script src="/js/sw-register.js" defer></script>
   <!-- contorno que segue o cursor nos cards de "leia tambem" (mesmo do blog) -->
   <script src="/js/blog-fx.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>

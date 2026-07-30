@@ -338,6 +338,7 @@ ${jsonLd(p, lang, url)}
        essa dependencia e pro switch continuar funcionando. -->
   <script src="/js/language.js" defer></script>
   <script src="/js/UI.js" defer></script>
+  <script src="/js/sw-register.js" defer></script>
 </body>
 </html>
 `;

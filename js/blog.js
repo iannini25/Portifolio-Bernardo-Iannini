@@ -464,6 +464,17 @@ const postUrl = (post) => post.url || `/posts/${post.slug || post.id}.html`;
    em todo re-render do cliente (filtro, busca, ordenacao, troca de idioma).
    Mesma regra do isRemoteUrl de scripts/build-posts.js. */
 const isRemoteUrl = (p) => /^(?:https?:)?\/\//i.test(String(p || ''));
+
+/* URL indo pra dentro de url("...") no CSS. escapeHtml NAO serve aqui: o
+   navegador nao trata a folha de estilo como HTML, entao uma capa contendo
+   aspa ou barra invertida fecharia o valor e injetaria propriedades. Estes
+   4 caracteres sao os unicos que quebram um url("..."), e a forma
+   percent-encoded deles resolve para a mesma imagem. */
+const cssUrl = (p) => String(p || '')
+  .replace(/\\/g, '%5C')
+  .replace(/"/g, '%22')
+  .replace(/\r/g, '%0D')
+  .replace(/\n/g, '%0A');
 const toWebp = (p) => isRemoteUrl(p)
   ? String(p || '')
   : String(p || '').replace(/\.(jpe?g|png)$/i, '.webp');
@@ -482,8 +493,8 @@ function postCardHtml(post, layout, views) {
   const readLabel = lang === 'pt' ? 'min de leitura' : 'min read';
   return `
     <article class="blog-post-card ${layout} ${hasCover ? '' : 'blog-post-card--no-image'}"
-             data-id="${post.id}" data-slug="${escapeHtml(post.slug || post.id)}"
-             data-action="open" data-href="${url}"
+             data-id="${escapeHtml(post.id)}" data-slug="${escapeHtml(post.slug || post.id)}"
+             data-action="open" data-href="${escapeHtml(url)}"
              data-cover="${escapeHtml(toWebp(post.cover) || '')}">
       ${hasCover ? `
         <div class="blog-post-cover">
@@ -511,7 +522,7 @@ function postCardHtml(post, layout, views) {
           <span class="blog-post-date">${formatDate(post.createdAt)}</span>
           <span class="blog-post-readtime">${readTime} ${readLabel}</span>
         </div>
-        <h3 class="blog-post-title"><a href="${url}">${escapeHtml(post.title)}</a></h3>
+        <h3 class="blog-post-title"><a href="${escapeHtml(url)}">${escapeHtml(post.title)}</a></h3>
         ${post.subtitle ? `<p class="blog-post-excerpt">${escapeHtml(post.subtitle)}</p>` : ''}
         ${post.tags?.length ? `
           <div class="blog-post-tags">
@@ -665,7 +676,7 @@ function setupCenterPreview() {
 
     const apply = () => {
       currentPost = post;
-      img.style.backgroundImage = `url("${toWebp(post.cover)}")`;
+      img.style.backgroundImage = `url("${cssUrl(toWebp(post.cover))}")`;
       img.classList.add('active');
       center.classList.add('has-image');
       // Marca o tile como link clicável pro post atual
