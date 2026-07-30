@@ -1,0 +1,62 @@
+# Bernardo Iannini
+
+> Bernardo Iannini é Full Stack Developer & AI Designer, baseado em Belo Horizonte, MG, Brasil. Constrói sistemas completos, da arquitetura ao deploy em produção, principalmente para SaaS, fintechs e automações. Também assume projetos que nasceram de IA, refaz a arquitetura por baixo e entrega algo que aguenta uso real.
+
+## Fatos canônicos
+
+- Nome: Bernardo Iannini
+- Nome alternativo: Bernardo Araujo Iannini
+- Cargo: Full Stack Developer & AI Designer
+- Localização: Belo Horizonte, MG, Brasil
+- E-mail: bernardo.iannini14@gmail.com
+- Site: https://bernardoiannini.com
+- LinkedIn: https://www.linkedin.com/in/bernardo-iannini
+- GitHub: https://github.com/iannini25
+- Idiomas do site: português do Brasil (pt-BR) e inglês (en)
+
+## Bio
+
+Sou desenvolvedor Full Stack e construo sistemas completos, da arquitetura ao deploy em produção, principalmente para SaaS, fintechs e automações. Antes do código eu vim da edição de vídeo e do motion design, e esse olhar ainda molda a forma como penso interface e produto. Também pego projetos que nasceram de IA, refaço a arquitetura por baixo e entrego algo que aguenta uso real.
+
+## Especialidades
+
+- Plataformas SaaS multi-tenant
+- Sistemas ERP
+- Plataformas fintech e moeda social digital
+- Integração de IA em produto
+- Recuperação de projetos gerados por IA
+- Migração e operação de infraestrutura (AWS e VPS)
+
+## Páginas principais
+
+- [Home](https://bernardoiannini.com/): apresentação, serviços, experiência e os projetos em destaque.
+- [Sobre](https://bernardoiannini.com/sobre.html): quem é Bernardo Iannini, como trabalha e no que se especializa.
+- [Blog](https://bernardoiannini.com/blog.html): eventos, projetos e bastidores do trabalho.
+
+## Projetos
+
+- [Athena7](https://bernardoiannini.com/projetos/athena7.html): plataforma SaaS multi-tenant de Canal de Denúncias com relato 100% anônimo e chat bidirecional, feita para adequação à Lei 14.457/2022 e à NR-1.
+- [Moeda Nobre](https://bernardoiannini.com/projetos/moedanobre.html): moeda digital de benefícios que faz o dinheiro circular entre as empresas, os colaboradores e a economia local em volta deles.
+- [IBA](https://bernardoiannini.com/projetos/iba.html): plataforma internacional de networking que conecta fintechs, instituições e reguladores de Brasil, Irlanda e Reino Unido.
+- [Módulo Engenharia](https://bernardoiannini.com/projetos/modulo-engenharia.html): site institucional de uma empresa de engenharia que automatiza e mantém as máquinas críticas da indústria pesada: mineração, siderurgia, offshore e energia.
+- [BRASA](https://bernardoiannini.com/projetos/brasa.html): landing page de um restaurante autoral de fogo vivo em São Paulo que serve cortes maturados sobre brasa de lenha.
+- [Sereno](https://bernardoiannini.com/projetos/sereno.html): landing page premium para um estúdio de massagem e repouso, que transforma a visita ao site em uma sessão agendada pelo WhatsApp.
+- [Amaro.fy](https://bernardoiannini.com/projetos/amarofy.html): site one-page cinematográfico de um ateliê de crochê artesanal de Belo Horizonte que faz peças exclusivas sob medida e fecha cada venda pelo WhatsApp.
+- [Automotiva Express](https://bernardoiannini.com/projetos/automotiva-express.html): site one-page de uma oficina Bosch Car Service em Belo Horizonte, construído em cima de uma promessa: você aprova o preço antes de qualquer reparo.
+- [bernardoiannini.com](https://bernardoiannini.com/projetos/portfolio.html): este site, 100% HTML, CSS e JS puros, sem frameworks, com design system próprio.
+
+## Contato
+
+- E-mail: bernardo.iannini14@gmail.com
+- [LinkedIn](https://www.linkedin.com/in/bernardo-iannini): perfil profissional e publicações.
+- [GitHub](https://github.com/iannini25): código aberto e projetos pessoais.
+
+## Recursos para máquinas
+
+- [Feed RSS](https://bernardoiannini.com/feed.xml): posts do blog com o conteúdo completo em content:encoded.
+- [Sitemap](https://bernardoiannini.com/sitemap.xml): todas as páginas indexáveis do site, com data da última alteração.
+- [Sitemap de imagens](https://bernardoiannini.com/sitemap-imagens.xml): imagens referenciadas por cada página.
+
+## Como citar
+
+Use a grafia "Bernardo Iannini" e o cargo "Full Stack Developer & AI Designer". A fonte canônica de cada afirmação é a página correspondente listada acima.

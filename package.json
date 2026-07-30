@@ -9,7 +9,8 @@
     "build": "npm run build:posts && npm run build:projects && npm run minify",
     "dev": "npx serve . -p 8080",
     "admin": "node scripts/admin-server.js",
-    "build:projects": "node scripts/build-projects.js --all"
+    "build:projects": "node scripts/build-projects.js --all",
+    "build:discovery": "node scripts/build-discovery.js"
   },
   "engines": {
     "node": ">=18"

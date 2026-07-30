@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Bernardo Iannini</title>
+    <link>https://bernardoiannini.com/blog.html</link>
+    <description>Eventos, projetos e bastidores de Bernardo Iannini, desenvolvedor Full Stack e AI Designer em Belo Horizonte.</description>
+    <language>pt-BR</language>
+    <managingEditor>bernardo.iannini14@gmail.com (Bernardo Iannini)</managingEditor>
+    <webMaster>bernardo.iannini14@gmail.com (Bernardo Iannini)</webMaster>
+    <lastBuildDate>Thu, 30 Jul 2026 01:36:15 GMT</lastBuildDate>
+    <generator>scripts/build-discovery.js</generator>
+    <atom:link href="https://bernardoiannini.com/feed.xml" rel="self" type="application/rss+xml"/>
+  </channel>
+</rss>

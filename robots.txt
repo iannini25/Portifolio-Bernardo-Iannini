@@ -1,10 +1,122 @@
+# robots.txt de bernardoiannini.com
+#
+# Politica: o site inteiro e aberto. Todo buscador e todo agente de IA
+# pode rastrear e citar o conteudo. Os blocos abaixo sao uma allowlist
+# explicita, um por bot, para nao depender de heranca do "User-agent: *".
+#
+# REGRA INVIOLAVEL: nenhum bloco deste arquivo pode conter "Disallow: /"
+# sozinho. Uma linha assim tira o site inteiro do indice.
+#
+# As tres paginas negadas no final tambem carregam
+# <meta name="robots" content="noindex"> no proprio HTML, que e o que de
+# fato impede a indexacao, independente de qual grupo o crawler siga.
+
+
+# ---------------------------------------------------------------------
+# Buscadores tradicionais
+# ---------------------------------------------------------------------
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+
+# ---------------------------------------------------------------------
+# OpenAI: treino, indice de busca e navegacao a pedido do usuario
+# ---------------------------------------------------------------------
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+
+# ---------------------------------------------------------------------
+# Anthropic
+# ---------------------------------------------------------------------
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+
+# ---------------------------------------------------------------------
+# Google Gemini, Apple Intelligence e Meta AI
+# ---------------------------------------------------------------------
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: Meta-ExternalFetcher
+Allow: /
+
+
+# ---------------------------------------------------------------------
+# Buscas com IA e demais modelos
+# ---------------------------------------------------------------------
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: MistralAI-User
+Allow: /
+
+
+# ---------------------------------------------------------------------
+# Todo o resto
+# ---------------------------------------------------------------------
+
 User-agent: *
 Allow: /
 
-# Painel de administração e endpoints internos
+# Painel administrativo, protegido por Supabase Auth.
 Disallow: /admin.html
 
-# Página legada de redirect — apontamos pros novos /posts/<slug>.html
+# Template legado de post, servido so via ?slug=. O conteudo real esta
+# em /posts/<slug>.html.
 Disallow: /post.html
 
+# Pagina pessoal, fora do site publico.
+Disallow: /bernardolindao.html
+
+
+Sitemap: https://bernardoiannini.com/sitemap-imagens.xml
 Sitemap: https://bernardoiannini.com/sitemap.xml
