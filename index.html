@@ -4,6 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <!-- classificacao de performance ANTES do 1o paint (sem defer de proposito:
+       o arquivo e pequeno, nao faz I/O, e decide se os fundos WebGL ligam) -->
+  <script src="/js/perf-tier.js"></script>
   <title>Bernardo Iannini · Full Stack Developer em Belo Horizonte</title>
   <meta name="author" content="Bernardo Iannini">
   <meta name="description" content="Desenvolvedor Full Stack em Belo Horizonte. Construo sistemas completos, da arquitetura ao deploy em producao: SaaS, fintechs, ERPs e automacoes." />
@@ -989,7 +992,6 @@
 
   <!-- Fundo LineWaves WebGL da section de Serviços (ogl via CDN ESM).
        Módulo = defer implícito; self-contained, degrada sem quebrar nada. -->
-  <script src="/js/gpu-gate.js" defer></script>
   <script type="module" src="/js/linewaves-bg.js"></script>
 
   <!-- Fundo Ferrofluid WebGL da section de Experiências (ogl via CDN ESM). -->

@@ -445,6 +445,74 @@
     });
   }
 
+  /* ============================================================
+     PONTEIRO EM rAF — utilitario compartilhado.
+
+     Todo handler de mousemove daqui pra baixo passa por aqui.
+     Duas ideias:
+
+     1. COALESCER: o mouse dispara 120x/s (mouse gamer chega a
+        1000x/s) mas a tela so pinta 60x/s. Guardamos a ultima
+        posicao e processamos UMA vez por frame. Metade ou mais do
+        trabalho some sem que nada mude na tela.
+
+     2. CACHEAR OS RECT: um getBoundingClientRect() logo depois de
+        escrever style forca layout sincrono. Mas o rect de um card
+        so muda em scroll/resize — NAO muda quando o mouse anda.
+        Entao lemos uma vez, guardamos, e invalidamos em
+        scroll/resize.
+     ============================================================ */
+  function onPointerFrame(alvo, handler, opts) {
+    opts = opts || {};
+    var ultimoEvento = null;
+    var agendado = false;
+
+    function processar() {
+      agendado = false;
+      var e = ultimoEvento;
+      ultimoEvento = null;
+      if (e) handler(e);
+    }
+
+    alvo.addEventListener('mousemove', function (e) {
+      ultimoEvento = e;
+      if (!agendado) {
+        agendado = true;
+        requestAnimationFrame(processar);
+      }
+    }, { passive: true });
+
+    if (opts.onLeave) {
+      alvo.addEventListener('mouseleave', function () {
+        ultimoEvento = null;
+        opts.onLeave();
+      });
+    }
+  }
+
+  /* cache de rect com invalidacao em scroll/resize */
+  function criarCacheRect() {
+    var mapa = new WeakMap();
+    var sujo = false;
+
+    function invalidar() { sujo = true; }
+    addEventListener('scroll', invalidar, { passive: true });
+    addEventListener('resize', invalidar, { passive: true });
+
+    function rect(el) {
+      if (sujo) { mapa = new WeakMap(); sujo = false; }
+      var r = mapa.get(el);
+      if (!r) { r = el.getBoundingClientRect(); mapa.set(el, r); }
+      return r;
+    }
+    /* exposto porque a PILHA se move por transform SEM scroll/resize
+       (avanco automatico das janelas): quem re-renderiza ou re-posiciona
+       chama rect.invalidar() pra nao servir rect velho */
+    rect.invalidar = invalidar;
+    return rect;
+  }
+  var rectDe = criarCacheRect();
+
   function buildMouse() {
     if (!hasPointer()) return;
 
@@ -505,13 +573,14 @@
        no grid — sobrevive ao re-render dos cards) */
     const grid = document.getElementById('servicesGrid');
     if (grid) {
-      grid.addEventListener('mousemove', e => {
+      onPointerFrame(grid, e => {
         const card = e.target.closest('.service-card');
         if (!card) return;
-        const r = card.getBoundingClientRect();
-        card.style.setProperty('--mx', `${(((e.clientX - r.left) / r.width) * 100).toFixed(1)}%`);
-        card.style.setProperty('--my', `${(((e.clientY - r.top) / r.height) * 100).toFixed(1)}%`);
-      }, { passive: true });
+        const r = rectDe(card);
+        if (!r.width || !r.height) return;
+        card.style.setProperty('--mx', (((e.clientX - r.left) / r.width) * 100).toFixed(1) + '%');
+        card.style.setProperty('--my', (((e.clientY - r.top) / r.height) * 100).toFixed(1) + '%');
+      });
     }
 
     /* cursor-badge CIRCULAR seguindo o mouse sobre as capas: bolinha
@@ -587,31 +656,63 @@
       const RADIUS = 260;
       const clearGlow = () => stage.querySelectorAll('.pj-win')
         .forEach(w => w.style.setProperty('--glow-i', '0'));
-      stage.addEventListener('mousemove', e => {
-        stage.querySelectorAll('.pj-win').forEach(w => {
-          const r = w.getBoundingClientRect();
+
+      /* a lista de .pj-win so muda quando a pilha re-renderiza, nao a
+         cada movimento do mouse. Cacheamos e revalidamos no rebuild.
+         O observer tambem ve mudanca de CLASSE (is-front troca no avanco
+         automatico da pilha, que move as janelas por transform SEM
+         scroll/resize) -> invalida o cache de rect junto. Nossas escritas
+         de --glow-* mexem no atributo style, nao em class, entao NAO
+         disparam o observer. */
+      let wins = [];
+      const refreshWins = () => {
+        wins = Array.from(stage.querySelectorAll('.pj-win'));
+        rectDe.invalidar();
+      };
+      refreshWins();
+      new MutationObserver(refreshWins).observe(stage, {
+        childList: true, subtree: true, attributes: true, attributeFilter: ['class'],
+      });
+
+      onPointerFrame(stage, e => {
+        /* FASE 1 — so LE. nenhuma escrita entre as leituras, entao o
+           navegador resolve tudo com um layout so (ou nenhum, porque o
+           cache ja tem os rect). */
+        const dados = wins.map(w => {
+          const r = rectDe(w);
+          if (!r.width || !r.height) return null;
           const d = Math.max(0,
             Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2)) -
             Math.max(r.width, r.height) / 2);
           const prox = RADIUS * .5, fade = RADIUS * .75;
-          const i = d <= prox ? 1 : d <= fade ? (fade - d) / (fade - prox) : 0;
-          w.style.setProperty('--glow-i', i.toFixed(3));
-          w.style.setProperty('--glow-x', `${(((e.clientX - r.left) / r.width) * 100).toFixed(1)}%`);
-          w.style.setProperty('--glow-y', `${(((e.clientY - r.top) / r.height) * 100).toFixed(1)}%`);
+          return {
+            w,
+            i: d <= prox ? 1 : d <= fade ? (fade - d) / (fade - prox) : 0,
+            x: ((e.clientX - r.left) / r.width) * 100,
+            y: ((e.clientY - r.top) / r.height) * 100
+          };
         });
-      }, { passive: true });
-      stage.addEventListener('mouseleave', clearGlow);
+
+        /* FASE 2 — so ESCREVE. */
+        for (const it of dados) {
+          if (!it) continue;
+          it.w.style.setProperty('--glow-i', it.i.toFixed(3));
+          it.w.style.setProperty('--glow-x', it.x.toFixed(1) + '%');
+          it.w.style.setProperty('--glow-y', it.y.toFixed(1) + '%');
+        }
+      }, { onLeave: clearGlow });
     }
 
     /* eco do anel nos cards do arquivo (--mx/--my; o :hover liga) */
     if (list) {
-      list.addEventListener('mousemove', e => {
+      onPointerFrame(list, e => {
         const frame = e.target.closest('.pj-card__frame');
         if (!frame) return;
-        const r = frame.getBoundingClientRect();
-        frame.style.setProperty('--mx', `${(((e.clientX - r.left) / r.width) * 100).toFixed(1)}%`);
-        frame.style.setProperty('--my', `${(((e.clientY - r.top) / r.height) * 100).toFixed(1)}%`);
-      }, { passive: true });
+        const r = rectDe(frame);
+        if (!r.width || !r.height) return;
+        frame.style.setProperty('--mx', (((e.clientX - r.left) / r.width) * 100).toFixed(1) + '%');
+        frame.style.setProperty('--my', (((e.clientY - r.top) / r.height) * 100).toFixed(1) + '%');
+      });
 
       /* previews dos cards: loop AUTÔNOMO gerenciado em buildDynamic
          (viewport-based) — o hover não toca no playback, só expande o
@@ -624,14 +725,14 @@
        secao #timeline (onde a timeline vive) -> sobrevive ao re-render. */
     const xpSection = document.querySelector('#timeline');
     if (xpSection) {
-      xpSection.addEventListener('mousemove', e => {
+      onPointerFrame(xpSection, e => {
         const card = e.target.closest('.tl-card');
         if (!card) return;
-        const r = card.getBoundingClientRect();
+        const r = rectDe(card);
         if (!r.width || !r.height) return;
-        card.style.setProperty('--mx', `${(((e.clientX - r.left) / r.width) * 100).toFixed(1)}%`);
-        card.style.setProperty('--my', `${(((e.clientY - r.top) / r.height) * 100).toFixed(1)}%`);
-      }, { passive: true });
+        card.style.setProperty('--mx', (((e.clientX - r.left) / r.width) * 100).toFixed(1) + '%');
+        card.style.setProperty('--my', (((e.clientY - r.top) / r.height) * 100).toFixed(1) + '%');
+      });
     }
 
     const hero = document.querySelector('.hero');

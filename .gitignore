@@ -94,3 +94,11 @@ coverage/
 docs-highlights/
 logos-highlights/
 shots-notag/
+
+# Saida do optimize-videos.sh (originais preservados localmente; nao versionar)
+videos/preview-backup/
+videos/preview-otimizado/
+
+# Backups gerados pelos scripts de otimizacao de imagem
+img/*-original.*
+img/**/*.bak

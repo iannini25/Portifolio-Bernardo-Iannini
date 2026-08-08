@@ -323,9 +323,16 @@ document.querySelectorAll('a[data-scroll]').forEach(a => {
     }
   }, { passive: true });
 
-  // Rect só muda em layout shift — não no transform do próprio terminal
+  // Rect só muda em layout shift — não no transform do próprio terminal.
+  // Com o Lenis rodando, 'scroll' dispara TODO frame: coalescer em rAF
+  // deixa no máximo uma leitura de layout por frame pintado.
   window.addEventListener('resize', refreshRect);
-  window.addEventListener('scroll', refreshRect, { passive: true });
+  let rectAgendado = false;
+  window.addEventListener('scroll', () => {
+    if (rectAgendado) return;
+    rectAgendado = true;
+    requestAnimationFrame(() => { rectAgendado = false; refreshRect(); });
+  }, { passive: true });
   refreshRect();
 })();
 

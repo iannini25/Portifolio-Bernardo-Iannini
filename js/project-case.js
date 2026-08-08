@@ -184,8 +184,8 @@ function renderProjectCase(lang) {
       videoEl.hidden = false;
       coverEl.hidden = true;
       soonEl.hidden = true;
-      videoEl.playbackRate = 0.4; // scroll do site mais lento na página do case
-      videoEl.addEventListener('loadedmetadata', () => { videoEl.playbackRate = 0.4; }, { once: true });
+      videoEl.playbackRate = 0.5; // scroll do site mais lento na página do case (fonte 60fps x 0.5 = 30fps efetivos)
+      videoEl.addEventListener('loadedmetadata', () => { videoEl.playbackRate = 0.5; }, { once: true });
       videoEl.play?.().catch(() => {}); // autoplay pode ser bloqueado sem gesto; silencioso, sem problema
     } else {
       videoEl.hidden = true;

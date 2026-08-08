@@ -8467,3 +8467,86 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
   .ab-main { padding-top: calc(50px + var(--nav-h) + 16px); }
   .ab-photo { width: 150px; height: 150px; }
 }
+
+/* ============================================================
+   PERF TIER — CSS que acompanha o js/perf-tier.js
+
+   REGRA: o site nao pode MUDAR DE CARA entre os niveis. Ninguem
+   deveria olhar o modo 'low' e pensar "esse site ta quebrado" ou
+   "esse e outro site". Cada regra abaixo ou e imperceptivel, ou e
+   uma reducao de intensidade — nunca um efeito que some.
+
+   Por isso NAO tem aqui: display:none em conteudo, background
+   solido substituindo gradiente de MARCA, transition:none global.
+   ============================================================ */
+
+
+/* ══════════════════════════════════════════════════════════
+   MEDIUM — a maquina aguenta, mas nao sobra
+   ══════════════════════════════════════════════════════════ */
+
+/* backdrop-filter e o efeito mais caro do CSS moderno: o navegador
+   precisa LER os pixels atras do elemento, desfocar e recompor — a
+   cada frame em que algo se mexe.
+
+   Aqui nao removo: reduzo o raio. blur(8px) -> blur(5px) e uma
+   diferenca que so aparece comparando print lado a lado, mas o
+   custo do desfoque cresce mais rapido que o raio. */
+html[data-perf="medium"] .pill,
+html[data-perf="medium"] .lang-switch.pill,
+html[data-perf="medium"] .resume-btn {
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
+}
+
+/* sombras gigantes: 44px de blur -> 28px. O card continua descolado
+   do fundo, que e o proposito da sombra. */
+html[data-perf="medium"] .nav-dd-menu,
+html[data-perf="medium"] .lang-menu {
+  box-shadow: 0 12px 28px rgba(0, 0, 0, .26), inset 0 1px 0 var(--w-06);
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   LOW — maquina fraca, ou o monitor detectou sofrimento
+   ══════════════════════════════════════════════════════════ */
+
+/* ── backdrop-filter vira cor solida ──────────────────────────
+   A --w-05 do site e um branco translucido sobre fundo escuro
+   quase uniforme: o desfoque quase nao tinha o que borrar. A cor
+   solida equivalente (5% branco composto sobre o escuro) com um
+   tico a menos de luz compensa o contraste que o blur dava, e o
+   alpha alto impede o conteudo de "vazar" nitido por baixo da nav.
+   Comparando print a print da pra ver. Olhando o site, nao. */
+html[data-perf="low"] .pill,
+html[data-perf="low"] .lang-switch.pill,
+html[data-perf="low"] .resume-btn,
+html[data-perf="low"] .nav-dd-menu,
+html[data-perf="low"] .lang-menu {
+  -webkit-backdrop-filter: none;
+          backdrop-filter: none;
+  background: rgba(18, 21, 19, .95);
+}
+
+/* ── animacoes DECORATIVAS infinitas pausam ───────────────────
+   `animation: none` devolve cada elemento ao estado-base da regra
+   (visivel), nao congela no meio de um frame. Ficam DE FORA as
+   animacoes que comunicam algo: o caret do terminal (.cursor) e
+   qualquer coisa dirigida por JS/GSAP (marquee, pilha, reveals). */
+html[data-perf="low"] .scroll-cue,
+html[data-perf="low"] .scroll-cue__particle,
+html[data-perf="low"] .term-prompt,
+html[data-perf="low"] .status-dot,
+html[data-perf="low"] .tl-end__btn,
+html[data-perf="low"] .tl-end__btn::before,
+html[data-perf="low"] .tl-end__dot {
+  animation: none;
+}
+
+/* ── will-change desligado ────────────────────────────────────
+   Cada will-change promove uma camada de GPU. Em maquina com pouca
+   VRAM as camadas viram o proprio gargalo. Desligar nao muda um
+   pixel: so deixa o navegador decidir sozinho o que promover. */
+html[data-perf="low"] * {
+  will-change: auto !important;
+}

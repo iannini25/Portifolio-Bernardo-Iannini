@@ -330,7 +330,7 @@
     const body = root.querySelector('.pd-body');
     if (video && !video.hidden && body) {
       /* na página do case o scroll do site roda AINDA mais lento que no card */
-      const CASE_RATE = 0.4;
+      const CASE_RATE = 0.5;   // fonte 60fps x 0.5 = 30fps efetivos, igual aos cards
       video.playbackRate = CASE_RATE;
       video.addEventListener('loadedmetadata', () => { video.playbackRate = CASE_RATE; });
       dynamicKills.push(ScrollTrigger.create({
