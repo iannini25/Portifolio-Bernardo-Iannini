@@ -8,7 +8,9 @@
    as duas fontes (banco vence em conflito de slug) e gera:
      - /posts/<slug>.html  (paginas estaticas completas com OG/Twitter/JSON-LD)
      - /data/posts.json    (lista publica usada pela home do blog)
-     - sitemap.xml         (com image sitemap)
+     - sitemap.xml         (site + posts, com image: nas capas)
+     - sitemap-imagens.xml (capas/galerias — Google Images)
+     - feed.xml            (RSS atualizado a cada publish)
      - blog.html           (substitui o bloco entre marcadores <!--BUILD:...-->)
      - js/blog-seed.js     (fallback de compatibilidade)
      - versoes .webp das imagens declaradas no front-matter (se sharp disponivel)
@@ -910,6 +912,35 @@ function buildSitemap(posts) {
     <priority>0.9</priority>
   </url>`);
 
+  /* Paginas estaticas do site — o deploy sobrescreve sitemap.xml; se so
+     listarmos home/blog/posts, sumiria /sobre e /projetos do Google. */
+  const staticPages = [
+    { loc: '/sobre.html', priority: '0.8' },
+    { loc: '/en/about.html', priority: '0.7' },
+  ];
+  for (const page of staticPages) {
+    const abs = path.join(ROOT, page.loc.replace(/^\//, '').replace(/\//g, path.sep));
+    if (!fs.existsSync(abs)) continue;
+    entries.push(`<url>
+    <loc>${SITE_URL}${page.loc}</loc>${lastmodTag}
+    <changefreq>monthly</changefreq>
+    <priority>${page.priority}</priority>
+  </url>`);
+  }
+
+  for (const dir of ['projetos', path.join('en', 'projects')]) {
+    const absDir = path.join(ROOT, dir);
+    if (!fs.existsSync(absDir)) continue;
+    for (const f of fs.readdirSync(absDir).filter(x => x.endsWith('.html')).sort()) {
+      const loc = `/${dir.replace(/\\/g, '/')}/${f}`;
+      entries.push(`<url>
+    <loc>${SITE_URL}${loc}</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>`);
+    }
+  }
+
   for (const p of posts) {
     const url = `${SITE_URL}/posts/${p.slug}.html`;
     const images = [];
@@ -939,6 +970,93 @@ ${imageTags}
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   ${entries.join('\n  ')}
 </urlset>
+`;
+}
+
+/* sitemap-imagens.xml — capas e galerias dos posts (automatico no deploy).
+   Covers nao viram <img> no HTML do post (so OG/JSON-LD), entao o crawl
+   de <img> do build-discovery nao as pega; aqui entram direto. */
+function buildImageSitemap(posts) {
+  const blocks = [];
+  for (const p of posts) {
+    const images = [];
+    if (p.cover) images.push({ src: p.cover, title: p.title, caption: p.coverAlt || p.title });
+    (p.images || []).forEach(img => {
+      images.push({
+        src: img.src,
+        title: img.alt || p.title,
+        caption: img.caption || img.alt || p.title,
+      });
+    });
+    if (!images.length) continue;
+    const imageTags = images.map(img => `    <image:image>
+      <image:loc>${escapeXml(absoluteUrl(img.src))}</image:loc>
+      <image:title>${escapeXml(img.title || '')}</image:title>
+      <image:caption>${escapeXml(img.caption || '')}</image:caption>
+    </image:image>`).join('\n');
+    blocks.push(`  <url>
+    <loc>${SITE_URL}/posts/${p.slug}.html</loc>
+${imageTags}
+  </url>`);
+  }
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+${blocks.join('\n')}
+</urlset>
+`;
+}
+
+function rfc822(dateStr) {
+  const d = new Date(dateStr || Date.now());
+  if (Number.isNaN(d.getTime())) return new Date().toUTCString();
+  return d.toUTCString();
+}
+
+function cdata(text) {
+  return `<![CDATA[${String(text || '').replace(/]]>/g, ']]]]><![CDATA[>')}]]>`;
+}
+
+/* feed.xml — RSS atualizado a cada publish (antes so via build:discovery local) */
+function buildFeed(posts) {
+  const sorted = [...posts].sort((a, b) => new Date(b.date) - new Date(a.date));
+  const latest = sorted[0] ? sorted[0].updated || sorted[0].date : new Date().toISOString();
+  const items = sorted.map(p => {
+    const url = `${SITE_URL}/posts/${p.slug}.html`;
+    const cats = [p.category, ...(p.tags || [])]
+      .filter(Boolean)
+      .map(c => `      <category>${escapeXml(c)}</category>`)
+      .join('\n');
+    const enclosure = p.cover
+      ? `\n      <enclosure url="${escapeXml(absoluteUrl(p.cover))}" type="image/jpeg" length="0"/>`
+      : '';
+    return `    <item>
+      <title>${escapeXml(p.title)}</title>
+      <link>${escapeXml(url)}</link>
+      <guid isPermaLink="true">${escapeXml(url)}</guid>
+      <pubDate>${rfc822(p.date)}</pubDate>
+      <dc:creator>${escapeXml(AUTHOR.name)}</dc:creator>
+${cats}${cats ? '\n' : ''}      <description>${cdata(p.excerpt || p.description || p.title)}</description>${enclosure}
+    </item>`;
+  }).join('\n');
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>${escapeXml(AUTHOR.name)}</title>
+    <link>${SITE_URL}/blog.html</link>
+    <description>${escapeXml('Eventos, projetos e bastidores de Bernardo Iannini, desenvolvedor Full Stack e AI Designer em Belo Horizonte.')}</description>
+    <language>pt-BR</language>
+    <managingEditor>${escapeXml(AUTHOR.email)} (${escapeXml(AUTHOR.name)})</managingEditor>
+    <webMaster>${escapeXml(AUTHOR.email)} (${escapeXml(AUTHOR.name)})</webMaster>
+    <lastBuildDate>${rfc822(latest)}</lastBuildDate>
+    <generator>scripts/build-posts.js</generator>
+    <atom:link href="${SITE_URL}/feed.xml" rel="self" type="application/rss+xml"/>
+${items}${items ? '\n' : ''}  </channel>
+</rss>
 `;
 }
 
@@ -1297,6 +1415,8 @@ async function main() {
   if (!degraded) {
     const sitemap = buildSitemap(posts);
     fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sitemap, 'utf8');
+    fs.writeFileSync(path.join(ROOT, 'sitemap-imagens.xml'), buildImageSitemap(posts), 'utf8');
+    fs.writeFileSync(path.join(ROOT, 'feed.xml'), buildFeed(posts), 'utf8');
     writePostsJson(posts);
     writeBlogSeed(posts);
     updateBlogHtml(posts);
@@ -1324,6 +1444,8 @@ async function main() {
     console.log(`  blog.html:        PRESERVADO (banco fora do ar)`);
   } else {
     console.log(`  sitemap:          ${path.relative(ROOT, path.join(ROOT, 'sitemap.xml'))}`);
+    console.log(`  sitemap-imagens:  ${path.relative(ROOT, path.join(ROOT, 'sitemap-imagens.xml'))}`);
+    console.log(`  feed.xml:         ${path.relative(ROOT, path.join(ROOT, 'feed.xml'))}`);
     console.log(`  posts json:       ${path.relative(ROOT, path.join(ROOT, 'data', 'posts.json'))}`);
     console.log(`  blog.html:        atualizado`);
   }

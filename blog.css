@@ -123,11 +123,15 @@
 
 .blog-identity-bento {
   display: grid;
+  /* 5 faixas: perfil | topo dos tópicos | base dos tópicos+featured |
+     inicio do bloco baixo | resto do bloco baixo.
+     Rows 2 e 3 iguais → featured começa exatamente no meio dos tópicos. */
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 9rem auto 9rem;
+  grid-template-rows: auto minmax(6.75rem, 1fr) minmax(6.75rem, 1fr) minmax(10rem, auto) minmax(12rem, 1fr);
   gap: 14px;
   max-width: 1180px;
   margin: 0 auto;
+  align-items: stretch;
 }
 
 /* Tile base — mesmo padrão do About: rounded, borda card, hover violet → green */
@@ -181,6 +185,8 @@
 
 /* 1) Perfil — avatar com sweep + nome (canto sup. esq.) */
 .bid-profile {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
   display: flex;
   align-items: center;
   gap: 14px;
@@ -281,12 +287,13 @@
   font-weight: 700;
 }
 
-/* 2) Featured — span 2 colunas no topo (col 2-3, row 1) */
+/* 2) Featured — cols 2-3, alinhado ao MEIO do tile Tópicos (row 3) */
 .bid-featured {
-  grid-column: span 2;
-  grid-row: span 1;
+  grid-column: 2 / 4;
+  grid-row: 3 / 4;
   padding: 0;
   cursor: pointer;
+  min-height: 9rem;
 }
 
 .bid-featured-inner {
@@ -350,13 +357,14 @@
 
 .bid-featured-title {
   margin: 0 0 6px;
-  font-size: clamp(20px, 2.4vw, 28px);
+  font-size: clamp(18px, 2.2vw, 26px);
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1.2;
   letter-spacing: -.01em;
   color: #fff;
+  /* titulo completo — quebra em ate 3 linhas sem sumir no meio */
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -411,10 +419,10 @@
   letter-spacing: .04em;
 }
 
-/* 3) Stats — coluna direita span 2 rows (col 3, row 2-3) */
+/* 3) Stats — coluna direita, acompanha o bloco baixo (abaixo do featured) */
 .bid-stats {
   grid-column: 3 / 4;
-  grid-row: 2 / 4;
+  grid-row: 4 / 6;
   display: flex;
   flex-direction: column;
 }
@@ -483,10 +491,10 @@
   to { stroke-dashoffset: 0; }
 }
 
-/* 4) Localização (col 1, row 3) — com pulse animado */
+/* 4) Localização — sobe junto com o bloco baixo da direita */
 .bid-location {
   grid-column: 1 / 2;
-  grid-row: 3 / 4;
+  grid-row: 4 / 6;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -555,10 +563,10 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* 5) Tópicos (col 1, row 2) — rotator + tag cloud */
+/* 5) Tópicos — col 1, rows 2-3 (metade de cima + metade do featured) */
 .bid-topics {
   grid-column: 1 / 2;
-  grid-row: 2 / 3;
+  grid-row: 2 / 4;
   display: flex;
   flex-direction: column;
 }
@@ -630,16 +638,17 @@
 
 .bid-tag--big { font-size: 12px; padding: 6px 12px; }
 
-/* 6) Centro — preview dinâmico (col 2, row 2-3) */
+/* 6) Centro — preview, acompanha featured (abaixo dele) */
 .bid-center {
   grid-column: 2 / 3;
-  grid-row: 2 / 4;
+  grid-row: 4 / 6;
   padding: 0;
   display: grid;
   place-items: center;
   overflow: hidden;
   border-radius: 22px;
   background: linear-gradient(135deg, rgba(15, 25, 20, .85), rgba(8, 18, 12, .95));
+  min-height: 240px;
 }
 
 /* Grid tech sutil de fundo */
@@ -714,7 +723,8 @@
   opacity: .5;
 }
 
-/* Meta info que aparece quando há imagem (título do post no hover) */
+/* Meta do preview: SEMPRE visível quando há imagem — titulo nao depende
+   de hover/subtitulo pra aparecer (antes opacity 0 ate .is-visible). */
 .bid-center-meta {
   position: absolute;
   bottom: 0;
@@ -726,11 +736,13 @@
   flex-direction: column;
   gap: 4px;
   opacity: 0;
-  transform: translateY(8px);
+  transform: translateY(6px);
   transition: opacity .25s ease, transform .25s ease;
   pointer-events: none;
+  background: linear-gradient(180deg, transparent 0%, rgba(6, 8, 7, .88) 55%);
 }
 
+.bid-center.has-image .bid-center-meta,
 .bid-center-meta.is-visible {
   opacity: 1;
   transform: translateY(0);
@@ -740,12 +752,13 @@
   font-size: 14px;
   font-weight: 800;
   color: #fff;
-  line-height: 1.25;
+  line-height: 1.3;
   letter-spacing: -.01em;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  /* sem line-clamp agressivo — titulo completo, quebra natural */
+  display: block;
+  overflow: visible;
+  max-height: none;
+  -webkit-line-clamp: unset;
 }
 
 .bid-center-meta-sub {
@@ -763,21 +776,35 @@
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: auto;
   }
-  .bid-featured { grid-column: span 2; grid-row: auto; min-height: 220px; }
-  .bid-stats { grid-column: span 2; grid-row: auto; }
-  .bid-topics { grid-column: span 1; grid-row: auto; min-height: 220px; }
-  .bid-location { grid-column: span 1; grid-row: auto; min-height: 160px; }
-  .bid-center { grid-column: span 2; grid-row: auto; min-height: 240px; }
-  /* .bid-profile ocupava 1 coluna e o .bid-featured seguinte pede 2: num grid
-     de 2 colunas o featured nao cabia ao lado, descia, e deixava a celula
-     r1c2 vazia (110px de buraco). Ocupando as 2, a linha fecha. */
-  .bid-profile { grid-column: span 2; min-height: 110px; }
+  .bid-profile  { order: 1; grid-column: span 2; grid-row: auto; min-height: 110px; }
+  .bid-featured { order: 2; grid-column: span 2; grid-row: auto; min-height: 200px; }
+  .bid-topics   { order: 3; grid-column: span 1; grid-row: auto; min-height: 200px; }
+  .bid-location { order: 4; grid-column: span 1; grid-row: auto; min-height: 160px; }
+  .bid-center   { order: 5; grid-column: span 2; grid-row: auto; min-height: 220px; }
+  .bid-stats    { order: 6; grid-column: span 2; grid-row: auto; }
 }
 
 @media (max-width: 540px) {
   .blog-identity-bento { grid-template-columns: 1fr; }
+  /* featured primeiro no mobile — hierarquia do bento */
+  .bid-featured { order: 1; }
+  .bid-profile  { order: 2; }
+  .bid-topics   { order: 3; }
+  .bid-location { order: 4; }
+  .bid-center   { order: 5; }
+  .bid-stats    { order: 6; }
   .bid-featured, .bid-stats, .bid-topics, .bid-location, .bid-center, .bid-profile {
     grid-column: span 1;
+    grid-row: auto;
+  }
+}
+
+/* Tablet intermediario: toolbar empilha sem estourar */
+@media (max-width: 900px) and (min-width: 541px) {
+  .blog-main { padding-left: 18px; padding-right: 18px; }
+  .blog-toolbar {
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 }
 
@@ -1087,7 +1114,8 @@
 .blog-bento {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  grid-auto-rows: 240px;
+  /* rows mais altas: titulo longo + meta cabem sem cortar */
+  grid-auto-rows: minmax(260px, auto);
   gap: 16px;
 }
 
@@ -1184,14 +1212,18 @@
   flex-direction: column;
   justify-content: flex-end;
   padding: 22px;
+  /* impede o bloco de texto de ser espremido pelo cover absoluto */
+  min-height: 0;
+  gap: 0;
 }
 
 .blog-post-meta {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
 .blog-post-category {
@@ -1228,15 +1260,18 @@
 }
 
 .blog-post-title {
-  margin: 0 0 8px;
+  margin: 0;
   font-weight: 800;
   letter-spacing: -.01em;
-  line-height: 1.15;
+  line-height: 1.2;
   color: var(--text);
+  /* titulo SEMPRE visivel e prioritario — ate 4 linhas, sem depender
+     de excerpt/subtitulo. flex-shrink:0 evita o flex roubar altura. */
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .blog-post-excerpt {
@@ -1248,24 +1283,31 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  /* Espaco RESERVADO (2 linhas) em vez de animar max-height: animar altura
-     reflowava o card a cada frame do hover e o 0->60px cortava o texto no meio.
-     E o revelar nao pode depender SO de :hover, senao no toque e no teclado o
-     resumo de todo post ficava inalcancavel. */
-  height: calc(13px * 1.5 * 2);
+  /* Colapsado no fluxo: nao reserva altura (titulo ganha espaco) e
+     nao cobre o titulo no hover (absolute cobria as ultimas linhas). */
+  max-height: 0;
   opacity: 0;
-  transform: translateY(4px);
+  pointer-events: none;
+  transform: none;
   transition: opacity .28s cubic-bezier(.22, .61, .36, 1),
-              transform .28s cubic-bezier(.22, .61, .36, 1);
+              max-height .28s cubic-bezier(.22, .61, .36, 1),
+              margin .28s cubic-bezier(.22, .61, .36, 1);
 }
 .blog-post-card:hover .blog-post-excerpt,
 .blog-post-card:focus-within .blog-post-excerpt {
+  max-height: 4.5em;
   opacity: 1;
-  transform: translateY(0);
+  margin-top: 8px;
+  pointer-events: auto;
 }
-/* sem hover (toque): o resumo nasce visivel */
+/* sem hover (toque): excerpt sempre no fluxo */
 @media (hover: none) {
-  .blog-post-excerpt { opacity: 1; transform: none; }
+  .blog-post-excerpt {
+    max-height: none;
+    opacity: 1;
+    margin-top: 8px;
+    pointer-events: auto;
+  }
 }
 
 /* (a regra antiga de max-height saiu: o revelar agora e por opacity com
@@ -1306,10 +1348,11 @@
 .blog-post-card--featured .blog-post-title { font-size: clamp(24px, 3vw, 36px); }
 .blog-post-card--featured .blog-post-excerpt {
   font-size: 15px;
+  /* featured: excerpt sempre visivel */
+  max-height: none;
   opacity: 1;
-  transform: none;
-  /* 3 linhas no destacado (o base reserva 2 na altura de 13px) */
-  height: calc(15px * 1.5 * 3);
+  margin-top: 8px;
+  pointer-events: auto;
   display: -webkit-box;
   -webkit-line-clamp: 3;
 }
@@ -1392,14 +1435,19 @@
 }
 
 @media (max-width: 640px) {
-  .blog-bento { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 220px; gap: 12px; }
+  .blog-bento {
+    grid-template-columns: 1fr;
+    grid-auto-rows: minmax(220px, auto);
+    gap: 12px;
+  }
   .blog-post-card--featured,
   .blog-post-card--tall,
   .blog-post-card--normal,
   .blog-post-card--wide,
-  .blog-post-card--full { grid-column: span 2; grid-row: span 1; }
-  .blog-post-card--featured { grid-row: span 2; }
-  .blog-post-card--featured .blog-post-title { font-size: 24px; }
+  .blog-post-card--full { grid-column: span 1; grid-row: span 1; }
+  .blog-post-card--featured { grid-row: span 2; min-height: 320px; }
+  .blog-post-card--featured .blog-post-title { font-size: clamp(20px, 6vw, 24px); }
+  .blog-post-title { -webkit-line-clamp: 5; font-size: 16px; }
 }
 
 /* Estado vazio */

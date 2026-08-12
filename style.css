@@ -236,6 +236,7 @@ body.pc-nav-hidden header {
 
 .pill {
   display: inline-flex;
+  align-items: center;
   gap: 6px;
   padding: 6px;
   background: var(--w-05);
@@ -244,8 +245,18 @@ body.pc-nav-hidden header {
   backdrop-filter: blur(8px)
 }
 
-.pill a {
-  padding: 8px 16px;
+/* Caixa unica pra TODOS os itens do pill (link ou botao Trabalhos).
+   Sem isso, <a> herda line-height do body e o <button> do UA — o texto
+   dos links sobe e "Trabalhos" (inline-flex) fica sozinho no meio. */
+.pill > a,
+.pill .nav-dd-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 36px;
+  line-height: 1;
+  padding: 0 16px;
   border-radius: 999px;
   font-weight: 700;
   font-size: .9rem;
@@ -306,21 +317,16 @@ body.pc-nav-hidden header {
   position: relative;
   overflow: hidden;
   isolation: isolate;
-  display: inline-flex;
-  align-items: center;
   gap: 5px;
-  padding: 8px 14px 8px 16px;
+  /* padding horizontal assimetrico: caret precisa de folga a direita,
+     mas a ALTURA vem da regra compartilhada .pill > a / .nav-dd-btn */
+  padding: 0 12px 0 16px;
   border: none;
   background: transparent;
   color: inherit;
   font-family: inherit;
-  font-weight: 700;
-  font-size: .9rem;
   letter-spacing: inherit;
-  border-radius: 999px;
   cursor: pointer;
-  opacity: .95;
-  transition: color .3s cubic-bezier(.4, 0, .2, 1), background .2s ease, opacity .2s ease;
 }
 /* mesmo efeito PillNav: círculo lime sobe e preenche; texto e caret escurecem.
    Aberto (aria-expanded) fica preenchido = estado ativo. */
@@ -350,7 +356,7 @@ body.pc-nav-hidden header {
 }
 .nav-dd-caret {
   display: block;
-  margin-top: 1px;
+  flex-shrink: 0;
   transition: transform .22s ease;
 }
 .nav-dd-btn[aria-expanded="true"] .nav-dd-caret {
@@ -3888,16 +3894,18 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
 /* Faixa "compacta" — desktops/laptops médios (até ~1280px) */
 @media (min-width: 901px) and (max-width: 1280px) {
   .pill { gap: 3px; padding: 5px; }
-  .pill a { padding: 6px 11px; font-size: .85rem; }
-  .nav-dd-btn { padding: 6px 9px 6px 11px; font-size: .85rem; }
+  .pill > a,
+  .pill .nav-dd-btn { min-height: 32px; padding: 0 11px; font-size: .85rem; }
+  .pill .nav-dd-btn { padding: 0 9px 0 11px; }
   .resume-btn { padding: 7px 12px; font-size: .85rem; }
 }
 
 /* Faixa "apertada" — laptops menores (até ~1080px) */
 @media (min-width: 901px) and (max-width: 1080px) {
   .pill { gap: 2px; padding: 4px; }
-  .pill a { padding: 5px 9px; font-size: .8rem; }
-  .nav-dd-btn { padding: 5px 8px 5px 10px; font-size: .8rem; }
+  .pill > a,
+  .pill .nav-dd-btn { min-height: 30px; padding: 0 9px; font-size: .8rem; }
+  .pill .nav-dd-btn { padding: 0 8px 0 10px; }
   .nav-dd-caret { width: 11px; height: 11px; }
   .resume-btn { padding: 6px 10px; font-size: .8rem; gap: 6px; }
   .resume-btn svg { width: 14px; height: 14px; }
