@@ -399,5 +399,10 @@ function initFerrofluid(container, opts = {}) {
     flowDirection: 'down',
     opacity: 1,
     mouseInteraction: false,
+    /* medium ainda liga o shader (podeRodarWebGLPesado), mas em
+       resolucao menor — mesmos pixels na tela, menos trabalho GPU. */
+    renderScale: typeof perfRenderScale === 'function' ? perfRenderScale(0.8) : 0.8,
+    maxDpr: (document.documentElement.dataset.perf === 'medium') ? 1 : 1.25,
+    targetFps: (document.documentElement.dataset.perf === 'medium') ? 24 : 30,
   });
 })();

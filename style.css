@@ -8550,3 +8550,49 @@ html[data-perf="low"] .tl-end__dot {
 html[data-perf="low"] * {
   will-change: auto !important;
 }
+
+/* ── PROJETOS: o maior custo da home em desktop fraco ─────────
+   Videos ja nao nascem em low (js/projects.js). Aqui cortamos
+   camadas CSS caras cujo estado-base e identico ao visual de
+   repouso — ninguem olha e pensa que "faltou efeito". */
+
+/* pulsos das guias: loop infinito de opacity/transform */
+html[data-perf="low"] .pj-guide__pulse,
+html[data-perf="medium"] .pj-guide__pulse {
+  display: none;
+}
+
+/* anel de proximidade das janelas (escrito por JS em high) */
+html[data-perf="low"] .pj-win::before,
+html[data-perf="medium"] .pj-win::before {
+  content: none !important;
+  display: none !important;
+}
+
+/* brilho topografico que segue o cursor */
+html[data-perf="low"] .pj-topo__glowbox {
+  display: none;
+}
+
+/* glow do frame do card no arquivo (mask + radial no hover) —
+   em low o hover ainda revela cor via filter/saturate do CSS base;
+   so o outline-glow some */
+html[data-perf="low"] .pj-card__frame::before {
+  content: none !important;
+  display: none !important;
+}
+
+/* backdrop-filter restante em cards/modais leves */
+html[data-perf="low"] .skill-folder,
+html[data-perf="low"] .tl-card,
+html[data-perf="low"] .svc-card {
+  -webkit-backdrop-filter: none;
+          backdrop-filter: none;
+}
+
+/* medium: blur menor no glass que ainda resta fora da nav */
+html[data-perf="medium"] .skill-folder,
+html[data-perf="medium"] .tl-card {
+  -webkit-backdrop-filter: blur(4px);
+          backdrop-filter: blur(4px);
+}

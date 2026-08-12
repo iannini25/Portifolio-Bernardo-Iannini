@@ -372,8 +372,8 @@ function initLineWaves(container, opts = {}) {
 
   initLineWaves(layer, {
     speed: 0.2,
-    innerLineCount: 32,
-    outerLineCount: 40,
+    innerLineCount: (document.documentElement.dataset.perf === 'medium') ? 20 : 32,
+    outerLineCount: (document.documentElement.dataset.perf === 'medium') ? 24 : 40,
     warpIntensity: 1.0,
     rotation: -52,
     edgeFadeWidth: 0.0,
@@ -382,8 +382,11 @@ function initLineWaves(container, opts = {}) {
     color1: '#22c55e',       // verde institucional (--green)
     color2: '#a3e635',       // lima do tema (--lime)
     color3: '#ffffff',       // realce
-    enableMouseInteraction: true,
+    enableMouseInteraction: document.documentElement.dataset.perf !== 'medium',
     mouseInfluence: 0.8,
     interactTarget: section, // mouse funciona mesmo por cima dos cards
+    renderScale: typeof perfRenderScale === 'function' ? perfRenderScale(0.8) : 0.8,
+    maxDpr: (document.documentElement.dataset.perf === 'medium') ? 1 : 1.5,
+    targetFps: (document.documentElement.dataset.perf === 'medium') ? 30 : 60,
   });
 })();

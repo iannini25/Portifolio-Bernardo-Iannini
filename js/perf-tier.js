@@ -122,34 +122,60 @@
 
   /* ==========================================================
      3. DEGRADACAO — um degrau por vez, sem recarregar
+
+     Pode cair mais de um degrau na mesma visita (high→medium→low)
+     se a maquina continuar sofrendo, com cooldown entre passos.
      ========================================================== */
 
-  var jaDegradou = false;
+  var lastDegradeAt = 0;
+  var degradeCount = 0;
+
+  function pausarVideosProjetos(nivel) {
+    /* medium: so o arquivo (N videos na viewport). low: tudo,
+       inclusive a pilha featured. O poster .webp fica na tela —
+       visual identico ao video pausado no frame 0. */
+    var sel = nivel === 'low'
+      ? 'video.pj-win__img, video.pj-card__img, video[data-pc-video], video[src]'
+      : '.pj-arch video.pj-card__img, .pj-row video.pj-card__img';
+    var vids = document.querySelectorAll(sel);
+    for (var k = 0; k < vids.length; k++) {
+      try {
+        vids[k].pause();
+        /* load() devolve o poster sem manter o decoder quente */
+        if (nivel === 'low') vids[k].load();
+      } catch (e) {}
+    }
+  }
 
   function degradar(motivo) {
     var atual = root.dataset.perf;
     var i = TIERS.indexOf(atual);
     if (i <= 0) return;                       // ja esta em 'low'
-    if (jaDegradou) return;                   // no maximo UM degrau por visita
+    var agora = Date.now();
+    if (agora - lastDegradeAt < 6000) return; // cooldown entre degraus
+    if (degradeCount >= 2) return;            // no maximo high→med→low
 
-    jaDegradou = true;
+    lastDegradeAt = agora;
+    degradeCount += 1;
     var novo = TIERS[i - 1];
     root.dataset.perf = novo;
     root.dataset.perfMotivo = motivo;
 
-    /* pausa os previews de video que estiverem tocando. Eles ja tem
-       poster (a .webp da capa), entao a imagem na tela continua
-       sendo exatamente a mesma — so para de decodificar. */
-    if (novo === 'low') {
-      var vids = document.querySelectorAll('video[src], video[data-pc-video]');
-      for (var k = 0; k < vids.length; k++) {
-        try { vids[k].pause(); } catch (e) {}
-      }
-    }
+    pausarVideosProjetos(novo);
 
     window.dispatchEvent(new CustomEvent('perf:degradou', {
       detail: { de: atual, para: novo, motivo: motivo }
     }));
+
+    /* se ainda nao chegou no minimo, reabre os monitores depois
+       do cooldown pra poder cair mais um degrau se continuar ruim */
+    if (novo !== 'low') {
+      desligarMonitores();
+      setTimeout(function () {
+        longTasks = 0;
+        comecarMonitoramento();
+      }, 7000);
+    }
   }
 
   window.perfDegradar = degradar;
@@ -267,7 +293,7 @@
     return {
       tier: root.dataset.perf,
       motivo: root.dataset.perfMotivo,
-      degradou: jaDegradou,
+      degradou: degradeCount,
       longTasks: longTasks,
       cores: navigator.hardwareConcurrency || 'n/d',
       ram: navigator.deviceMemory || 'n/d'

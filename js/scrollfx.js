@@ -33,6 +33,10 @@
 
   const hasPointer = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   const hasDraw = () => !!window.DrawSVGPlugin;
+  /* tier do js/perf-tier.js — decide quanto de motion/video roda */
+  const perfTier = () => document.documentElement.dataset.perf || 'high';
+  const perfIsLow = () => perfTier() === 'low';
+  const perfIsHigh = () => perfTier() === 'high';
 
   const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -523,20 +527,9 @@
     magnetize('.ps-cta, .ps-repos__btn', .22);
 
     /* BRILHO TOPOGRÁFICO: as curvas de nível do fundo acendem de leve ao
-       redor do cursor. --mx/--my (px REAIS, relativo ao topo do .pj-topo)
-       alimentam a máscara do .pj-topo__glowbox (div → px reais, preciso).
-       Suavizado por GSAP quickTo (o brilho persegue o cursor com leve
-       inércia = mais clean). rect cacheado (não lê getBoundingClientRect
-       por mousemove); nasce NA posição do cursor no 1º movimento. */
-    /* cada .pj-topo da página (hero + projetos) acende ao redor do cursor.
-       Rastreio no DOCUMENTO (não na section): o topo é FULL-BLEED e pode
-       passar das bordas do seu host — a hero vive na coluna de 1120px do
-       main mas o relevo cobre 100vw, então mousemove na section perdia os
-       CANTOS/margens laterais. O gate é o retângulo do próprio topo;
-       --mx/--my seguem o cursor com leve inércia (quickTo) e o brilho nasce
-       NA posição do cursor ao entrar. rect cacheado (refresh em scroll/
-       resize + ao ENTRAR — a hero no topo não recebe scroll que refresque,
-       e o layout assenta depois do load). */
+       redor do cursor. Em low: desligado (mousemove global + quickTo
+       em todo cursor = custo constante; o SVG base continua no lugar). */
+    if (!perfIsLow()) {
     document.querySelectorAll('.pj-topo').forEach(topoEl => {
       let tRect = topoEl.getBoundingClientRect();
       const refreshTopo = () => { tRect = topoEl.getBoundingClientRect(); };
@@ -568,6 +561,7 @@
         if (!topoEl.classList.contains('is-hot')) topoEl.classList.add('is-hot');
       }, { passive: true });
     });
+    }
 
     /* spotlight dos service-cards: --mx/--my seguem o cursor (delegado
        no grid — sobrevive ao re-render dos cards) */
@@ -651,8 +645,10 @@
 
     /* anel de borda por proximidade nas janelas da pilha — a luz existe
        no espaço: acende ANTES do hover, proporcional à distância. Só
-       escreve CSS vars (o ::before mask-composite faz o resto). */
-    if (stage) {
+       escreve CSS vars (o ::before mask-composite faz o resto).
+       Em low/medium: desligado — e rAF + getBoundingClientRect em N
+       janelas a cada frame de mouse. */
+    if (stage && perfIsHigh()) {
       const RADIUS = 260;
       const clearGlow = () => stage.querySelectorAll('.pj-win')
         .forEach(w => w.style.setProperty('--glow-i', '0'));
@@ -847,58 +843,68 @@
     /* filtros + contador chegam como uma linha só */
     riseSoft('.pj-cli__row');
 
-    /* arquivo: cada fileira sobe em cascata curta; a "página" de cada
-       card RENDERIZA na janela (wipe descendo da barra, preso ao scroll) */
-    gsap.utils.toArray('.pj-row').forEach(row => {
-      const cards = gsap.utils.toArray(row.children);
-      if (!cards.length) return;
-      /* entrada scroll-driven CRIATIVA: cada card sobe VIRANDO de baixo em 3D
-         (rotateX) + escala, preso ao scroll (scrub). Só transform/opacity
-         (barato na GPU); compõe com o wipe da capa e a paralaxe da mídia. */
-      dynamicKills.push(gsap.fromTo(cards,
-        { y: 56, rotateX: -18, scale: .93, autoAlpha: 0,
-          transformPerspective: 900, transformOrigin: '50% 100%' },
-        {
-          y: 0, rotateX: 0, scale: 1, autoAlpha: 1, ease: 'power2.out', stagger: .09,
-          /* nao aplica o 'from' (escondido) na hora: no rebuild pos-filtro
-             os cards ja estao na tela, entao o scrub ajusta sem "travar" */
-          immediateRender: false,
-          scrollTrigger: { trigger: row, start: 'clamp(top 94%)', end: 'clamp(top 60%)', scrub: .5 },
-        }));
-    });
-    gsap.utils.toArray('.pj-card').forEach(card => {
-      const view = card.querySelector('.pj-card__view');
-      if (view) {
-        dynamicKills.push(gsap.fromTo(view,
-          { clipPath: 'inset(0 0 100% 0)' },
+    /* arquivo: em high, cada fileira sobe em 3D + wipe + paralaxe.
+       Em medium/low o visual FINAL e o mesmo (card assentado) — so a
+       viagem fica mais barata (y/opacity), sem rotateX/clipPath por
+       card (cada um desses forca layer e compositing). */
+    if (perfIsHigh()) {
+      gsap.utils.toArray('.pj-row').forEach(row => {
+        const cards = gsap.utils.toArray(row.children);
+        if (!cards.length) return;
+        dynamicKills.push(gsap.fromTo(cards,
+          { y: 56, rotateX: -18, scale: .93, autoAlpha: 0,
+            transformPerspective: 900, transformOrigin: '50% 100%' },
           {
-            clipPath: 'inset(0 0 0% 0)',
-            ease: 'power2.out',
-            /* nao re-clipa no rebuild pos-filtro (evita a "travada e volta") */
+            y: 0, rotateX: 0, scale: 1, autoAlpha: 1, ease: 'power2.out', stagger: .09,
             immediateRender: false,
-            /* clamp(): fileira no fim da página encolhe o range pro
-               scroll que existe — o wipe SEMPRE completa */
-            scrollTrigger: { trigger: card, start: 'clamp(top 96%)', end: 'clamp(top 58%)', scrub: .5 },
+            scrollTrigger: { trigger: row, start: 'clamp(top 94%)', end: 'clamp(top 60%)', scrub: .5 },
           }));
-      }
-      /* paralaxe interna discreta da mídia (headroom do scale cobre o drift) */
-      const img = card.querySelector('.pj-card__img');
-      if (!img) return;
-      dynamicKills.push(gsap.fromTo(img,
-        { yPercent: -5, scale: 1.12 },
-        {
-          yPercent: 5,
-          scale: 1.12,
-          ease: 'none',
-          immediateRender: false,
-          scrollTrigger: { trigger: card, start: 'top bottom', end: 'bottom top', scrub: .4 },
-        }));
-    });
+      });
+      gsap.utils.toArray('.pj-card').forEach(card => {
+        const view = card.querySelector('.pj-card__view');
+        if (view) {
+          dynamicKills.push(gsap.fromTo(view,
+            { clipPath: 'inset(0 0 100% 0)' },
+            {
+              clipPath: 'inset(0 0 0% 0)',
+              ease: 'power2.out',
+              immediateRender: false,
+              scrollTrigger: { trigger: card, start: 'clamp(top 96%)', end: 'clamp(top 58%)', scrub: .5 },
+            }));
+        }
+        const img = card.querySelector('.pj-card__img');
+        if (!img) return;
+        dynamicKills.push(gsap.fromTo(img,
+          { yPercent: -5, scale: 1.12 },
+          {
+            yPercent: 5,
+            scale: 1.12,
+            ease: 'none',
+            immediateRender: false,
+            scrollTrigger: { trigger: card, start: 'top bottom', end: 'bottom top', scrub: .4 },
+          }));
+      });
+    } else if (!perfIsLow()) {
+      /* medium: rise simples por fileira, sem 3D/wipe/paralaxe */
+      gsap.utils.toArray('.pj-row').forEach(row => {
+        const cards = gsap.utils.toArray(row.children);
+        if (!cards.length) return;
+        dynamicKills.push(gsap.fromTo(cards,
+          { y: 36, autoAlpha: 0 },
+          {
+            y: 0, autoAlpha: 1, ease: 'power2.out', stagger: .06,
+            immediateRender: false,
+            scrollTrigger: { trigger: row, start: 'clamp(top 92%)', end: 'clamp(top 62%)', scrub: .4 },
+          }));
+      });
+    } else {
+      /* low: so um fade leve da fileira — zero scrub por card */
+      riseSoft('.pj-row');
+    }
 
-    /* a Corrente: pulsos de luz viajando pelas guias do palco featured.
-       Contínuo → ease 'none'; pausa fora da viewport (custo zero). */
+    /* a Corrente: pulsos so em high (loop infinito = trabalho constante) */
     const guides = gsap.utils.toArray('.pj-guide__pulse');
-    if (guides.length) {
+    if (guides.length && perfIsHigh()) {
       const pulseTweens = guides.map((pulse, i) => {
         const tl = gsap.timeline({ repeat: -1, delay: i * 2.4, paused: true });
         tl.set(pulse, { yPercent: -110, opacity: 0 })
@@ -916,13 +922,10 @@
       }));
     }
 
-    /* janelas com preview em vídeo: só a da FRENTE toca, e só dentro da
-       viewport. A promoção (clique/auto-rotate de 5s em js/projects.js)
-       troca .is-front SEM mutar childList — nenhum rebuild acontece —
-       então quem era frente não pode ficar preso tocando: um observer
-       de atributo re-sincroniza a cada troca de classe. */
+    /* janelas com preview: so a da FRENTE toca. Em low nao ha <video>
+       (projects.js renderiza <img>); em medium/high sincroniza. */
     const stackEl = document.querySelector('[data-pj-stack]');
-    const winVideos = stackEl
+    const winVideos = (!perfIsLow() && stackEl)
       ? gsap.utils.toArray(stackEl.querySelectorAll('video.pj-win__img')) : [];
     if (winVideos.length) {
       let stageInView = false;
@@ -946,23 +949,23 @@
       dynamicKills.push({ kill: () => winObserver.disconnect() });
     }
 
-    /* previews dos CARDS do arquivo: loop autônomo enquanto o card está
-       na viewport (pausa fora — bateria/decoder), independente de hover —
-       o hover só alarga a coluna e revela a cor; a animação NUNCA para.
-       Sob reduced-motion o boot do scrollfx nem roda: fica o poster. */
-    const cardVideos = gsap.utils.toArray(
-      document.querySelectorAll('.pj-arch video.pj-card__img'));
-    if (cardVideos.length) {
-      const cardIO = new IntersectionObserver(entries => entries.forEach(en => {
-        const v = en.target;
-        if (en.isIntersecting) {
-          const r = parseFloat(v.dataset.rate); if (r) v.playbackRate = r; // scroll-through mais lento
-          if (v.paused) v.play?.().catch(() => {});
-        }
-        else if (!v.paused) v.pause?.();
-      }), { rootMargin: '80px 0px' });
-      cardVideos.forEach(v => cardIO.observe(v));
-      dynamicKills.push({ kill: () => cardIO.disconnect() });
+    /* previews do ARQUIVO: so em high. Em medium/low a capa .webp
+       ja e o visual do poster — N videos a menos na viewport. */
+    if (perfIsHigh()) {
+      const cardVideos = gsap.utils.toArray(
+        document.querySelectorAll('.pj-arch video.pj-card__img'));
+      if (cardVideos.length) {
+        const cardIO = new IntersectionObserver(entries => entries.forEach(en => {
+          const v = en.target;
+          if (en.isIntersecting) {
+            const r = parseFloat(v.dataset.rate); if (r) v.playbackRate = r;
+            if (v.paused) v.play?.().catch(() => {});
+          }
+          else if (!v.paused) v.pause?.();
+        }), { rootMargin: '80px 0px' });
+        cardVideos.forEach(v => cardIO.observe(v));
+        dynamicKills.push({ kill: () => cardIO.disconnect() });
+      }
     }
   }
 
@@ -1027,12 +1030,16 @@
 
     document.documentElement.classList.add('fx-on');
 
-    /* SMOOTH-SCROLL (Lenis) — só no desktop/mouse: no toque a rolagem
-       nativa é melhor, e reduced-motion já abortou o boot acima. Roda no
-       MESMO ticker do GSAP (uma fonte de tempo), com lerp DISCRETO pra ser
-       manteiga sem virar "flutuante". Sem Lenis, o scroll nativo continua. */
-    if (window.Lenis && !window.matchMedia('(pointer: coarse)').matches) {
-      const lenis = new Lenis({ lerp: 0.09, wheelMultiplier: 1, smoothWheel: true, touchMultiplier: 0 });
+    /* SMOOTH-SCROLL (Lenis) — só no desktop/mouse e tier high|medium:
+       no toque a rolagem nativa é melhor; em low o lerp constante do
+       Lenis compete com o resto. reduced-motion já abortou o boot. */
+    if (window.Lenis && !window.matchMedia('(pointer: coarse)').matches && !perfIsLow()) {
+      const lenis = new Lenis({
+        lerp: perfTier() === 'medium' ? 0.14 : 0.09,
+        wheelMultiplier: 1,
+        smoothWheel: true,
+        touchMultiplier: 0,
+      });
       lenis.on('scroll', ScrollTrigger.update);
       gsap.ticker.add(t => lenis.raf(t * 1000));
       gsap.ticker.lagSmoothing(0);
@@ -1050,6 +1057,26 @@
     buildMouse();
     buildDynamic();
     bindRebuildHooks();
+
+    /* se o monitor de FPS cair o tier no meio da visita, reconstroi
+       a camada dinamica no modo mais leve e mata videos/Lenis. */
+    window.addEventListener('perf:degradou', (e) => {
+      const para = e.detail && e.detail.para;
+      document.querySelectorAll('video.pj-win__img, video.pj-card__img').forEach(v => {
+        try {
+          v.pause();
+          if (para === 'low') v.load();
+        } catch (err) {}
+      });
+      if (para === 'low' && window.lenis) {
+        try {
+          window.lenis.destroy();
+          window.lenis = null;
+          document.documentElement.classList.remove('lenis-on');
+        } catch (err) {}
+      }
+      if (document.documentElement.classList.contains('fx-on')) rebuild();
+    });
 
     ScrollTrigger.sort();
   }

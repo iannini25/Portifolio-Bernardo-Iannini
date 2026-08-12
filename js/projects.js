@@ -37,6 +37,24 @@ const pjCtx = { projects: [], featured: [], data: null };
 const pjReducedMotion = () =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+/* tier atual (js/perf-tier.js grava em <html data-perf>). Fallback
+   'high' se o script nao rodou — nao pune quem tem o site sem o gate. */
+const pjPerf = () =>
+  document.documentElement.dataset.perf || 'high';
+
+/* Videos de preview sao o maior custo da section (decode H.264 em
+   paralelo). A capa .webp e exatamente o que o usuario ve com o video
+   pausado no poster — visual identico.
+   low    → nenhum <video> (so img)
+   medium → video so na pilha featured
+   high   → featured + arquivo */
+const pjWantVideo = (where) => {
+  const t = pjPerf();
+  if (t === 'low') return false;
+  if (t === 'medium') return where === 'featured';
+  return true;
+};
+
 /* featured com QUALQUER parte na viewport (medido na hora — à prova de
    flag presa; um getBoundingClientRect a cada 5s é irrelevante) */
 function pjFeaturedVisible() {
@@ -127,11 +145,12 @@ function pjCaseHref(p) {
   return `project.html?slug=${encodeURIComponent(p.id)}`;
 }
 
-/* mídia do card/janela: preview animado (mp4/webm) quando existir,
-   senão a capa estática. O <video> nasce pausado; play/pause por
-   hover+viewport fica no scrollfx (só desktop). */
-function pjMediaHTML(p, imgClass) {
-  if (p.preview) {
+/* mídia do card/janela: preview animado (mp4/webm) quando existir
+   E o tier de performance permitir; senão a capa estática. O <video>
+   nasce pausado; play/pause por hover+viewport fica no scrollfx
+   (só desktop / só high|medium conforme o caso). */
+function pjMediaHTML(p, imgClass, where) {
+  if (p.preview && pjWantVideo(where)) {
     /* sites = preview é um scroll-through do site inteiro; roda mais devagar
        que o padrão (data-rate lido no scrollfx). Logos dos sistemas ficam 1x. */
     const rate = p.category === 'site' ? ' data-rate="0.5"' : '';
@@ -165,7 +184,7 @@ function buildFeaturedWindow(p, slot) {
     </div>
     <a class="pj-win__view ps-frame__view" href="${pjCaseHref(p)}" tabindex="${slot === 0 ? 0 : -1}"
        aria-label="${p.title}">
-      ${pjMediaHTML(p, 'pj-win__img')}
+      ${pjMediaHTML(p, 'pj-win__img', 'featured')}
       <span class="pj-win__veil" aria-hidden="true"></span>
     </a>
   `;
@@ -303,10 +322,13 @@ function pjPromote(id) {
   /* trava re-cliques até a coreografia CSS assentar (~.65s) */
   setTimeout(() => { pjSwapBusy = false; }, pjReducedMotion() ? 0 : 620);
 
-  /* o novo da frente toca desde o começo; a rotação passa a esperar
-     ESTE vídeo acabar (ou o tempo fixo, se a frente for cover estática) */
+  /* o novo da frente toca desde o começo — so se o tier permitir video.
+     Em low nao ha <video>; em medium/high o scrollfx tambem sincroniza. */
   const fv = pjFrontVideo();
-  if (fv) { try { fv.currentTime = 0; } catch (e) {} fv.play?.().catch(() => {}); }
+  if (fv && pjWantVideo('featured')) {
+    try { fv.currentTime = 0; } catch (e) {}
+    fv.play?.().catch(() => {});
+  }
   pjScheduleAdvance();
 }
 
@@ -427,7 +449,7 @@ function buildArchCard(p, data) {
     <a class="pj-card__frame ps-frame__view" href="${pjCaseHref(p)}"
        aria-label="${p.title} · ${caseLabels.viewCase || 'View case study'}">
       <span class="pj-card__view">
-        ${pjMediaHTML(p, 'pj-card__img')}
+        ${pjMediaHTML(p, 'pj-card__img', 'archive')}
       </span>
     </a>
     <div class="pj-card__cap">
@@ -549,9 +571,10 @@ function pjApplyFilter(slug) {
     if (Math.abs(delta) > 1) window.scrollBy(0, delta);
   };
 
-  /* touch/reduced-motion: troca instantânea ancorada (a coreografia 3D não
-     se lê em coluna única e o scroll ancorado é o certo no celular). */
-  const canAnim = window.gsap && !pjReducedMotion() && !pjTouchMode;
+  /* touch/reduced-motion/low|medium: troca instantânea ancorada.
+     A coreografia 3D (rotateX + scale) e cara pra compositor fraco
+     e o visual final e o mesmo — so a viagem muda. */
+  const canAnim = window.gsap && !pjReducedMotion() && !pjTouchMode && pjPerf() === 'high';
   if (!canAnim) {
     rebuild();
     reanchor();
@@ -669,6 +692,24 @@ function pjBindOnce(arch) {
     if (inkRaf) return;
     inkRaf = requestAnimationFrame(() => { inkRaf = null; pjMoveInk(); });
   }, { passive: true });
+
+  /* se o monitor de FPS/long-task cair o tier no meio da visita,
+     desliga play e (em low) para a auto-rotação cara da pilha.
+     O visual fica no poster — mesmo look, zero decode. */
+  window.addEventListener('perf:degradou', (e) => {
+    const para = e.detail && e.detail.para;
+    if (para === 'low') {
+      document.querySelectorAll('video.pj-win__img, video.pj-card__img').forEach(v => {
+        try { v.pause(); v.load(); } catch (err) {}
+      });
+      /* low: ainda troca capa a cada 6s (barato, so CSS class), mas
+         sem play de video. Se preferir congelar: pjClearAdvance(). */
+    } else if (para === 'medium') {
+      document.querySelectorAll('video.pj-card__img').forEach(v => {
+        try { v.pause(); } catch (err) {}
+      });
+    }
+  });
 }
 
 /* =========================================================
