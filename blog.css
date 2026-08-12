@@ -123,9 +123,8 @@
 
 .blog-identity-bento {
   display: grid;
-  /* 5 faixas: perfil | topo dos tópicos | base dos tópicos+featured |
-     inicio do bloco baixo | resto do bloco baixo.
-     Rows 2 e 3 iguais → featured começa exatamente no meio dos tópicos. */
+  /* Featured: DO TOPO (altura do Autor) ATE O MEIO dos Tópicos.
+     Rows 2 e 3 iguais → fim da row 2 = metade vertical dos tópicos. */
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: auto minmax(6.75rem, 1fr) minmax(6.75rem, 1fr) minmax(10rem, auto) minmax(12rem, 1fr);
   gap: 14px;
@@ -287,13 +286,14 @@
   font-weight: 700;
 }
 
-/* 2) Featured — cols 2-3, alinhado ao MEIO do tile Tópicos (row 3) */
+/* 2) Featured — do TOPO (row 1, alinhado ao Autor) ate o MEIO dos
+   Tópicos (fim da row 2). Center + stats ficam abaixo. */
 .bid-featured {
   grid-column: 2 / 4;
-  grid-row: 3 / 4;
+  grid-row: 1 / 3;
   padding: 0;
   cursor: pointer;
-  min-height: 9rem;
+  min-height: 0;
 }
 
 .bid-featured-inner {
@@ -334,7 +334,8 @@
 .bid-featured-content {
   position: relative;
   z-index: 1;
-  max-width: 90%;
+  max-width: 92%;
+  padding-bottom: 2px; /* folga pros descendentes do titulo */
 }
 
 .bid-featured-badge {
@@ -359,14 +360,15 @@
   margin: 0 0 6px;
   font-size: clamp(18px, 2.2vw, 26px);
   font-weight: 800;
-  line-height: 1.2;
+  line-height: 1.25;
   letter-spacing: -.01em;
   color: #fff;
-  /* titulo completo — quebra em ate 3 linhas sem sumir no meio */
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  /* evita corte no meio da ultima linha (descenders) */
+  padding-bottom: .12em;
 }
 
 .bid-featured-meta {
@@ -731,7 +733,7 @@
   left: 0;
   right: 0;
   z-index: 3;
-  padding: 16px;
+  padding: 20px 16px 18px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -739,7 +741,7 @@
   transform: translateY(6px);
   transition: opacity .25s ease, transform .25s ease;
   pointer-events: none;
-  background: linear-gradient(180deg, transparent 0%, rgba(6, 8, 7, .88) 55%);
+  background: linear-gradient(180deg, transparent 0%, rgba(6, 8, 7, .9) 42%);
 }
 
 .bid-center.has-image .bid-center-meta,
@@ -752,13 +754,13 @@
   font-size: 14px;
   font-weight: 800;
   color: #fff;
-  line-height: 1.3;
+  line-height: 1.35;
   letter-spacing: -.01em;
-  /* sem line-clamp agressivo — titulo completo, quebra natural */
-  display: block;
-  overflow: visible;
-  max-height: none;
-  -webkit-line-clamp: unset;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  padding-bottom: .1em;
 }
 
 .bid-center-meta-sub {
@@ -1114,8 +1116,8 @@
 .blog-bento {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  /* rows mais altas: titulo longo + meta cabem sem cortar */
-  grid-auto-rows: minmax(260px, auto);
+  /* row alta o bastante pra meta + titulo de 3 linhas + padding */
+  grid-auto-rows: minmax(300px, auto);
   gap: 16px;
 }
 
@@ -1131,6 +1133,9 @@
               border-color .32s cubic-bezier(.22, .61, .36, 1),
               box-shadow .32s cubic-bezier(.22, .61, .36, 1);
   isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 /* CONTORNO QUE ACENDE NA DIRECAO DO CURSOR — mesmo efeito dos cards de
@@ -1206,22 +1211,24 @@
 
 .blog-post-content {
   position: relative;
-  z-index: 1;
-  height: 100%;
+  z-index: 2;
+  /* NÃO height:100% — isso + overflow:hidden no card cortava o titulo
+     quando o <a> interno brigava com -webkit-box no h3. */
+  margin-top: auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 22px;
-  /* impede o bloco de texto de ser espremido pelo cover absoluto */
-  min-height: 0;
-  gap: 0;
+  gap: 8px;
+  padding: 20px 20px 22px;
+  box-sizing: border-box;
 }
 
 .blog-post-meta {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 10px;
+  margin: 0;
   flex-wrap: wrap;
   flex-shrink: 0;
 }
@@ -1263,15 +1270,25 @@
   margin: 0;
   font-weight: 800;
   letter-spacing: -.01em;
-  line-height: 1.2;
-  color: var(--text);
-  /* titulo SEMPRE visivel e prioritario — ate 4 linhas, sem depender
-     de excerpt/subtitulo. flex-shrink:0 evita o flex roubar altura. */
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  line-height: 1.3;
+  color: #fff;
+  /* clamp no <a> interno — no h3 o -webkit-box com filho <a> cortava
+     o texto no meio da letra (so aparecia a ponta no rodape do card). */
+  display: block;
+  overflow: visible;
   flex-shrink: 0;
+}
+
+.blog-post-title a {
+  color: inherit;
+  text-decoration: none;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  line-height: 1.3;
+  /* folga pros descendentes da ultima linha */
+  padding-bottom: .15em;
 }
 
 .blog-post-excerpt {
@@ -1279,45 +1296,42 @@
   color: var(--text-soft);
   font-size: 13px;
   line-height: 1.5;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  /* Colapsado no fluxo: nao reserva altura (titulo ganha espaco) e
-     nao cobre o titulo no hover (absolute cobria as ultimas linhas). */
-  max-height: 0;
-  opacity: 0;
-  pointer-events: none;
-  transform: none;
-  transition: opacity .28s cubic-bezier(.22, .61, .36, 1),
-              max-height .28s cubic-bezier(.22, .61, .36, 1),
-              margin .28s cubic-bezier(.22, .61, .36, 1);
+  display: none; /* titulo nao depende de subtitulo; excerpt so no featured */
 }
+
+.blog-post-card--featured .blog-post-excerpt,
 .blog-post-card:hover .blog-post-excerpt,
 .blog-post-card:focus-within .blog-post-excerpt {
-  max-height: 4.5em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
   opacity: 1;
-  margin-top: 8px;
+  max-height: none;
+  margin: 0;
   pointer-events: auto;
 }
-/* sem hover (toque): excerpt sempre no fluxo */
+
+.blog-post-card--featured .blog-post-excerpt {
+  -webkit-line-clamp: 3;
+  font-size: 15px;
+}
+
 @media (hover: none) {
   .blog-post-excerpt {
-    max-height: none;
-    opacity: 1;
-    margin-top: 8px;
-    pointer-events: auto;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
   }
 }
 
-/* (a regra antiga de max-height saiu: o revelar agora e por opacity com
-   espaco reservado, e cobre hover, focus-within e toque) */
-
 .blog-post-tags {
-  margin-top: 12px;
+  margin: 0;
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
 .blog-post-tag {
@@ -1345,41 +1359,39 @@
    2 colunas x 2 linhas de grid vazias ao lado. Com um post so, ocupa a largura
    toda. E exatamente o layout do dia em que o primeiro post e publicado. */
 .blog-bento > .blog-post-card--featured:only-child { grid-column: span 6; }
-.blog-post-card--featured .blog-post-title { font-size: clamp(24px, 3vw, 36px); }
-.blog-post-card--featured .blog-post-excerpt {
-  font-size: 15px;
-  /* featured: excerpt sempre visivel */
-  max-height: none;
-  opacity: 1;
-  margin-top: 8px;
-  pointer-events: auto;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-}
+.blog-post-card--featured .blog-post-title,
+.blog-post-card--featured .blog-post-title a { font-size: clamp(22px, 2.8vw, 34px); }
 
 .blog-post-card--tall {
   grid-column: span 2;
   grid-row: span 2;
 }
-.blog-post-card--tall .blog-post-title { font-size: 22px; }
+.blog-post-card--tall .blog-post-title,
+.blog-post-card--tall .blog-post-title a { font-size: 20px; }
 
 .blog-post-card--wide {
   grid-column: span 3;
   grid-row: span 1;
+  min-height: 300px;
 }
-.blog-post-card--wide .blog-post-title { font-size: 19px; }
+.blog-post-card--wide .blog-post-title,
+.blog-post-card--wide .blog-post-title a { font-size: 18px; }
 
 .blog-post-card--normal {
   grid-column: span 2;
   grid-row: span 1;
+  min-height: 300px;
 }
-.blog-post-card--normal .blog-post-title { font-size: 17px; }
+.blog-post-card--normal .blog-post-title,
+.blog-post-card--normal .blog-post-title a { font-size: 17px; }
 
 .blog-post-card--full {
   grid-column: span 6;
   grid-row: span 1;
+  min-height: 280px;
 }
-.blog-post-card--full .blog-post-title { font-size: 22px; }
+.blog-post-card--full .blog-post-title,
+.blog-post-card--full .blog-post-title a { font-size: 20px; }
 
 .blog-post-featured-badge {
   position: absolute;
@@ -1437,17 +1449,22 @@
 @media (max-width: 640px) {
   .blog-bento {
     grid-template-columns: 1fr;
-    grid-auto-rows: minmax(220px, auto);
+    grid-auto-rows: minmax(260px, auto);
     gap: 12px;
   }
   .blog-post-card--featured,
   .blog-post-card--tall,
   .blog-post-card--normal,
   .blog-post-card--wide,
-  .blog-post-card--full { grid-column: span 1; grid-row: span 1; }
-  .blog-post-card--featured { grid-row: span 2; min-height: 320px; }
-  .blog-post-card--featured .blog-post-title { font-size: clamp(20px, 6vw, 24px); }
-  .blog-post-title { -webkit-line-clamp: 5; font-size: 16px; }
+  .blog-post-card--full {
+    grid-column: span 1;
+    grid-row: span 1;
+    min-height: 260px;
+  }
+  .blog-post-card--featured { grid-row: span 2; min-height: 340px; }
+  .blog-post-card--featured .blog-post-title,
+  .blog-post-card--featured .blog-post-title a { font-size: clamp(20px, 6vw, 24px); }
+  .blog-post-title a { -webkit-line-clamp: 4; font-size: 16px; }
 }
 
 /* Estado vazio */
