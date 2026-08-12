@@ -932,7 +932,14 @@
       const syncWinVideos = () => winVideos.forEach(v => {
         const isFront = stageInView &&
           !!v.closest('.pj-win')?.classList.contains('is-front');
-        if (isFront) { if (v.paused) v.play?.().catch(() => {}); }
+        if (isFront) {
+          if (v.paused) {
+            const play = () => { v.play?.().catch(() => {}); };
+            if (typeof window.biWhenAssetReady === 'function') {
+              window.biWhenAssetReady(v.getAttribute('src') || '', play);
+            } else play();
+          }
+        }
         else if (!v.paused) v.pause?.();
       });
       dynamicKills.push(ScrollTrigger.create({
@@ -949,22 +956,66 @@
       dynamicKills.push({ kill: () => winObserver.disconnect() });
     }
 
-    /* previews do ARQUIVO: so em high. Em medium/low a capa .webp
-       ja e o visual do poster — N videos a menos na viewport. */
+    /* previews do ARQUIVO: efeitos intactos, mas no maximo UM video
+       tocando por vez (o mais perto do centro da viewport). Decodificar
+       4–6 H.264 juntos e o que faz notebook potente engasgar aqui. */
     if (perfIsHigh()) {
       const cardVideos = gsap.utils.toArray(
         document.querySelectorAll('.pj-arch video.pj-card__img'));
       if (cardVideos.length) {
-        const cardIO = new IntersectionObserver(entries => entries.forEach(en => {
-          const v = en.target;
-          if (en.isIntersecting) {
-            const r = parseFloat(v.dataset.rate); if (r) v.playbackRate = r;
-            if (v.paused) v.play?.().catch(() => {});
-          }
-          else if (!v.paused) v.pause?.();
-        }), { rootMargin: '80px 0px' });
+        const visible = new Set();
+        const syncArchiveVideos = () => {
+          let best = null;
+          let bestDist = Infinity;
+          const midY = (window.innerHeight || 0) * 0.5;
+          visible.forEach(v => {
+            const r = v.getBoundingClientRect();
+            if (!r.height) return;
+            const dist = Math.abs((r.top + r.bottom) * 0.5 - midY);
+            if (dist < bestDist) { bestDist = dist; best = v; }
+          });
+          cardVideos.forEach(v => {
+            if (v === best) {
+              const rate = parseFloat(v.dataset.rate);
+              if (rate) v.playbackRate = rate;
+              if (v.paused) {
+                const play = () => { v.play?.().catch(() => {}); };
+                if (typeof window.biWhenAssetReady === 'function') {
+                  window.biWhenAssetReady(v.getAttribute('src') || '', play);
+                } else play();
+              }
+            } else if (!v.paused) {
+              v.pause?.();
+            }
+          });
+        };
+        const cardIO = new IntersectionObserver(entries => {
+          entries.forEach(en => {
+            if (en.isIntersecting) visible.add(en.target);
+            else {
+              visible.delete(en.target);
+              if (!en.target.paused) en.target.pause?.();
+            }
+          });
+          syncArchiveVideos();
+        }, { rootMargin: '40px 0px', threshold: [0, 0.2, 0.5, 0.8] });
         cardVideos.forEach(v => cardIO.observe(v));
-        dynamicKills.push({ kill: () => cardIO.disconnect() });
+        let scrollRaf = 0;
+        const onScrollSync = () => {
+          if (scrollRaf) return;
+          scrollRaf = requestAnimationFrame(() => {
+            scrollRaf = 0;
+            syncArchiveVideos();
+          });
+        };
+        window.addEventListener('scroll', onScrollSync, { passive: true });
+        dynamicKills.push({
+          kill: () => {
+            cardIO.disconnect();
+            window.removeEventListener('scroll', onScrollSync);
+            if (scrollRaf) cancelAnimationFrame(scrollRaf);
+          }
+        });
       }
     }
   }

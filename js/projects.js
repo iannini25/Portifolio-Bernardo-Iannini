@@ -327,7 +327,10 @@ function pjPromote(id) {
   const fv = pjFrontVideo();
   if (fv && pjWantVideo('featured')) {
     try { fv.currentTime = 0; } catch (e) {}
-    fv.play?.().catch(() => {});
+    const play = () => { fv.play?.().catch(() => {}); };
+    if (typeof window.biWhenAssetReady === 'function') {
+      window.biWhenAssetReady(fv.getAttribute('src') || '', play);
+    } else play();
   }
   pjScheduleAdvance();
 }

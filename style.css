@@ -8604,3 +8604,31 @@ html[data-perf="medium"] .tl-card {
   -webkit-backdrop-filter: blur(4px);
           backdrop-filter: blur(4px);
 }
+
+/* ============================================================
+   SMART BOOT — barra lime no topo (so cache frio / 1a visita)
+   ============================================================ */
+#bi-smart-boot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 10000;
+  pointer-events: none;
+  background: transparent;
+}
+#bi-smart-boot .bi-smart-boot__fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--green), var(--lime));
+  box-shadow: 0 0 12px rgba(163, 230, 53, .45);
+  transition: width .35s cubic-bezier(.22, .61, .36, 1);
+}
+#bi-smart-boot.is-done {
+  opacity: 0;
+  transition: opacity .4s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  #bi-smart-boot { display: none; }
+}
