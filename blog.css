@@ -123,14 +123,67 @@
 
 .blog-identity-bento {
   display: grid;
-  /* Featured: DO TOPO (altura do Autor) ATE O MEIO dos Tópicos.
-     Rows 2 e 3 iguais → fim da row 2 = metade vertical dos tópicos. */
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto minmax(6.75rem, 1fr) minmax(6.75rem, 1fr) minmax(10rem, auto) minmax(12rem, 1fr);
+  /* esquerda (1) | direita (2) — a direita estica na altura da esquerda */
+  grid-template-columns: 1fr 2fr;
   gap: 14px;
   max-width: 1180px;
   margin: 0 auto;
   align-items: stretch;
+}
+
+/* Coluna esquerda: tamanhos ORIGINAIS — perfil ~9rem, tópicos auto, local ~9rem.
+   Nada de stretch forçado. */
+.bid-col-left {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.bid-col-left .bid-profile {
+  flex: 0 0 auto;
+  min-height: 9rem;
+}
+
+.bid-col-left .bid-topics {
+  flex: 0 0 auto; /* conteudo define a altura — nao cresce */
+}
+
+.bid-col-left .bid-location {
+  flex: 0 0 auto;
+  min-height: 9rem;
+}
+
+/* Coluna direita: 50/50. Como perfil e local tem a mesma altura base,
+   a metade = exatamente o meio dos Tópicos. Featured desce do topo;
+   center+stats sobem do fundo ate esse meio. Zero buraco. */
+.bid-col-right {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+  min-height: 100%;
+}
+
+.bid-col-right .bid-featured {
+  flex: 1 1 0;
+  min-height: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.bid-row-bottom {
+  flex: 1 1 0;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.bid-row-bottom .bid-center,
+.bid-row-bottom .bid-stats {
+  min-height: 0;
+  height: 100%;
 }
 
 /* Tile base — mesmo padrão do About: rounded, borda card, hover violet → green */
@@ -182,10 +235,8 @@
   .bid-tile:not(.bid-center)::after { transition: none; }
 }
 
-/* 1) Perfil — avatar com sweep + nome (canto sup. esq.) */
+/* 1) Perfil — avatar com sweep + nome */
 .bid-profile {
-  grid-column: 1 / 2;
-  grid-row: 1 / 2;
   display: flex;
   align-items: center;
   gap: 14px;
@@ -286,14 +337,10 @@
   font-weight: 700;
 }
 
-/* 2) Featured — do TOPO (row 1, alinhado ao Autor) ate o MEIO dos
-   Tópicos (fim da row 2). Center + stats ficam abaixo. */
+/* 2) Featured — metade de cima da coluna direita */
 .bid-featured {
-  grid-column: 2 / 4;
-  grid-row: 1 / 3;
   padding: 0;
   cursor: pointer;
-  min-height: 0;
 }
 
 .bid-featured-inner {
@@ -421,10 +468,8 @@
   letter-spacing: .04em;
 }
 
-/* 3) Stats — coluna direita, acompanha o bloco baixo (abaixo do featured) */
+/* 3) Stats — metade de baixo, coluna direita */
 .bid-stats {
-  grid-column: 3 / 4;
-  grid-row: 4 / 6;
   display: flex;
   flex-direction: column;
 }
@@ -493,10 +538,8 @@
   to { stroke-dashoffset: 0; }
 }
 
-/* 4) Localização — sobe junto com o bloco baixo da direita */
+/* 4) Localização — altura original (~9rem), sem stretch */
 .bid-location {
-  grid-column: 1 / 2;
-  grid-row: 4 / 6;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -565,10 +608,8 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* 5) Tópicos — col 1, rows 2-3 (metade de cima + metade do featured) */
+/* 5) Tópicos — altura pelo conteudo (tamanho original) */
 .bid-topics {
-  grid-column: 1 / 2;
-  grid-row: 2 / 4;
   display: flex;
   flex-direction: column;
 }
@@ -640,17 +681,14 @@
 
 .bid-tag--big { font-size: 12px; padding: 6px 12px; }
 
-/* 6) Centro — preview, acompanha featured (abaixo dele) */
+/* 6) Centro — preview na metade de baixo */
 .bid-center {
-  grid-column: 2 / 3;
-  grid-row: 4 / 6;
   padding: 0;
   display: grid;
   place-items: center;
   overflow: hidden;
   border-radius: 22px;
   background: linear-gradient(135deg, rgba(15, 25, 20, .85), rgba(8, 18, 12, .95));
-  min-height: 240px;
 }
 
 /* Grid tech sutil de fundo */
@@ -775,30 +813,30 @@
 /* Responsivo bento identidade */
 @media (max-width: 900px) {
   .blog-identity-bento {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
   }
-  .bid-profile  { order: 1; grid-column: span 2; grid-row: auto; min-height: 110px; }
-  .bid-featured { order: 2; grid-column: span 2; grid-row: auto; min-height: 200px; }
-  .bid-topics   { order: 3; grid-column: span 1; grid-row: auto; min-height: 200px; }
-  .bid-location { order: 4; grid-column: span 1; grid-row: auto; min-height: 160px; }
-  .bid-center   { order: 5; grid-column: span 2; grid-row: auto; min-height: 220px; }
-  .bid-stats    { order: 6; grid-column: span 2; grid-row: auto; }
+  .bid-col-left,
+  .bid-col-right,
+  .bid-row-bottom {
+    display: contents; /* tiles entram no flex pai e respeitam order */
+  }
+  .bid-profile  { order: 1; min-height: 110px; }
+  .bid-featured { order: 2; min-height: 200px; flex: none; }
+  .bid-topics   { order: 3; min-height: 200px; }
+  .bid-location { order: 4; min-height: 160px; }
+  .bid-center   { order: 5; min-height: 220px; }
+  .bid-stats    { order: 6; }
 }
 
 @media (max-width: 540px) {
-  .blog-identity-bento { grid-template-columns: 1fr; }
-  /* featured primeiro no mobile — hierarquia do bento */
   .bid-featured { order: 1; }
   .bid-profile  { order: 2; }
   .bid-topics   { order: 3; }
   .bid-location { order: 4; }
   .bid-center   { order: 5; }
   .bid-stats    { order: 6; }
-  .bid-featured, .bid-stats, .bid-topics, .bid-location, .bid-center, .bid-profile {
-    grid-column: span 1;
-    grid-row: auto;
-  }
 }
 
 /* Tablet intermediario: toolbar empilha sem estourar */

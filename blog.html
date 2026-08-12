@@ -242,22 +242,52 @@
     <section class="blog-identity-section">
       <div class="blog-identity-bento" id="blogIdentity">
 
-        <!-- 1) Perfil -->
-        <article class="bid-tile bid-profile">
-          <figure class="bid-avatar" aria-hidden="true">
-            <img class="bid-avatar-img bid-avatar-img--a" src="/img/eufoto1.webp" alt="" draggable="false" width="240" height="240"/>
-            <img class="bid-avatar-img bid-avatar-img--b" src="/img/eufoto2.webp" alt="" draggable="false" width="240" height="240"/>
-            <span class="bid-avatar-sweep" aria-hidden="true"></span>
-          </figure>
-          <div class="bid-profile-text">
-            <p class="bid-kicker" data-i18n="blog.profile.kicker">Author</p>
-            <h3 class="bid-name">Bernardo<br><span>Iannini</span></h3>
-          </div>
-        </article>
+        <!-- Coluna esquerda: tamanhos originais (perfil / tópicos / local) -->
+        <div class="bid-col-left">
+          <article class="bid-tile bid-profile">
+            <figure class="bid-avatar" aria-hidden="true">
+              <img class="bid-avatar-img bid-avatar-img--a" src="/img/eufoto1.webp" alt="" draggable="false" width="240" height="240"/>
+              <img class="bid-avatar-img bid-avatar-img--b" src="/img/eufoto2.webp" alt="" draggable="false" width="240" height="240"/>
+              <span class="bid-avatar-sweep" aria-hidden="true"></span>
+            </figure>
+            <div class="bid-profile-text">
+              <p class="bid-kicker" data-i18n="blog.profile.kicker">Author</p>
+              <h3 class="bid-name">Bernardo<br><span>Iannini</span></h3>
+            </div>
+          </article>
 
-        <!-- 2) Featured post -->
-        <article class="bid-tile bid-featured" id="bidFeatured" data-tile="featured">
-          <!--BUILD:FEATURED-->
+          <article class="bid-tile bid-topics" data-tile="topics">
+            <div class="bid-tile-head">
+              <h3 class="bid-tile-title" data-i18n="blog.topics.title">Topics</h3>
+              <p class="bid-tile-sub" data-i18n="blog.topics.sub">what I write about</p>
+            </div>
+            <div class="bid-topics-rotator" id="bidTopicRotator" aria-hidden="true">
+              <span class="bid-topic-current"></span>
+            </div>
+            <div class="bid-tags-cloud" id="blogTagCloud">
+              <!--BUILD:TAG_CLOUD-->
+<p style="color:var(--text-hint);font-size:12px;">Nenhuma tag ainda.</p>
+<!--/BUILD:TAG_CLOUD-->
+            </div>
+          </article>
+
+          <article class="bid-tile bid-location" data-tile="location">
+            <div class="bid-location-glow" aria-hidden="true"></div>
+            <div class="bid-location-head">
+              <span class="bid-location-pulse" aria-hidden="true"></span>
+              <span class="bid-location-status" data-i18n="blog.location.status">writing from</span>
+            </div>
+            <p class="bid-location-place">Belo<br>Horizonte</p>
+            <p class="bid-location-time" id="bidClock">GMT-3</p>
+          </article>
+        </div>
+
+        <!-- Coluna direita: metade de cima = featured (topo → meio dos tópicos);
+             metade de baixo = center + stats (meio dos tópicos → fundo).
+             Perfil e local tem a mesma altura base → meio da coluna = meio dos tópicos. -->
+        <div class="bid-col-right">
+          <article class="bid-tile bid-featured" id="bidFeatured" data-tile="featured">
+            <!--BUILD:FEATURED-->
 <div class="bid-featured-inner bid-featured-inner--empty">
       <div class="bid-featured-content">
         <p class="bid-kicker" data-i18n="blog.featured.spotlight">Spotlight</p>
@@ -265,82 +295,57 @@
       </div>
     </div>
 <!--/BUILD:FEATURED-->
-        </article>
+          </article>
 
-        <!-- 3) Stats -->
-        <article class="bid-tile bid-stats" data-tile="stats">
-          <div class="bid-tile-head">
-            <h3 class="bid-tile-title" data-i18n="blog.stats.title">By the numbers</h3>
-            <p class="bid-tile-sub" data-i18n="blog.stats.sub">what's happening here</p>
-          </div>
-          <div class="bid-stats-grid">
-            <div class="bid-stat">
-              <span class="bid-stat-value" id="stat-posts" data-count="0">0</span>
-              <span class="bid-stat-label" data-i18n="blog.stats.posts">posts</span>
-            </div>
-            <div class="bid-stat">
-              <span class="bid-stat-value" id="stat-categories" data-count="0">0</span>
-              <span class="bid-stat-label" data-i18n="blog.stats.categories">categories</span>
-            </div>
-            <div class="bid-stat">
-              <span class="bid-stat-value" id="stat-readtime" data-count="0">0</span>
-              <span class="bid-stat-label" data-i18n="blog.stats.readtime">min total</span>
-            </div>
-          </div>
-          <svg class="bid-stats-spark" viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true">
-            <defs>
-              <linearGradient id="sparkGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="var(--green)" stop-opacity="0"/>
-                <stop offset="50%" stop-color="var(--green)" stop-opacity="1"/>
-                <stop offset="100%" stop-color="var(--lime)" stop-opacity="1"/>
-              </linearGradient>
-            </defs>
-            <polyline points="0,30 20,28 40,22 60,25 80,18 100,20 120,12 140,15 160,8 180,10 200,4"
-              fill="none" stroke="url(#sparkGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </article>
+          <div class="bid-row-bottom">
+            <article class="bid-tile bid-center" id="bidCenter">
+              <div class="bid-center-img" id="bidCenterImg" aria-hidden="true"></div>
+              <div class="bid-center-grid" aria-hidden="true"></div>
+              <div class="bid-center-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M4 4h16v16H4z" stroke-linejoin="round"/>
+                  <path d="M4 16l4-4 4 4 4-4 4 4" stroke-linejoin="round"/>
+                  <circle cx="9" cy="9" r="1.5"/>
+                </svg>
+                <span data-i18n="blog.center.hint">hover any tile</span>
+              </div>
+              <div class="bid-center-meta" id="bidCenterMeta"></div>
+            </article>
 
-        <!-- 4) Localização -->
-        <article class="bid-tile bid-location" data-tile="location">
-          <div class="bid-location-glow" aria-hidden="true"></div>
-          <div class="bid-location-head">
-            <span class="bid-location-pulse" aria-hidden="true"></span>
-            <span class="bid-location-status" data-i18n="blog.location.status">writing from</span>
+            <article class="bid-tile bid-stats" data-tile="stats">
+              <div class="bid-tile-head">
+                <h3 class="bid-tile-title" data-i18n="blog.stats.title">By the numbers</h3>
+                <p class="bid-tile-sub" data-i18n="blog.stats.sub">what's happening here</p>
+              </div>
+              <div class="bid-stats-grid">
+                <div class="bid-stat">
+                  <span class="bid-stat-value" id="stat-posts" data-count="0">0</span>
+                  <span class="bid-stat-label" data-i18n="blog.stats.posts">posts</span>
+                </div>
+                <div class="bid-stat">
+                  <span class="bid-stat-value" id="stat-categories" data-count="0">0</span>
+                  <span class="bid-stat-label" data-i18n="blog.stats.categories">categories</span>
+                </div>
+                <div class="bid-stat">
+                  <span class="bid-stat-value" id="stat-readtime" data-count="0">0</span>
+                  <span class="bid-stat-label" data-i18n="blog.stats.readtime">min total</span>
+                </div>
+              </div>
+              <svg class="bid-stats-spark" viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true">
+                <defs>
+                  <linearGradient id="sparkGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="var(--green)" stop-opacity="0"/>
+                    <stop offset="50%" stop-color="var(--green)" stop-opacity="1"/>
+                    <stop offset="100%" stop-color="var(--lime)" stop-opacity="1"/>
+                  </linearGradient>
+                </defs>
+                <polyline points="0,30 20,28 40,22 60,25 80,18 100,20 120,12 140,15 160,8 180,10 200,4"
+                  fill="none" stroke="url(#sparkGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </article>
           </div>
-          <p class="bid-location-place">Belo<br>Horizonte</p>
-          <p class="bid-location-time" id="bidClock">GMT-3</p>
-        </article>
+        </div>
 
-        <!-- 5) Tópicos -->
-        <article class="bid-tile bid-topics" data-tile="topics">
-          <div class="bid-tile-head">
-            <h3 class="bid-tile-title" data-i18n="blog.topics.title">Topics</h3>
-            <p class="bid-tile-sub" data-i18n="blog.topics.sub">what I write about</p>
-          </div>
-          <div class="bid-topics-rotator" id="bidTopicRotator" aria-hidden="true">
-            <span class="bid-topic-current"></span>
-          </div>
-          <div class="bid-tags-cloud" id="blogTagCloud">
-            <!--BUILD:TAG_CLOUD-->
-<p style="color:var(--text-hint);font-size:12px;">Nenhuma tag ainda.</p>
-<!--/BUILD:TAG_CLOUD-->
-          </div>
-        </article>
-
-        <!-- 6) Centro -->
-        <article class="bid-tile bid-center" id="bidCenter">
-          <div class="bid-center-img" id="bidCenterImg" aria-hidden="true"></div>
-          <div class="bid-center-grid" aria-hidden="true"></div>
-          <div class="bid-center-fallback">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M4 4h16v16H4z" stroke-linejoin="round"/>
-              <path d="M4 16l4-4 4 4 4-4 4 4" stroke-linejoin="round"/>
-              <circle cx="9" cy="9" r="1.5"/>
-            </svg>
-            <span data-i18n="blog.center.hint">hover any tile</span>
-          </div>
-          <div class="bid-center-meta" id="bidCenterMeta"></div>
-        </article>
       </div>
     </section>
 
