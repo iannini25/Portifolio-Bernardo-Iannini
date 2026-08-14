@@ -101,6 +101,7 @@
       cover: 'cover', coverAlt: 'cover_alt', category: 'category',
       author: 'author', tags: 'tags', images: 'images', content: 'content',
       status: 'status', featured: 'featured',
+      createdAt: 'created_at',
     };
     for (const k in map) {
       if (p[k] !== undefined) row[map[k]] = p[k];

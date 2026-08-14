@@ -163,6 +163,20 @@ const formatDate = (iso) =>
 const formatDateTime = (iso) =>
   new Date(iso).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 
+/* datetime-local trabalha em horário local (YYYY-MM-DDTHH:mm).
+   O banco e o site usam ISO UTC — conversão nas duas pontas. */
+const pad2 = (n) => String(n).padStart(2, '0');
+const toDatetimeLocal = (iso) => {
+  const d = iso ? new Date(iso) : new Date();
+  if (Number.isNaN(d.getTime())) return toDatetimeLocal();
+  return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}T${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+};
+const fromDatetimeLocal = (value) => {
+  if (!value) return null;
+  const d = new Date(value);
+  return Number.isNaN(d.getTime()) ? null : d.toISOString();
+};
+
 const estimateReadTime = (content) =>
   Math.max(1, Math.ceil(((content || '').trim().split(/\s+/).length) / 200));
 
@@ -714,7 +728,7 @@ function postsTableRow(p, views) {
       </td>
       <td>${p.category ? `<span class="blog-post-tag">${escapeHtml(p.category)}</span>` : '<span class="admin-table-dash">—</span>'}</td>
       <td><span class="admin-table-status admin-table-status--${statusClass(p.status)}">${escapeHtml(p.status)}</span></td>
-      <td class="is-meta is-nowrap">${formatDateTime(p.updatedAt || p.createdAt)}</td>
+      <td class="is-meta is-nowrap">${formatDateTime(p.createdAt)}</td>
       <td class="is-views is-nowrap">${v}</td>
       <td class="is-right is-nowrap">
         <div class="admin-table-actions">
@@ -745,7 +759,7 @@ function renderPostsList() {
                <th>Título</th>
                <th>Categoria</th>
                <th>Status</th>
-               <th>Atualizado</th>
+               <th>Publicação</th>
                <th>Views</th>
                <th class="is-right">Ações</th>
              </tr>
@@ -1060,9 +1074,12 @@ console.log("código");
             </select>
           </div>
 
-          <div class="admin-field" id="scheduleField" ${f.status === 'scheduled' ? '' : 'hidden'}>
-            <label for="f-scheduledAt">Data de publicação</label>
-            <input type="datetime-local" id="f-scheduledAt" name="scheduledAt" value="${escapeHtml(f.scheduledAt ? String(f.scheduledAt).slice(0, 16) : '')}"/>
+          <div class="admin-field">
+            <label for="f-publishedAt">
+              Data de publicação
+              <span class="admin-field-hint">aparece no post · passado ou futuro</span>
+            </label>
+            <input type="datetime-local" id="f-publishedAt" name="publishedAt" value="${escapeHtml(toDatetimeLocal(f.createdAt))}"/>
           </div>
 
           <div class="admin-field admin-field-row">
@@ -1178,7 +1195,7 @@ console.log("código");
               <h4 class="admin-field-section-title">Metadados</h4>
             </div>
             <div class="admin-meta">
-              <span><strong>Criado:</strong> ${formatDateTime(f.createdAt)}</span>
+              <span><strong>Publicação:</strong> ${formatDateTime(f.createdAt)}</span>
               <span><strong>Atualizado:</strong> ${formatDateTime(f.updatedAt || f.createdAt)}</span>
               <span><strong>ID:</strong> <code>${escapeHtml(f.id)}</code></span>
             </div>
@@ -1269,7 +1286,7 @@ function setupEditorEvents() {
   const helpBox = document.getElementById('helpBox');
   const coverInput = document.getElementById('f-cover');
   const statusSelect = document.getElementById('f-status');
-  const scheduleField = document.getElementById('scheduleField');
+  const publishedAtInput = document.getElementById('f-publishedAt');
   const tagsInput = document.getElementById('f-tags-input');
   const tagsContainer = document.getElementById('tagsContainer');
   const wordCount = document.getElementById('wordCount');
@@ -1549,12 +1566,11 @@ function setupEditorEvents() {
     }
   });
 
-  // Status toggle scheduled
+  // Status: agendamento ainda não publica sozinho (vira rascunho).
+  // A data de publicação é outro campo — grava em created_at, não agenda.
   statusSelect.addEventListener('change', () => {
-    scheduleField.hidden = statusSelect.value !== 'scheduled';
-    // Aviso honesto: agendamento ainda não publica sozinho nem grava a data.
     if (statusSelect.value === 'scheduled') {
-      toast('Agendamento ainda não está ativo: o post será salvo como rascunho e a data não fica gravada.', 'error');
+      toast('Agendamento ainda não está ativo: o post será salvo como rascunho. A data de publicação acima continua valendo quando você publicar.', 'error');
     }
   });
 
@@ -1787,7 +1803,6 @@ function setupEditorEvents() {
       const st = String(data.status).toLowerCase();
       if (['draft', 'published', 'scheduled'].includes(st)) {
         statusSelect.value = st;
-        scheduleField.hidden = st !== 'scheduled';
         applied.push('status');
       }
     }
@@ -1824,8 +1839,13 @@ function setupEditorEvents() {
 
     /* id e datas do arquivo ficam guardados só pra voltar no download.
        Nunca sobrescrevem state.form.id: o id do banco manda no CRUD. */
-    if (data.id) state.form.importedId = String(data.id);
-    if (data.date) state.form.importedDate = String(data.date);
+    if (data.date) {
+      state.form.importedDate = String(data.date);
+      if (publishedAtInput) {
+        publishedAtInput.value = toDatetimeLocal(data.date);
+        applied.push('data');
+      }
+    }
     if (data.updated) state.form.importedUpdated = String(data.updated);
 
     if (Array.isArray(data.tags)) {
@@ -2028,7 +2048,7 @@ function gatherFormData() {
     category: fd.get('category') || 'Outro',
     author: fd.get('author')?.trim() || 'Bernardo Iannini',
     status: fd.get('status') || 'draft',
-    scheduledAt: fd.get('scheduledAt') ? new Date(fd.get('scheduledAt')).toISOString() : null,
+    publishedAt: fromDatetimeLocal(fd.get('publishedAt')),
     featured: !!fd.get('featured'),
     content: fd.get('content') || '',
   };
@@ -2041,7 +2061,7 @@ function gatherExportPost() {
   const data = gatherFormData();
   const f = state.form || {};
   data.id = f.id || f.importedId || '';
-  data.createdAt = f.createdAt || f.importedDate || '';
+  data.createdAt = data.publishedAt || f.createdAt || f.importedDate || '';
   data.updatedAt = f.updatedAt || f.importedUpdated || '';
   data.coverAlt = f.coverAlt || '';
   data.linkedinUrl = f.linkedinUrl || '';
@@ -2055,6 +2075,11 @@ async function submitForm() {
   if (!data.title) {
     toast('O título é obrigatório.', 'error');
     document.getElementById('f-title')?.focus();
+    return;
+  }
+  if (!data.publishedAt) {
+    toast('A data de publicação é obrigatória.', 'error');
+    document.getElementById('f-publishedAt')?.focus();
     return;
   }
   if (!data.content || data.content.trim().length < 10) {
@@ -2104,6 +2129,7 @@ async function submitForm() {
     status,
     featured: data.featured,
     content: data.content,
+    createdAt: data.publishedAt,
   };
 
   /* Trava anti duplo clique (mesmo padrão do login em blog-auth.js):
@@ -2172,7 +2198,7 @@ async function submitForm() {
     // Era publicado e virou rascunho: o rebuild é o que tira a página do ar.
     aviso = rebuildMessage('Post tirado do site', 'Post salvo como rascunho', rebuild);
   } else if (data.status === 'scheduled') {
-    aviso = { msg: 'Agendamento ainda não está ativo: salvei como rascunho e a data não foi gravada.', type: 'error' };
+    aviso = { msg: 'Agendamento ainda não está ativo: salvei como rascunho. A data de publicação ficou gravada e vale quando você publicar.', type: 'error' };
   } else {
     aviso = { msg: 'Rascunho salvo. Ele não vai pro site.', type: 'success' };
   }
