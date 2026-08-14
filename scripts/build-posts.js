@@ -1418,6 +1418,9 @@ async function main() {
   //        lista completa, entao em modo degradado ficam como estao: melhor
   //        um indice do ultimo deploy bom que um indice vazio.
   if (!degraded) {
+    /* Sitemap/feed daqui sao o fallback (so posts + paginas listadas).
+       O `npm run build` completo roda build-discovery depois e reescreve
+       com TODAS as paginas e imagens do site. */
     const sitemap = buildSitemap(posts);
     fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sitemap, 'utf8');
     fs.writeFileSync(path.join(ROOT, 'sitemap-imagens.xml'), buildImageSitemap(posts), 'utf8');

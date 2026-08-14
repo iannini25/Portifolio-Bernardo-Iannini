@@ -10,8 +10,132 @@
     <language>pt-BR</language>
     <managingEditor>bernardo.iannini14@gmail.com (Bernardo Iannini)</managingEditor>
     <webMaster>bernardo.iannini14@gmail.com (Bernardo Iannini)</webMaster>
-    <lastBuildDate>Thu, 30 Jul 2026 04:03:08 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 14 Aug 2026 00:33:49 GMT</lastBuildDate>
     <generator>scripts/build-discovery.js</generator>
     <atom:link href="https://bernardoiannini.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>AWS Hackathon</title>
+      <link>https://bernardoiannini.com/posts/aws-hackathon.html</link>
+      <guid isPermaLink="true">https://bernardoiannini.com/posts/aws-hackathon.html</guid>
+      <pubDate>Fri, 14 Aug 2026 00:33:49 GMT</pubDate>
+      <dc:creator>Bernardo Iannini</dc:creator>
+      <category>Carreira</category>
+      <description><![CDATA[Great results do not always come from complexity, but from clear priorities and efficient execution. This weekend, I took part in my first hackathon: an AI Ag]]></description>
+      <content:encoded><![CDATA[<p>Great results do not always come from complexity, but from clear priorities and efficient execution.</p>
+<p>This weekend, I took part in my first hackathon: an AI Agents challenge hosted by Amazon Web Services (AWS) , organised by Canastra Ventures, with support from Replit , ElevenLabs and TESS AI.</p>
+<p>As a technical high school student, it was motivating to be in an environment with such a high level of talent. There were many highly capable people in the room, including members of the Canastra Ventures team helping us to develop the ideia.</p>
+<p>Our MVP was simple: a multi agent AI system designed to help mining companies improve their relationship with small communities where they operate. We built a responsive web application through which citizens could submit feedback, while a team of AI agents processed the data, generated insights, statistics and strategic communication drafts for the company.</p>
+<p>The greatest takeaway was clear: in a hackathon, success depends less on complexity and more on effective execution, smart prioritisation and a well coordinated team. </p>
+<p>Build alongside Jose Augusto Faria Barcelos, Renan Mulinari, and Matheus Freitas Martins.</p>
+<p>We did not make the podium, but we learned a tremendous amount and left with a much stronger foundation for the next one.</p>
+<p>The repository and live demo are linked below:</p>]]></content:encoded>
+    </item>
+    <item>
+      <title>There’s a deeper shift happening in agentic AI + fintech, and it’s quieter than people think...</title>
+      <link>https://bernardoiannini.com/posts/theres-a-deeper-shift-happening-in-agentic-ai-fintech-and-its-quieter-than-peopl.html</link>
+      <guid isPermaLink="true">https://bernardoiannini.com/posts/theres-a-deeper-shift-happening-in-agentic-ai-fintech-and-its-quieter-than-peopl.html</guid>
+      <pubDate>Fri, 14 Aug 2026 00:31:41 GMT</pubDate>
+      <dc:creator>Bernardo Iannini</dc:creator>
+      <category>Carreira</category>
+      <description><![CDATA[There’s a deeper shift happening in agentic AI + fintech, and it’s quieter than people think... Last week I was at a Build with AI session by GDG Nova Lima wi]]></description>
+      <content:encoded><![CDATA[<p>There’s a deeper shift happening in agentic AI + fintech, and it’s quieter than people think...</p>
+<p>Last week I was at a Build with AI session by GDG Nova Lima with Matheus Freitas Martins, an event where you actually build, not just listen.</p>
+<p>We worked on AI agents using Google ADK on Google Cloud, and it does change your perspective. It’s no longer about isolated prompts, but about systems that can take actions, connect tools and handle real tasks end to end.</p>
+<p>The opening with André Gustavo Mendes Silva and Euller Silva, together with Plank and Frederico Carneiro, brought a grounded view of how this is already being applied.</p>
+<p>Then codelabs with Pedro Lara, Fernando Costa and Alexandre Alves Andrade, plus strong contributions from FIAP.</p>
+<p>One thing that stood out from the discussions, and even from the ecosystem shown, is how deeply fintechs are already involved. Big players like PayPal, Stripe, Tross (Previously Ayden) and Mastercard, etc, are already moving in this direction.</p>
+<p>There’s a clear movement towards enabling agents to actually transact, not just suggest. Payment providers, card networks and infra players are building protocols where agents can initiate purchases using constrained permissions, identity layers and transaction rules, essentially acting on behalf of users, but within secure, auditable boundaries.</p>
+<p>What stood out is how quickly this is moving beyond experimentation. It’s not hard to imagine teams being built around agents, not just as tools, but as active parts of operations. Small groups achieving what used to require entire departments.</p>
+<p>That shift feels global, and closer than it seems, feels like we’re only just starting to see what this enables...</p>]]></content:encoded>
+    </item>
+    <item>
+      <title>Europe is trying to build the future of payments. Brazil has already lived part of it.</title>
+      <link>https://bernardoiannini.com/posts/europe-is-trying-to-build-the-future-of-payments-brazil-has-already-lived-part-o.html</link>
+      <guid isPermaLink="true">https://bernardoiannini.com/posts/europe-is-trying-to-build-the-future-of-payments-brazil-has-already-lived-part-o.html</guid>
+      <pubDate>Fri, 14 Aug 2026 00:23:21 GMT</pubDate>
+      <dc:creator>Bernardo Iannini</dc:creator>
+      <category>Carreira</category>
+      <description><![CDATA[Europe is trying to build the future of payments. Brazil has already lived part of it. That made my last week in Ireland even more meaningful for me. I attend]]></description>
+      <content:encoded><![CDATA[<p>Europe is trying to build the future of payments.
+Brazil has already lived part of it.</p>
+<p>That made my last week in Ireland even more meaningful for me.</p>
+<p>I attended the BPFI - Banking &amp; Payments Federation Ireland conference in Dublin, representing Inspire4U | Athena 7 , following an invitation from Igor Marchetti and the IBA team. Diego Perez , President of ABFintechs, was also with us.</p>
+<p>Being in that environment, discussing Pix and seeing how seriously Europe is looking at instant payments, regulation and financial infrastructure, was a big moment for me. It was clear how relevant Brazil’s experience has become in this global conversation.</p>
+<p>Beyond the event itself, the networking, the conversations afterwards and the meetings that followed made the whole experience even more valuable for my career. As someone building a path in technology and fintech, being part of this was something I was genuinely proud of.</p>
+<p>A big thank you to Igor Marchetti and the whole IBA - Innovation Business Alliance (IBA), Brasil team for the support and for welcoming us so well in Ireland.</p>
+<p>I’ll definitely be keeping a close eye on Ireland and everything happening there in fintech and payments.</p>
+<p>hashtag#Fintech hashtag#Payments hashtag#Pix hashtag#InstantPayments hashtag#OpenFinance hashtag#FinancialTechnology hashtag#Ireland hashtag#Innovation</p>]]></content:encoded>
+    </item>
+    <item>
+      <title>Completed - MIT Designing Products &amp; Services with AI</title>
+      <link>https://bernardoiannini.com/posts/completed-mit-designing-products-services-with-ai.html</link>
+      <guid isPermaLink="true">https://bernardoiannini.com/posts/completed-mit-designing-products-services-with-ai.html</guid>
+      <pubDate>Wed, 12 Aug 2026 14:37:51 GMT</pubDate>
+      <dc:creator>Bernardo Iannini</dc:creator>
+      <category>Carreira</category>
+      <description><![CDATA[After 4 months of intense learning, I’m excited to share that I’ve officially completed MIT “Designing Products & Services with AI”. Throughout this program,]]></description>
+      <content:encoded><![CDATA[<p>After 4 months of intense learning, I’m excited to share that I’ve officially completed MIT “Designing Products &amp; Services with AI”.</p>
+<p>Throughout this program, I explored the full AI design process end to end: from understanding performance metrics and business strategy to studying machine learning, deep learning, HCI, generative AI, and how intelligent systems can be applied to real problems. More than just learning tools, I learned how to structure and design AI solutions that create real impact.</p>
+<p>AI can create real impact inside companies, far beyond chatbots or basic automations. This course showed me how intelligent systems can streamline operations, improve decision-making, boost efficiency, and generate tangible business value. And that’s exactly what motivates me to start applying everything I’ve learned in real world scenarios.</p>
+<p>A special thank-you to Ricardo Villaça , who guided us in every weekly session. Besides being the Lead of the AI &amp; Business specialization at University of Cambridge and MIT Professional Education through Emeritus, and he also brings real world experience from working as an IT Manager at Globo and a Marketing Coordinator at IBM . His clear explanations, real examples, and practical approach made even the most complex topics easier to understand and added tremendous value to the entire program.</p>
+<p>I’m also incredibly grateful to everyone in our student group and weekly discussions. The quality of the cohort was outstanding, with software engineers from Netflix , data scientists from Ambev , former CTO of PicPay , executives from Nubank and Alelo Brasil, marketing managers from major companies, surgeons, and many other exceptional professionals. Learning alongside people with such diverse and high level backgrounds made every conversation richer. I absorbed so much from their experiences, perspectives, and real cases, and it genuinely elevated the entire learning journey.</p>
+<p>Finishing this program is only the first step in a long journey in my professional life. I have a strong desire to grow and continue expanding my knowledge and this experience reinforced that more than ever.</p>
+<p>One milestone completed. Many more to come.
+And I’m just getting started. 🚀</p>
+<p>hashtag#IA hashtag#MIT</p>]]></content:encoded>
+    </item>
+    <item>
+      <title>AI is transforming the audiovisual landscape.</title>
+      <link>https://bernardoiannini.com/posts/ai-is-transforming-the-audiovisual-landscape.html</link>
+      <guid isPermaLink="true">https://bernardoiannini.com/posts/ai-is-transforming-the-audiovisual-landscape.html</guid>
+      <pubDate>Wed, 12 Aug 2026 14:31:24 GMT</pubDate>
+      <dc:creator>Bernardo Iannini</dc:creator>
+      <category>Carreira</category>
+      <description><![CDATA[Last friday i was at Hotmart FIRE 10, a three-day immersive event packed with insights on digital marketing and the practical applications of Artificial Intel]]></description>
+      <content:encoded><![CDATA[<p>Last friday i was at Hotmart FIRE 10, a three-day immersive event packed with insights on digital marketing and the practical applications of Artificial Intelligence in the market. It was an incredible experience, full of learning, networking and inspiration. But one talk really stood out for me: the presentation by Fernando Blum CEO of Human </p>
+<p>✨ Fernando Blum delivered a powerful vision: Human has become a pioneer by producing Brazil’s first fully AI-created advertising campaigns, achieving 80% faster delivery and 60% lower costs compared to traditional methods. A true game-changer for the industry.</p>
+<p>✨ Human&#39;s innovation goes beyond execution. The company also invests in training specialists through the Human Academy, which has already equipped over 4,000 creative professionals with the skills to harness AI in audiovisual production democratising access to cutting-edge tools.</p>
+<p>Imagining the impact of this is thrilling: high-quality audiovisual production, cost-effective, scalable, and accessible made possible by the synergy of human talent and cutting-edge technology. This has the potential to redefine how we create, connect, and inspire through video.</p>
+<p>Beyond the talks, the event also provided valuable networking opportunities and a deep dive into the digital entrepreneurship ecosystem, with an atmosphere that encourages continuous innovation. </p>
+<p>🇧🇷| Na última sexta, estive presente no Hotmart FIRE 10, um evento imersivo de três dias repleto de insights sobre marketing digital e aplicação prática da Inteligência Artificial no mercado. Foram palestras incríveis, troca de experiência e inspiração à flor da pele. Mas a que realmente parou meu radar foi a apresentação de Fernando Blum CEO da Human </p>
+<p>✨ Fernando Blum trouxe uma visão poderosa: a Human se tornou pioneira ao entregar campanhas publicitárias 100% criadas com IA no Brasil, conseguindo reduzir o tempo de produção em 80% e os custos em 60% em comparação aos processos tradicionais . Um verdadeiro game‑changer para o setor.</p>
+<p>✨ A inovação da Human vai além da execução. A empresa também investe em formação de especialistas por meio da Human Academy, que já capacitou mais de 4 mil profissionais criativos, democratizando o uso de IA na produção audiovisual .</p>
+<p>Imaginar o impacto disso é empolgante: uma produção audiovisual de altíssima qualidade, dentro do orçamento, acessível e escalável — totalmente possível pela combinação entre talento humano e tecnologia de ponta. Isso tem potencial para redefinir como criamos, conectamos e inspiramos por meio de vídeos.</p>
+<p>Além da palestra, o evento proporcionou networking valioso e imersão total no universo do empreendedorismo digital, com uma atmosfera que incentiva a inovação contínua.</p>]]></content:encoded>
+    </item>
+    <item>
+      <title>AI is rewriting the rules of cybersecurity.</title>
+      <link>https://bernardoiannini.com/posts/ai-is-rewriting-the-rules-of-cybersecurity.html</link>
+      <guid isPermaLink="true">https://bernardoiannini.com/posts/ai-is-rewriting-the-rules-of-cybersecurity.html</guid>
+      <pubDate>Wed, 12 Aug 2026 14:28:34 GMT</pubDate>
+      <dc:creator>Bernardo Iannini</dc:creator>
+      <category>Carreira</category>
+      <description><![CDATA[I had the chance to be at DCC Week at UFMG (Universidade Federal de Minas Gerais) over the last three days, and it was an amazing experience filled with great]]></description>
+      <content:encoded><![CDATA[<p>I had the chance to be at DCC Week at UFMG (Universidade Federal de Minas Gerais) over the last three days, and it was an amazing experience filled with great talks and networking opportunities. But, two caught my attention the most:</p>
+<p>✨ Michele Nogueira discussed how AI is transforming cybersecurity, but stressed that the biggest risks still come from the human factor — negligence and insider cooperation remain the weak spots in most companies.</p>
+<p>✨ Idilio Drago showed how machine learning and LLMs are changing cyber defense in practice, with real use cases like detecting malicious IP clusters and supporting vulnerability management.</p>
+<p>Beyond the lectures, the event also featured a talent fair with amazing companies such as Inter and SYDLE bringing even more value to the whole experience.</p>
+<p>🇧🇷 | Tive a oportunidade de participar da DCC Week na UFMG (Universidade Federal de Minas Gerais) nos últimos três dias, e foi uma experiência incrível, repleta de palestras inspiradoras e ótimas oportunidades de networking.</p>
+<p>✨ Michele Nogueira falou sobre como a IA está transformando a cibersegurança, mas ressaltou que os maiores riscos ainda vêm do fator humano — a negligência e a cooperação de insiders continuam sendo os pontos fracos em muitas empresas.</p>
+<p>✨ Idilio Drago mostrou como machine learning e LLMs estão mudando a defesa cibernética na prática, com casos reais como a detecção de clusters de IPs maliciosos e o suporte à gestão de vulnerabilidades.</p>
+<p>Além das palestras, o evento contou também com uma feira de talentos, trazendo empresas incríveis como Inter e SYDLE o que agregou ainda mais valor à experiência.</p>]]></content:encoded>
+    </item>
+    <item>
+      <title>Presence on Money 20/20 Europe</title>
+      <link>https://bernardoiannini.com/posts/presence-on-money-2020-europe.html</link>
+      <guid isPermaLink="true">https://bernardoiannini.com/posts/presence-on-money-2020-europe.html</guid>
+      <pubDate>Wed, 12 Aug 2026 14:22:51 GMT</pubDate>
+      <dc:creator>Bernardo Iannini</dc:creator>
+      <category>Carreira</category>
+      <description><![CDATA[This week, I had the opportunity to attend Money 20/20 Europe, one of the world’s largest and most important events in financial technology. I came alongside]]></description>
+      <content:encoded><![CDATA[<p>This week, I had the opportunity to attend Money 20/20 Europe, one of the world’s largest and most important events in financial technology.</p>
+<p>I came alongside Túlio Iannini a leading expert in fintech and innovation in Brazil, with a solid track record at the head of U4C and a long-standing presence in the industry. Our mission here is clear: to understand how Europe is advancing in this sector and explore how we can contribute to helping this ecosystem reach the same level of innovation and connectivity we are currently experiencing in Brazil.</p>
+<p>Brazil, in fact, is a global reference in fintech. With groundbreaking developments such as PIX (instant payments), Open Finance, and a forward-looking regulatory framework, our financial ecosystem is among the most modern and efficient in the world.</p>
+<p>The event has been a true immersion into key topics like AI in finance, instant payments, and digital regulation — a unique opportunity to exchange ideas with global leaders and gain a broader view of the future of finance.</p>
+<p>🇧🇷| Nesta semana participei do Money 20/20 Europe, um dos maiores eventos de tecnologia financeira do mundo.</p>
+<p>Vim acompanhado do Túlio Iannini, especialista referência em fintechs e inovação no Brasil. Com uma trajetória sólida à frente da U4C e atuação neste mercado. Estamos aqui com um propósito claro: entender como a Europa está evoluindo nesse setor e como podemos colaborar para que essa tecnologia alcance níveis avançados e conectados ao que experimentamos no Brasil.</p>
+<p>O Brasil, aliás, é referência global em fintechs. Com avanços como o PIX (pagamentos instantâneos), o Open Finance e um sistema regulatório moderno, nosso ecossistema financeiro é hoje um dos mais inovadores e eficientes do mundo.</p>
+<p>O evento está sendo uma verdadeira imersão em temas como inteligência artificial aplicada a finanças, pagamentos instantâneos e regulação digital. Uma oportunidade única de trocar ideias com líderes de todo o mundo e enxergar o futuro do setor de forma ainda mais conectada.</p>]]></content:encoded>
+    </item>
   </channel>
 </rss>

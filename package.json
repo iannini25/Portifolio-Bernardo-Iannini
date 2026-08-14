@@ -6,7 +6,7 @@
   "scripts": {
     "build:posts": "node scripts/build-posts.js",
     "minify": "node scripts/minify-assets.js",
-    "build": "npm run build:posts && npm run build:projects && npm run minify",
+    "build": "npm run build:posts && npm run build:projects && npm run build:discovery && npm run minify",
     "dev": "npx serve . -p 8080",
     "admin": "node scripts/admin-server.js",
     "build:projects": "node scripts/build-projects.js --all",

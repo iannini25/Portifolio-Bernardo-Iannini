@@ -1,135 +1,517 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://bernardoiannini.com/</loc>
-    <lastmod>2026-07-30T01:03:08-03:00</lastmod>
+    <lastmod>2026-08-12T19:18:23-03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/eufoto1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/eufoto2.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/eufoto1.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://bernardoiannini.com/blog.html</loc>
-    <lastmod>2026-07-30T01:03:08-03:00</lastmod>
+    <lastmod>2026-08-12T19:21:46-03:00</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/eufoto1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/eufoto2.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666907698-fw3s81-1773140460350.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667612187-6dkiqu-1778520996039.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667474437-a274y1-1775674739958.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786545233548-635h3d-1765285948996.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544999616-g09wlf-1757108622393.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544680006-emj8xk-1755896693045.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544495390-3z0xr5-1749134292782.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/eufoto1.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://bernardoiannini.com/en/about.html</loc>
     <lastmod>2026-07-30T01:03:08-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/eufoto1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/eufoto1.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://bernardoiannini.com/en/projects/amarofy.html</loc>
-    <lastmod>2026-07-30T04:38:28.545Z</lastmod>
+    <lastmod>2026-07-30T07:16:40-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/automotiva-express.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/amarofy.webp</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://bernardoiannini.com/en/projects/athena7.html</loc>
-    <lastmod>2026-07-30T04:38:28.530Z</lastmod>
+    <lastmod>2026-07-30T07:16:40-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/moedanobre-cover.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/athena7-cover.webp</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://bernardoiannini.com/en/projects/automotiva-express.html</loc>
-    <lastmod>2026-07-30T04:38:28.547Z</lastmod>
+    <lastmod>2026-07-30T07:16:40-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/portfolio-cover.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/automotiva-express.webp</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://bernardoiannini.com/en/projects/brasa.html</loc>
-    <lastmod>2026-07-30T04:38:28.541Z</lastmod>
+    <lastmod>2026-07-30T07:16:40-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/sereno.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/brasa-restaurante.webp</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://bernardoiannini.com/en/projects/iba.html</loc>
-    <lastmod>2026-07-30T04:38:28.536Z</lastmod>
+    <lastmod>2026-07-30T07:16:40-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/modulo-engenharia.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/iba-cover.webp</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://bernardoiannini.com/en/projects/modulo-engenharia.html</loc>
-    <lastmod>2026-07-30T04:38:28.539Z</lastmod>
+    <lastmod>2026-07-30T07:16:40-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/brasa-restaurante.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/modulo-engenharia.webp</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://bernardoiannini.com/en/projects/moedanobre.html</loc>
-    <lastmod>2026-07-30T04:38:28.533Z</lastmod>
+    <lastmod>2026-07-30T07:16:40-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/iba-cover.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/moedanobre-cover.webp</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://bernardoiannini.com/en/projects/portfolio.html</loc>
-    <lastmod>2026-07-30T04:38:28.550Z</lastmod>
+    <lastmod>2026-07-30T07:16:40-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/portfolio-cover.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/athena7-cover.webp</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://bernardoiannini.com/en/projects/sereno.html</loc>
-    <lastmod>2026-07-30T04:38:28.543Z</lastmod>
+    <lastmod>2026-07-30T07:16:40-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/amarofy.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/sereno.webp</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bernardoiannini.com/posts/ai-is-rewriting-the-rules-of-cybersecurity.html</loc>
+    <lastmod>2026-08-14T01:01:35.716Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/eufoto1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544680006-emj8xk-1755896693045.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544677951-f1rtht-1755896691156.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544681099-sx8rp1-1755896693753.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544680548-vm42gl-1755896693577.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544679307-j93lxo-1755896691694.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667612187-6dkiqu-1778520996039.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667474437-a274y1-1775674739958.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666907698-fw3s81-1773140460350.jpg</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bernardoiannini.com/posts/ai-is-transforming-the-audiovisual-landscape.html</loc>
+    <lastmod>2026-08-14T01:01:35.716Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/eufoto1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544999616-g09wlf-1757108622393.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786545001519-4jiar8-1757108623881.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786545000953-ix23u1-1757108623418.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786545000454-s8d10k-1757108622594.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544999007-7dciby-1757108622332.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544998036-c9lzz9-1757108621353.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667612187-6dkiqu-1778520996039.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667474437-a274y1-1775674739958.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666907698-fw3s81-1773140460350.jpg</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bernardoiannini.com/posts/aws-hackathon.html</loc>
+    <lastmod>2026-08-14T01:01:35.705Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/eufoto1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667612187-6dkiqu-1778520996039.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667611156-38tu77-1778520990355.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667608588-x4fsdn-1778520994330.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667610185-2z7yqi-1778520999799.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667474437-a274y1-1775674739958.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666907698-fw3s81-1773140460350.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786545233548-635h3d-1765285948996.jpg</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bernardoiannini.com/posts/completed-mit-designing-products-services-with-ai.html</loc>
+    <lastmod>2026-08-14T01:01:35.714Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/eufoto1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786545233548-635h3d-1765285948996.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667612187-6dkiqu-1778520996039.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667474437-a274y1-1775674739958.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666907698-fw3s81-1773140460350.jpg</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bernardoiannini.com/posts/europe-is-trying-to-build-the-future-of-payments-brazil-has-already-lived-part-o.html</loc>
+    <lastmod>2026-08-14T01:01:35.713Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/eufoto1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666907698-fw3s81-1773140460350.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666909715-0zfyg9-1773405135651.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666909079-4izt5x-1773405130713.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666908375-4rsqpo-1773405123844.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666906073-chane6-1773140470568.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667612187-6dkiqu-1778520996039.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667474437-a274y1-1775674739958.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786545233548-635h3d-1765285948996.jpg</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bernardoiannini.com/posts/presence-on-money-2020-europe.html</loc>
+    <lastmod>2026-08-14T01:01:35.717Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/eufoto1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544495390-3z0xr5-1749134292782.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544493027-w7szvc-1749134289151.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544494841-2yuuek-1749134291959.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544494254-86iejw-1749134291001.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667612187-6dkiqu-1778520996039.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667474437-a274y1-1775674739958.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666907698-fw3s81-1773140460350.jpg</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bernardoiannini.com/posts/theres-a-deeper-shift-happening-in-agentic-ai-fintech-and-its-quieter-than-peopl.html</loc>
+    <lastmod>2026-08-14T01:01:35.712Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/eufoto1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667474437-a274y1-1775674739958.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667467459-64yguv-1775674740023.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667470417-tx0pdo-1775674739975.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667469798-ngyrzo-1775674739792.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667471074-3endik-1775674739720.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667473692-ukmi9x-1775674739926.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667472381-8l6vjn-1775674740001.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667612187-6dkiqu-1778520996039.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666907698-fw3s81-1773140460350.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786545233548-635h3d-1765285948996.jpg</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://bernardoiannini.com/projetos/amarofy.html</loc>
-    <lastmod>2026-07-30T01:03:08-03:00</lastmod>
+    <lastmod>2026-07-30T07:16:40-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/automotiva-express.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/amarofy.webp</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://bernardoiannini.com/projetos/athena7.html</loc>
-    <lastmod>2026-07-30T01:03:08-03:00</lastmod>
+    <lastmod>2026-07-30T07:16:40-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/moedanobre-cover.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/athena7-cover.webp</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://bernardoiannini.com/projetos/automotiva-express.html</loc>
-    <lastmod>2026-07-30T01:03:08-03:00</lastmod>
+    <lastmod>2026-07-30T07:16:40-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/portfolio-cover.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/automotiva-express.webp</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://bernardoiannini.com/projetos/brasa.html</loc>
-    <lastmod>2026-07-30T01:03:08-03:00</lastmod>
+    <lastmod>2026-07-30T07:16:40-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/sereno.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/brasa-restaurante.webp</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://bernardoiannini.com/projetos/iba.html</loc>
-    <lastmod>2026-07-30T01:03:08-03:00</lastmod>
+    <lastmod>2026-07-30T07:16:40-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/modulo-engenharia.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/iba-cover.webp</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://bernardoiannini.com/projetos/modulo-engenharia.html</loc>
-    <lastmod>2026-07-30T01:03:08-03:00</lastmod>
+    <lastmod>2026-07-30T07:16:40-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/brasa-restaurante.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/modulo-engenharia.webp</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://bernardoiannini.com/projetos/moedanobre.html</loc>
-    <lastmod>2026-07-30T01:03:08-03:00</lastmod>
+    <lastmod>2026-07-30T07:16:40-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/iba-cover.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/moedanobre-cover.webp</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://bernardoiannini.com/projetos/portfolio.html</loc>
-    <lastmod>2026-07-30T01:03:08-03:00</lastmod>
+    <lastmod>2026-07-30T07:16:40-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/portfolio-cover.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/athena7-cover.webp</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://bernardoiannini.com/projetos/sereno.html</loc>
-    <lastmod>2026-07-30T01:03:08-03:00</lastmod>
+    <lastmod>2026-07-30T07:16:40-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/amarofy.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/sereno.webp</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://bernardoiannini.com/sobre.html</loc>
     <lastmod>2026-07-30T01:03:08-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/eufoto1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/eufoto1.png</image:loc>
+    </image:image>
   </url>
 </urlset>

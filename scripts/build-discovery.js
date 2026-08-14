@@ -6,13 +6,11 @@
 
    COMO RODAR
      node scripts/build-discovery.js
+     (também entra no `npm run build`, DEPOIS de posts e projetos, pra o
+     sitemap no ar ter páginas + posts + imagens.)
 
-   IMPORTANTE: rode LOCALMENTE e faça commit dos arquivos gerados.
-   O lastmod vem do histórico do git (git log -1 --format=%cI). Num build
-   remoto sem histórico completo (Vercel usa checkout raso) o git não
-   responde e o script cairia no mtime, que lá seria a hora do deploy.
-   Data de deploy não é data de atualização de conteúdo, então o lugar
-   certo de rodar isto é na máquina, com o repositório inteiro.
+   lastmod: git log do arquivo; se o arquivo acabou de ser gerado no
+   deploy (posts/*.html) cai no mtime, que é o instante do build.
 
    REGRAS DE DESCOBERTA
      - Varre o filesystem, nunca uma lista fixa. Quando /en/**, /sobre.html
@@ -228,10 +226,10 @@ function urlDaPagina(caminhoRelativo) {
 /** changefreq e priority conforme o tipo de página. */
 function classificarUrl(url) {
   if (url === '/' || url === '/en/') return { prioridade: '1.0', changefreq: 'weekly' };
-  if (/^\/(?:en\/)?blog\.html$/.test(url)) return { prioridade: '0.8', changefreq: 'weekly' };
+  if (/^\/(?:en\/)?blog\.html$/.test(url)) return { prioridade: '0.9', changefreq: 'weekly' };
   if (/^\/(?:en\/)?(?:sobre|about)\.html$/.test(url)) return { prioridade: '0.8', changefreq: 'monthly' };
   if (/^\/(?:en\/)?(?:projetos|projects)\//.test(url)) return { prioridade: '0.8', changefreq: 'monthly' };
-  if (/^\/(?:en\/)?posts\//.test(url)) return { prioridade: '0.7', changefreq: 'monthly' };
+  if (/^\/(?:en\/)?posts\//.test(url)) return { prioridade: '0.8', changefreq: 'monthly' };
   return { prioridade: '0.6', changefreq: 'monthly' };
 }
 
@@ -297,29 +295,52 @@ function absolutizarSrc(src, caminhoRelativoDaPagina) {
   return `${SITE}/${resolvido.replace(/^\.?\//, '')}`;
 }
 
+/** Primeiro URL de cada candidato em um srcset. */
+function urlsDoSrcset(srcset) {
+  return String(srcset || '')
+    .split(',')
+    .map((parte) => parte.trim().split(/\s+/)[0])
+    .filter(Boolean);
+}
+
 /**
- * Imagens realmente referenciadas por <img src> na página.
- * SVG inline nunca aparece aqui porque só lemos a tag <img>.
+ * Imagens da página: <img src/srcset>, <source srcset>, poster de vídeo,
+ * og:image e twitter:image (capa de post não vira <img> no corpo).
  */
 function imagensDaPagina(pagina) {
   const encontradas = [];
   const vistas = new Set();
-  const tags = pagina.html.match(/<img\b[^>]*>/gi) || [];
 
-  for (const tag of tags) {
-    const comSrc = tag.match(/\ssrc=["']([^"']*)["']/i);
-    if (!comSrc) continue;
-
-    const src = decodificarEntidades(comSrc[1].trim());
-    // src vazio (placeholder de lightbox), data URI e âncora não são imagem.
-    if (!src || src.startsWith('data:') || src.startsWith('#')) continue;
-    if (EXTENSOES_IGNORADAS.has(path.posix.extname(src.split('?')[0]).toLowerCase())) continue;
-
+  const adicionar = (bruto) => {
+    const src = decodificarEntidades(String(bruto || '').trim());
+    if (!src || src.startsWith('data:') || src.startsWith('#')) return;
+    const semQuery = src.split('?')[0];
+    if (EXTENSOES_IGNORADAS.has(path.posix.extname(semQuery).toLowerCase())) return;
     const url = absolutizarSrc(src, pagina.relativo);
-    if (vistas.has(url)) continue;
+    if (vistas.has(url)) return;
     vistas.add(url);
     encontradas.push(url);
+  };
+
+  for (const tag of pagina.html.match(/<img\b[^>]*>/gi) || []) {
+    const comSrc = tag.match(/\ssrc=["']([^"']*)["']/i);
+    if (comSrc) adicionar(comSrc[1]);
+    const srcset = tag.match(/\ssrcset=["']([^"']*)["']/i);
+    if (srcset) urlsDoSrcset(srcset[1]).forEach(adicionar);
   }
+
+  for (const tag of pagina.html.match(/<source\b[^>]*>/gi) || []) {
+    const srcset = tag.match(/\ssrcset=["']([^"']*)["']/i);
+    if (srcset) urlsDoSrcset(srcset[1]).forEach(adicionar);
+  }
+
+  for (const tag of pagina.html.match(/<video\b[^>]*>/gi) || []) {
+    const poster = tag.match(/\sposter=["']([^"']*)["']/i);
+    if (poster) adicionar(poster[1]);
+  }
+
+  adicionar(lerMeta(pagina.html, 'og:image'));
+  adicionar(lerMeta(pagina.html, 'twitter:image'));
 
   return encontradas;
 }
@@ -410,20 +431,32 @@ function paraRfc822(iso) {
   );
 }
 
+function tagsDeImagem(pagina) {
+  return imagensDaPagina(pagina)
+    .map(
+      (src) =>
+        `    <image:image>\n      <image:loc>${escaparXml(src)}</image:loc>\n    </image:image>`
+    )
+    .join('\n');
+}
+
 function gerarSitemap(paginas) {
   const urls = paginas
-    .map(
-      (p) => `  <url>
+    .map((p) => {
+      const imagens = tagsDeImagem(p);
+      return `  <url>
     <loc>${escaparXml(SITE + p.url)}</loc>
     <lastmod>${escaparXml(p.lastmod)}</lastmod>
     <changefreq>${p.changefreq}</changefreq>
     <priority>${p.prioridade}</priority>
-  </url>`
-    )
+${imagens}
+  </url>`;
+    })
     .join('\n');
 
   return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 ${urls}
 </urlset>
 `;
@@ -437,9 +470,7 @@ function gerarSitemapImagens(paginas) {
     const imagens = imagensDaPagina(pagina);
     if (!imagens.length) continue;
     total += imagens.length;
-    const listadas = imagens
-      .map((src) => `    <image:image>\n      <image:loc>${escaparXml(src)}</image:loc>\n    </image:image>`)
-      .join('\n');
+    const listadas = tagsDeImagem(pagina);
     blocos.push(`  <url>
     <loc>${escaparXml(SITE + pagina.url)}</loc>
 ${listadas}
