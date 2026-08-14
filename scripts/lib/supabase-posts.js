@@ -135,6 +135,7 @@ function mapRow(row) {
     linkedinUrl: row.linkedin_url || row.linkedinUrl || '',
     featured: !!row.featured,
     status: row.status || 'published',
+    views: Number(row.views) || 0,
     date,
     updated,
     author: row.author || AUTHOR_NAME,

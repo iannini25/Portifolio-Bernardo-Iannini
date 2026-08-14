@@ -6,7 +6,8 @@
      1) window.BI_POSTS      — injetado pelo build em blog.html
      2) window.BI_SEED_POSTS — gerado por scripts/build-posts.js
      3) array vazio: sem posts fake, o empty state real assume
-   Views (popularidade) ainda usam localStorage local.
+   Views (popularidade) usam a coluna `views` do banco (via BI_POSTS)
+   e o localStorage local como complemento na mesma sessão.
    ========================================================= */
 
 const STORAGE_KEY = 'bi_blog_posts';   // legado, preservado pra compat
@@ -485,8 +486,12 @@ function postCardHtml(post, layout, views) {
   const content = post.excerpt || post.content || '';
   const readTime = post.readTimeMin || estimateReadTime(post.content);
   const hasCover = !!post.cover;
-  // Views são gravadas pela página do post por SLUG (fallback pro id legado)
-  const viewCount = views[post.slug] || views[post.id] || 0;
+  // Views: banco (build) + localStorage do aparelho (visita nesta sessão)
+  const viewCount = Math.max(
+    Number(post.views) || 0,
+    views[post.slug] || 0,
+    views[post.id] || 0
+  );
   const url = postUrl(post);
   const badgeLabel = t.featured?.badge || (lang === 'pt' ? 'Destaque' : 'Featured');
   const viewsLabel = lang === 'pt' ? 'Visualizações' : 'Views';
@@ -943,12 +948,13 @@ function applyFilters() {
     );
   }
 
-  // sort (views por slug com fallback pro id legado; readtime vem do build)
+  // sort (views do banco + localStorage; readtime vem do build)
   const views = loadViews();
+  const viewOf = (p) => Math.max(Number(p.views) || 0, views[p.slug] || 0, views[p.id] || 0);
   const sortFn = {
     recent:   (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
     oldest:   (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
-    popular:  (a, b) => (views[b.slug] || views[b.id] || 0) - (views[a.slug] || views[a.id] || 0),
+    popular:  (a, b) => viewOf(b) - viewOf(a),
     readtime: (a, b) => (Number(a.readTimeMin) || estimateReadTime(a.content)) - (Number(b.readTimeMin) || estimateReadTime(b.content)),
   }[state.sort] || ((a, b) => 0);
 

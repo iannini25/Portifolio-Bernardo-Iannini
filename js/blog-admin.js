@@ -541,6 +541,7 @@ const state = {
   editingId: null,
   posts: [],
   search: '',
+  statusFilter: 'all',
   form: null,
   saving: false,
 };
@@ -584,10 +585,11 @@ const emptyState = (icon, title, text) => `
   </div>
 `;
 
-const statCard = (label, value, iconSvg) => `
+const statCard = (label, value, iconSvg, hint) => `
   <div class="admin-stat">
     <span class="admin-stat-label">${escapeHtml(label)}</span>
     <span class="admin-stat-value">${value}</span>
+    ${hint ? `<span class="admin-stat-hint">${escapeHtml(hint)}</span>` : ''}
     <span class="admin-stat-icon">${iconSvg}</span>
   </div>
 `;
@@ -604,6 +606,27 @@ const ICONS = {
   paperplane: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>',
   save: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21" fill="none"/><polyline points="7 3 7 8 15 8" fill="none"/></svg>',
   inbox: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>',
+  star: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 6.6L21 9.2l-5 4.6L17.4 21 12 17.7 6.6 21 8 13.8 3 9.2l6.6-.6z"/></svg>',
+};
+
+const greeting = () => {
+  const h = new Date().getHours();
+  if (h < 5) return 'Boa madrugada';
+  if (h < 12) return 'Bom dia';
+  if (h < 18) return 'Boa tarde';
+  return 'Boa noite';
+};
+
+const formatDayLong = () =>
+  new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+
+const fmtNum = (n) => Number(n || 0).toLocaleString('pt-BR');
+
+const statusLabel = (s) => {
+  const v = String(s || 'draft');
+  if (v === 'published') return 'publicado';
+  if (v === 'scheduled') return 'agendado';
+  return 'rascunho';
 };
 
 const newPostButton = `
@@ -617,78 +640,111 @@ const newPostButton = `
 function renderDashboard() {
   const posts = state.posts;
   const views = loadViews();
+  const viewOf = (p) => Number(views[p.id] || p.views || 0);
   const published = posts.filter(p => p.status === 'published');
   const drafts = posts.filter(p => p.status === 'draft');
-  const totalViews = Object.values(views).reduce((a, b) => a + b, 0);
-  const totalReadtime = posts.reduce((acc, p) => acc + estimateReadTime(p.content), 0);
+  const totalViews = published.reduce((a, p) => a + viewOf(p), 0);
+  const totalReadtime = published.reduce((acc, p) => acc + estimateReadTime(p.content), 0);
+  const featured = published.find(p => p.featured);
+  const now = Date.now();
+  const future = published.filter(p => new Date(p.createdAt).getTime() > now)
+    .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
-  /* Ranking só com views reais: com tudo zerado cai no empty state honesto
-     em vez de listar os posts mais recentes fingindo ranking. */
-  const mostRead = posts
-    .filter(p => (views[p.id] || 0) > 0)
-    .sort((a, b) => (views[b.id] || 0) - (views[a.id] || 0))
-    .slice(0, 5);
+  const mostRead = published
+    .slice()
+    .sort((a, b) => viewOf(b) - viewOf(a) || new Date(b.createdAt) - new Date(a.createdAt))
+    .slice(0, 6);
+  const maxViews = Math.max(1, ...mostRead.map(viewOf));
 
   const recent = posts
     .slice()
-    .sort((a, b) => new Date(b.updatedAt || b.createdAt) - new Date(a.updatedAt || a.createdAt))
-    .slice(0, 5);
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .slice(0, 6);
+
+  const cats = {};
+  published.forEach(p => {
+    const c = p.category || 'Sem categoria';
+    cats[c] = (cats[c] || 0) + 1;
+  });
+  const catEntries = Object.entries(cats).sort((a, b) => b[1] - a[1]);
+  const catMax = Math.max(1, ...catEntries.map(([, n]) => n));
 
   const mostReadBody = mostRead.length
-    ? `<div class="admin-table-scroll">
-         <table class="admin-table admin-table--compact">
-           <tbody>
-             ${mostRead.map(p => `
-               <tr class="is-clickable" data-edit="${escapeHtml(p.id)}">
-                 <td>
-                   <div class="admin-table-title">${escapeHtml(p.title)}</div>
-                   <div class="admin-table-slug">/${escapeHtml(p.slug || p.id)}</div>
-                 </td>
-                 <td class="is-right is-nowrap is-views">
-                   ${views[p.id] || 0}
-                   <span class="admin-table-views-unit">views</span>
-                 </td>
-               </tr>
-             `).join('')}
-           </tbody>
-         </table>
-       </div>`
-    : emptyState(ICONS.eye, 'Sem dados ainda', 'Visualizações aparecem aqui depois que alguém abre um post.');
+    ? `<div class="admin-rank">
+         ${mostRead.map((p, i) => {
+           const v = viewOf(p);
+           const pct = Math.round((v / maxViews) * 100);
+           return `
+             <button type="button" class="admin-rank-row" data-edit="${escapeHtml(p.id)}">
+               <span class="admin-rank-n">${String(i + 1).padStart(2, '0')}</span>
+               <div class="admin-rank-body">
+                 <span class="admin-rank-title">${escapeHtml(p.title)}</span>
+                 <span class="admin-rank-track" aria-hidden="true"><span style="width:${pct}%"></span></span>
+               </div>
+               <span class="admin-rank-val">${fmtNum(v)}</span>
+             </button>`;
+         }).join('')}
+       </div>
+       ${totalViews === 0 ? `<p class="admin-dash-note">As views agora gravam no banco. O número sobe quando alguém abre o post (uma vez por visita).</p>` : ''}`
+    : emptyState(ICONS.eye, 'Nenhum publicado', 'Publique um post pra aparecer o ranking.');
 
   const recentBody = recent.length
-    ? `<div class="admin-table-scroll">
-         <table class="admin-table admin-table--compact">
-           <tbody>
-             ${recent.map(p => `
-               <tr class="is-clickable" data-edit="${escapeHtml(p.id)}">
-                 <td>
-                   <div class="admin-table-title">${escapeHtml(p.title)}</div>
-                   <div class="admin-table-slug">${formatDateTime(p.updatedAt || p.createdAt)}</div>
-                 </td>
-                 <td class="is-right is-nowrap">
-                   <span class="admin-table-status admin-table-status--${statusClass(p.status)}">${escapeHtml(p.status)}</span>
-                 </td>
-               </tr>
-             `).join('')}
-           </tbody>
-         </table>
+    ? `<div class="admin-feed">
+         ${recent.map(p => `
+           <button type="button" class="admin-feed-row" data-edit="${escapeHtml(p.id)}">
+             <span class="admin-table-status admin-table-status--${statusClass(p.status)}">${escapeHtml(statusLabel(p.status))}</span>
+             <span class="admin-feed-title">${escapeHtml(p.title)}</span>
+             <span class="admin-feed-date">${formatDate(p.createdAt)}</span>
+           </button>`).join('')}
        </div>`
     : emptyState(ICONS.edit, 'Nenhum post ainda', 'Clique em "Novo Post" pra começar.');
+
+  const featuredBody = featured
+    ? `<button type="button" class="admin-feat" data-edit="${escapeHtml(featured.id)}">
+         ${safeImageSrc(featured.cover) ? `<img class="admin-feat-cover" src="${escapeHtml(safeImageSrc(featured.cover))}" alt="">` : '<div class="admin-feat-cover admin-feat-cover--empty" aria-hidden="true"></div>'}
+         <div class="admin-feat-text">
+           <span class="admin-feat-kicker">${ICONS.star} Destaque do blog</span>
+           <span class="admin-feat-title">${escapeHtml(featured.title)}</span>
+           <span class="admin-feat-meta">${formatDate(featured.createdAt)} · ${fmtNum(viewOf(featured))} views · ${estimateReadTime(featured.content)} min</span>
+         </div>
+       </button>`
+    : `<p class="admin-dash-note">Nenhum post marcado como destaque.</p>`;
+
+  const catsBody = catEntries.length
+    ? `<div class="admin-cats">
+         ${catEntries.map(([name, n]) => `
+           <div class="admin-cat">
+             <span class="admin-cat-name">${escapeHtml(name)}</span>
+             <span class="admin-cat-track" aria-hidden="true"><span style="width:${Math.round((n / catMax) * 100)}%"></span></span>
+             <span class="admin-cat-n">${n}</span>
+           </div>`).join('')}
+       </div>`
+    : emptyState(ICONS.inbox, 'Sem categorias', 'Categorias aparecem quando houver post publicado.');
+
+  const futureBody = future.length
+    ? `<div class="admin-feed">
+         ${future.map(p => `
+           <button type="button" class="admin-feed-row" data-edit="${escapeHtml(p.id)}">
+             <span class="admin-feed-title">${escapeHtml(p.title)}</span>
+             <span class="admin-feed-date">${formatDateTime(p.createdAt)}</span>
+           </button>`).join('')}
+       </div>`
+    : '';
 
   return `
     <header class="admin-header">
       <div>
-        <h1 class="admin-title">Boa <em>volta</em>, Bernardo.</h1>
-        <p class="admin-title-sub">Aqui está o resumo do que está rolando no blog hoje.</p>
+        <h1 class="admin-title">${greeting()}, <em>Bernardo</em>.</h1>
+        <p class="admin-title-sub">${formatDayLong()} · ${published.length} no ar · ${fmtNum(totalViews)} views</p>
       </div>
       <div class="admin-header-actions">${newPostButton}</div>
     </header>
 
     <div class="admin-stats">
-      ${statCard('Posts publicados', published.length, ICONS.check)}
-      ${statCard('Rascunhos', drafts.length, ICONS.edit)}
-      ${statCard('Visualizações totais', totalViews, ICONS.eye)}
-      ${statCard('Minutos de conteúdo', totalReadtime, ICONS.clock)}
+      ${statCard('Publicados', published.length, ICONS.check, drafts.length ? drafts.length + ' rascunho' + (drafts.length === 1 ? '' : 's') : 'nenhum rascunho')}
+      ${statCard('Visualizações', fmtNum(totalViews), ICONS.eye, totalViews ? 'soma dos posts no ar' : 'ainda zerado no banco')}
+      ${statCard('Minutos no ar', totalReadtime, ICONS.clock, 'leitura dos publicados')}
+      ${statCard('Categorias', catEntries.length, ICONS.inbox, catEntries.length ? catEntries[0][0] + ' na frente' : '—')}
     </div>
 
     <div class="admin-grid admin-grid--2">
@@ -696,7 +752,7 @@ function renderDashboard() {
         <header class="admin-card-head">
           <div class="admin-card-head-text">
             <h3 class="admin-card-title">Mais lidos</h3>
-            <p class="admin-card-sub">por visualizações totais</p>
+            <p class="admin-card-sub">views reais no banco</p>
           </div>
         </header>
         ${mostReadBody}
@@ -705,31 +761,79 @@ function renderDashboard() {
       <section class="admin-card">
         <header class="admin-card-head">
           <div class="admin-card-head-text">
-            <h3 class="admin-card-title">Editados recentemente</h3>
-            <p class="admin-card-sub">últimas alterações</p>
+            <h3 class="admin-card-title">Por data de publicação</h3>
+            <p class="admin-card-sub">os mais recentes primeiro</p>
           </div>
         </header>
         ${recentBody}
       </section>
     </div>
+
+    <div class="admin-grid admin-grid--2">
+      <section class="admin-card">
+        <header class="admin-card-head">
+          <div class="admin-card-head-text">
+            <h3 class="admin-card-title">Destaque</h3>
+            <p class="admin-card-sub">o que o blog empurra no topo</p>
+          </div>
+        </header>
+        ${featuredBody}
+      </section>
+
+      <section class="admin-card">
+        <header class="admin-card-head">
+          <div class="admin-card-head-text">
+            <h3 class="admin-card-title">Categorias</h3>
+            <p class="admin-card-sub">posts publicados por assunto</p>
+          </div>
+        </header>
+        ${catsBody}
+      </section>
+    </div>
+
+    ${future.length ? `
+      <section class="admin-card">
+        <header class="admin-card-head">
+          <div class="admin-card-head-text">
+            <h3 class="admin-card-title">Data futura</h3>
+            <p class="admin-card-sub">já publicados, com data à frente de hoje</p>
+          </div>
+        </header>
+        ${futureBody}
+      </section>` : ''}
   `;
 }
 
-function postsTableRow(p, views) {
-  const v = views[p.id] || 0;
+function postsTableRow(p, views, maxViews) {
+  const v = Number(views[p.id] || p.views || 0);
+  const pct = Math.round((v / Math.max(1, maxViews)) * 100);
+  const cover = safeImageSrc(p.cover);
+  const initial = (p.title || '?').trim().charAt(0).toUpperCase();
   return `
     <tr>
       <td>
-        <div class="admin-table-title">
-          ${p.featured ? '<span class="admin-table-star" title="Destaque">★</span> ' : ''}
-          ${escapeHtml(p.title)}
+        <div class="admin-table-post">
+          ${cover
+            ? `<img class="admin-table-thumb" src="${escapeHtml(cover)}" alt="" width="44" height="44">`
+            : `<span class="admin-table-thumb admin-table-thumb--letter" aria-hidden="true">${escapeHtml(initial)}</span>`}
+          <div>
+            <div class="admin-table-title" data-edit="${escapeHtml(p.id)}">
+              ${p.featured ? '<span class="admin-table-star" title="Destaque">★</span> ' : ''}
+              ${escapeHtml(p.title)}
+            </div>
+            <div class="admin-table-slug">/${escapeHtml(p.slug || p.id)}</div>
+          </div>
         </div>
-        <div class="admin-table-slug">/${escapeHtml(p.slug || p.id)}</div>
       </td>
       <td>${p.category ? `<span class="blog-post-tag">${escapeHtml(p.category)}</span>` : '<span class="admin-table-dash">—</span>'}</td>
-      <td><span class="admin-table-status admin-table-status--${statusClass(p.status)}">${escapeHtml(p.status)}</span></td>
-      <td class="is-meta is-nowrap">${formatDateTime(p.createdAt)}</td>
-      <td class="is-views is-nowrap">${v}</td>
+      <td><span class="admin-table-status admin-table-status--${statusClass(p.status)}">${escapeHtml(statusLabel(p.status))}</span></td>
+      <td class="is-meta is-nowrap">${formatDate(p.createdAt)}</td>
+      <td class="is-views">
+        <div class="admin-table-views">
+          <span class="admin-table-views-n">${fmtNum(v)}</span>
+          <span class="admin-rank-track admin-rank-track--sm" aria-hidden="true"><span style="width:${pct}%"></span></span>
+        </div>
+      </td>
       <td class="is-right is-nowrap">
         <div class="admin-table-actions">
           <button class="admin-icon-btn" data-view-post="${escapeHtml(p.slug || p.id)}" title="Ver">${ICONS.eye}</button>
@@ -744,19 +848,28 @@ function postsTableRow(p, views) {
 
 function renderPostsList() {
   const q = state.search.toLowerCase();
-  const filtered = state.posts.filter(p =>
-    !q ||
-    p.title.toLowerCase().includes(q) ||
-    (p.tags || []).some(t => t.toLowerCase().includes(q))
-  );
+  const status = state.statusFilter || 'all';
+  const publishedN = state.posts.filter(p => p.status === 'published').length;
+  const draftN = state.posts.filter(p => p.status === 'draft').length;
+  const filtered = state.posts.filter(p => {
+    if (status === 'published' && p.status !== 'published') return false;
+    if (status === 'draft' && p.status !== 'draft') return false;
+    if (!q) return true;
+    return p.title.toLowerCase().includes(q)
+      || (p.category || '').toLowerCase().includes(q)
+      || (p.tags || []).some(t => t.toLowerCase().includes(q));
+  });
   const views = loadViews();
+  const maxViews = Math.max(1, ...filtered.map(p => Number(views[p.id] || p.views || 0)));
+  const chip = (id, label, n) =>
+    `<button type="button" class="admin-chip${status === id ? ' is-on' : ''}" data-status-filter="${id}">${escapeHtml(label)} <em>${n}</em></button>`;
 
   const body = filtered.length
     ? `<div class="admin-table-scroll">
          <table class="admin-table">
            <thead>
              <tr>
-               <th>Título</th>
+               <th>Post</th>
                <th>Categoria</th>
                <th>Status</th>
                <th>Publicação</th>
@@ -764,32 +877,34 @@ function renderPostsList() {
                <th class="is-right">Ações</th>
              </tr>
            </thead>
-           <tbody>${filtered.map(p => postsTableRow(p, views)).join('')}</tbody>
+           <tbody>${filtered.map(p => postsTableRow(p, views, maxViews)).join('')}</tbody>
          </table>
        </div>`
     : emptyState(
         ICONS.inbox,
-        state.search ? 'Nenhum post encontrado' : 'Nenhum post ainda',
-        state.search ? 'Tente outro termo de busca.' : 'Clique em "Novo Post" para começar.'
+        q || status !== 'all' ? 'Nenhum post neste filtro' : 'Nenhum post ainda',
+        q ? 'Tente outro termo de busca.' : 'Clique em "Novo Post" para começar.'
       );
 
   return `
     <header class="admin-header">
       <div>
         <h1 class="admin-title">Todos os <em>posts</em></h1>
-        <p class="admin-title-sub">${state.posts.length} ${state.posts.length === 1 ? 'post' : 'posts'} no total</p>
+        <p class="admin-title-sub">${publishedN} no ar · ${draftN} rascunho${draftN === 1 ? '' : 's'}</p>
       </div>
       <div class="admin-header-actions">${newPostButton}</div>
     </header>
 
     <section class="admin-card">
       <header class="admin-card-head">
+        <div class="admin-filters">
+          ${chip('all', 'Todos', state.posts.length)}
+          ${chip('published', 'Publicados', publishedN)}
+          ${chip('draft', 'Rascunhos', draftN)}
+        </div>
         <div class="admin-search">
           ${ICONS.search}
-          <input type="search" id="adminSearch" placeholder="Buscar por título ou tag..." value="${escapeHtml(state.search)}" autocomplete="off"/>
-        </div>
-        <div class="admin-card-actions">
-          <span class="admin-card-sub">${filtered.length} de ${state.posts.length}</span>
+          <input type="search" id="adminSearch" placeholder="Buscar título, tag ou categoria..." value="${escapeHtml(state.search)}" autocomplete="off"/>
         </div>
       </header>
       ${body}
@@ -1248,6 +1363,8 @@ function updateTopbar() {
 
 function render() {
   const content = document.getElementById('adminContent');
+  const viewChanged = render._view !== state.view;
+  render._view = state.view;
   let html = '';
 
   if (state.view === 'dashboard') html = renderDashboard();
@@ -1272,8 +1389,8 @@ function render() {
   // Atualiza topbar
   updateTopbar();
 
-  // Volta scroll pro topo quando troca de view (UX)
-  window.scrollTo({ top: 0, behavior: 'instant' });
+  // Volta scroll pro topo só quando troca de tela (filtro/busca não joga pra cima)
+  if (viewChanged) window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
 /* ---------- Editor events ---------- */
@@ -2232,6 +2349,13 @@ function attachGlobalEvents() {
 
   // Delegação no main content
   document.getElementById('adminContent').addEventListener('click', (e) => {
+    const filterBtn = e.target.closest('[data-status-filter]');
+    if (filterBtn) {
+      state.statusFilter = filterBtn.dataset.statusFilter || 'all';
+      render();
+      return;
+    }
+
     const navBtn = e.target.closest('[data-nav]');
     if (navBtn) {
       state.view = navBtn.dataset.nav;

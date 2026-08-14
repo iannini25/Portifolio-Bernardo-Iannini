@@ -44,18 +44,41 @@
     });
   }
 
-  /* ---------- View counter local (UI-only) ---------- */
+  /* ---------- View counter ----------
+     1) localStorage: popularidade imediata na listagem do blog (mesmo aparelho)
+     2) RPC increment_post_views: número real no dashboard (uma vez por sessão) */
   try {
     const STORAGE_VIEWS = 'bi_blog_views';
     const article = document.getElementById('postPage');
-    const slug = article?.getAttribute('itemid')?.split('/').pop()?.replace('.html', '') || location.pathname.split('/').pop().replace('.html', '');
-    if (slug) {
+    const slug = article?.getAttribute('itemid')?.split('/').pop()?.replace('.html', '')
+      || location.pathname.split('/').pop().replace('.html', '');
+    if (slug && /^[a-z0-9-]{1,80}$/i.test(slug)) {
       const raw = localStorage.getItem(STORAGE_VIEWS);
       const views = raw ? JSON.parse(raw) : {};
       views[slug] = (views[slug] || 0) + 1;
       localStorage.setItem(STORAGE_VIEWS, JSON.stringify(views));
+      pingPostView(slug);
     }
   } catch {}
+
+  function pingPostView(slug) {
+    const cfg = window.SUPABASE_CONFIG;
+    if (!cfg || !cfg.url || !cfg.anonKey || /COLE_AQUI/.test(cfg.anonKey)) return;
+    const seenKey = 'bi_viewed_' + slug;
+    try {
+      if (sessionStorage.getItem(seenKey)) return;
+      sessionStorage.setItem(seenKey, '1');
+    } catch {}
+    fetch(cfg.url.replace(/\/$/, '') + '/rest/v1/rpc/increment_post_views', {
+      method: 'POST',
+      headers: {
+        apikey: cfg.anonKey,
+        Authorization: 'Bearer ' + cfg.anonKey,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ post_slug: slug }),
+    }).catch(() => {});
+  }
 
   /* ---------- Lightbox da galeria ---------- */
   const dialog = document.getElementById('postLightbox');

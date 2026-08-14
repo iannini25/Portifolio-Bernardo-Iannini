@@ -178,9 +178,7 @@
     },
 
     /* Incrementa views de forma atômica (RPC, não exige login).
-       Hoje ninguém chama: o site conta views no localStorage (post-static.js).
-       O slug vai normalizado igual ao resto — a RPC usa parâmetro vinculado
-       (`where slug = post_slug`), então o valor nunca virou SQL. */
+       Chamada pela página do post (post-static.js), uma vez por sessão. */
     async incrementViews(slug) {
       const alvo = normalizeSlug(slug);
       if (!alvo) return;

@@ -169,6 +169,7 @@ function loadPosts() {
         linkedinUrl: data.linkedinUrl || data.linkedin_url || '',
         featured: !!data.featured,
         status: data.status || 'published',
+        views: Number(data.views) || 0,
         date,
         updated,
         author: data.author || AUTHOR.name,
@@ -830,6 +831,7 @@ ${articleBody}
 
   <script src="/js/language.js" defer></script>
   <script src="/js/UI.js" defer></script>
+  <script src="/js/supabase-config.js" defer></script>
   <script src="/js/post-static.js" defer></script>
   <script src="/js/sw-register.js" defer></script>
   <!-- contorno que segue o cursor nos cards de "leia tambem" (mesmo do blog) -->
@@ -1272,6 +1274,7 @@ function updateBlogHtml(posts) {
     createdAt: p.date,
     updatedAt: p.updated,
     readTimeMin: readTimeMin(p.content),
+    views: Number(p.views) || 0,
     url: `/posts/${p.slug}.html`,
     excerpt: stripMd(p.content).slice(0, 200),
   }));
@@ -1301,6 +1304,7 @@ function writePostsJson(posts) {
     createdAt: p.date,
     updatedAt: p.updated,
     readTimeMin: readTimeMin(p.content),
+    views: Number(p.views) || 0,
     url: `/posts/${p.slug}.html`,
     excerpt: stripMd(p.content).slice(0, 200),
   }));
@@ -1322,6 +1326,7 @@ function writeBlogSeed(posts) {
     featured: p.featured,
     createdAt: p.date,
     updatedAt: p.updated,
+    views: Number(p.views) || 0,
     content: p.content,
   }));
   const out = `'use strict';
