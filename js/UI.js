@@ -238,9 +238,6 @@ document.querySelectorAll('a[data-scroll]').forEach(a => {
   const term = document.querySelector('.about-term');
   if (!term) return;
 
-  // Respeita usuários que pedem menos movimento — desliga o efeito inteiro
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
   const MAX_TILT = 9;       // graus máximos em cada eixo (no pico do ramp)
   const LERP = 0.12;        // fator de suavização (0..1) — quanto maior, mais rápido segue
   const EPSILON = 0.01;     // limiar pra parar o rAF quando já chegou

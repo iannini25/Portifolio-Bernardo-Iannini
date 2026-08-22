@@ -686,11 +686,6 @@ function postPageHtml(post, related) {
     main { transition: transform .45s cubic-bezier(.22,.61,.36,1), filter .45s cubic-bezier(.22,.61,.36,1); }
     body.page-leaving { opacity: 0; pointer-events: none; }
     body.page-leaving main { transform: scale(.97); filter: blur(8px); }
-    @media (prefers-reduced-motion: reduce) {
-      html:not(.i18n-ready) main { transform: none; filter: none; }
-      body, body.page-leaving { transition: opacity .18s ease; }
-      main, body.page-leaving main { transition: none; transform: none; filter: none; }
-    }
   </style>
   <!-- Sem JS a classe i18n-ready nunca chega: desfaz a mascara anti-flicker -->
   <noscript><style>body{opacity:1!important}main{transform:none!important;filter:none!important}</style></noscript>

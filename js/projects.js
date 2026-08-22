@@ -34,8 +34,7 @@ let pjAutoTimer = null;
    troca de idioma (re-render) nunca deixa closure velha viva */
 const pjCtx = { projects: [], featured: [], data: null };
 
-const pjReducedMotion = () =>
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const pjReducedMotion = () => false;
 
 /* tier atual (js/perf-tier.js grava em <html data-perf>). Fallback
    'high' se o script nao rodou — nao pune quem tem o site sem o gate. */
@@ -48,12 +47,7 @@ const pjPerf = () =>
    low    → nenhum <video> (so img)
    medium → video so na pilha featured
    high   → featured + arquivo */
-const pjWantVideo = (where) => {
-  const t = pjPerf();
-  if (t === 'low') return false;
-  if (t === 'medium') return where === 'featured';
-  return true;
-};
+const pjWantVideo = () => true;
 
 /* featured com QUALQUER parte na viewport (medido na hora — à prova de
    flag presa; um getBoundingClientRect a cada 5s é irrelevante) */
@@ -577,7 +571,7 @@ function pjApplyFilter(slug) {
   /* touch/reduced-motion/low|medium: troca instantânea ancorada.
      A coreografia 3D (rotateX + scale) e cara pra compositor fraco
      e o visual final e o mesmo — so a viagem muda. */
-  const canAnim = window.gsap && !pjReducedMotion() && !pjTouchMode && pjPerf() === 'high';
+  const canAnim = !!window.gsap;
   if (!canAnim) {
     rebuild();
     reanchor();
@@ -695,24 +689,6 @@ function pjBindOnce(arch) {
     if (inkRaf) return;
     inkRaf = requestAnimationFrame(() => { inkRaf = null; pjMoveInk(); });
   }, { passive: true });
-
-  /* se o monitor de FPS/long-task cair o tier no meio da visita,
-     desliga play e (em low) para a auto-rotação cara da pilha.
-     O visual fica no poster — mesmo look, zero decode. */
-  window.addEventListener('perf:degradou', (e) => {
-    const para = e.detail && e.detail.para;
-    if (para === 'low') {
-      document.querySelectorAll('video.pj-win__img, video.pj-card__img').forEach(v => {
-        try { v.pause(); v.load(); } catch (err) {}
-      });
-      /* low: ainda troca capa a cada 6s (barato, so CSS class), mas
-         sem play de video. Se preferir congelar: pjClearAdvance(). */
-    } else if (para === 'medium') {
-      document.querySelectorAll('video.pj-card__img').forEach(v => {
-        try { v.pause(); } catch (err) {}
-      });
-    }
-  });
 }
 
 /* =========================================================

@@ -19,7 +19,6 @@
   if (!root) return; // não estamos em project.html
 
   if (!window.gsap || !window.ScrollTrigger) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const plugins = [ScrollTrigger];
   if (window.DrawSVGPlugin) plugins.push(window.DrawSVGPlugin);
@@ -28,7 +27,7 @@
 
   /* SMOOTH-SCROLL (Lenis) — mesma receita do scrollfx.js: só desktop/
      mouse, lerp discreto no ticker do GSAP. */
-  if (window.Lenis && !window.matchMedia('(pointer: coarse)').matches) {
+  if (window.Lenis) {
     const lenis = new Lenis({ lerp: 0.09, wheelMultiplier: 1, smoothWheel: true, touchMultiplier: 0 });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add(t => lenis.raf(t * 1000));
@@ -128,8 +127,7 @@
   const shotbox = root.querySelector('[data-pc-shotbox]');
   const shotImg = root.querySelector('[data-pc-shot]');
   const caseVideo = root.querySelector('[data-pc-video]');
-  const shotsOn = !!(shotbox && shotImg && caseVideo && caseVideo.hidden) &&
-    !window.matchMedia('(pointer: coarse)').matches;
+  const shotsOn = !!(shotbox && shotImg && caseVideo && caseVideo.hidden);
   let shotTween = null, shotTimer = null;
   function setShot(src) {
     if (!shotsOn) return;

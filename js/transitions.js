@@ -15,10 +15,7 @@
 
   var hasNativeVT =
     'startViewTransition' in document && 'onpagereveal' in window;
-  var reduced =
-    window.matchMedia &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (hasNativeVT || reduced) return;
+  if (hasNativeVT) return;
 
   function isInternal(a) {
     if (!a || !a.getAttribute('href')) return false;

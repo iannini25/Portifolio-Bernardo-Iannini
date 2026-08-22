@@ -31,11 +31,6 @@
 
   var TRIGGER_MAX_AGE = 800; // ms: alem disso, o trigger nao conta como "fresco"
 
-  var prefersReduced = false;
-  try {
-    prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  } catch (e) { /* matchMedia ausente: seguimos sem reduced-motion */ }
-
   function now() {
     return (typeof performance !== 'undefined' && performance.now)
       ? performance.now()
@@ -102,7 +97,7 @@
     dialog.classList.add('modal-fx-open');
 
     var gsap = window.gsap;
-    if (!gsap || prefersReduced) return; // degrada: backdrop borrado estatico
+    if (!gsap) return; // degrada: backdrop borrado estatico
 
     // A classe .modal-fx-morph zera (via CSS !important) a animacao de
     // entrada propria do frame, para que ela nao brigue com o GSAP.

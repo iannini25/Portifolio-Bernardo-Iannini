@@ -34,9 +34,9 @@
   const hasPointer = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   const hasDraw = () => !!window.DrawSVGPlugin;
   /* tier do js/perf-tier.js — decide quanto de motion/video roda */
-  const perfTier = () => document.documentElement.dataset.perf || 'high';
-  const perfIsLow = () => perfTier() === 'low';
-  const perfIsHigh = () => perfTier() === 'high';
+  const perfTier = () => 'high';
+  const perfIsLow = () => false;
+  const perfIsHigh = () => true;
 
   const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -518,8 +518,6 @@
   var rectDe = criarCacheRect();
 
   function buildMouse() {
-    if (!hasPointer()) return;
-
     /* (.scroll-cue fica de fora: a animação CSS de bob é dona do
        transform dele e anularia o magnetismo) */
     magnetize('.resume-btn, .contact-hero__cta', .32);
@@ -1073,7 +1071,6 @@
      ============================================================ */
   function boot() {
     if (!window.gsap || !window.ScrollTrigger) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const plugins = [ScrollTrigger];
     if (window.DrawSVGPlugin) plugins.push(window.DrawSVGPlugin);
@@ -1084,9 +1081,9 @@
     /* SMOOTH-SCROLL (Lenis) — só no desktop/mouse e tier high|medium:
        no toque a rolagem nativa é melhor; em low o lerp constante do
        Lenis compete com o resto. reduced-motion já abortou o boot. */
-    if (window.Lenis && !window.matchMedia('(pointer: coarse)').matches && !perfIsLow()) {
+    if (window.Lenis) {
       const lenis = new Lenis({
-        lerp: perfTier() === 'medium' ? 0.14 : 0.09,
+        lerp: 0.09,
         wheelMultiplier: 1,
         smoothWheel: true,
         touchMultiplier: 0,
@@ -1108,26 +1105,6 @@
     buildMouse();
     buildDynamic();
     bindRebuildHooks();
-
-    /* se o monitor de FPS cair o tier no meio da visita, reconstroi
-       a camada dinamica no modo mais leve e mata videos/Lenis. */
-    window.addEventListener('perf:degradou', (e) => {
-      const para = e.detail && e.detail.para;
-      document.querySelectorAll('video.pj-win__img, video.pj-card__img').forEach(v => {
-        try {
-          v.pause();
-          if (para === 'low') v.load();
-        } catch (err) {}
-      });
-      if (para === 'low' && window.lenis) {
-        try {
-          window.lenis.destroy();
-          window.lenis = null;
-          document.documentElement.classList.remove('lenis-on');
-        } catch (err) {}
-      }
-      if (document.documentElement.classList.contains('fx-on')) rebuild();
-    });
 
     ScrollTrigger.sort();
   }

@@ -168,10 +168,6 @@ function initLineWaves(container, opts = {}) {
     interactTarget = container,
   } = opts;
 
-  const prefersReducedMotion =
-    typeof window !== 'undefined' &&
-    window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-
   let renderer;
   try {
     renderer = new Renderer({
@@ -299,7 +295,7 @@ function initLineWaves(container, opts = {}) {
   const handleContextLost = e => { e.preventDefault(); contextLost = true; cancelAnimationFrame(raf); };
   const handleContextRestored = () => {
     contextLost = false;
-    if (isVisible && tabVisible && !prefersReducedMotion) {
+    if (isVisible && tabVisible) {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(loop);
     }
@@ -310,7 +306,7 @@ function initLineWaves(container, opts = {}) {
   const io = new IntersectionObserver(([entry]) => {
     const wasVisible = isVisible;
     isVisible = entry.isIntersecting;
-    if (isVisible && !wasVisible && !contextLost && tabVisible && !prefersReducedMotion) {
+    if (isVisible && !wasVisible && !contextLost && tabVisible) {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(loop);
     }
@@ -319,7 +315,7 @@ function initLineWaves(container, opts = {}) {
 
   const handleVisibilityChange = () => {
     tabVisible = document.visibilityState !== 'hidden';
-    if (tabVisible && isVisible && !contextLost && !prefersReducedMotion) {
+    if (tabVisible && isVisible && !contextLost) {
       cancelAnimationFrame(raf);
       lastFrameTime = 0;
       raf = requestAnimationFrame(loop);
@@ -329,9 +325,7 @@ function initLineWaves(container, opts = {}) {
   };
   document.addEventListener('visibilitychange', handleVisibilityChange);
 
-  // reduced-motion: 1 frame e para, sem loop perpetuo
-  if (prefersReducedMotion) renderStaticFrame();
-  else raf = requestAnimationFrame(loop);
+  raf = requestAnimationFrame(loop);
 
   return () => {
     cancelAnimationFrame(raf);
@@ -353,14 +347,6 @@ function initLineWaves(container, opts = {}) {
 (function mountServicesLineWaves() {
   const section = document.querySelector('#services');
   if (!section) return;
-  // desktop-only (perf) — mobile fica sem o fundo, igual glow-wire/xp-pulse.
-  // O CSS tambem esconde .linewaves-bg abaixo de 1024px se a janela encolher.
-  if (!window.matchMedia('(min-width: 1025px)').matches) return;
-  // ...e desktop LARGO nao quer dizer desktop POTENTE: um notebook antigo com
-  // grafico integrado abria os dois shaders (este + ferrofluid) e engasgava.
-  // Aqui o fundo simplesmente nao liga em maquina fraca; o layout nao depende
-  // dele (e um layer decorativo atras do conteudo), entao nada quebra.
-  if (typeof podeRodarWebGLPesado === 'function' && !podeRodarWebGLPesado()) return;
 
   let layer = section.querySelector('.linewaves-bg');
   if (!layer) {
@@ -372,8 +358,8 @@ function initLineWaves(container, opts = {}) {
 
   initLineWaves(layer, {
     speed: 0.2,
-    innerLineCount: (document.documentElement.dataset.perf === 'medium') ? 20 : 32,
-    outerLineCount: (document.documentElement.dataset.perf === 'medium') ? 24 : 40,
+    innerLineCount: 32,
+    outerLineCount: 40,
     warpIntensity: 1.0,
     rotation: -52,
     edgeFadeWidth: 0.0,
@@ -382,11 +368,11 @@ function initLineWaves(container, opts = {}) {
     color1: '#22c55e',       // verde institucional (--green)
     color2: '#a3e635',       // lima do tema (--lime)
     color3: '#ffffff',       // realce
-    enableMouseInteraction: document.documentElement.dataset.perf !== 'medium',
+    enableMouseInteraction: true,
     mouseInfluence: 0.8,
-    interactTarget: section, // mouse funciona mesmo por cima dos cards
-    renderScale: typeof perfRenderScale === 'function' ? perfRenderScale(0.8) : 0.8,
-    maxDpr: (document.documentElement.dataset.perf === 'medium') ? 1 : 1.5,
-    targetFps: (document.documentElement.dataset.perf === 'medium') ? 30 : 60,
+    interactTarget: section,
+    renderScale: 0.8,
+    maxDpr: 1.5,
+    targetFps: 60,
   });
 })();

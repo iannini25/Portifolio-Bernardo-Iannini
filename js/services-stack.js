@@ -39,7 +39,6 @@
   const grid = document.getElementById('servicesGrid');
   if (!grid) return;
 
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   const coarse = window.matchMedia('(pointer: coarse)');
   const narrow = window.matchMedia('(max-width: 820px)');
 
@@ -74,8 +73,7 @@
   let rebuildTimer = 0;
 
   function canStack() {
-    return !!(window.gsap && window.ScrollTrigger) &&
-      !reduce.matches && !coarse.matches && !narrow.matches;
+    return !!(window.gsap && window.ScrollTrigger);
   }
 
   function killTriggers() {
@@ -301,7 +299,7 @@
   document.addEventListener('svc:rendered', schedule);
 
   // Rebuild quando o modo muda (reduced-motion / toque / largura)
-  [reduce, coarse, narrow].forEach(mq => {
+  [narrow].forEach(mq => {
     if (mq.addEventListener) mq.addEventListener('change', schedule);
     else if (mq.addListener) mq.addListener(schedule); // Safari antigo
   });

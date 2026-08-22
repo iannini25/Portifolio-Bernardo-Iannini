@@ -202,10 +202,6 @@ function initFerrofluid(container, opts = {}) {
     renderScale = 0.8, maxDpr = 1.25, targetFps = 30, maxBuffer = 2200,
   } = opts;
 
-  const prefersReducedMotion =
-    typeof window !== 'undefined' &&
-    window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-
   let renderer;
   try {
     renderer = new Renderer({
@@ -331,27 +327,25 @@ function initFerrofluid(container, opts = {}) {
   const start = () => { lastFrame = 0; lastMouseT = 0; cancelAnimationFrame(raf); raf = requestAnimationFrame(loop); };
 
   const handleContextLost = e => { e.preventDefault(); contextLost = true; cancelAnimationFrame(raf); };
-  const handleContextRestored = () => { contextLost = false; if (isVisible && tabVisible && !prefersReducedMotion) start(); };
+  const handleContextRestored = () => { contextLost = false; if (isVisible && tabVisible) start(); };
   canvas.addEventListener('webglcontextlost', handleContextLost);
   canvas.addEventListener('webglcontextrestored', handleContextRestored);
 
   const io = new IntersectionObserver(([entry]) => {
     const was = isVisible;
     isVisible = entry.isIntersecting;
-    if (isVisible && !was && !contextLost && tabVisible && !prefersReducedMotion) start();
+    if (isVisible && !was && !contextLost && tabVisible) start();
   }, { threshold: 0 });
   io.observe(container);
 
   const handleVisibilityChange = () => {
     tabVisible = document.visibilityState !== 'hidden';
-    if (tabVisible && isVisible && !contextLost && !prefersReducedMotion) start();
+    if (tabVisible && isVisible && !contextLost) start();
     else cancelAnimationFrame(raf);
   };
   document.addEventListener('visibilitychange', handleVisibilityChange);
 
-  // reduced-motion: 1 frame e para
-  if (prefersReducedMotion) { uniforms.iTime.value = 0; render(); }
-  else raf = requestAnimationFrame(loop);
+  raf = requestAnimationFrame(loop);
 
   return () => {
     cancelAnimationFrame(raf);
@@ -370,11 +364,6 @@ function initFerrofluid(container, opts = {}) {
 (function mountExperienceFerrofluid() {
   const wrap = document.querySelector('.experience-bg-wrap');
   if (!wrap) return;
-  // desktop-only (perf) — mobile fica sem, igual os outros fx do site.
-  if (!window.matchMedia('(min-width: 1025px)').matches) return;
-  // ...e desktop LARGO nao quer dizer desktop POTENTE (ver js/gpu-gate.js):
-  // em maquina fraca o fundo nao liga. E camada decorativa, nada quebra.
-  if (typeof podeRodarWebGLPesado === 'function' && !podeRodarWebGLPesado()) return;
 
   let layer = wrap.querySelector(':scope > .ferrofluid-bg');
   if (!layer) {
@@ -399,10 +388,8 @@ function initFerrofluid(container, opts = {}) {
     flowDirection: 'down',
     opacity: 1,
     mouseInteraction: false,
-    /* medium ainda liga o shader (podeRodarWebGLPesado), mas em
-       resolucao menor — mesmos pixels na tela, menos trabalho GPU. */
-    renderScale: typeof perfRenderScale === 'function' ? perfRenderScale(0.8) : 0.8,
-    maxDpr: (document.documentElement.dataset.perf === 'medium') ? 1 : 1.25,
-    targetFps: (document.documentElement.dataset.perf === 'medium') ? 24 : 30,
+    renderScale: 0.8,
+    maxDpr: 1.25,
+    targetFps: 30,
   });
 })();

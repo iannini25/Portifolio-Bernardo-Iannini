@@ -28,8 +28,6 @@
   const grid = document.getElementById('servicesGrid');
   if (!grid) return;
 
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const coarse = window.matchMedia('(pointer: coarse)');
   const MAX_DEG = 13;               // amplitude PRONUNCIADA do lean
 
   let raf = 0;
@@ -62,7 +60,6 @@
   }
 
   function onMove(e) {
-    if (reduce.matches || coarse.matches) return;
     // guard: mousemove induzido por scroll vem com o cursor PARADO -> ignora
     if (e.clientX === lastX && e.clientY === lastY) return;
     lastX = e.clientX; lastY = e.clientY;

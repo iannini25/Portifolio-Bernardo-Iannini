@@ -210,10 +210,6 @@ body.pc-nav-hidden header {
   opacity: 0;
   pointer-events: none;
 }
-@media (prefers-reduced-motion: reduce) {
-  header { transition: opacity .18s ease; }
-}
-
 .nav {
   max-width: 1120px;
   margin: 0 auto;
@@ -295,10 +291,6 @@ body.pc-nav-hidden header {
 }
 .pill > a:hover::before {
   transform: translate(-50%, 50%) scale(1);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pill > a::before { transition: none; }
 }
 
 /* Link "Blog" no nav (desktop + mobile) — igual aos vizinhos */
@@ -559,10 +551,6 @@ body.pc-nav-hidden header {
   transform: translateX(110%);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .photo__img,
-  .photo__sweep { transition: none; }
-}
 .stack { display: flex; flex-direction: column }
 .hello { font-size: clamp(22px, 2.8vw, 30px); color: var(--text-soft); margin: 0 0 10px 0; font-weight: 600 }
 .name { margin: 0; font-weight: 900; font-size: clamp(58px, 9.6vw, 112px); line-height: .96; letter-spacing: -.012em }
@@ -611,10 +599,6 @@ body.pc-nav-hidden header {
   background-position: 100% 0%;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .name .green,
-  .name .break::after { transition: none; }
-}
 .tagline { margin-top: 16px; font-family: "Instrument Serif", "Playfair Display", Georgia, serif; font-size: clamp(26px, 3.4vw, 36px); font-style: italic; font-weight: 400; letter-spacing: -.005em; color: var(--text-italic); display: inline-block; min-height: 1.2em; transition: color .4s, text-shadow .4s }
 .tagline.glow { color: var(--green); text-shadow: 0 0 12px var(--g-80), 0 0 24px rgba(34,197,94,.4) }
 /* #taglineText sempre usa background-clip: text com um gradient base
@@ -674,9 +658,6 @@ body.pc-nav-hidden header {
   to   { background-position: 0% 0;   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  #taglineText.sheen-done { animation: none; }
-}
 .cursor { display: inline-block; width: 10px; margin-left: 2px; background: var(--cursor-bg); animation: blink 1s steps(1, end) infinite }
 @keyframes blink { 50% { background: transparent } }
 .rail { display: flex; flex-direction: column; gap: 14px; align-items: center }
@@ -740,12 +721,6 @@ body.pc-nav-hidden header {
 @keyframes scroll-cue-twinkle {
   0%, 100% { opacity: .25; transform: scale(.85); }
   50%      { opacity: 1;   transform: scale(1.15); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scroll-cue,
-  .scroll-cue__particle { animation: none; }
-  .scroll-cue:hover { transform: none; }
 }
 
 /* =============================
@@ -995,15 +970,6 @@ body.pc-nav-hidden header {
   14%           { filter: drop-shadow(0 0 6px var(--g-50)); }
   22%           { filter: drop-shadow(0 0 2px var(--g-30)); }
 }
-@media (prefers-reduced-motion: reduce) {
-  .term-body .k-ps1-top,
-  .term-body .k-ps1-user,
-  .term-body .k-ps1-host,
-  .term-body .k-ps1-path,
-  .term-body .k-ps1-bottom,
-  .term-body .prompt { animation: none; }
-}
-
 .prompt { color: var(--term-prompt) }
 .path   { color: var(--term-path) }
 .cmd    { color: var(--text-mint) }
@@ -1076,9 +1042,6 @@ body.pc-nav-hidden header {
 .about-term:hover .term-ring { opacity: 1; }
 @media (hover: none) {
   .about-card .about-card-ring, .term-wrap .term-ring { display: none; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .about-card .about-card-ring, .term-wrap .term-ring { transition: none; }
 }
 /* terminal tem overflow:hidden -> o clip arredonda a ~15px (raio 16 - borda 1);
    casa o raio do anel pra nao cortar os cantos. */
@@ -1536,12 +1499,6 @@ body.pc-nav-hidden header {
   to { transform: rotate(360deg); }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .tl-end__btn,
-  .tl-end__btn::before,
-  .tl-end__dot { animation: none; }
-}
-
 /* === YEAR CARD (caixinha lateral com início/fim) === */
 .tl-year {
   position: relative;
@@ -1640,8 +1597,6 @@ body.pc-nav-hidden header {
 }
 .tl-card:hover::before { opacity: 1; }
 @media (hover: none) { .tl-card::before { display: none; } }
-@media (prefers-reduced-motion: reduce) { .tl-card::before { transition: none; } }
-
 .tl-card-title {
   margin: 0 0 14px;
   font-weight: 900;
@@ -1907,12 +1862,6 @@ body.pc-nav-hidden header {
     transparent 100%);
 }
 .services-section .linewaves-bg canvas { display: block; width: 100%; height: 100%; }
-@media (max-width: 1024px) { .services-section .linewaves-bg { display: none; } }
-@media (prefers-reduced-motion: reduce) {
-  /* o JS pinta so 1 frame estatico; deixamos ainda mais discreto */
-  .services-section .linewaves-bg { opacity: .5; }
-}
-
 /* FERROFLUID BG — fundo WebGL (ogl) cobrindo a experiencia INTEIRA (#xp +
    #timeline), envoltos em .experience-bg-wrap. Fica ATRAS do conteudo (z 0 <
    sections z 1). Injetado por js/ferrofluid-bg.js. Substitui o fundo preto por
@@ -1939,7 +1888,6 @@ body.pc-nav-hidden header {
     transparent 0%, #000 9%, #000 91%, transparent 100%);
 }
 .experience-bg-wrap .ferrofluid-bg canvas { display: block; width: 100%; height: 100%; }
-@media (max-width: 1024px) { .experience-bg-wrap .ferrofluid-bg { display: none; } }
 
 /* ==================================================================
    NEVOA AMBIENTE — mesma receita anti-marca de Services espalhada
@@ -2354,8 +2302,6 @@ body.pc-nav-hidden header {
   filter: drop-shadow(0 0 2.2px rgba(163, 230, 53, .45));
 }
 @media (hover: none) { .pj-topo__glowbox { display: none; } }
-@media (prefers-reduced-motion: reduce) { .pj-topo__glowbox { transition: none; } }
-
 /* HERO — o MESMO fundo topográfico dos projetos, reusando as curvas via
    <use href="#topoLines">. Assenta ATRÁS de todo o conteúdo da hero: o
    texto (.stack) não é posicionado, então z-index:0 o cobriria — -1 põe o
@@ -2514,12 +2460,6 @@ body.pc-nav-hidden header {
   transform: translateY(0);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .proj-title,
-  .proj-desc { transition: none; transform: none; }
-  .proj-desc { opacity: 1; }
-}
-
 /* Botão circular de seta (canto inferior direito).
    Hover verde só no próprio botão. Preenchimento líquido sobe
    pelo fundo via ::before, easing limpo (sem overshoot). */
@@ -2571,14 +2511,6 @@ body.pc-nav-hidden header {
   transform: rotate(-45deg);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .proj-arrow svg,
-  .proj-badge svg { transition: none; }
-  .proj-card:hover .proj-arrow svg,
-  .proj-card.hover-in .proj-arrow svg,
-  .proj-card:hover .proj-badge svg,
-  .proj-card.hover-in .proj-badge svg { transform: none; }
-}
 /* Preenchimento clean: o ::before é um retângulo já recortado em círculo
    pelo overflow:hidden do parent. Slide-up reto (sem morph de blob). */
 .proj-arrow::before {
@@ -2865,8 +2797,6 @@ body.pc-nav-hidden header {
 .skills-tiles .tile-square.open .tile-reveal{ opacity: 1; transform: translateX(0); pointer-events: auto }
 @media (max-width:980px){ .skills-tiles .tiles-wrap.squares{ max-width: 860px } .skills-tiles .tile-square{ --shift: 220px } }
 @media (max-width:760px){ .skills-tiles .tile-square{ --shift: 0 } .skills-tiles .tile-reveal{ left: 0; top: calc(var(--sq) + 10px); bottom: auto; width: 100%; border-radius: 12px; transform: translateY(8px) } .skills-tiles .tile-square.open .tile-reveal{ transform: none } .skills-tiles .tile-square::after{ display:none } .skills-tiles .reveal-grid li::after{ display:none } }
-@media (prefers-reduced-motion: reduce){ .skills-tiles .tile-ico, .skills-tiles .tile-ico::after, .skills-tiles .tile-square::before, .skills-tiles .tile-reveal, .skills-tiles .reveal-grid li, .skills-tiles .tile-square{ transition: none !important } }
-
 /* =============================
    7) CONTACT (AURORA HERO + MODAL)
    ============================= */
@@ -3525,13 +3455,6 @@ body.pc-nav-hidden header {
   .ctm__channel { grid-template-columns: 40px 1fr auto; gap: 12px }
   .ctm__shell { padding: 28px 18px 24px }
 }
-@media (prefers-reduced-motion: reduce) {
-  .ctm__shell, .ctm__channel, .ctm__field, .ctm__submit {
-    animation: none !important; opacity: 1 !important; transform: none !important; filter: none !important;
-  }
-  .ctm::backdrop { animation: none }
-}
-
 /* =============================
    8) RESPONSIVO GERAL
    ============================= */
@@ -3600,18 +3523,6 @@ body.pc-nav-hidden header {
 }
 
 /* respeita quem prefere menos movimento */
-@media (prefers-reduced-motion: reduce){
-  .resume-btn.resume-attn,
-  .resume-btn.resume-attn::before,
-  .resume-btn.resume-attn::after{
-    animation: none !important;
-  }
-}
-
-@media (prefers-reduced-motion: reduce){ .resume-btn, .resume-btn::before, .resume-btn::after{ transition: none !important; animation: none !important } }
-
-
-
 /* Transições suaves site-wide */
 html, body, .panel, .pill, .xp-ico, .proj-card, .resume-btn,
 input[type="text"], input[type="email"], textarea, .btn-link, .btn-more,
@@ -3642,7 +3553,6 @@ input[type="text"], input[type="email"], textarea, .btn-link, .btn-more,
 .lang-menu.open li:nth-child(2){ animation-delay: .12s }
 @keyframes lang-menu-in{ from{ opacity:0 } to{ opacity:1 } }
 @keyframes lang-item-in{ from{ opacity:0; transform: translateY(-7px) } to{ opacity:1; transform: translateY(0) } }
-@media (prefers-reduced-motion: reduce){ .lang-menu.open, .lang-menu.open li, .lang-menu li::before{ animation:none !important; transition:none !important } }
 /* Alternar idioma — efeito específico no estilo da casa: o globo DÁ UMA VOLTA
    no hover e o código do idioma acende em lime (gesto de "trocar de mundo"). */
 .lang-switch{ perspective: 420px }
@@ -3651,8 +3561,6 @@ input[type="text"], input[type="email"], textarea, .btn-link, .btn-more,
 .lang-switch:hover, .lang-switch[aria-expanded="true"]{ border-color: color-mix(in oklab, var(--lime) 50%, transparent) }
 .lang-switch:hover #langCode, .lang-switch[aria-expanded="true"] #langCode{ color: var(--lime) }
 @keyframes globe-turn{ from{ transform: rotateY(0) } to{ transform: rotateY(360deg) } }
-@media (prefers-reduced-motion: reduce){ .lang-switch:hover .lang-ico, .resume-btn:hover svg{ animation: none !important } }
-
 /* Botão de certificado + Modal (<dialog>) */
 .btn-cert {
   appearance: none;
@@ -4511,13 +4419,6 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
 }
 
 /* Acessibilidade: quem pediu menos movimento -> transicao instantanea */
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation: none !important;
-  }
-}
-
 /* ==================================================================
    PROJECTS SHOWCASE — editorial sticky scroll (clean, sem caixas)
    Escopo: .projects-showcase (toda regra comeca por .ps-*)
@@ -4962,18 +4863,6 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
 }
 
 /* ---------- REDUCED MOTION (familia compartilhada) ---------- */
-@media (prefers-reduced-motion: reduce) {
-  .ps-cta,
-  .ps-cta__arrow,
-  .ps-pill,
-  .ps-scrollhint__arrow {
-    animation: none !important;
-    transition: none !important;
-  }
-  .ps-pill { opacity: 1; transform: none; }
-  .ps-scrollhint { display: none; }
-}
-
 /* ==================================================================
    PROJECTS · A BANCADA VIVA — featured (pilha de janelas), filtros
    (linha de comando) e arquivo (fileiras que respiram).
@@ -5402,9 +5291,6 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
 @media (hover: none) {
   .pj-card__frame::before, .pj-card__frame::after { display: none; }
 }
-@media (prefers-reduced-motion: reduce) {
-  .pj-card__frame::before, .pj-card__frame::after { transition: none; }
-}
 .pj-card__view {
   position: relative;
   display: block;
@@ -5478,11 +5364,6 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
 .pj-card:hover .pj-card__title,
 .tl-card:hover .tl-card-title {
   background-position: 100% 0%;
-}
-@media (prefers-reduced-motion: reduce) {
-  .pj-panel__title,
-  .pj-card__title,
-  .tl-card-title { transition: opacity .35s ease; }
 }
 .pj-card__catlabel {
   flex: 0 0 auto;
@@ -5625,21 +5506,6 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
 }
 
 /* reduced-motion: estados finais diretos, zero coreografia */
-@media (prefers-reduced-motion: reduce) {
-  .pj-win,
-  .pj-win__view::after,
-  .pj-row,
-  .pj-card__frame,
-  .pj-card__img,
-  .pj-card__view::after,
-  .pj-cli__ink,
-  .pj-panel__dot::after {
-    transition: none !important;
-  }
-  .pj-empty__caret { animation: none; }
-  .pj-guide__pulse { display: none; }
-}
-
 /* ==================================================================
    PROJECT CASE STUDY (project.html) — página individual de um projeto.
    Reaproveita .ps-frame, .ps-cta e .ps-pill (já polidos na showcase);
@@ -6323,12 +6189,6 @@ a.pc-reg__host:hover { color: var(--text); }
   .pc-note { margin-top: 2px; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .pc-shot,
-  .pc-shot__veil,
-  .pd-deep__sum::after { transition: none; }
-}
-
 /* ---------- PRÓXIMO PROJETO ---------- */
 .pc-next { margin-top: clamp(56px, 8vw, 96px); }
 .pc-next__link {
@@ -6386,10 +6246,6 @@ a.pc-reg__host:hover { color: var(--text); }
 .pc-next__link:hover .pc-next__thumb::after { opacity: 0; }
 .pc-next__arrow { width: 20px; height: 20px; color: var(--green); flex: 0 0 auto; transition: transform .26s var(--ps-ease, cubic-bezier(.22,1,.36,1)); }
 .pc-next__link:hover .pc-next__arrow { transform: translateX(4px); }
-@media (prefers-reduced-motion: reduce) {
-  .pc-next__thumb img, .pc-next__thumb::after { transition: none; }
-}
-
 @media (max-width: 560px) {
   .pd-topic { grid-template-columns: 38px 1fr; gap: 14px; }
   .pd-topic__icon { width: 38px; height: 38px; border-radius: 10px; }
@@ -6427,12 +6283,6 @@ a.pc-reg__host:hover { color: var(--text); }
     width: min(100%, calc(82svh * 1.7778));
     min-width: 0;
   }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pc-back svg, .pc-next__link, .pc-next__arrow,
-  .pd-topic, .pd-topic__icon, .pd-topic__title, .pd-topic__text { transition: none !important; }
-  .pd-caret { animation: none !important; opacity: 0 !important; }
 }
 
 /* ==================================================================
@@ -6646,14 +6496,6 @@ body.blog-body { min-height: 100vh; }
   background: var(--w-05);
   border: 1px solid var(--w-08);
   border-radius: 999px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .blog-soon-glow,
-  .blog-soon-ico,
-  .blog-soon-progress__bar {
-    animation: none !important;
-  }
 }
 
 /* ==================================================================
@@ -7180,12 +7022,6 @@ body.blog-body { min-height: 100vh; }
 .ps-cursorchip__core svg { width: 17px; height: 17px; display: block; }
 @keyframes ps-chip-spin { to { transform: rotate(360deg); } }
 
-@media (prefers-reduced-motion: reduce) {
-  .work-timeline .tl-line { scale: 1 1; }
-  .fx-on .work-timeline .dot { scale: 1; opacity: 1; transition: none; }
-  .glow-wire { display: none; }
-}
-
 /* ==================================================================
    A11Y / POLISH — camada final: foco de teclado consistente, seleção
    de texto na paleta, skip-link e cobertura de reduced-motion nos loops
@@ -7265,13 +7101,6 @@ a.pc-reg__host:focus-visible,
   border: 0;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  /* loops de blink que escapavam da guarda (cursor do terminal + caret
-     do placeholder de projetos) */
-  .cursor, .ps-soon__caret, .ps-soon__dots::after { animation: none !important; }
-  .skip-link { transition: none; }
-}
-
 /* Alvos de toque ≥44px em telas de toque (ergonomia do polegar). Só
    expande a hit-area — o ícone/texto continua no mesmo lugar, e o
    desktop (pointer:fine) fica 100% intacto. */
@@ -7340,14 +7169,6 @@ a.pc-reg__host:focus-visible,
   pointer-events: none;
   transition: opacity .4s ease;
 }
-@media (prefers-reduced-motion: reduce) {
-  .service-card { transform: none !important; }
-  .service-card::before { display: none; }
-  .service-card::after { opacity: .4; transition: none; }
-}
-
-
-
 /* Fundo animado (background-fx / aurora) REMOVIDO a pedido: só as sections
    de contato (normal), projetos e hero mantêm seus fundos nativos. */
 
@@ -7388,14 +7209,6 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
 }
 
 /* Reduced-motion: mantem o blur estatico, sem fade/transicao. */
-@media (prefers-reduced-motion: reduce) {
-  dialog.modal-fx-open::backdrop {
-    animation: none !important;
-    transition: none !important;
-  }
-}
-
-
 /* =========================================================
    SERVICES — FANNED FOCUS DECK
    ScrollStack chapado (matte, um verde so). Card = superficie solida
@@ -7803,31 +7616,6 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
   .svc-features li { opacity: 1; transform: none; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  /* sem pin, sem 3D: lista vertical legivel. Trava mesmo se .is-pile
-     ficar pendurado no meio de um rebuild disparado pela media-query. */
-  .svc-stack.is-pile .svc-pile { height: auto !important; perspective: none !important; }
-  .svc-card,
-  .svc-stack.is-pile .svc-card {
-    position: static !important;
-    top: auto !important;
-    left: auto !important;
-    width: auto !important;
-    max-width: none !important;
-    margin: 0 0 16px;
-    transform: none !important;
-    filter: none !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-  }
-  .svc-card::before { animation: none; opacity: .5; }
-  .svc-card::after { display: none; }
-  .svc-card__inner { perspective: none; }
-  .svc-card__depth { transform: none !important; transform-style: flat; transition: none; }
-  .svc-watermark, .svc-bloom, .svc-icon, .svc-tag, .svc-features li, .svc-cta { transition: none; }
-  .svc-features li { opacity: 1; transform: none; }
-}
-
 /* =========================================================
    SERVICES — REVEAL DE ENTRADA (js/svc-reveal.js)
    Cada card monta o conteudo em cascata (fade + sobe uns px) conforme
@@ -7946,10 +7734,6 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
 @media (hover: hover) {
   .skills-tiles .skills-folders:hover::after { opacity: 1; }
 }
-@media (prefers-reduced-motion: reduce) {
-  .skills-tiles .skills-folders::after { transition: none; }
-}
-
 /* a celula: a pasta pousa embaixo; os arquivos voam pra cima DENTRO do
    proprio box (min-height segura o leque). --rise-y vem do scrollfx. */
 .skills-tiles .skill-folder {
@@ -8388,18 +8172,6 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
 /* ---------- degrade: prefers-reduced-motion ----------
    sem voo longo — os arquivos so APARECEM (opacity) na posicao final;
    a tampa abre/fecha instantanea, sem pulso */
-@media (prefers-reduced-motion: reduce) {
-  .skills-tiles .ff-file,
-  .skills-tiles .skill-folder.open .ff-file {
-    transition: opacity .25s ease !important;
-    transition-delay: 0s !important;
-  }
-  .skills-tiles .folder-front,
-  .skills-tiles .folder-back::before {
-    transition: none !important;
-  }
-  .skills-tiles .status-dot { animation: none !important; }
-}
 /* ==================================================================
    ENTITY HOME (/sobre.html e /en/about.html) — paginas estaticas
    geradas por scripts/build-about.js. Classes novas, nenhuma regra
@@ -8477,135 +8249,6 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
 }
 
 /* ============================================================
-   PERF TIER — CSS que acompanha o js/perf-tier.js
-
-   REGRA: o site nao pode MUDAR DE CARA entre os niveis. Ninguem
-   deveria olhar o modo 'low' e pensar "esse site ta quebrado" ou
-   "esse e outro site". Cada regra abaixo ou e imperceptivel, ou e
-   uma reducao de intensidade — nunca um efeito que some.
-
-   Por isso NAO tem aqui: display:none em conteudo, background
-   solido substituindo gradiente de MARCA, transition:none global.
-   ============================================================ */
-
-
-/* ══════════════════════════════════════════════════════════
-   MEDIUM — a maquina aguenta, mas nao sobra
-   ══════════════════════════════════════════════════════════ */
-
-/* backdrop-filter e o efeito mais caro do CSS moderno: o navegador
-   precisa LER os pixels atras do elemento, desfocar e recompor — a
-   cada frame em que algo se mexe.
-
-   Aqui nao removo: reduzo o raio. blur(8px) -> blur(5px) e uma
-   diferenca que so aparece comparando print lado a lado, mas o
-   custo do desfoque cresce mais rapido que o raio. */
-html[data-perf="medium"] .pill,
-html[data-perf="medium"] .lang-switch.pill,
-html[data-perf="medium"] .resume-btn {
-  -webkit-backdrop-filter: blur(5px);
-          backdrop-filter: blur(5px);
-}
-
-/* sombras gigantes: 44px de blur -> 28px. O card continua descolado
-   do fundo, que e o proposito da sombra. */
-html[data-perf="medium"] .nav-dd-menu,
-html[data-perf="medium"] .lang-menu {
-  box-shadow: 0 12px 28px rgba(0, 0, 0, .26), inset 0 1px 0 var(--w-06);
-}
-
-
-/* ══════════════════════════════════════════════════════════
-   LOW — maquina fraca, ou o monitor detectou sofrimento
-   ══════════════════════════════════════════════════════════ */
-
-/* ── backdrop-filter vira cor solida ──────────────────────────
-   A --w-05 do site e um branco translucido sobre fundo escuro
-   quase uniforme: o desfoque quase nao tinha o que borrar. A cor
-   solida equivalente (5% branco composto sobre o escuro) com um
-   tico a menos de luz compensa o contraste que o blur dava, e o
-   alpha alto impede o conteudo de "vazar" nitido por baixo da nav.
-   Comparando print a print da pra ver. Olhando o site, nao. */
-html[data-perf="low"] .pill,
-html[data-perf="low"] .lang-switch.pill,
-html[data-perf="low"] .resume-btn,
-html[data-perf="low"] .nav-dd-menu,
-html[data-perf="low"] .lang-menu {
-  -webkit-backdrop-filter: none;
-          backdrop-filter: none;
-  background: rgba(18, 21, 19, .95);
-}
-
-/* ── animacoes DECORATIVAS infinitas pausam ───────────────────
-   `animation: none` devolve cada elemento ao estado-base da regra
-   (visivel), nao congela no meio de um frame. Ficam DE FORA as
-   animacoes que comunicam algo: o caret do terminal (.cursor) e
-   qualquer coisa dirigida por JS/GSAP (marquee, pilha, reveals). */
-html[data-perf="low"] .scroll-cue,
-html[data-perf="low"] .scroll-cue__particle,
-html[data-perf="low"] .term-prompt,
-html[data-perf="low"] .status-dot,
-html[data-perf="low"] .tl-end__btn,
-html[data-perf="low"] .tl-end__btn::before,
-html[data-perf="low"] .tl-end__dot {
-  animation: none;
-}
-
-/* ── will-change desligado ────────────────────────────────────
-   Cada will-change promove uma camada de GPU. Em maquina com pouca
-   VRAM as camadas viram o proprio gargalo. Desligar nao muda um
-   pixel: so deixa o navegador decidir sozinho o que promover. */
-html[data-perf="low"] * {
-  will-change: auto !important;
-}
-
-/* ── PROJETOS: o maior custo da home em desktop fraco ─────────
-   Videos ja nao nascem em low (js/projects.js). Aqui cortamos
-   camadas CSS caras cujo estado-base e identico ao visual de
-   repouso — ninguem olha e pensa que "faltou efeito". */
-
-/* pulsos das guias: loop infinito de opacity/transform */
-html[data-perf="low"] .pj-guide__pulse,
-html[data-perf="medium"] .pj-guide__pulse {
-  display: none;
-}
-
-/* anel de proximidade das janelas (escrito por JS em high) */
-html[data-perf="low"] .pj-win::before,
-html[data-perf="medium"] .pj-win::before {
-  content: none !important;
-  display: none !important;
-}
-
-/* brilho topografico que segue o cursor */
-html[data-perf="low"] .pj-topo__glowbox {
-  display: none;
-}
-
-/* glow do frame do card no arquivo (mask + radial no hover) —
-   em low o hover ainda revela cor via filter/saturate do CSS base;
-   so o outline-glow some */
-html[data-perf="low"] .pj-card__frame::before {
-  content: none !important;
-  display: none !important;
-}
-
-/* backdrop-filter restante em cards/modais leves */
-html[data-perf="low"] .skill-folder,
-html[data-perf="low"] .tl-card,
-html[data-perf="low"] .svc-card {
-  -webkit-backdrop-filter: none;
-          backdrop-filter: none;
-}
-
-/* medium: blur menor no glass que ainda resta fora da nav */
-html[data-perf="medium"] .skill-folder,
-html[data-perf="medium"] .tl-card {
-  -webkit-backdrop-filter: blur(4px);
-          backdrop-filter: blur(4px);
-}
-
-/* ============================================================
    SMART BOOT — barra lime no topo (so cache frio / 1a visita)
    ============================================================ */
 #bi-smart-boot {
@@ -8628,7 +8271,4 @@ html[data-perf="medium"] .tl-card {
 #bi-smart-boot.is-done {
   opacity: 0;
   transition: opacity .4s ease;
-}
-@media (prefers-reduced-motion: reduce) {
-  #bi-smart-boot { display: none; }
 }

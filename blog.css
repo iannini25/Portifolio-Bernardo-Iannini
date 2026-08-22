@@ -235,11 +235,6 @@
   .blog-post-card::before,
   .bid-tile:not(.bid-center)::after { display: none; }
 }
-@media (prefers-reduced-motion: reduce) {
-  .blog-post-card::before,
-  .bid-tile:not(.bid-center)::after { transition: none; }
-}
-
 /* 1) Perfil — avatar com sweep + nome */
 .bid-profile {
   display: flex;
@@ -1115,15 +1110,6 @@
 .blog-sort-option.is-active::before { transform: translate(-50%, 50%) scale(1); }
 .blog-sort-option[aria-selected="true"] { color: var(--lime); }
 .blog-sort-option[aria-selected="true"].is-active { color: #08120c; }
-
-@media (prefers-reduced-motion: reduce) {
-  .blog-sort-menu.open { animation: none; }
-  .blog-sort-option,
-  .blog-sort-option::before,
-  .blog-sort-caret { transition: none; }
-  /* sem o circulo animado, o destaque vira fundo solido */
-  .blog-sort-option.is-active::before { transform: translate(-50%, 50%) scale(1); }
-}
 
 @media (max-width: 900px) {
   .blog-toolbar { grid-template-columns: 1fr; }
@@ -4523,7 +4509,6 @@ body.post-body {
   pointer-events: none;
 }
 @media (hover: none) { .post-related-card::after { display: none; } }
-@media (prefers-reduced-motion: reduce) { .post-related-card::after { transition: none; } }
 .post-related-card:hover {
   transform: translateY(-4px);
   border-color: transparent;
@@ -5047,55 +5032,6 @@ body.post-body {
    as transicoes que movem ou escalam elementos. Fades simples
    de cor/opacidade continuam; os estados finais ficam visiveis.
    ========================================================= */
-@media (prefers-reduced-motion: reduce) {
-  /* loops infinitos (shimmer, rotate, pulse) e entrada do toast */
-  .blog-hero-title em,
-  .bid-name span,
-  .bid-location-glow,
-  .bid-location-pulse::before,
-  .blog-author-card::before,
-  .login-card::before,
-  .admin-toast { animation: none !important; }
-
-  /* sparkline aparece ja desenhada (sem o keyframe, o dashoffset
-     inicial esconderia a linha para sempre) */
-  .bid-stats-spark polyline {
-    animation: none !important;
-    stroke-dashoffset: 0;
-  }
-
-  /* transicoes com movimento (transform / tamanho) viram troca instantanea */
-  .bid-stat,
-  .bid-tag,
-  .bid-featured-img img,
-  .bid-center-img,
-  .bid-center-meta,
-  .bid-topic-current,
-  .blog-post-card,
-  .blog-post-cover img,
-  .blog-post-excerpt,
-  .blog-author-photo img,
-  .blog-author-btn,
-  .login-submit,
-  .admin-stat,
-  .admin-btn,
-  .post-back,
-  .post-back-arrow,
-  .post-page-tag,
-  .post-share-btn,
-  .post-related-card,
-  .post-related-card-cover img,
-  .post-notfound-cta,
-  .post-gallery-item,
-  .post-gallery-item img,
-  .post-media-item img,
-  .post-lightbox-close,
-  .post-lightbox-nav,
-  .post-linkedin-btn,
-  .post-progress-bar { transition: none !important; }
-}
-
-
 /* ==================================================================
    FOCO VISIVEL — o site tem UM anel de foco (style.css), mas nenhum
    controle do blog estava na lista: chips, tags, busca, cards, botoes
@@ -5132,34 +5068,3 @@ body.post-body {
    sweep do avatar). Nada aqui carrega informacao, entao tudo pode
    parar; o conteudo continua 100% visivel.
    ================================================================== */
-@media (prefers-reduced-motion: reduce) {
-  /* shimmer congela no meio da varredura, com a cor cheia */
-  .blog-hero-title em,
-  .bid-name span { animation: none; background-position: 50% 0; }
-
-  /* halos que giram sem parar */
-  .bid-location-glow,
-  .blog-author-card::before,
-  .login-card::before { animation: none; }
-
-  /* o pulse do "writing from" vira ponto estatico */
-  .bid-location-pulse::before { animation: none; opacity: .3; transform: none; }
-
-  /* sparkline nasce desenhada */
-  .bid-stats-spark polyline { animation: none; stroke-dashoffset: 0; }
-
-  /* sweep diagonal do avatar sai; a troca de foto fica instantanea */
-  .bid-avatar-sweep { display: none; }
-  .bid-avatar-img { transition-duration: 1ms; }
-
-  /* lifts, zooms e o revelar do resumo */
-  .blog-post-card,
-  .post-related-card,
-  .blog-post-cover img,
-  .bid-featured-img img,
-  .blog-author-photo img,
-  .post-related-card-cover img,
-  .blog-post-excerpt { transition: none; }
-  .blog-post-card:hover,
-  .post-related-card:hover { transform: none; }
-}

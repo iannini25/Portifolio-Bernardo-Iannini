@@ -18,15 +18,6 @@
    · so mouse fino; no toque o CSS ja esconde o contorno
    ============================================================ */
 (function blogCursorOutline() {
-  const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
-  if (!fine.matches) return;
-
-  /* prefers-reduced-motion: o anel que persegue o cursor e puro adorno;
-     com a preferencia ativa nem liga o efeito (o CSS ja zera as transitions) */
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  /* alvos: cards da lista de posts + tiles do bento de identidade (blog.html)
-     + cards de "leia tambem" das paginas internas de post (posts/*.html) */
   const SEL = '.blog-post-card, .bid-tile:not(.bid-center), .post-related-card';
 
   let raf = 0;

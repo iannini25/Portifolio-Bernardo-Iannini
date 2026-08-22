@@ -29,7 +29,6 @@
   const grid = document.getElementById('servicesGrid');
   if (!grid) return;
 
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   const coarse = window.matchMedia('(pointer: coarse)');
   const narrow = window.matchMedia('(max-width: 820px)');   // mesmo corte da pilha
 
@@ -47,7 +46,6 @@
      degradada (.is-static) idem: lista estatica, nada escondido. */
   function canReveal() {
     return !!(window.gsap && window.ScrollTrigger) &&
-      !reduce.matches && !coarse.matches && !narrow.matches &&
       !grid.classList.contains('is-static') &&
       !grid.classList.contains('is-pile');
   }
@@ -152,7 +150,7 @@
   document.addEventListener('svc:rendered', schedule);
 
   /* rebuild quando o modo muda (reduced-motion / toque / largura) */
-  [reduce, coarse, narrow].forEach(mq => {
+  [narrow].forEach(mq => {
     if (mq.addEventListener) mq.addEventListener('change', schedule);
     else if (mq.addListener) mq.addListener(schedule);   // Safari antigo
   });

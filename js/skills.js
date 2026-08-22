@@ -206,14 +206,12 @@ function buildSkillFolder(cat) {
    UM alvo por movimento -> o topo real sob o cursor -> zero tremida/travamento.
    Ver style.css .ff-file.ff-hot. */
 var FINE_POINTER = window.matchMedia('(hover: hover) and (pointer: fine)');
-var REDUCE_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)');
 var lastHotX = null, lastHotY = null;
 
 function clearHot(container) {
   container.querySelectorAll('.ff-file.ff-hot').forEach(f => f.classList.remove('ff-hot'));
 }
 function onFilesPointerMove(e) {
-  if (!FINE_POINTER.matches || REDUCE_MOTION.matches) return;
   // guard anti-scroll: ao rolar, o browser dispara pointermove com o cursor
   // PARADO -> so mexe no foco quando o mouse ANDA de verdade (clientX/Y mudam).
   if (e.clientX === lastHotX && e.clientY === lastHotY) return;
@@ -270,12 +268,10 @@ function ensureFolderVisible(folder) {
 
   const delta = safeTop - fanTop;                     // desce o conteudo em delta
   const targetY = Math.max(0, window.scrollY - delta);
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (window.lenis && typeof window.lenis.scrollTo === 'function' && !reduce) {
+  if (window.lenis && typeof window.lenis.scrollTo === 'function') {
     window.lenis.scrollTo(targetY, { duration: 0.6 });
   } else {
-    window.scrollTo({ top: targetY, behavior: reduce ? 'auto' : 'smooth' });
+    window.scrollTo({ top: targetY, behavior: 'smooth' });
   }
 }
 
@@ -303,7 +299,6 @@ function toggleFolder(folder) {
    --box-*, entao a conta bate). So mouse fino; rAF-throttled; recalcula os
    insets no resize (mudam por breakpoint). O fade e do CSS (:hover::after). */
 function initBoxSpotlight(host) {
-  if (!FINE_POINTER.matches) return;
   const ins = { t: 0, r: 0, b: 0, l: 0 };
   function readInsets() {
     const cs = getComputedStyle(host);
