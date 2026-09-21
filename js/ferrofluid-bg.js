@@ -296,7 +296,7 @@ function initFerrofluid(container, opts = {}) {
 
   let raf = 0;
   let contextLost = false;
-  let isVisible = true;
+  let isVisible = false;
   let tabVisible = document.visibilityState !== 'hidden';
   const frameInterval = 1000 / targetFps;
   let lastFrame = 0;
@@ -331,21 +331,29 @@ function initFerrofluid(container, opts = {}) {
   canvas.addEventListener('webglcontextlost', handleContextLost);
   canvas.addEventListener('webglcontextrestored', handleContextRestored);
 
+  const kick = () => {
+    cancelAnimationFrame(raf);
+    if (isVisible && tabVisible && !contextLost) raf = requestAnimationFrame(loop);
+  };
+
   const io = new IntersectionObserver(([entry]) => {
     const was = isVisible;
     isVisible = entry.isIntersecting;
-    if (isVisible && !was && !contextLost && tabVisible) start();
-  }, { threshold: 0 });
+    if (isVisible && !was) kick();
+    else if (!isVisible) cancelAnimationFrame(raf);
+  }, { rootMargin: '160px 0px', threshold: 0 });
   io.observe(container);
 
   const handleVisibilityChange = () => {
     tabVisible = document.visibilityState !== 'hidden';
-    if (tabVisible && isVisible && !contextLost) start();
+    if (tabVisible) kick();
     else cancelAnimationFrame(raf);
   };
   document.addEventListener('visibilitychange', handleVisibilityChange);
 
-  raf = requestAnimationFrame(loop);
+  isVisible = container.getBoundingClientRect().bottom > -160 &&
+    container.getBoundingClientRect().top < (window.innerHeight || 0) + 160;
+  kick();
 
   return () => {
     cancelAnimationFrame(raf);

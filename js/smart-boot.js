@@ -18,7 +18,7 @@
 
 (function () {
   var WARM_KEY = 'bi-warm-v3';
-  var CACHE_NAME = 'bi-v3'; /* deve bater com VERSAO em /sw.js */
+  var CACHE_NAME = 'bi-v4'; /* deve bater com VERSAO em /sw.js */
 
   var SHELL = [
     '/',
@@ -43,25 +43,6 @@
     '/img/amarofy.webp',
     '/img/automotiva-express.webp',
     '/img/portfolio-cover.webp'
-  ];
-
-  /* previews usados na home (pilha + arquivo). site-mp4s sao mais
-     pesados e so entram depois dos cards. */
-  var PREVIEWS = [
-    '/videos/preview/athena7.mp4',
-    '/videos/preview/moedanobre.mp4',
-    '/videos/preview/iba.mp4',
-    '/videos/preview/modulo-engenharia.mp4',
-    '/videos/preview/brasa.mp4',
-    '/videos/preview/sereno.mp4',
-    '/videos/preview/amarofy.mp4',
-    '/videos/preview/automotiva-express.mp4'
-  ];
-
-  var SITE_VIDEOS = [
-    '/videos/preview/athena7-site.mp4',
-    '/videos/preview/moedanobre-site.mp4',
-    '/videos/preview/iba-site.mp4'
   ];
 
   var done = false;
@@ -178,7 +159,7 @@
   async function boot() {
     window.biWarmReady = jaAquecido();
 
-    var all = SHELL.concat(COVERS, PREVIEWS, SITE_VIDEOS);
+    var all = SHELL.concat(COVERS);
     /* se ja aquecido: ainda manda PRECACHE pro SW (pode ser SW novo)
        e sai sem barra — visita ja esta lisa. */
     if (window.biWarmReady) {
@@ -202,21 +183,8 @@
     await rodarFila(SHELL, tick, 3);
     await idle(600);
 
-    /* Fase 2 — capas (baratas, soltam a section visual) */
+    /* Fase 2 — capas. Videos ficam na pagina do case, nao na home. */
     await rodarFila(COVERS, tick, 3);
-    await idle(800);
-
-    /* Fase 3 — previews dos cards, UM por vez (o gargalo real) */
-    await rodarFila(PREVIEWS, function (url) {
-      tick();
-      /* avisa a section pra poder dar play sem esperar o resto */
-      window.dispatchEvent(new CustomEvent('bi:asset-ready', { detail: { url: url } }));
-    }, 1);
-
-    await idle(1000);
-
-    /* Fase 4 — videos longos de case (baixa prioridade) */
-    await rodarFila(SITE_VIDEOS, tick, 1);
 
     setProgresso(100);
     pedirPrecacheAoSW(all);

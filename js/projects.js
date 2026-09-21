@@ -41,13 +41,8 @@ const pjReducedMotion = () => false;
 const pjPerf = () =>
   document.documentElement.dataset.perf || 'high';
 
-/* Videos de preview sao o maior custo da section (decode H.264 em
-   paralelo). A capa .webp e exatamente o que o usuario ve com o video
-   pausado no poster — visual identico.
-   low    → nenhum <video> (so img)
-   medium → video so na pilha featured
-   high   → featured + arquivo */
-const pjWantVideo = () => true;
+/* A home mostra so a capa. O video completo fica na pagina do case. */
+const pjWantVideo = () => false;
 
 /* featured com QUALQUER parte na viewport (medido na hora — à prova de
    flag presa; um getBoundingClientRect a cada 5s é irrelevante) */
@@ -139,25 +134,10 @@ function pjCaseHref(p) {
   return `project.html?slug=${encodeURIComponent(p.id)}`;
 }
 
-/* mídia do card/janela: preview animado (mp4/webm) quando existir
-   E o tier de performance permitir; senão a capa estática. O <video>
-   nasce pausado; play/pause por hover+viewport fica no scrollfx
-   (só desktop / só high|medium conforme o caso). */
-function pjMediaHTML(p, imgClass, where) {
-  if (p.preview && pjWantVideo(where)) {
-    /* sites = preview é um scroll-through do site inteiro; roda mais devagar
-       que o padrão (data-rate lido no scrollfx). Logos dos sistemas ficam 1x. */
-    const rate = p.category === 'site' ? ' data-rate="0.5"' : '';
-    /* preload="none" e nao "metadata": sao 11 previews somando 54MB, e
-       "metadata" fazia o browser abrir requisicao pra TODOS eles no load,
-       mesmo os que nunca aparecem na tela. O poster (a capa .webp) e o que
-       o usuario ve parado, e quem toca chama .play() (pjMediaHTML e usado
-       pela pilha, que da play so no card da frente). Visual identico,
-       11 requisicoes de video a menos no carregamento. */
-    return `<video class="${imgClass}" src="${p.preview}" poster="${p.cover}"${rate}
-      muted loop playsinline preload="none" aria-label="${p.title}"></video>`;
-  }
-  return `<img class="${imgClass}" src="${p.cover}" alt="${p.title}" loading="lazy" decoding="async">`;
+/* Capa estatica. A da frente da pilha entra eager; o arquivo fica lazy. */
+function pjMediaHTML(p, imgClass, eager) {
+  const loading = eager ? 'eager' : 'lazy';
+  return `<img class="${imgClass}" src="${p.cover}" alt="${p.title}" loading="${loading}" decoding="async">`;
 }
 
 /* =========================================================
@@ -178,7 +158,7 @@ function buildFeaturedWindow(p, slot) {
     </div>
     <a class="pj-win__view ps-frame__view" href="${pjCaseHref(p)}" tabindex="${slot === 0 ? 0 : -1}"
        aria-label="${p.title}">
-      ${pjMediaHTML(p, 'pj-win__img', 'featured')}
+      ${pjMediaHTML(p, 'pj-win__img', slot === 0)}
       <span class="pj-win__veil" aria-hidden="true"></span>
     </a>
   `;
@@ -446,7 +426,7 @@ function buildArchCard(p, data) {
     <a class="pj-card__frame ps-frame__view" href="${pjCaseHref(p)}"
        aria-label="${p.title} · ${caseLabels.viewCase || 'View case study'}">
       <span class="pj-card__view">
-        ${pjMediaHTML(p, 'pj-card__img', 'archive')}
+        ${pjMediaHTML(p, 'pj-card__img', false)}
       </span>
     </a>
     <div class="pj-card__cap">

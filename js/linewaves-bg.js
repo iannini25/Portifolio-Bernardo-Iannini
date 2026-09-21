@@ -264,7 +264,7 @@ function initLineWaves(container, opts = {}) {
 
   let raf = 0;
   let contextLost = false;
-  let isVisible = true;
+  let isVisible = false;
   let tabVisible = document.visibilityState !== 'hidden';
   const frameInterval = 1000 / targetFps;
   let lastFrameTime = 0;
@@ -303,29 +303,32 @@ function initLineWaves(container, opts = {}) {
   canvas.addEventListener('webglcontextlost', handleContextLost);
   canvas.addEventListener('webglcontextrestored', handleContextRestored);
 
+  const kick = () => {
+    cancelAnimationFrame(raf);
+    if (isVisible && tabVisible && !contextLost) {
+      lastFrameTime = 0;
+      raf = requestAnimationFrame(loop);
+    }
+  };
+
   const io = new IntersectionObserver(([entry]) => {
     const wasVisible = isVisible;
     isVisible = entry.isIntersecting;
-    if (isVisible && !wasVisible && !contextLost && tabVisible) {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(loop);
-    }
-  }, { threshold: 0 });
+    if (isVisible && !wasVisible) kick();
+    else if (!isVisible) cancelAnimationFrame(raf);
+  }, { rootMargin: '160px 0px', threshold: 0 });
   io.observe(container);
 
   const handleVisibilityChange = () => {
     tabVisible = document.visibilityState !== 'hidden';
-    if (tabVisible && isVisible && !contextLost) {
-      cancelAnimationFrame(raf);
-      lastFrameTime = 0;
-      raf = requestAnimationFrame(loop);
-    } else {
-      cancelAnimationFrame(raf);
-    }
+    if (tabVisible) kick();
+    else cancelAnimationFrame(raf);
   };
   document.addEventListener('visibilitychange', handleVisibilityChange);
 
-  raf = requestAnimationFrame(loop);
+  const r0 = container.getBoundingClientRect();
+  isVisible = r0.bottom > -160 && r0.top < (window.innerHeight || 0) + 160;
+  kick();
 
   return () => {
     cancelAnimationFrame(raf);

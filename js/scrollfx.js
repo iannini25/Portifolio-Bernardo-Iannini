@@ -1097,6 +1097,12 @@
       window.lenis = lenis;
     }
 
+    document.addEventListener('visibilitychange', () => {
+      if (!gsap.ticker) return;
+      if (document.hidden) { if (gsap.ticker.sleep) gsap.ticker.sleep(); }
+      else if (gsap.ticker.wake) gsap.ticker.wake();
+    });
+
     buildHeroIntro();
     buildWires();
     buildLines();
