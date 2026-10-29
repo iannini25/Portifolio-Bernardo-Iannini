@@ -5468,6 +5468,18 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
    existem sob html.cs-js (classe posta no <head>).
    ================================================================== */
 .cs, .cs *, .cs *::before, .cs *::after { box-sizing: border-box; }
+/* o menu do site flutua sem fundo: aqui o texto rolava por baixo dos
+   botoes e ficava encavalado. Um veu escuro em degrade segura o topo. */
+body:has(.cs) header::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 128px;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg) 55%, rgba(6, 8, 7, 0) 100%);
+}
+@media (max-width: 900px) { body:has(.cs) header::before { height: 104px; } }
 .cs {
   --cs-w: 1180px;
   --cs-read: 64ch;
@@ -5508,10 +5520,11 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
 /* ---------- hero ---------- */
 .cs-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
-  gap: clamp(32px, 5vw, 72px);
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+  gap: clamp(32px, 5vw, 80px);
   align-items: center;
-  margin-top: clamp(20px, 3vw, 36px);
+  min-height: min(68vh, 640px);
+  margin-top: clamp(16px, 2.5vw, 32px);
 }
 .cs-reg {
   display: flex;
@@ -5533,7 +5546,7 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
 }
 .cs-title {
   margin: 0 0 18px;
-  font-size: clamp(2.5rem, 6vw, 4.4rem);
+  font-size: clamp(2.8rem, 6.6vw, 5.6rem);
   font-weight: 900;
   line-height: 1;
   letter-spacing: -.03em;
@@ -5554,9 +5567,9 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   color: var(--text-soft);
 }
 .cs-lead {
-  max-width: 56ch;
-  margin: 0 0 28px;
-  font-size: clamp(1rem, 1.35vw, 1.12rem);
+  max-width: 52ch;
+  margin: 0 0 30px;
+  font-size: clamp(1.05rem, 1.4vw, 1.22rem);
   line-height: 1.7;
   color: var(--text-soft);
 }
@@ -5654,24 +5667,29 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
 .cs-fact__label { font-size: .9rem; line-height: 1.4; color: var(--text-hint); }
 
 /* ---------- o que é / o problema ---------- */
-.cs-story { display: grid; gap: clamp(40px, 6vw, 72px); margin-top: var(--cs-gap); }
-.cs-story--two { grid-template-columns: 1fr 1fr; }
-.cs-text { max-width: var(--cs-read); }
-.cs-text p { margin: 0 0 16px; font-size: 1.04rem; line-height: 1.8; color: var(--text-soft); }
+.cs-story { display: grid; gap: clamp(48px, 7vw, 88px); margin-top: var(--cs-gap); }
+.cs-text {
+  display: grid;
+  grid-template-columns: minmax(160px, 300px) minmax(0, var(--cs-read));
+  gap: 12px clamp(28px, 5vw, 72px);
+  align-items: start;
+}
+.cs-text .cs-h2 { grid-row: 1 / span 20; margin: 0; }
+.cs-text p { grid-column: 2; margin: 0 0 14px; font-size: clamp(1.02rem, 1.2vw, 1.12rem); line-height: 1.8; color: var(--text-soft); }
 .cs-text p:last-child { margin-bottom: 0; }
 
 /* ---------- tour pelas telas (sticky + pan no scroll) ---------- */
 .cs-tour {
   position: relative;
-  height: 260vh;
+  height: 200vh;
   margin-top: var(--cs-gap);
 }
 .cs-tour__sticky {
   position: sticky;
   /* abaixo do menu flutuante (pill de ~56px + respiro) */
-  top: calc(var(--nav-h, 56px) + 44px);
-  height: calc(100vh - var(--nav-h, 56px) - 64px);
-  height: calc(100svh - var(--nav-h, 56px) - 64px);
+  top: 120px;
+  height: calc(100vh - 140px);
+  height: calc(100svh - 140px);
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
   gap: 20px;
@@ -6073,11 +6091,15 @@ html.cs-js .cs-step.is-on .cs-step__sub { opacity: 1; }
 @media (max-width: 900px) {
   .cs-hero { grid-template-columns: 1fr; }
   .cs-hero__media { order: -1; }
-  .cs-story--two { grid-template-columns: 1fr; }
+  .cs-text { grid-template-columns: 1fr; }
+  .cs-text .cs-h2 { grid-row: auto; position: static; margin-bottom: 6px; }
+  .cs-text p { grid-column: 1; }
+  .cs-hero { min-height: 0; }
+  .cs-tour__sticky { top: 100px; height: calc(100svh - 116px); }
   .cs-feat-grid { grid-template-columns: 1fr; }
   .cs-others__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   /* tour: o celular vira o protagonista (a janela larga não cabe) */
-  .cs-tour { height: 220vh; }
+  .cs-tour { height: 180vh; }
   .cs-tour__stage { justify-content: center; }
   .cs-tour__desk:has(+ .cs-tour__phone) { display: none; }
   .cs-tour__phone { width: auto; height: 100%; max-width: 78vw; }
