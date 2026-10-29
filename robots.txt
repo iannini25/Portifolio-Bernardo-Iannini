@@ -115,5 +115,5 @@ Allow: /
 Disallow: /post.html
 
 
-Sitemap: https://bernardoiannini.com/sitemap-imagens.xml
-Sitemap: https://bernardoiannini.com/sitemap.xml
+Sitemap: https://www.bernardoiannini.com/sitemap-imagens.xml
+Sitemap: https://www.bernardoiannini.com/sitemap.xml

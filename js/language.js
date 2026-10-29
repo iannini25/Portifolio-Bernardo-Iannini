@@ -703,7 +703,7 @@ Building the trust this corridor is missing is hard precisely because you can't 
 The EN/PT switch is an i18n engine written from scratch: the entire site changes language without reloading the page. The Newsroom is compiled at build time by a Node script that turns Markdown into static pages, managed through a local admin panel backed by Supabase. Deploys are fully static on Vercel, with sitemap, aria attributes and reduced-motion support.`
           ,
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP 3", "ScrollTrigger", "Lenis", "Node.js", "Markdown", "Supabase", "Vercel"],
-          link: "https://bernardoiannini.com",
+          link: "https://www.bernardoiannini.com",
           repo: "https://github.com/iannini25/iannini-Frontend-Studio",
           cover: "img/covers/portfolio.webp?v=a91316ed",
           id: "portfolio",
@@ -1501,7 +1501,7 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
 A troca EN/PT é um motor de i18n escrito do zero: o site inteiro muda de idioma sem recarregar a página. O Newsroom é compilado no build por um script Node que transforma Markdown em páginas estáticas, gerenciado por um painel admin local com Supabase. O deploy é 100% estático na Vercel, com sitemap, aria e suporte a reduced-motion.`
           ,
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP 3", "ScrollTrigger", "Lenis", "Node.js", "Markdown", "Supabase", "Vercel"],
-          link: "https://bernardoiannini.com",
+          link: "https://www.bernardoiannini.com",
           repo: "https://github.com/iannini25/iannini-Frontend-Studio",
           cover: "img/covers/portfolio.webp?v=a91316ed",
           id: "portfolio",

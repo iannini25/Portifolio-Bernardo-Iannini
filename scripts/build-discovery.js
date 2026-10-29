@@ -35,7 +35,7 @@ const { execFileSync } = require('child_process');
    ------------------------------------------------------------------- */
 
 const RAIZ = path.resolve(__dirname, '..');
-const SITE = 'https://bernardoiannini.com';
+const SITE = 'https://www.bernardoiannini.com';
 
 /** Diretórios varridos além da raiz. Não precisam existir ainda. */
 const DIRETORIOS_VARRIDOS = ['posts', 'projetos', 'en'];

@@ -47,7 +47,7 @@ const { renderCaseMain, projectMedia, splitTitle } = require('./lib/case-render'
 const CASES = (() => { try { return JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'cases.json'), 'utf8')); } catch { return {}; } })();
 
 const ROOT     = path.resolve(__dirname, '..');
-const SITE_URL = 'https://bernardoiannini.com';
+const SITE_URL = 'https://www.bernardoiannini.com';
 const PERSON   = SITE_URL + '/#pessoa';   // @id estavel (Fase 3)
 
 /* =========================================================

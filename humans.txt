@@ -1,6 +1,6 @@
 /* TEAM */
 Author: Bernardo Iannini
-Site: https://bernardoiannini.com
+Site: https://www.bernardoiannini.com
 Role: Full Stack Developer & AI Designer
 Location: Belo Horizonte, MG — Brasil
 LinkedIn: https://www.linkedin.com/in/bernardo-iannini

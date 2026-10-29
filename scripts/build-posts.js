@@ -29,11 +29,11 @@ catch (e) { /* opcional - se faltar, pulamos webp */ }
 const ROOT       = path.resolve(__dirname, '..');
 const POSTS_SRC  = path.join(ROOT, 'data', 'posts');
 const POSTS_OUT  = path.join(ROOT, 'posts');
-const SITE_URL   = 'https://bernardoiannini.com';
+const SITE_URL   = 'https://www.bernardoiannini.com';
 /* @id estavel da pessoa: o MESMO usado em sobre.html, na home e nas
    paginas de projeto. Toda mencao de autor aponta pra ele, entao o Google
    e as IAs leem UMA entidade "Bernardo Iannini", nao uma por pagina. */
-const PERSON_ID = 'https://bernardoiannini.com/#pessoa';
+const PERSON_ID = 'https://www.bernardoiannini.com/#pessoa';
 
 const AUTHOR     = {
   name: 'Bernardo Iannini',
