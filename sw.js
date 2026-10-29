@@ -9,8 +9,9 @@
    ve absolutamente nada.
 
    ESTRATEGIAS
-   · navegacao (HTML) -> network-first
-   · estatico (css/js/img/fonte) -> stale-while-revalidate
+   · HTML, CSS e JS -> network-first: sempre a ULTIMA versao do site;
+     o cache so entra quando nao ha rede (offline)
+   · imagens e fontes -> stale-while-revalidate (URLs versionadas)
 
    O QUE NUNCA ENTRA NO CACHE
    · /api/** e o Supabase
@@ -20,7 +21,7 @@
    ============================================================ */
 'use strict';
 
-const VERSAO = 'v5';
+const VERSAO = 'v6';
 const CACHE = `bi-${VERSAO}`;
 
 const CASCA = [
@@ -44,6 +45,8 @@ const BLOQUEADOS = [
 const ehBloqueado = (pathname) => BLOQUEADOS.some((re) => re.test(pathname));
 
 self.addEventListener('install', (event) => {
+  /* versao nova assume na hora, sem esperar fechar todas as abas */
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE)
       .then((cache) => Promise.allSettled(CASCA.map((u) => cache.add(u))))
@@ -71,11 +74,12 @@ self.addEventListener('fetch', (event) => {
 
   const querHtml = req.mode === 'navigate' ||
     (req.headers.get('accept') || '').includes('text/html');
+  const ehCodigo = /\.(css|js)$/.test(url.pathname);
 
-  if (querHtml) {
+  if (querHtml || ehCodigo) {
     event.respondWith((async () => {
       try {
-        const resp = await fetch(req);
+        const resp = await fetch(req, { cache: 'no-cache' });
         if (resp && resp.ok) {
           const copia = resp.clone();
           caches.open(CACHE).then((c) => c.put(req, copia)).catch(() => {});
