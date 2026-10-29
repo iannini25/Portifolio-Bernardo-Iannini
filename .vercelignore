@@ -42,3 +42,6 @@ supabase/
 
 # Capas-mestre (o site serve so img/covers/, gerado pelo build:covers)
 covers-src
+
+_capas-antigas/
+gallery-src/

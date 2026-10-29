@@ -105,3 +105,9 @@ img/**/*.bak
 # Capas-mestre dos projetos (PNG/JPG grandes). O build gera img/covers/
 # (npm run build:covers) e SO a saida otimizada e versionada.
 covers-src/
+
+# Capas antigas / telas extras (masters locais)
+_capas-antigas/
+
+# Telas-mestre da galeria (originais grandes; o site usa so a saida otimizada)
+gallery-src/

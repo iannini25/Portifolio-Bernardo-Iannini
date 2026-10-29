@@ -301,6 +301,20 @@ function mediaGridHtml(post) {
     const w   = img.width  || 1200;
     const h   = img.height || 800;
     const cap = img.caption || '';
+    // Video (front-matter: type: video, poster opcional): mesmo <figure>
+    // da grade, trocando o <picture> por um <video> nativo.
+    if (img.type === 'video' || /\.(mp4|webm|mov)(\?|$)/i.test(src)) {
+      const poster = img.poster ? ` poster="${escapeAttr(img.poster)}"` : '';
+      return `<figure class="post-media-item post-media-item--video" itemprop="video" itemscope itemtype="https://schema.org/VideoObject">
+      <video src="${escapeAttr(src)}"${poster} controls playsinline preload="metadata" width="${w}" height="${h}" aria-label="${escapeAttr(alt)}" style="display:block;width:100%;height:100%;object-fit:cover"></video>
+      <meta itemprop="name" content="${escapeAttr(alt)}"/>
+      <meta itemprop="contentUrl" content="${escapeAttr(src)}"/>
+      ${img.poster ? `<meta itemprop="thumbnailUrl" content="${escapeAttr(img.poster)}"/>` : ''}
+      <meta itemprop="uploadDate" content="${escapeAttr(post.date)}"/>
+      <meta itemprop="description" content="${escapeAttr(alt)}"/>
+      ${cap ? `<figcaption itemprop="caption">${escapeHtml(cap)}</figcaption>` : ''}
+    </figure>`;
+    }
     // So emite <source webp> quando existe um .webp gerado por nos: imagem
     // remota (Storage) ou que ja e .webp/.svg volta igual do toWebp.
     const webp = toWebp(src);

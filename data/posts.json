@@ -1,5 +1,28 @@
 [
   {
+    "id": "today-we-launched-the-new-iba-platform",
+    "slug": "today-we-launched-the-new-iba-platform",
+    "title": "Today, we launched the new IBA platform",
+    "subtitle": "",
+    "cover": "/img/posts/iba-launch/iba-launch-poster.jpg",
+    "coverAlt": "Launch of the new IBA platform - Bernardo Iannini",
+    "tags": [
+      "IBA",
+      "Fintech",
+      "Launch"
+    ],
+    "category": "Carreira",
+    "author": "Bernardo Iannini",
+    "status": "published",
+    "featured": false,
+    "createdAt": "2026-10-08T15:00:00.000Z",
+    "updatedAt": "2026-10-08T15:00:00.000Z",
+    "readTimeMin": 1,
+    "views": 0,
+    "url": "/posts/today-we-launched-the-new-iba-platform.html",
+    "excerpt": "Today, we launched the new IBA platform. 🌍 This project means a lot to me. I built the platform from the ground up, from the website and digital presence to the internal platform and its core experie"
+  },
+  {
     "id": "p_4g9q951omss7ry1v",
     "slug": "aws-hackathon",
     "title": "AWS Hackathon",

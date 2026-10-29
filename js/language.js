@@ -110,12 +110,12 @@ What drives me is solving real problems with technology, and I always go for the
         currentSub: "IN PROGRESS",
         prof: [
           {
-            title: "Web Developer & Digital Support",
+            title: "Digital Support & Web Development",
             org: "Inspire4U",
             role: "Internship",
             loc: "Belo Horizonte, MG",
             start: { year: 2025, month: "MAY" },
-            end: { year: 2026, month: "JAN" },
+            end: { year: 2025, month: "DEC" },
             bullets: [
               "Development and maintenance of WordPress websites, focused on performance and usability.",
               "HTML and CSS adjustments plus small JavaScript customizations to refine design and experience.",
@@ -125,10 +125,10 @@ What drives me is solving real problems with technology, and I always go for the
             skills: ["WordPress", "HTML", "CSS", "JavaScript", "SEO", "Maintenance"]
           },
           {
-            title: "Full Stack Developer on Athena7",
+            title: "Web Developer for Athena7",
             org: "Inspire4U",
-            role: "Internship",
-            loc: "Belo Horizonte, MG",
+            role: "Part-time",
+            loc: "Belo Horizonte, MG · Hybrid",
             start: { year: 2026, month: "JAN" },
             end: { year: 2026, month: "JUN" },
             bullets: [
@@ -136,9 +136,27 @@ What drives me is solving real problems with technology, and I always go for the
               "Shipped new features and restructured several parts of the system, so it gained consistency and scale.",
               "Took the platform to production, taking part in the deploy and in running it in a real environment.",
               "Led the infrastructure migration between AWS and a private VPS, tuning environment and production services.",
-              "Worked on the core reporting flows and the AI integration, always with an eye on UX, reliability and protecting sensitive data."
+              "Designed and implemented the multi-tenant architecture (multiple organizations) with role-based access control.",
+              "Integrated an AI assistant that guides users and answers questions while minimizing exposure of sensitive data.",
+              "Worked on the core reporting flows of this privacy-first whistleblowing SaaS, with a strong focus on women's safety."
             ],
             skills: ["TypeScript", "React", "Node.js", "MySQL", "AI Integration", "Deploy", "AWS", "VPS"]
+          },
+          {
+            title: "Software Engineer",
+            org: "TribeX Tecnologia Financeira S/A",
+            role: "Freelance",
+            loc: "Remote · Brazil",
+            start: { year: 2026, month: "FEB" },
+            end: { current: true },
+            bullets: [
+              "Led the development of Moeda Nobre, a platform where companies distribute benefits to employees, who spend them at participating merchants by phone while merchants receive via Pix.",
+              "Web platform for operations, companies and merchants, including a corporate website and dedicated city pages.",
+              "Two published apps (iOS and Android): one for employees to check balance, pay and see history; another for merchants to generate charges and track receivables.",
+              "Financial security controls: multi-step approval, full audit history and separation between who authorises a payment and who pays the merchant.",
+              "Integration with point-of-sale systems, so merchants charge through their POS while employees pay in the app."
+            ],
+            skills: ["Software Infrastructure", "iOS Development", "Android", "Next.js", "PostgreSQL", "Pix"]
           },
           {
             title: "Full Stack Developer",
@@ -150,7 +168,6 @@ What drives me is solving real problems with technology, and I always go for the
             bullets: [
               "End-to-end full-stack work: SaaS platforms, landing pages, automations and tailor-made systems, from design to production deploy.",
               "Taking projects that were built with AI (Vibe Coding), reworking the architecture, refactoring the code and getting them production-ready, plus integrations, maintenance and performance work.",
-              "Moeda Nobre, for the fintech Tribex: responsible for developing the digital corporate-benefits currency platform.",
               "Innovation Business Alliance (IBA): full development of the international networking platform that connects Brazil and Ireland."
             ],
             skills: ["Full Stack", "Next.js", "React", "Node.js", "SaaS", "Deploy", "Automation", "Vibe Coding"]
@@ -189,11 +206,11 @@ What drives me is solving real problems with technology, and I always go for the
         ],
         courses: [
           {
-            title: "Designing products and services with AI",
-            org: "MIT",
+            title: "Artificial Intelligence: Develop Products and Services Using AI",
+            org: "MIT Professional Education",
             role: "Student",
-            start: { year: 2025, month: "JUN" },
-            end: { year: 2025, month: "AUG" },
+            start: { year: 2025, month: "JUL" },
+            end: { year: 2025, month: "DEC" },
             cert: { id: "cert-mit", img: "Certificado-MIT.webp", label: "Certificate" },
             bullets: [
               "AI strategy, performance metrics, and product design.",
@@ -284,7 +301,7 @@ The system runs two independent channels, Women's and Corporate Integrity, and i
           stack: ["TypeScript", "Node.js", "Express", "tRPC v11", "Drizzle ORM", "MySQL 8", "React 19", "Vite", "TailwindCSS", "Socket.io", "OpenPGP", "Google Gemini", "Resend", "PDFKit", "Docker", "Nginx"],
           link: "https://athena7.com.br",
           repo: "",
-          cover: "img/covers/athena7.webp?v=23c866bb",
+          cover: "img/covers/athena7.webp?v=c56c4bc5",
           id: "athena7",
           category: "system",
           featured: true,
@@ -362,7 +379,7 @@ The system serves four distinct profiles, platform operators, companies, merchan
           /* links do app nas lojas: preenchido, a página do projeto mostra
              os selos oficiais do Google Play / App Store */
           apps: { android: "", ios: "" },
-          cover: "img/covers/moedanobre.webp?v=863fd4aa",
+          cover: "img/covers/moedanobre.webp?v=447d1696",
           featured: true,
           featuredOrder: 2,
           id: "moedanobre",
@@ -442,7 +459,7 @@ The product ties together four surfaces (a public site, the member portal, an ad
           stack: ["NestJS", "Next.js 16", "React 19", "TypeScript", "Prisma", "PostgreSQL", "Redis", "BullMQ", "Socket.IO", "OpenAI", "Anthropic", "Resend", "Twilio", "next-intl", "Docker", "Nginx"],
           link: "https://ibanetwork.org",
           repo: "",
-          cover: "img/covers/iba.webp?v=af7da049",
+          cover: "img/covers/iba.webp?v=b42aaaa7",
           featured: true,
           featuredOrder: 3,
           id: "iba",
@@ -521,7 +538,7 @@ Building the trust this corridor is missing is hard precisely because you can't 
           stack: ["Astro", "TypeScript", "GSAP", "Lenis", "Canvas", "CSS3", "Vitest"],
           link: "https://modulo-engenharia.vercel.app",
           repo: "https://github.com/iannini25/Modulo-engenharia",
-          cover: "img/covers/modulo-engenharia.webp?v=abb8ae45",
+          cover: "img/covers/modulo-engenharia.webp?v=40529965",
           id: "modulo-engenharia",
           flow: {
             steps: [
@@ -554,7 +571,7 @@ Building the trust this corridor is missing is hard precisely because you can't 
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP", "ScrollTrigger", "Lenis", "Canvas API"],
           link: "https://brasa-restaurante-ten.vercel.app",
           repo: "https://github.com/iannini25/brasa-restaurante",
-          cover: "img/covers/brasa.webp?v=1b3bb6c5",
+          cover: "img/covers/brasa.webp?v=f3b139e7",
           id: "brasa",
           flow: {
             steps: [
@@ -587,7 +604,7 @@ Building the trust this corridor is missing is hard precisely because you can't 
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP", "ScrollTrigger", "Lenis", "Canvas API"],
           link: "https://sereno-site-one.vercel.app",
           repo: "https://github.com/iannini25/sereno-site",
-          cover: "img/covers/sereno.webp?v=a6a0ab9d",
+          cover: "img/covers/sereno.webp?v=7c430872",
           id: "sereno",
           flow: {
             steps: [
@@ -620,7 +637,7 @@ Building the trust this corridor is missing is hard precisely because you can't 
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP", "ScrollTrigger", "Lenis", "Canvas API"],
           link: "https://amarofy.vercel.app",
           repo: "https://github.com/iannini25/amaro.fy-website",
-          cover: "img/covers/amarofy.webp?v=1d428176",
+          cover: "img/covers/amarofy.webp?v=399ef1e5",
           id: "amarofy",
           flow: {
             steps: [
@@ -653,7 +670,7 @@ Building the trust this corridor is missing is hard precisely because you can't 
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP", "ScrollTrigger", "Lenis", "Canvas API"],
           link: "https://automotiva-express.vercel.app",
           repo: "https://github.com/iannini25/automotiva-express",
-          cover: "img/covers/automotiva-express.webp?v=335f3ecc",
+          cover: "img/covers/automotiva-express.webp?v=a50a7163",
           id: "automotiva-express",
           flow: {
             steps: [
@@ -688,7 +705,7 @@ The EN/PT switch is an i18n engine written from scratch: the entire site changes
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP 3", "ScrollTrigger", "Lenis", "Node.js", "Markdown", "Supabase", "Vercel"],
           link: "https://bernardoiannini.com",
           repo: "https://github.com/iannini25/iannini-Frontend-Studio",
-          cover: "img/covers/portfolio.webp?v=c15b52b0",
+          cover: "img/covers/portfolio.webp?v=a91316ed",
           id: "portfolio",
           category: "personal",
           status: "in production",
@@ -892,12 +909,12 @@ O que me move é resolver problemas reais com tecnologia, e busco sempre o camin
         currentSub: "EM ANDAMENTO",
         prof: [
           {
-            title: "Desenvolvedor Web & Suporte Digital",
+            title: "Suporte Digital & Desenvolvimento Web",
             org: "Inspire4U",
             role: "Estágio",
             loc: "Belo Horizonte, MG",
             start: { year: 2025, month: "MAI" },
-            end: { year: 2026, month: "JAN" },
+            end: { year: 2025, month: "DEZ" },
             bullets: [
               "Desenvolvimento e manutenção de sites em WordPress, com foco em performance e usabilidade.",
               "Ajustes em HTML e CSS e pequenas customizações em JavaScript para refinar design e experiência.",
@@ -907,10 +924,10 @@ O que me move é resolver problemas reais com tecnologia, e busco sempre o camin
             skills: ["WordPress", "HTML", "CSS", "JavaScript", "SEO", "Manutenção"]
           },
           {
-            title: "Full Stack Developer no Athena7",
+            title: "Desenvolvedor Web no Athena7",
             org: "Inspire4U",
-            role: "Estágio",
-            loc: "Belo Horizonte, MG",
+            role: "Meio período",
+            loc: "Belo Horizonte, MG · Híbrido",
             start: { year: 2026, month: "JAN" },
             end: { year: 2026, month: "JUN" },
             bullets: [
@@ -918,9 +935,27 @@ O que me move é resolver problemas reais com tecnologia, e busco sempre o camin
               "Implementei novas funcionalidades e reestruturei várias partes do sistema, que ganhou mais consistência e escala.",
               "Levei a plataforma até produção, participando do deploy e da operação em ambiente real.",
               "Conduzi a migração de infraestrutura entre AWS e VPS privada, ajustando ambiente e serviços de produção.",
-              "Trabalhei nos fluxos centrais de denúncia e na integração de IA, sempre de olho em UX, confiabilidade e proteção de dados sensíveis."
+              "Projetei e implementei a arquitetura multi-tenant (várias organizações) com controle de acesso por papéis.",
+              "Integrei um assistente de IA que orienta o usuário e tira dúvidas, minimizando a exposição de dados sensíveis.",
+              "Trabalhei nos fluxos centrais de denúncia deste SaaS privacy-first, com forte foco na segurança das mulheres."
             ],
             skills: ["TypeScript", "React", "Node.js", "MySQL", "Integração IA", "Deploy", "AWS", "VPS"]
+          },
+          {
+            title: "Software Engineer",
+            org: "TribeX Tecnologia Financeira S/A",
+            role: "Freelance",
+            loc: "Remoto · Brasil",
+            start: { year: 2026, month: "FEV" },
+            end: { current: true },
+            bullets: [
+              "Liderei o desenvolvimento do Moeda Nobre, plataforma em que empresas distribuem benefícios aos colaboradores, que gastam em comércios credenciados pelo celular enquanto o comércio recebe via Pix.",
+              "Plataforma web para operação, empresas e comércios, incluindo site institucional e páginas dedicadas por cidade.",
+              "Dois apps publicados (iOS e Android): um para o colaborador ver saldo, pagar e consultar o extrato; outro para o comércio gerar cobranças e acompanhar recebíveis.",
+              "Controles financeiros de segurança: aprovação em várias etapas, histórico completo de auditoria e separação entre quem autoriza um pagamento e quem paga o comércio.",
+              "Integração com sistemas de PDV, para o comércio cobrar pela maquininha enquanto o colaborador paga pelo app."
+            ],
+            skills: ["Infraestrutura de Software", "Desenvolvimento iOS", "Android", "Next.js", "PostgreSQL", "Pix"]
           },
           {
             title: "Full Stack Developer",
@@ -932,7 +967,6 @@ O que me move é resolver problemas reais com tecnologia, e busco sempre o camin
             bullets: [
               "Desenvolvimento full-stack de ponta a ponta: plataformas SaaS, landing pages, automações e sistemas sob medida, do design ao deploy em produção.",
               "Pego projetos que foram criados por IA (Vibe Coding), refaço a arquitetura, refatoro o código e deixo tudo pronto pra produção, além de integrações, manutenção e otimização de performance.",
-              "Moeda Nobre, da fintech Tribex: responsável pelo desenvolvimento da plataforma de moeda digital de benefícios corporativos.",
               "Innovation Business Alliance (IBA): desenvolvimento completo da plataforma internacional de networking que conecta Brasil e Irlanda."
             ],
             skills: ["Full Stack", "Next.js", "React", "Node.js", "SaaS", "Deploy", "Automação", "Vibe Coding"]
@@ -971,11 +1005,11 @@ O que me move é resolver problemas reais com tecnologia, e busco sempre o camin
         ],
         courses: [
           {
-            title: "Designing products and services with AI",
-            org: "MIT",
+            title: "Artificial Intelligence: Develop Products and Services Using AI",
+            org: "MIT Professional Education",
             role: "Aluno",
-            start: { year: 2025, month: "JUN" },
-            end: { year: 2025, month: "AGO" },
+            start: { year: 2025, month: "JUL" },
+            end: { year: 2025, month: "DEZ" },
             cert: { id: "cert-mit", img: "Certificado-MIT.webp", label: "Certificado" },
             bullets: [
               "Estratégia de IA, métricas de performance e design de produtos.",
@@ -1065,7 +1099,7 @@ O sistema opera com dois canais independentes, Integridade da Mulher e Integrida
           stack: ["TypeScript", "Node.js", "Express", "tRPC v11", "Drizzle ORM", "MySQL 8", "React 19", "Vite", "TailwindCSS", "Socket.io", "OpenPGP", "Google Gemini", "Resend", "PDFKit", "Docker", "Nginx"],
           link: "https://athena7.com.br",
           repo: "",
-          cover: "img/covers/athena7.webp?v=23c866bb",
+          cover: "img/covers/athena7.webp?v=c56c4bc5",
           id: "athena7",
           category: "system",
           featured: true,
@@ -1143,7 +1177,7 @@ O sistema atende quatro perfis distintos, operadores da plataforma, empresas, co
           /* links do app nas lojas: preenchido, a página do projeto mostra
              os selos oficiais do Google Play / App Store */
           apps: { android: "", ios: "" },
-          cover: "img/covers/moedanobre.webp?v=863fd4aa",
+          cover: "img/covers/moedanobre.webp?v=447d1696",
           featured: true,
           featuredOrder: 2,
           id: "moedanobre",
@@ -1223,7 +1257,7 @@ O produto amarra quatro superfícies (um site público, o portal do membro, um p
           stack: ["NestJS", "Next.js 16", "React 19", "TypeScript", "Prisma", "PostgreSQL", "Redis", "BullMQ", "Socket.IO", "OpenAI", "Anthropic", "Resend", "Twilio", "next-intl", "Docker", "Nginx"],
           link: "https://ibanetwork.org",
           repo: "",
-          cover: "img/covers/iba.webp?v=af7da049",
+          cover: "img/covers/iba.webp?v=b42aaaa7",
           featured: true,
           featuredOrder: 3,
           id: "iba",
@@ -1302,7 +1336,7 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
           stack: ["Astro", "TypeScript", "GSAP", "Lenis", "Canvas", "CSS3", "Vitest"],
           link: "https://modulo-engenharia.vercel.app",
           repo: "https://github.com/iannini25/Modulo-engenharia",
-          cover: "img/covers/modulo-engenharia.webp?v=abb8ae45",
+          cover: "img/covers/modulo-engenharia.webp?v=40529965",
           id: "modulo-engenharia",
           flow: {
             steps: [
@@ -1335,7 +1369,7 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP", "ScrollTrigger", "Lenis", "Canvas API"],
           link: "https://brasa-restaurante-ten.vercel.app",
           repo: "https://github.com/iannini25/brasa-restaurante",
-          cover: "img/covers/brasa.webp?v=1b3bb6c5",
+          cover: "img/covers/brasa.webp?v=f3b139e7",
           id: "brasa",
           flow: {
             steps: [
@@ -1368,7 +1402,7 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP", "ScrollTrigger", "Lenis", "Canvas API"],
           link: "https://sereno-site-one.vercel.app",
           repo: "https://github.com/iannini25/sereno-site",
-          cover: "img/covers/sereno.webp?v=a6a0ab9d",
+          cover: "img/covers/sereno.webp?v=7c430872",
           id: "sereno",
           flow: {
             steps: [
@@ -1401,7 +1435,7 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP", "ScrollTrigger", "Lenis", "Canvas API"],
           link: "https://amarofy.vercel.app",
           repo: "https://github.com/iannini25/amaro.fy-website",
-          cover: "img/covers/amarofy.webp?v=1d428176",
+          cover: "img/covers/amarofy.webp?v=399ef1e5",
           id: "amarofy",
           flow: {
             steps: [
@@ -1434,7 +1468,7 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP", "ScrollTrigger", "Lenis", "Canvas API"],
           link: "https://automotiva-express.vercel.app",
           repo: "https://github.com/iannini25/automotiva-express",
-          cover: "img/covers/automotiva-express.webp?v=335f3ecc",
+          cover: "img/covers/automotiva-express.webp?v=a50a7163",
           id: "automotiva-express",
           flow: {
             steps: [
@@ -1469,7 +1503,7 @@ A troca EN/PT é um motor de i18n escrito do zero: o site inteiro muda de idioma
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP 3", "ScrollTrigger", "Lenis", "Node.js", "Markdown", "Supabase", "Vercel"],
           link: "https://bernardoiannini.com",
           repo: "https://github.com/iannini25/iannini-Frontend-Studio",
-          cover: "img/covers/portfolio.webp?v=c15b52b0",
+          cover: "img/covers/portfolio.webp?v=a91316ed",
           id: "portfolio",
           category: "personal",
           status: "em produção",

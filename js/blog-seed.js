@@ -3,6 +3,26 @@
 // Fontes: tabela posts do Supabase (painel) + data/posts/*.md
 window.BI_SEED_POSTS = [
   {
+    "id": "today-we-launched-the-new-iba-platform",
+    "title": "Today, we launched the new IBA platform",
+    "subtitle": "",
+    "slug": "today-we-launched-the-new-iba-platform",
+    "cover": "/img/posts/iba-launch/iba-launch-poster.jpg",
+    "tags": [
+      "IBA",
+      "Fintech",
+      "Launch"
+    ],
+    "category": "Carreira",
+    "author": "Bernardo Iannini",
+    "status": "published",
+    "featured": false,
+    "createdAt": "2026-10-08T15:00:00.000Z",
+    "updatedAt": "2026-10-08T15:00:00.000Z",
+    "views": 0,
+    "content": "Today, we launched the new IBA platform. 🌍\n\nThis project means a lot to me. I built the platform from the ground up, from the website and digital presence to the internal platform and its core experiences.\n\nWhat started with a few conversations in April has now become a platform connecting people, companies and opportunities across fintech ecosystems in Brazil, Ireland, the UK and beyond.\n\nI’m incredibly grateful to Igor Marchetti and the entire Innovation Business Alliance (IBA) for the trust, the opportunity and for having me as part of this journey.\n\nSeeing the platform live today, presented to a selected group of leaders and professionals from different countries, was a very special moment.\n\nA new chapter for IBA starts here: [https://ibanetwork.org/](https://ibanetwork.org/)\n\nThank you to everyone who made this possible. 🇧🇷 🇮🇪 🇬🇧\n\nIgor Marchetti, Simone Ferreira, Ana Clara Brevi de Moura, Chiara Tracey Bolzon, Edson Marchetti, Leonard Burgerr, Rodrigo Vilarino, Gisela Delamain, Fernanda Nobre, Heitor Alves, Eoin Fennell, Fabio Istrefii, Roger Abouantoun, Túlio Iannini."
+  },
+  {
     "id": "p_4g9q951omss7ry1v",
     "title": "AWS Hackathon",
     "subtitle": "",
