@@ -345,9 +345,10 @@ function jsonLd(p, lang, url) {
     '@type': 'BreadcrumbList',
     '@id': SITE_URL + url + '#breadcrumb',
     itemListElement: [
+      /* sem o nivel "Projetos": ele e uma ancora da home (/#projects), nao
+         uma pagina, e o Google leria a home duplicada na trilha */
       { '@type': 'ListItem', position: 1, name: t.crumbHome, item: SITE_URL + t.home },
-      { '@type': 'ListItem', position: 2, name: t.crumbList, item: SITE_URL + t.list },
-      { '@type': 'ListItem', position: 3, name: p.title, item: SITE_URL + url },
+      { '@type': 'ListItem', position: 2, name: p.title, item: SITE_URL + url },
     ],
   };
   /* a pessoa por referencia + o vinculo explicito "fez este projeto" */

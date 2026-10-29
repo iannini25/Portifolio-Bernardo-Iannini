@@ -5457,11 +5457,27 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
      grande é o ponto num portfólio) */
   .pj-arch { gap: 18px; }
   .pj-row,
-  .pj-row[data-n="1"] { grid-template-columns: 1fr; gap: 18px; }
+  .pj-row[data-n="1"],
+  .pj-row[data-n="2"] { grid-template-columns: 1fr; gap: 18px; }
   .pj-row[data-n="3"] .pj-card:nth-child(3) { grid-column: auto; }
   .pj-row .pj-card .pj-card__view { aspect-ratio: 16 / 9; }
 }
 
+/* celular: leitura enxuta (a pedido). Desktop mostra tudo. */
+@media (max-width: 640px) {
+  .tl-bullets li:nth-child(n+4) { display: none; }
+  .cs-about__main p:not(.cs-about__lead) { display: none; }
+  .cs-about__lead { font-size: 1.04rem; }
+  .cs-feat__more { display: none; }
+  .cs-pillar__desc, .cs-feat__text { font-size: .94rem; }
+  .cs-app__feats li:nth-child(n+4) { display: none; }
+  .cs-other__sub { display: none; }
+}
+/* celular: sem a pilha de destaques; a secao vai direto pra lista */
+@media (max-width: 820px) {
+  .pj-featured { display: none; }
+  .pj-cli { margin-top: 28px; }
+}
 /* touch: sem hover — tap navega direto; nada de estado "grudado" */
 @media (hover: none) {
   .pj-win:not(.is-front):hover { --lift: 0px; }
