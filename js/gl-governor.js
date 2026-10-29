@@ -7,8 +7,8 @@
    o canvas: o desenho fica só mais macio, a forma e o movimento são os
    mesmos) e, no limite, o fps. Nunca sobe de volta: evita gangorra.
 
-   Durante a rolagem o fundo segura o quadro atual e o orçamento inteiro
-   do frame fica com a rolagem (é o que o olho percebe travar).
+   Durante a rolagem o fundo roda na metade da taxa: segue vivo e a
+   rolagem ganha folga no frame.
    ============================================================ */
 
 let scrollingUntil = 0;

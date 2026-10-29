@@ -287,10 +287,8 @@ function initLineWaves(container, opts = {}) {
   const loop = t => {
     if (contextLost || !isVisible || !tabVisible) return;
     governor(t);
-    /* rolando: o fundo (lento por natureza) segura o quadro atual e o
-       orcamento inteiro do frame fica com a rolagem; volta ao parar */
-    if (isScrolling(t)) { raf = requestAnimationFrame(loop); return; }
-    const budget = frameInterval;
+    /* rolando: metade da taxa (o fundo segue vivo, a rolagem ganha folga) */
+    const budget = isScrolling(t) ? frameInterval * 2 : frameInterval;
     if (t - lastFrameTime < budget) { raf = requestAnimationFrame(loop); return; }
     lastFrameTime = t;
 
@@ -392,8 +390,8 @@ function initLineWaves(container, opts = {}) {
     interactTarget: section,
     // linhas finas pedem nitidez no desktop; no toque nao ha mouse pra
     // interagir, entao 30fps + dpr 1 seguram a GPU movel e a bateria
-    renderScale: coarse ? 0.55 : 0.7,
-    maxDpr: 1,
-    targetFps: coarse ? 30 : 40,
+    renderScale: coarse ? 0.6 : 0.8,
+    maxDpr: coarse ? 1 : 1.5,
+    targetFps: coarse ? 30 : 60,
   });
 })();

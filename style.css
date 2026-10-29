@@ -1856,6 +1856,7 @@ body.pc-nav-hidden header {
     #000 62%,
     rgba(0, 0, 0, .25) 86%,
     transparent 100%);
+  filter: blur(32px);
 }
 .services-section .section-head,
 .services-section .services-grid { position: relative; z-index: 1; }

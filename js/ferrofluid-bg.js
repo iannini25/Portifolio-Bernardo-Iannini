@@ -316,10 +316,8 @@ function initFerrofluid(container, opts = {}) {
   const loop = t => {
     if (contextLost || !isVisible || !tabVisible) return;
     governor(t);
-    /* rolando: o fundo (lento por natureza) segura o quadro atual e o
-       orcamento inteiro do frame fica com a rolagem; volta ao parar */
-    if (isScrolling(t)) { raf = requestAnimationFrame(loop); return; }
-    const budget = frameInterval;
+    /* rolando: metade da taxa (o fundo segue vivo, a rolagem ganha folga) */
+    const budget = isScrolling(t) ? frameInterval * 2 : frameInterval;
     if (t - lastFrame < budget) { raf = requestAnimationFrame(loop); return; }
     lastFrame = t;
 
