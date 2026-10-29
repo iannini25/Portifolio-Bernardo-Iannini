@@ -546,7 +546,7 @@ ${jsonLd(p, lang, url)}
    so projetos com capa E link entram como caso navegavel */
 function realProjects(I18N, lang, pcSlug) {
   const list = (I18N[lang] && I18N[lang].projects && I18N[lang].projects.list) || [];
-  return list.filter(p => p && p.cover && p.link)
+  return list.filter(p => p && p.cover && (p.link || p.local))
              .map(p => ({ ...p, id: p.id || pcSlug(p.title) }));
 }
 

@@ -48,6 +48,8 @@ Sou desenvolvedor Full Stack e construo sistemas completos, da arquitetura ao de
 - [Sereno](https://www.bernardoiannini.com/projetos/sereno.html): landing page premium para um estúdio de massagem e repouso, que transforma a visita ao site em uma sessão agendada pelo WhatsApp.
 - [Amaro.fy](https://www.bernardoiannini.com/projetos/amarofy.html): site one-page cinematográfico de um ateliê de crochê artesanal de Belo Horizonte que faz peças exclusivas sob medida e fecha cada venda pelo WhatsApp.
 - [Automotiva Express](https://www.bernardoiannini.com/projetos/automotiva-express.html): site one-page de uma oficina Bosch Car Service em Belo Horizonte, construído em cima de uma promessa: você aprova o preço antes de qualquer reparo.
+- [BeSafe](https://www.bernardoiannini.com/projetos/besafe.html): plataforma de segurança do fator humano em que empresas disparam phishing simulado por e-mail, Teams, Slack e WhatsApp, e quem clica aprende na hora com vídeo. Site: https://besafebr.com
+- [JARVIS](https://www.bernardoiannini.com/projetos/jarvis.html): assistente de voz para carro que roda localmente num Raspberry Pi, lê o motor ao vivo pela porta OBD2, controla música e navegação e avisa antes de problemas.
 - [bernardoiannini.com](https://www.bernardoiannini.com/projetos/portfolio.html): este site, 100% HTML, CSS e JS puros, sem frameworks, com design system próprio.
 
 ## Contato

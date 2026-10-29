@@ -268,5 +268,51 @@
       "pt": "Este é o site que você está vendo: o meu portfólio, onde reúno quem eu sou, o que faço, os projetos que construí e um blog com bastidores e eventos. Foi todo feito à mão, com um sistema visual próprio, animações leves e troca instantânea entre português e inglês.\n\nEle também é o meu laboratório: cada página é pensada pra abrir rápido em qualquer aparelho e pra ser encontrada por quem pesquisa o meu nome.",
       "en": "This is the site you are looking at: my portfolio, where I bring together who I am, what I do, the projects I have built and a blog with behind-the-scenes posts and events. It is entirely handmade, with its own visual system, lightweight animations and instant switching between Portuguese and English.\n\nIt is also my lab: every page is built to open fast on any device and to be found by anyone searching for my name."
     }
+  },
+  "besafe": {
+    "pillars": {
+      "title": {
+        "pt": "Três superfícies, um produto",
+        "en": "Three surfaces, one product"
+      },
+      "items": [
+        {
+          "icon": "globe",
+          "name": {
+            "pt": "Site público",
+            "en": "Public website"
+          },
+          "desc": {
+            "pt": "Apresenta a plataforma, planos, guias de segurança e o pedido de demonstração.",
+            "en": "Presents the platform, plans, security guides and the demo request."
+          }
+        },
+        {
+          "icon": "chart",
+          "name": {
+            "pt": "App da empresa",
+            "en": "Company app"
+          },
+          "desc": {
+            "pt": "O administrador dispara campanhas e acompanha o risco; cada colaborador vê o próprio painel e as aulas.",
+            "en": "Admins run campaigns and track risk; each employee sees their own dashboard and lessons."
+          }
+        },
+        {
+          "icon": "shield",
+          "name": {
+            "pt": "Console interno",
+            "en": "Internal console"
+          },
+          "desc": {
+            "pt": "A operação da BeSafe gerencia clientes e conteúdo com acesso protegido por chave de segurança.",
+            "en": "The BeSafe team manages clients and content with security-key protected access."
+          }
+        }
+      ]
+    }
+  },
+  "jarvis": {
+    "tour": false
   }
 }

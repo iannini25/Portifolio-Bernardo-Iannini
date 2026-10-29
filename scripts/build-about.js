@@ -227,7 +227,7 @@ function page(I18N, lang) {
   /* projetos com página própria (mesmo critério do build-projects):
      o elo visível pessoa -> obra, em cada idioma */
   const projs = ((I18N[lang].projects && I18N[lang].projects.list) || [])
-    .filter(p => p && p.cover && p.link && p.id)
+    .filter(p => p && p.cover && (p.link || p.local) && p.id)
     .map(p => `<li><a href="${t.projUrl(p.id)}"><strong>${esc(p.title)}</strong></a> ${esc(p.desc || '')}</li>`)
     .join('\n          ');
   const perfis = AUTHOR.sameAs.map(u =>

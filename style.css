@@ -5650,6 +5650,15 @@ body:has(.cs) header::before {
 .cs-visit__text span { font-family: "JetBrains Mono", monospace; font-size: .74rem; opacity: .78; }
 .cs-visit__arrow svg { width: 18px; height: 18px; transition: transform .25s var(--ps-ease); }
 .cs-visit:hover .cs-visit__arrow svg { transform: translate(2px, -2px); }
+.cs-local {
+  display: inline-flex; align-items: center; gap: 12px;
+  min-height: 56px; padding: 10px 18px 10px 12px;
+  border-radius: 16px; border: 1px solid var(--g-22);
+  background: var(--g-08); color: var(--text);
+}
+.cs-local svg { width: 30px; height: 30px; color: var(--lime); flex: none; }
+.cs-local span { display: grid; line-height: 1.2; font-size: .82rem; color: var(--text-hint); }
+.cs-local b { font-size: .98rem; color: var(--text); }
 .cs-stores { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
 .cs-store { display: inline-block; line-height: 0; border-radius: 10px; transition: transform .2s ease; }
 .cs-store:hover { transform: translateY(-2px); }

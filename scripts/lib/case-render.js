@@ -31,6 +31,7 @@ const UI = {
   pt: {
     crumbHome: 'Início', crumbList: 'Projetos',
     visit: 'Visitar o site', newTab: 'abre em nova aba',
+    localTitle: 'Roda localmente', localSub: 'Sem site: vive num computador dentro do carro',
     fType: 'Tipo', fYear: 'Ano', fStatus: 'Status', fRole: 'Meu papel', fSite: 'Site',
     apps: 'Baixe o app', seeApps: 'Ver os aplicativos', marketing: 'Na vitrine das lojas',
     playAlt: 'Disponível no Google Play', storeAlt: 'Baixar na App Store',
@@ -59,6 +60,7 @@ const UI = {
   en: {
     crumbHome: 'Home', crumbList: 'Projects',
     visit: 'Visit the website', newTab: 'opens in a new tab',
+    localTitle: 'Runs locally', localSub: 'No website: it lives on a computer inside the car',
     fType: 'Type', fYear: 'Year', fStatus: 'Status', fRole: 'My role', fSite: 'Website',
     apps: 'Get the app', seeApps: 'See the apps', marketing: 'In the store windows',
     playAlt: 'Get it on Google Play', storeAlt: 'Download on the App Store',
@@ -87,6 +89,7 @@ const UI = {
 };
 
 const ICON = {
+  chip: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M9 2.5v3M15 2.5v3M9 18.5v3M15 18.5v3M2.5 9h3M2.5 15h3M18.5 9h3M18.5 15h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><rect x="9.5" y="9.5" width="5" height="5" rx="1" fill="currentColor"/></svg>',
   layersBig: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 3 8l9 5 9-5-9-5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M3 13l9 5 9-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   phone: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M10.5 18.3h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
   check: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="m8 12.3 2.6 2.6L16 9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
@@ -239,7 +242,7 @@ function renderCaseMain(o) {
   const cfg = o.cfg || {};
   const u = UI[lang];
   const { name, sub } = splitTitle(p.title);
-  const host = hostname(p.link);
+  const host = hostname(p.link) || (p.local ? 'localhost · ' + splitTitle(p.title).name.toLowerCase() : '');
   const media = projectMedia(root, p.id);
   const metrics = (p.metrics || []).slice(0, 4);
   const clean = techFilter(p);
@@ -283,6 +286,7 @@ function renderCaseMain(o) {
             <span class="cs-visit__arrow" aria-hidden="true">${ICON.arrow}</span>
             <span class="sr-only">(${u.newTab})</span>
           </a>` : ''}
+          ${!p.link && p.local ? `<span class="cs-local">${ICON.chip}<span><b>${u.localTitle}</b>${u.localSub}</span></span>` : ''}
           ${storeBadges(p, lang, u)}
           ${Array.isArray(cfg.apps) && cfg.apps.length ? `<a class="cs-pill" href="#apps">${ICON.phone}${u.seeApps}</a>` : ''}
         </div>

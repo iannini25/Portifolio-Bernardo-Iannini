@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>JARVIS · Voice Assistant for the Car · Bernardo Iannini</title>
+  <meta name="author" content="Bernardo Iannini">
+  <meta name="description" content="A voice assistant for the car: you say &quot;Hey Jarvis&quot; and talk normally, and it reads the engine live, controls music and navigation and warns you before probl…" />
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+
+  <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/favicon-48.png" sizes="48x48">
+  <link rel="icon" type="image/png" href="/favicon_192px.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="/favicon_192px.png">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any">
+  <meta name="theme-color" content="#060807">
+
+  <link rel="canonical" href="https://www.bernardoiannini.com/en/projects/jarvis.html" />
+  <link rel="alternate" hreflang="pt-BR" href="https://www.bernardoiannini.com/projetos/jarvis.html" />
+  <link rel="alternate" hreflang="en" href="https://www.bernardoiannini.com/en/projects/jarvis.html" />
+  <link rel="alternate" hreflang="x-default" href="https://www.bernardoiannini.com/projetos/jarvis.html" />
+  <link rel="alternate" type="application/rss+xml" title="Blog · Bernardo Iannini" href="https://www.bernardoiannini.com/feed.xml" />
+
+  <script>
+    /* Aqui o idioma e a ROTA (/projetos/ = pt, /en/projects/ = en), nao
+       estado de cliente. Sem isto o applyI18n() do UI.js rodaria no idioma
+       salvo no localStorage e deixaria <html lang> e o seletor discordando
+       do conteudo servido. Roda ANTES do bloco anti-flicker, que le esse
+       mesmo valor. */
+    try { localStorage.setItem('lang', 'en'); } catch (e) {}
+  </script>
+
+  <style id="page-fx">
+    html:not(.i18n-ready) body { opacity: 0; }
+    body {
+      opacity: 1;
+      transition: opacity .35s cubic-bezier(.22,.61,.36,1);
+    }
+    html:not(.i18n-ready) main {
+      transform: scale(1.03);
+      filter: blur(8px);
+    }
+    main {
+      transition:
+        transform .45s cubic-bezier(.22,.61,.36,1),
+        filter .45s cubic-bezier(.22,.61,.36,1);
+    }
+    body.page-leaving { opacity: 0; pointer-events: none; }
+    body.page-leaving main {
+      transform: scale(.97);
+      filter: blur(8px);
+    }
+    </style>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('lang');
+        if (l === 'pt' || l === 'en') {
+          document.documentElement.lang = (l === 'pt') ? 'pt-BR' : 'en';
+        }
+      } catch (e) {}
+      /* PAINT LIBERADO SEMPRE (ver index.html): antes a classe so era
+         adicionada quando havia idioma salvo, entao visitante novo e crawler
+         encaravam tela branca ate executar o language.js. Sem preferencia
+         salva o HTML ja esta no idioma default, logo nao ha texto pra piscar.
+         FORA do try de proposito: se o localStorage lancar (modo privado com
+         storage bloqueado), o catch engoliria o add e a pagina ficaria
+         invisivel justamente no navegador mais restritivo. */
+      document.documentElement.classList.add('i18n-ready');
+    })();
+    window.addEventListener('pageshow', function () {
+      document.body && document.body.classList.remove('page-leaving');
+    });
+  </script>
+  <script>document.documentElement.classList.add('cs-js');</script>
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Bernardo Iannini" />
+  <meta property="og:title" content="JARVIS · Voice Assistant for the Car · Bernardo Iannini" />
+  <meta property="og:description" content="A voice assistant for the car: you say &quot;Hey Jarvis&quot; and talk normally, and it reads the engine live, controls music and navigation and warns you before probl…" />
+  <meta property="og:url" content="https://www.bernardoiannini.com/en/projects/jarvis.html" />
+  <meta property="og:image" content="https://www.bernardoiannini.com/img/covers/jarvis.webp?v=e5c56b6e" />
+  <meta property="og:image:width" content="1600" />
+  <meta property="og:image:height" content="900" />
+  <meta property="og:image:alt" content="JARVIS · Voice Assistant for the Car · Bernardo Iannini" />
+  <meta property="article:author" content="https://www.bernardoiannini.com/en/about.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="pt_BR" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="JARVIS · Voice Assistant for the Car · Bernardo Iannini" />
+  <meta name="twitter:description" content="A voice assistant for the car: you say &quot;Hey Jarvis&quot; and talk normally, and it reads the engine live, controls music and navigation and warns you before probl…" />
+  <meta name="twitter:image" content="https://www.bernardoiannini.com/img/covers/jarvis.webp?v=e5c56b6e" />
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CreativeWork",
+      "@id": "https://www.bernardoiannini.com/en/projects/jarvis.html#projeto",
+      "name": "JARVIS · Voice Assistant for the Car",
+      "alternateName": "JARVIS",
+      "description": "A voice assistant for the car: you say \"Hey Jarvis\" and talk normally, and it reads the engine live, controls music and navigation and warns you before problems.",
+      "abstract": "JARVIS is a voice assistant I built for my own car, a VW up! TSI, running on a Raspberry Pi inside the vehicle. You say \"Hey Jarvis\" and talk normally, in Portuguese, and it answers with a casual Brazilian personality, hearing you over road noise and letting you interrupt it mid-sentence.",
+      "url": "https://www.bernardoiannini.com/en/projects/jarvis.html",
+      "inLanguage": "en",
+      "author": {
+        "@id": "https://www.bernardoiannini.com/#pessoa"
+      },
+      "creator": {
+        "@id": "https://www.bernardoiannini.com/#pessoa"
+      },
+      "publisher": {
+        "@id": "https://www.bernardoiannini.com/#pessoa"
+      },
+      "isPartOf": {
+        "@id": "https://www.bernardoiannini.com/#site"
+      },
+      "mainEntityOfPage": {
+        "@id": "https://www.bernardoiannini.com/en/projects/jarvis.html#pagina"
+      },
+      "image": [
+        {
+          "@type": "ImageObject",
+          "contentUrl": "https://www.bernardoiannini.com/img/covers/jarvis.webp",
+          "caption": "JARVIS · Voice Assistant for the Car",
+          "creator": {
+            "@id": "https://www.bernardoiannini.com/#pessoa"
+          },
+          "creditText": "Bernardo Iannini",
+          "copyrightNotice": "Bernardo Iannini"
+        },
+        {
+          "@type": "ImageObject",
+          "contentUrl": "https://www.bernardoiannini.com/img/projects/jarvis/extra-dashboard.webp",
+          "caption": "JARVIS · 1",
+          "creator": {
+            "@id": "https://www.bernardoiannini.com/#pessoa"
+          },
+          "creditText": "Bernardo Iannini",
+          "copyrightNotice": "Bernardo Iannini"
+        }
+      ],
+      "dateCreated": "2026",
+      "keywords": "Python, FastAPI, React, Gemini, OpenAI, OBD2, Raspberry Pi"
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://www.bernardoiannini.com/en/projects/jarvis.html#pagina",
+      "url": "https://www.bernardoiannini.com/en/projects/jarvis.html",
+      "name": "JARVIS · Voice Assistant for the Car · Bernardo Iannini",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://www.bernardoiannini.com/#site"
+      },
+      "about": {
+        "@id": "https://www.bernardoiannini.com/en/projects/jarvis.html#projeto"
+      },
+      "author": {
+        "@id": "https://www.bernardoiannini.com/#pessoa"
+      },
+      "breadcrumb": {
+        "@id": "https://www.bernardoiannini.com/en/projects/jarvis.html#breadcrumb"
+      },
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://www.bernardoiannini.com/img/covers/jarvis.webp"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://www.bernardoiannini.com/en/projects/jarvis.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.bernardoiannini.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Projects",
+          "item": "https://www.bernardoiannini.com/#projects"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "JARVIS · Voice Assistant for the Car",
+          "item": "https://www.bernardoiannini.com/en/projects/jarvis.html"
+        }
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://www.bernardoiannini.com/#pessoa",
+      "name": "Bernardo Iannini",
+      "url": "https://www.bernardoiannini.com/",
+      "image": "https://www.bernardoiannini.com/img/eufoto1.png",
+      "jobTitle": "Full Stack Developer & AI Designer",
+      "sameAs": [
+        "https://www.linkedin.com/in/bernardo-iannini",
+        "https://github.com/iannini25"
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+
+<body>
+  <a class="skip-link" href="#pcMain">Skip to content</a>
+
+  <header>
+    <div class="nav">
+
+      <!-- MENU MOBILE (drop) -->
+      <nav id="mobileNav" class="mobile-nav" aria-hidden="true">
+        <a href="/#home">Home</a>
+        <a href="/#sobre">About</a>
+        <a href="/#services">Services</a>
+
+        <div class="mobile-dd">
+          <button type="button" class="mobile-dd-btn" aria-haspopup="menu" aria-expanded="false">
+            <span>Work</span>
+            <svg class="mobile-dd-caret" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="mobile-dd-menu" role="menu">
+            <a href="/#xp" role="menuitem">Experience</a>
+            <a href="/#skills" role="menuitem">Skills</a>
+            <a href="/#projects" role="menuitem">Projects</a>
+          </div>
+        </div>
+
+        <a href="/blog.html" class="nav-blog-link"><span>Blog</span></a>
+        <a href="/#contato">Contact</a>
+      </nav>
+
+      <!-- Language switch (ESQUERDA) -->
+      <div class="lang-slot" aria-label="Language switch">
+        <button id="langBtn" class="lang-switch pill" aria-haspopup="listbox" aria-expanded="false">
+          <span class="lang-ico" aria-hidden="true">🌐</span>
+          <span id="langCode">EN</span>
+          <svg class="caret" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </button>
+        <ul id="langMenu" class="lang-menu" role="listbox" aria-label="Language / Idioma">
+          <li data-lang="en" role="option" tabindex="0" aria-selected="true">English</li>
+          <li data-lang="pt" role="option" tabindex="0" aria-selected="false">Português</li>
+        </ul>
+      </div>
+
+      <div class="nav-center">
+        <nav class="pill">
+          <a href="/#home">Home</a>
+          <a href="/#sobre">About</a>
+          <a href="/#services">Services</a>
+
+          <div class="nav-dd">
+            <button type="button" id="workBtn" class="nav-dd-btn" aria-haspopup="menu" aria-expanded="false">
+              <span>Work</span>
+              <svg class="nav-dd-caret" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+            <ul id="workMenu" class="nav-dd-menu" role="menu">
+              <li><a href="/#xp" role="menuitem">Experience</a></li>
+              <li><a href="/#skills" role="menuitem">Skills</a></li>
+              <li><a href="/#projects" role="menuitem">Projects</a></li>
+            </ul>
+          </div>
+
+          <a href="/blog.html" class="nav-blog-link"><span>Blog</span></a>
+          <a href="/#contato">Contact</a>
+        </nav>
+      </div>
+
+      <!-- BOTÃO HAMBÚRGUER (aparece no mobile) -->
+      <button id="menuBtn" class="menu-btn" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobileNav">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+      </button>
+
+      <!-- NAV RIGHT (desktop) -->
+      <div class="nav-right">
+        <a class="resume-btn" href="/Resume_Bernardo_Iannini.pdf" download>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3v11m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          <span>CV</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <main id="pcMain" class="cs" data-pc-root>
+
+    <nav class="cs-crumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a><span aria-hidden="true">/</span>
+      <a href="/#projects">Projects</a><span aria-hidden="true">/</span>
+      <span aria-current="page">JARVIS</span>
+    </nav>
+
+    <section class="cs-hero" aria-labelledby="csTitle">
+      <div class="cs-hero__text">
+        <p class="cs-reg"><i class="cs-reg__dot" aria-hidden="true"></i>runs locally<span aria-hidden="true">·</span>2026<span aria-hidden="true">·</span>personal project, whole product</p>
+        <h1 class="cs-title" id="csTitle">JARVIS<span class="cs-title__sub">Voice Assistant for the Car</span></h1>
+        <p class="cs-lead">A voice assistant for the car: you say &quot;Hey Jarvis&quot; and talk normally, and it reads the engine live, controls music and navigation and warns you before problems.</p>
+        <div class="cs-actions">
+          
+          <span class="cs-local"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M9 2.5v3M15 2.5v3M9 18.5v3M15 18.5v3M2.5 9h3M2.5 15h3M18.5 9h3M18.5 15h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><rect x="9.5" y="9.5" width="5" height="5" rx="1" fill="currentColor"/></svg><span><b>Runs locally</b>No website: it lives on a computer inside the car</span></span>
+          
+          
+        </div>
+        <p class="cs-by">Project built by <a href="/en/about.html" rel="author">Bernardo Iannini</a></p>
+      </div>
+      <figure class="cs-hero__media">
+        <div class="cs-win">
+          <div class="cs-win__bar" aria-hidden="true"><i></i><i></i><i></i><span>localhost · jarvis</span></div>
+          <picture>
+            <source type="image/avif" srcset="/img/covers/jarvis-480.avif?v=e5c56b6e 480w, /img/covers/jarvis-800.avif?v=e5c56b6e 800w, /img/covers/jarvis-1200.avif?v=e5c56b6e 1200w, /img/covers/jarvis.avif?v=e5c56b6e 1600w" sizes="(max-width: 900px) 92vw, 46vw">
+            <img class="cs-win__img" src="/img/covers/jarvis.webp?v=e5c56b6e" srcset="/img/covers/jarvis-480.webp?v=e5c56b6e 480w, /img/covers/jarvis-800.webp?v=e5c56b6e 800w, /img/covers/jarvis-1200.webp?v=e5c56b6e 1200w, /img/covers/jarvis.webp?v=e5c56b6e 1600w" sizes="(max-width: 900px) 92vw, 46vw"
+                 alt="JARVIS · Voice Assistant for the Car" width="1600" height="900" fetchpriority="high" decoding="async">
+          </picture>
+          
+        </div>
+      </figure>
+    </section>
+
+    <section class="cs-about" aria-labelledby="csWhat" data-reveal>
+      <svg class="cs-deco" viewBox="0 0 600 600" aria-hidden="true" focusable="false">
+      <defs><pattern id="csDots-jarvis" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.3"/></pattern></defs>
+      <rect class="cs-deco__dots" width="600" height="600" fill="url(#csDots-jarvis)"/>
+      <circle class="cs-deco__ring" cx="470" cy="150" r="200"/><circle class="cs-deco__ring" cx="470" cy="150" r="140"/>
+      <circle class="cs-deco__ring" cx="470" cy="150" r="80"/><circle class="cs-deco__dot" cx="470" cy="150" r="7"/>
+      <path class="cs-deco__line" d="M0 470 L600 250"/><path class="cs-deco__line" d="M0 540 L600 320"/>
+      <rect class="cs-deco__sq" x="70" y="80" width="64" height="64" rx="10"/>
+    </svg>
+      <div class="cs-about__main">
+        <h2 class="cs-h2" id="csWhat"><span class="cs-h2__icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1.1 2V17h5v-1.2c.1-.8.5-1.5 1.1-2A6 6 0 0 0 12 3z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>What it is</h2>
+        <p class="cs-about__lead">JARVIS is a voice assistant I built for my own car, a VW up! You say &quot;Hey Jarvis&quot; and talk normally, in Portuguese, and it answers with a casual Brazilian personality, hearing you over road noise and letting you interrupt it mid-sentence.</p>
+        <p>It is the only project here without a website: it lives in the car, and a dashboard on the screen shows the gauges in real time.</p>
+      </div>
+      <aside class="cs-about__facts" aria-label="Project facts">
+        <div class="cs-fact2"><span class="cs-fact2__k">Type</span><span class="cs-fact2__v">Personal project</span></div><div class="cs-fact2"><span class="cs-fact2__k">Year</span><span class="cs-fact2__v">2026</span></div><div class="cs-fact2"><span class="cs-fact2__k">Status</span><span class="cs-fact2__v">runs locally</span></div><div class="cs-fact2"><span class="cs-fact2__k">My role</span><span class="cs-fact2__v">personal project, whole product</span></div>
+        
+      </aside>
+    </section>
+
+    <section class="cs-about cs-about--problem" aria-labelledby="csProblem" data-reveal>
+      <div class="cs-about__main">
+        <h2 class="cs-h2" id="csProblem"><span class="cs-h2__icon cs-h2__icon--warn"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10v4.5M12 17.3v.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>The problem</h2>
+        <p class="cs-about__lead">Car assistants from phones do not know the car: they cannot read the engine, they do not understand a warning light and they struggle with cabin noise. Looking at a screen to find information while driving is exactly what should not happen.</p>
+        <p>The challenge was a hands-free copilot that really hears you in a noisy car, answers instantly for simple commands and still handles open questions, all running on a small computer inside the vehicle.</p>
+      </div>
+    </section>
+
+    <section class="cs-how" aria-labelledby="csHow">
+      <h2 class="cs-h2" id="csHow" data-reveal>How it works</h2>
+      <ol class="cs-steps" data-cs-steps style="--n:4">
+        <li class="cs-step" style="--i:0">
+          <span class="cs-step__num" aria-hidden="true">01</span>
+          <span class="cs-step__label">"Hey Jarvis"</span>
+          <span class="cs-step__sub">wake word, hands-free</span>
+        </li><li class="cs-step" style="--i:1">
+          <span class="cs-step__num" aria-hidden="true">02</span>
+          <span class="cs-step__label">Understands</span>
+          <span class="cs-step__sub">instant skills or AI</span>
+        </li><li class="cs-step" style="--i:2">
+          <span class="cs-step__num" aria-hidden="true">03</span>
+          <span class="cs-step__label">Reads the car</span>
+          <span class="cs-step__sub">live OBD2 data</span>
+        </li><li class="cs-step" style="--i:3">
+          <span class="cs-step__num" aria-hidden="true">04</span>
+          <span class="cs-step__label">Answers by voice</span>
+          <span class="cs-step__sub">and acts: music, route</span>
+        </li>
+      </ol>
+    </section>
+
+    <section class="cs-features" aria-labelledby="csFeat">
+      <h2 class="cs-h2" id="csFeat" data-reveal>What it does</h2>
+      <div class="cs-feat-grid">
+        <article class="cs-feat" data-reveal style="--i:0">
+          <span class="cs-feat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" opacity=".8"/></svg></span>
+          <h3 class="cs-feat__title">Voice built for the car</h3>
+          <p class="cs-feat__text">Say "Hey Jarvis" and talk normally: it hears you over road noise, can be interrupted and raises its own voice when the cabin gets loud.</p>
+          
+        </article><article class="cs-feat" data-reveal style="--i:1">
+          <span class="cs-feat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 14a9 9 0 1 1 18 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M12 14 16 9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="14" r="1.5" fill="currentColor"/></svg></span>
+          <h3 class="cs-feat__title">It knows the car</h3>
+          <p class="cs-feat__text">Reads RPM, speed, temperature and more than 36 sensors live, explains fault codes and answers questions from the owner manual.</p>
+          
+        </article><article class="cs-feat" data-reveal style="--i:2">
+          <span class="cs-feat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 3 8l9 5 9-5-9-5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M3 13l9 5 9-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 17.5l9 5 9-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/></svg></span>
+          <h3 class="cs-feat__title">Hybrid brain</h3>
+          <p class="cs-feat__text">Common commands get an instant answer, open questions go to AI with backups, and a safety check reviews each action.</p>
+          
+        </article><article class="cs-feat" data-reveal style="--i:3">
+          <span class="cs-feat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <h3 class="cs-feat__title">Proactive copilot</h3>
+          <p class="cs-feat__text">Warns about maintenance, fuel, weather and routes before you ask, controls Spotify and navigation and learns your habits.</p>
+          
+        </article>
+      </div>
+    </section>
+
+    <section class="cs-gallery" aria-labelledby="csGal" data-cs-gallery>
+      <div class="cs-gallery__head" data-reveal>
+        <h2 class="cs-h2" id="csGal">Project screens</h2>
+        
+      </div>
+      <div class="cs-gal" id="csPanel-desktop" role="group" data-cs-panel="desktop">
+        <ul class="cs-gal__track" data-cs-track tabindex="0" aria-label="Project screens: Desktop">
+          <li class="cs-gal__item cs-gal__item--desktop">
+            <button type="button" class="cs-gal__btn" data-cs-zoom="/img/projects/jarvis/extra-dashboard.webp?v=mvu0h5ve" aria-label="Enlarge: JARVIS: desktop screen 1">
+              <img src="/img/projects/jarvis/extra-dashboard.webp?v=mvu0h5ve" alt="JARVIS: desktop screen 1" width="1280" height="800" loading="lazy" decoding="async">
+              <span class="cs-gal__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </button>
+          </li>
+        </ul>
+        <div class="cs-gal__nav">
+          <button type="button" class="cs-gal__arrow" data-cs-prev aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m15 18-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button type="button" class="cs-gal__arrow" data-cs-next aria-label="Next"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+      <dialog class="cs-lightbox" data-cs-lightbox aria-label="Project screens">
+        <button type="button" class="cs-lightbox__close" data-cs-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+        <button type="button" class="cs-lightbox__arrow cs-lightbox__arrow--prev" data-cs-lprev aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m15 18-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <img alt="" data-cs-limg>
+        <button type="button" class="cs-lightbox__arrow cs-lightbox__arrow--next" data-cs-lnext aria-label="Next"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </dialog>
+    </section>
+
+    <section class="cs-author" data-reveal aria-labelledby="csAuthor">
+      <img class="cs-author__photo" src="/img/eufoto1.webp" alt="Bernardo Iannini, developer of JARVIS" width="584" height="583" loading="lazy" decoding="async">
+      <div class="cs-author__body">
+        <h2 class="cs-author__kicker" id="csAuthor">Who built it</h2>
+        <p class="cs-author__name"><a href="/en/about.html" rel="author">Bernardo Iannini</a></p>
+        <p class="cs-author__role">Full Stack Developer & AI Designer · Belo Horizonte, Brazil</p>
+        <p class="cs-author__bio">I build complete systems, from architecture to production deploy: SaaS, fintech, ERPs and automation. Every project in this portfolio is part of the baggage I carry into the next one.</p>
+        <div class="cs-author__links">
+          <a class="cs-pill cs-pill--solid" href="/#contato">Want something like this? Get in touch<span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+          <a class="cs-pill" href="/en/about.html">Read my story</a>
+          <a class="cs-icon" href="https://www.linkedin.com/in/bernardo-iannini" target="_blank" rel="me noopener noreferrer" aria-label="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.3-.02-2.95-1.8-2.95-1.8 0-2.07 1.4-2.07 2.86V21H9z"/></svg></a>
+          <a class="cs-icon" href="https://github.com/iannini25" target="_blank" rel="me noopener noreferrer" aria-label="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .5C5.73.5.98 5.24.98 11.5c0 4.85 3.14 8.96 7.49 10.41.55.1.75-.24.75-.53v-1.86c-3.04.66-3.68-1.45-3.68-1.45-.5-1.28-1.22-1.63-1.22-1.63-.99-.67.08-.66.08-.66 1.09.08 1.66 1.13 1.66 1.13.98 1.67 2.57 1.19 3.2.91.1-.71.38-1.19.69-1.46-2.43-.28-4.99-1.22-4.99-5.43 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.41.11-2.94 0 0 .92-.29 3.02 1.13A10.5 10.5 0 0 1 12 6.8c.94 0 1.88.13 2.77.38 2.1-1.42 3.02-1.13 3.02-1.13.6 1.53.22 2.66.11 2.94.7.77 1.13 1.75 1.13 2.95 0 4.22-2.57 5.14-5.01 5.41.39.34.73 1.02.73 2.07v3.07c0 .3.2.64.76.53 4.34-1.45 7.48-5.56 7.48-10.41C23.02 5.24 18.27.5 12 .5z"/></svg></a>
+        </div>
+      </div>
+    </section>
+
+    <nav class="cs-others" aria-labelledby="csOthers">
+      <div class="cs-others__head">
+        <h2 class="cs-h2" id="csOthers">More projects</h2>
+        <a class="cs-others__all" href="/#projects">See all projects<span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      </div>
+      <ul class="cs-others__list">
+        <li><a class="cs-other" href="/en/projects/portfolio.html">
+            <span class="cs-other__img"><img src="/img/covers/portfolio.webp?v=a91316ed" srcset="/img/covers/portfolio-480.webp?v=a91316ed 480w, /img/covers/portfolio-800.webp?v=a91316ed 800w, /img/covers/portfolio-1200.webp?v=a91316ed 1200w, /img/covers/portfolio.webp?v=a91316ed 1600w" sizes="(max-width: 700px) 90vw, 30vw" alt="" width="1600" height="900" loading="lazy" decoding="async"></span>
+            <span class="cs-other__name">bernardoiannini.com</span>
+            <span class="cs-other__sub">This Site</span>
+          </a></li><li><a class="cs-other" href="/en/projects/athena7.html">
+            <span class="cs-other__img"><img src="/img/covers/athena7.webp?v=c56c4bc5" srcset="/img/covers/athena7-480.webp?v=c56c4bc5 480w, /img/covers/athena7-800.webp?v=c56c4bc5 800w, /img/covers/athena7-1200.webp?v=c56c4bc5 1200w, /img/covers/athena7.webp?v=c56c4bc5 1600w" sizes="(max-width: 700px) 90vw, 30vw" alt="" width="1600" height="900" loading="lazy" decoding="async"></span>
+            <span class="cs-other__name">Athena7</span>
+            <span class="cs-other__sub">Whistleblowing Channel</span>
+          </a></li><li><a class="cs-other" href="/en/projects/moedanobre.html">
+            <span class="cs-other__img"><img src="/img/covers/moedanobre.webp?v=447d1696" srcset="/img/covers/moedanobre-480.webp?v=447d1696 480w, /img/covers/moedanobre-800.webp?v=447d1696 800w, /img/covers/moedanobre-1200.webp?v=447d1696 1200w, /img/covers/moedanobre.webp?v=447d1696 1600w" sizes="(max-width: 700px) 90vw, 30vw" alt="" width="1600" height="900" loading="lazy" decoding="async"></span>
+            <span class="cs-other__name">Moeda Nobre</span>
+            <span class="cs-other__sub">Digital Benefits Currency</span>
+          </a></li>
+      </ul>
+    </nav>
+  </main>
+
+  <!-- language.js ANTES do UI.js: o init() do UI.js chama applyI18n() de
+       forma sincrona assim que carrega. project-case.js NAO entra aqui de
+       proposito — o conteudo ja veio pronto do build, carregar de novo so
+       daria double-render e flash. -->
+  <script src="/js/language.js" defer></script>
+  <script src="/js/UI.js" defer></script>
+  <script src="/js/sw-register.js" defer></script>
+
+  <!-- camada de interacao da pagina (vanilla, sem GSAP/Lenis): reveals,
+       tour pelas telas, passos e galeria. Sem ela a pagina fica 100%
+       legivel e funcional. -->
+  <script src="/js/project-fx.js" defer></script>
+
+  <script>
+    /* Seletor de idioma: NAVEGA pro equivalente em vez de so trocar strings
+       (o conteudo desta pagina veio pronto do build, no idioma da rota).
+       Fase de CAPTURA pra rodar antes do handler que o language.js pendura
+       em cada <li>, que chamaria applyI18n() no lugar. */
+    (function () {
+      var menu = document.getElementById('langMenu');
+      if (!menu) return;
+      var alt = { pt: '/projetos/jarvis.html', en: '/en/projects/jarvis.html' };
+      function go(e) {
+        var li = e.target && e.target.closest && e.target.closest('[data-lang]');
+        if (!li) return;
+        if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+        var url = alt[li.getAttribute('data-lang')];
+        if (!url) return;
+        e.preventDefault();
+        e.stopPropagation();
+        location.href = url;
+      }
+      menu.addEventListener('click', go, true);
+      menu.addEventListener('keydown', go, true);
+    })();
+  </script>
+</body>
+
+</html>

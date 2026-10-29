@@ -101,7 +101,7 @@ function pjSlug(s) {
    faltar; category cai em "personal" se alguém esquecer o campo. */
 function pjPrepare(list) {
   return (list || [])
-    .filter(p => p && p.cover && p.link)
+    .filter(p => p && p.cover && (p.link || p.local))
     .map(p => ({
       ...p,
       id: p.id || pjSlug(p.title),
@@ -211,7 +211,9 @@ function pjUpdatePanel(project, data) {
       if (lbl) lbl.textContent = caseLabels.viewCase || 'View case study';
     }
     if (linkEl) {
-      linkEl.href = project.link;
+      /* projeto que roda localmente (ex.: Jarvis) nao tem site pra visitar */
+      linkEl.style.display = project.link ? '' : 'none';
+      linkEl.href = project.link || '#';
       const lbl = linkEl.querySelector('[data-pj-link-label]');
       if (lbl) lbl.textContent = caseLabels.visitSite || 'Visit live site';
     }

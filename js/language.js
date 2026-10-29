@@ -696,6 +696,83 @@ Building the trust this corridor is missing is hard precisely because you can't 
           ]
         },
         {
+          title: "BeSafe · Human-Factor Security",
+          desc: "Human-factor security platform: companies send simulated phishing through the channels they already use, and whoever clicks learns on the spot.",
+          longDesc: "BeSafe is a human-factor security platform for companies. The admin imports the team, sends simulated phishing through email, Outlook, Slack, Teams and WhatsApp, and picks the date. Whoever clicks immediately sees a screen showing what could have leaked and goes straight to a short video lesson on that exact scam.\n\nThe results turn into metrics in two dashboards, one for the admin and one for each employee, and an education platform keeps video modules on old and new scams, always without blaming the person.",
+          stack: ["Next.js 16","React 19","TypeScript","Python","PostgreSQL","Docker","Caddy"],
+          link: "https://besafebr.com",
+          repo: "",
+          cover: "img/covers/besafe.webp?v=65cef501",
+          id: "besafe",
+          flow: {
+            steps: [
+              { label: "Import the team", sub: "admin dashboard" },
+              { label: "Simulated phishing", sub: "email, Teams, Slack, WhatsApp" },
+              { label: "Click = lesson", sub: "video on that scam" },
+              { label: "Risk as a metric", sub: "admin and employee dashboards" }
+            ]
+          },
+          category: "system",
+          featured: false,
+          status: "pre-launch",
+          year: "2026",
+          role: "full-stack, whole product",
+          story: {
+            problem: {
+              text: "Firewalls and antivirus protect machines, but most incidents start with a person: someone clicks a fake link, approves a payment on the phone or shares access under pressure. Companies rarely know who on their team would fall for a scam, and generic yearly trainings do not change behavior.\n\nThe hard part is testing people for real without exposing or blaming anyone, and turning each mistake into learning right at the moment it happens."
+            }
+          },
+          topics: [
+            { icon: "globe", title: "Phishing in every channel",
+              text: "The company sends realistic fake scams through the channels the team already uses, email, Outlook, Slack, Teams and WhatsApp, to see who falls for them." },
+            { icon: "shield", title: "Learning at the moment of the click",
+              text: "Whoever clicks sees what could have leaked and goes straight into a short video lesson about that exact scam, without blame." },
+            { icon: "layers", title: "Education platform",
+              text: "Video modules on old and new scams, informal and up to date, included in the plan for the whole team." },
+            { icon: "chart", title: "Human risk becomes a number",
+              text: "Admin and employee dashboards turn behavior into measurable risk, and an in-app assistant helps check whether a message looks suspicious." }
+          ]
+        },
+        {
+          title: "JARVIS · Voice Assistant for the Car",
+          desc: "A voice assistant for the car: you say \"Hey Jarvis\" and talk normally, and it reads the engine live, controls music and navigation and warns you before problems.",
+          longDesc: "JARVIS is a voice assistant I built for my own car, a VW up! TSI, running on a Raspberry Pi inside the vehicle. You say \"Hey Jarvis\" and talk normally, in Portuguese, and it answers with a casual Brazilian personality, hearing you over road noise and letting you interrupt it mid-sentence.\n\nIt reads the engine live through the OBD2 port, explains warning lights and fault codes, answers from the car's owner manual, controls Spotify and navigation, and speaks up on its own with maintenance, fuel and weather alerts. It is the only project here without a website: it lives in the car, and a dashboard on the screen shows the gauges in real time.",
+          stack: ["Python","FastAPI","React","Gemini","OpenAI","OBD2","Raspberry Pi"],
+          link: "",
+          repo: "",
+          local: true,
+          cover: "img/covers/jarvis.webp?v=e5c56b6e",
+          id: "jarvis",
+          flow: {
+            steps: [
+              { label: "\"Hey Jarvis\"", sub: "wake word, hands-free" },
+              { label: "Understands", sub: "instant skills or AI" },
+              { label: "Reads the car", sub: "live OBD2 data" },
+              { label: "Answers by voice", sub: "and acts: music, route" }
+            ]
+          },
+          category: "personal",
+          featured: false,
+          status: "runs locally",
+          year: "2026",
+          role: "personal project, whole product",
+          story: {
+            problem: {
+              text: "Car assistants from phones do not know the car: they cannot read the engine, they do not understand a warning light and they struggle with cabin noise. Looking at a screen to find information while driving is exactly what should not happen.\n\nThe challenge was a hands-free copilot that really hears you in a noisy car, answers instantly for simple commands and still handles open questions, all running on a small computer inside the vehicle."
+            }
+          },
+          topics: [
+            { icon: "sparkles", title: "Voice built for the car",
+              text: "Say \"Hey Jarvis\" and talk normally: it hears you over road noise, can be interrupted and raises its own voice when the cabin gets loud." },
+            { icon: "gauge", title: "It knows the car",
+              text: "Reads RPM, speed, temperature and more than 36 sensors live, explains fault codes and answers questions from the owner manual." },
+            { icon: "layers", title: "Hybrid brain",
+              text: "Common commands get an instant answer, open questions go to AI with backups, and a safety check reviews each action." },
+            { icon: "shield", title: "Proactive copilot",
+              text: "Warns about maintenance, fuel, weather and routes before you ask, controls Spotify and navigation and learns your habits." }
+          ]
+        },
+        {
           title: "bernardoiannini.com · This Site",
           desc: "The site you're on right now: 100% vanilla HTML, CSS and JS, no frameworks, with its own design system.",
           longDesc: `This portfolio is a static site written by hand in vanilla HTML, CSS and JavaScript, with no frameworks anywhere in the stack. Every visual decision lives in a custom design system driven by CSS tokens, and the motion layer runs on GSAP 3 with ScrollTrigger and Lenis smooth scrolling. Remove GSAP and the site still works from end to end.
@@ -1491,6 +1568,83 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
               text: "Padrão de concessionária sem preço de concessionária: mecânica geral, serviços express e eletricidade e eletrônica embarcada, com o respaldo da rede Bosch Car Service." },
             { icon: "palette", title: "Build one-page cinematográfico",
               text: "Uma narrativa guiada pelo scroll com herói de sequência de frames no canvas, feita à mão em HTML, CSS e JavaScript puro com GSAP, ScrollTrigger e Lenis vendorizados localmente, sem CDN e sem build." }
+          ]
+        },
+        {
+          title: "BeSafe · Segurança do Fator Humano",
+          desc: "Plataforma de segurança do fator humano: a empresa dispara phishing simulado nos canais que já usa, e quem clica aprende na hora.",
+          longDesc: "A BeSafe é uma plataforma de segurança do fator humano para empresas. O administrador importa a equipe, dispara phishing simulado por e-mail, Outlook, Slack, Teams e WhatsApp e escolhe a data. Quem clica vê na hora uma tela mostrando o que poderia ter vazado e vai direto pra uma aula curta em vídeo sobre aquele golpe.\n\nOs resultados viram métrica em dois painéis, um do administrador e um de cada colaborador, e uma plataforma de educação mantém módulos em vídeo sobre golpes antigos e novos, sempre sem culpar a pessoa.",
+          stack: ["Next.js 16","React 19","TypeScript","Python","PostgreSQL","Docker","Caddy"],
+          link: "https://besafebr.com",
+          repo: "",
+          cover: "img/covers/besafe.webp?v=65cef501",
+          id: "besafe",
+          flow: {
+            steps: [
+              { label: "Importa a equipe", sub: "painel do administrador" },
+              { label: "Phishing simulado", sub: "e-mail, Teams, Slack, WhatsApp" },
+              { label: "Clicou, aprendeu", sub: "vídeo sobre aquele golpe" },
+              { label: "Risco vira métrica", sub: "painel do admin e do colaborador" }
+            ]
+          },
+          category: "system",
+          featured: false,
+          status: "pré-lançamento",
+          year: "2026",
+          role: "full-stack, produto inteiro",
+          story: {
+            problem: {
+              text: "Firewall e antivírus protegem máquinas, mas a maioria dos incidentes começa numa pessoa: alguém clica num link falso, aprova um pagamento pelo telefone ou passa um acesso sob pressão. A empresa quase nunca sabe quem da equipe cairia num golpe, e o treinamento genérico de uma vez por ano não muda comportamento.\n\nO difícil é testar as pessoas de verdade sem expor nem culpar ninguém, e transformar cada erro em aprendizado no exato momento em que ele acontece."
+            }
+          },
+          topics: [
+            { icon: "globe", title: "Phishing em todos os canais",
+              text: "A empresa dispara golpes falsos e realistas pelos canais que a equipe já usa, e-mail, Outlook, Slack, Teams e WhatsApp, pra ver quem cai." },
+            { icon: "shield", title: "Aprendizado na hora do clique",
+              text: "Quem clica vê o que poderia ter vazado e vai direto pra uma aula curta em vídeo sobre aquele golpe, sem culpa." },
+            { icon: "layers", title: "Plataforma de educação",
+              text: "Módulos em vídeo sobre golpes antigos e novos, com linguagem informal e sempre atualizados, inclusos no plano pra equipe toda." },
+            { icon: "chart", title: "Risco humano vira número",
+              text: "Os painéis do administrador e do colaborador transformam comportamento em risco medido, e um assistente no app ajuda a checar se uma mensagem é suspeita." }
+          ]
+        },
+        {
+          title: "JARVIS · Assistente de Voz para o Carro",
+          desc: "Um assistente de voz para o carro: você diz \"Hey Jarvis\" e fala normal, e ele lê o motor ao vivo, controla música e navegação e avisa antes do problema.",
+          longDesc: "O JARVIS é um assistente de voz que eu construí pro meu próprio carro, um VW up! TSI, rodando num Raspberry Pi dentro do veículo. Você diz \"Hey Jarvis\" e conversa normal, em português, e ele responde com personalidade bem brasileira, te ouvindo mesmo com o barulho da estrada e aceitando ser interrompido no meio da frase.\n\nEle lê o motor ao vivo pela porta OBD2, explica luzes do painel e códigos de falha, responde com base no manual do carro, controla o Spotify e a navegação e fala sozinho quando precisa: manutenção, combustível e clima. É o único projeto daqui sem site: ele mora no carro, e um painel na tela mostra os mostradores em tempo real.",
+          stack: ["Python","FastAPI","React","Gemini","OpenAI","OBD2","Raspberry Pi"],
+          link: "",
+          repo: "",
+          local: true,
+          cover: "img/covers/jarvis.webp?v=e5c56b6e",
+          id: "jarvis",
+          flow: {
+            steps: [
+              { label: "\"Hey Jarvis\"", sub: "palavra de ativação, mãos livres" },
+              { label: "Entende", sub: "comando na hora ou IA" },
+              { label: "Lê o carro", sub: "dados OBD2 ao vivo" },
+              { label: "Responde em voz", sub: "e age: música, rota" }
+            ]
+          },
+          category: "personal",
+          featured: false,
+          status: "roda localmente",
+          year: "2026",
+          role: "projeto pessoal, produto inteiro",
+          story: {
+            problem: {
+              text: "Assistente de celular não conhece o carro: não lê o motor, não entende uma luz acesa no painel e sofre com o barulho da cabine. E ficar olhando tela atrás de informação enquanto dirige é justamente o que não pode.\n\nO desafio era um copiloto de mãos livres que te ouve de verdade num carro barulhento, responde na hora os comandos simples e ainda dá conta de perguntas abertas, tudo rodando num computador pequeno dentro do carro."
+            }
+          },
+          topics: [
+            { icon: "sparkles", title: "Voz feita pro carro",
+              text: "Diga \"Hey Jarvis\" e fale normal: ele te ouve com o barulho da estrada, aceita ser interrompido e aumenta a própria voz quando a cabine fica barulhenta." },
+            { icon: "gauge", title: "Ele conhece o carro",
+              text: "Lê rotação, velocidade, temperatura e mais de 36 sensores ao vivo, explica códigos de falha e responde com base no manual do carro." },
+            { icon: "layers", title: "Cérebro híbrido",
+              text: "Comandos comuns têm resposta na hora, perguntas abertas vão pra IA com reservas, e uma checagem de segurança revisa cada ação." },
+            { icon: "shield", title: "Copiloto que se antecipa",
+              text: "Avisa de manutenção, combustível, clima e rota antes de você perguntar, controla o Spotify e a navegação e aprende os seus hábitos." }
           ]
         },
         {

@@ -93,7 +93,7 @@ function pcCoverSet(cover, ext) {
 function pcRealProjects(lang) {
   const list = (I18N[lang] && I18N[lang].projects && I18N[lang].projects.list) || [];
   return list
-    .filter(p => p && p.cover && p.link)
+    .filter(p => p && p.cover && (p.link || p.local))
     .map(p => ({ ...p, id: p.id || pcSlug(p.title) }));
 }
 

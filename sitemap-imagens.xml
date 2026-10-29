@@ -115,28 +115,28 @@
       <image:loc>https://www.bernardoiannini.com/img/covers/automotiva-express-1200.webp?v=a50a7163</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio.webp?v=a91316ed</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.webp?v=65cef501</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio-480.webp?v=a91316ed</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.webp?v=65cef501</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio-800.webp?v=a91316ed</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.webp?v=65cef501</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio-1200.webp?v=a91316ed</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.webp?v=65cef501</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/athena7.webp?v=c56c4bc5</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis.webp?v=e5c56b6e</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/athena7-480.webp?v=c56c4bc5</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-480.webp?v=e5c56b6e</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/athena7-800.webp?v=c56c4bc5</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-800.webp?v=e5c56b6e</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/athena7-1200.webp?v=c56c4bc5</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-1200.webp?v=e5c56b6e</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/amarofy-480.avif?v=399ef1e5</image:loc>
@@ -262,6 +262,117 @@
       <image:loc>https://www.bernardoiannini.com/img/eufoto1.webp</image:loc>
     </image:image>
     <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.webp?v=65cef501</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.webp?v=65cef501</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.webp?v=65cef501</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.webp?v=65cef501</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis.webp?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-480.webp?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-800.webp?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-1200.webp?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio.webp?v=a91316ed</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio-480.webp?v=a91316ed</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio-800.webp?v=a91316ed</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio-1200.webp?v=a91316ed</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/automotiva-express-480.avif?v=a50a7163</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/automotiva-express-800.avif?v=a50a7163</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/automotiva-express-1200.avif?v=a50a7163</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/automotiva-express.avif?v=a50a7163</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.bernardoiannini.com/en/projects/besafe.html</loc>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.webp?v=65cef501</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.webp?v=65cef501</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.webp?v=65cef501</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.webp?v=65cef501</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/scroll.webp?v=mvu0etgv</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/mscroll.webp?v=mvu0fkyl</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/desk-1-800.webp?v=mvu0ejsu</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/desk-1.webp?v=mvu0ejqq</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/desk-2-800.webp?v=mvu0ekyg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/desk-2.webp?v=mvu0ekws</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/desk-3-800.webp?v=mvu0em7d</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/desk-3.webp?v=mvu0em55</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/mob-1.webp?v=mvu0f2e7</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/mob-2.webp?v=mvu0f3jf</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/mob-3.webp?v=mvu0f4qa</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/eufoto1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis.webp?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-480.webp?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-800.webp?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-1200.webp?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/portfolio.webp?v=a91316ed</image:loc>
     </image:image>
     <image:image>
@@ -286,28 +397,16 @@
       <image:loc>https://www.bernardoiannini.com/img/covers/athena7-1200.webp?v=c56c4bc5</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/moedanobre.webp?v=447d1696</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.avif?v=65cef501</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/moedanobre-480.webp?v=447d1696</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.avif?v=65cef501</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/moedanobre-800.webp?v=447d1696</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.avif?v=65cef501</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/moedanobre-1200.webp?v=447d1696</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/automotiva-express-480.avif?v=a50a7163</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/automotiva-express-800.avif?v=a50a7163</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/automotiva-express-1200.avif?v=a50a7163</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/automotiva-express.avif?v=a50a7163</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.avif?v=65cef501</image:loc>
     </image:image>
   </url>
   <url>
@@ -500,6 +599,75 @@
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/iba.avif?v=b42aaaa7</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.bernardoiannini.com/en/projects/jarvis.html</loc>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis.webp?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-480.webp?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-800.webp?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-1200.webp?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/jarvis/extra-dashboard.webp?v=mvu0h5ve</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/eufoto1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio.webp?v=a91316ed</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio-480.webp?v=a91316ed</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio-800.webp?v=a91316ed</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio-1200.webp?v=a91316ed</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/athena7.webp?v=c56c4bc5</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/athena7-480.webp?v=c56c4bc5</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/athena7-800.webp?v=c56c4bc5</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/athena7-1200.webp?v=c56c4bc5</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/moedanobre.webp?v=447d1696</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/moedanobre-480.webp?v=447d1696</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/moedanobre-800.webp?v=447d1696</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/moedanobre-1200.webp?v=447d1696</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-480.avif?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-800.avif?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-1200.avif?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis.avif?v=e5c56b6e</image:loc>
     </image:image>
   </url>
   <url>
@@ -883,16 +1051,16 @@
       <image:loc>https://www.bernardoiannini.com/img/covers/automotiva-express-1200.webp?v=a50a7163</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio.webp?v=a91316ed</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.webp?v=65cef501</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio-480.webp?v=a91316ed</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.webp?v=65cef501</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio-800.webp?v=a91316ed</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.webp?v=65cef501</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio-1200.webp?v=a91316ed</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.webp?v=65cef501</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/sereno-480.avif?v=7c430872</image:loc>
@@ -1183,28 +1351,28 @@
       <image:loc>https://www.bernardoiannini.com/img/covers/automotiva-express-1200.webp?v=a50a7163</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio.webp?v=a91316ed</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.webp?v=65cef501</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio-480.webp?v=a91316ed</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.webp?v=65cef501</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio-800.webp?v=a91316ed</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.webp?v=65cef501</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio-1200.webp?v=a91316ed</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.webp?v=65cef501</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/athena7.webp?v=c56c4bc5</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis.webp?v=e5c56b6e</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/athena7-480.webp?v=c56c4bc5</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-480.webp?v=e5c56b6e</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/athena7-800.webp?v=c56c4bc5</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-800.webp?v=e5c56b6e</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/athena7-1200.webp?v=c56c4bc5</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-1200.webp?v=e5c56b6e</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/amarofy-480.avif?v=399ef1e5</image:loc>
@@ -1330,6 +1498,117 @@
       <image:loc>https://www.bernardoiannini.com/img/eufoto1.webp</image:loc>
     </image:image>
     <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.webp?v=65cef501</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.webp?v=65cef501</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.webp?v=65cef501</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.webp?v=65cef501</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis.webp?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-480.webp?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-800.webp?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-1200.webp?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio.webp?v=a91316ed</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio-480.webp?v=a91316ed</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio-800.webp?v=a91316ed</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio-1200.webp?v=a91316ed</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/automotiva-express-480.avif?v=a50a7163</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/automotiva-express-800.avif?v=a50a7163</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/automotiva-express-1200.avif?v=a50a7163</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/automotiva-express.avif?v=a50a7163</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.bernardoiannini.com/projetos/besafe.html</loc>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.webp?v=65cef501</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.webp?v=65cef501</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.webp?v=65cef501</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.webp?v=65cef501</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/scroll.webp?v=mvu0etgv</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/mscroll.webp?v=mvu0fkyl</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/desk-1-800.webp?v=mvu0ejsu</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/desk-1.webp?v=mvu0ejqq</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/desk-2-800.webp?v=mvu0ekyg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/desk-2.webp?v=mvu0ekws</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/desk-3-800.webp?v=mvu0em7d</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/desk-3.webp?v=mvu0em55</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/mob-1.webp?v=mvu0f2e7</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/mob-2.webp?v=mvu0f3jf</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/mob-3.webp?v=mvu0f4qa</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/eufoto1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis.webp?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-480.webp?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-800.webp?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-1200.webp?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/portfolio.webp?v=a91316ed</image:loc>
     </image:image>
     <image:image>
@@ -1354,28 +1633,16 @@
       <image:loc>https://www.bernardoiannini.com/img/covers/athena7-1200.webp?v=c56c4bc5</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/moedanobre.webp?v=447d1696</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.avif?v=65cef501</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/moedanobre-480.webp?v=447d1696</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.avif?v=65cef501</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/moedanobre-800.webp?v=447d1696</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.avif?v=65cef501</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/moedanobre-1200.webp?v=447d1696</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/automotiva-express-480.avif?v=a50a7163</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/automotiva-express-800.avif?v=a50a7163</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/automotiva-express-1200.avif?v=a50a7163</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/automotiva-express.avif?v=a50a7163</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.avif?v=65cef501</image:loc>
     </image:image>
   </url>
   <url>
@@ -1568,6 +1835,75 @@
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/iba.avif?v=b42aaaa7</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.bernardoiannini.com/projetos/jarvis.html</loc>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis.webp?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-480.webp?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-800.webp?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-1200.webp?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/jarvis/extra-dashboard.webp?v=mvu0h5ve</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/eufoto1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio.webp?v=a91316ed</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio-480.webp?v=a91316ed</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio-800.webp?v=a91316ed</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio-1200.webp?v=a91316ed</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/athena7.webp?v=c56c4bc5</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/athena7-480.webp?v=c56c4bc5</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/athena7-800.webp?v=c56c4bc5</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/athena7-1200.webp?v=c56c4bc5</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/moedanobre.webp?v=447d1696</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/moedanobre-480.webp?v=447d1696</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/moedanobre-800.webp?v=447d1696</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/moedanobre-1200.webp?v=447d1696</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-480.avif?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-800.avif?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis-1200.avif?v=e5c56b6e</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/jarvis.avif?v=e5c56b6e</image:loc>
     </image:image>
   </url>
   <url>
@@ -1951,16 +2287,16 @@
       <image:loc>https://www.bernardoiannini.com/img/covers/automotiva-express-1200.webp?v=a50a7163</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio.webp?v=a91316ed</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.webp?v=65cef501</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio-480.webp?v=a91316ed</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.webp?v=65cef501</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio-800.webp?v=a91316ed</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.webp?v=65cef501</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/portfolio-1200.webp?v=a91316ed</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.webp?v=65cef501</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/sereno-480.avif?v=7c430872</image:loc>
