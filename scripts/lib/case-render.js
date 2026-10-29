@@ -31,10 +31,11 @@ const UI = {
   pt: {
     crumbHome: 'Início', crumbList: 'Projetos',
     visit: 'Visitar o site', newTab: 'abre em nova aba',
+    fType: 'Tipo', fYear: 'Ano', fStatus: 'Status', fRole: 'Meu papel', fSite: 'Site',
     apps: 'Baixe o app', seeApps: 'Ver os aplicativos', marketing: 'Na vitrine das lojas',
     playAlt: 'Disponível no Google Play', storeAlt: 'Baixar na App Store',
     by: 'Projeto desenvolvido por',
-    facts: 'Em números',
+    facts: 'Ficha do projeto',
     whatIs: 'O que é', problem: 'O problema',
     preview: 'Navegue pelo site',
     live: 'Veja o site ao vivo',
@@ -58,10 +59,11 @@ const UI = {
   en: {
     crumbHome: 'Home', crumbList: 'Projects',
     visit: 'Visit the website', newTab: 'opens in a new tab',
+    fType: 'Type', fYear: 'Year', fStatus: 'Status', fRole: 'My role', fSite: 'Website',
     apps: 'Get the app', seeApps: 'See the apps', marketing: 'In the store windows',
     playAlt: 'Get it on Google Play', storeAlt: 'Download on the App Store',
     by: 'Project built by',
-    facts: 'In numbers',
+    facts: 'Project facts',
     whatIs: 'What it is', problem: 'The problem',
     preview: 'Browse the website',
     live: 'See the live website',
@@ -85,6 +87,7 @@ const UI = {
 };
 
 const ICON = {
+  layersBig: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 3 8l9 5 9-5-9-5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M3 13l9 5 9-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   phone: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M10.5 18.3h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
   check: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="m8 12.3 2.6 2.6L16 9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   megaphone: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 10v4a1 1 0 0 0 1 1H7l7 4.5v-15L7 9H4.5a1 1 0 0 0-1 1z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M17.5 9a4 4 0 0 1 0 6M7 15l1.2 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
@@ -271,7 +274,7 @@ function renderCaseMain(o) {
     <section class="cs-hero" aria-labelledby="csTitle">
       <div class="cs-hero__text">
         ${reg.length ? `<p class="cs-reg">${p.status ? '<i class="cs-reg__dot" aria-hidden="true"></i>' : ''}${reg.join('<span aria-hidden="true">·</span>')}</p>` : ''}
-        <h1 class="cs-title" id="csTitle">${esc(name)}${sub ? `<span class="cs-title__sub">${esc(sub)}</span>` : ''}</h1>
+        <h1 class="cs-title${name.length > 12 ? ' cs-title--long' : ''}" id="csTitle">${esc(name)}${sub ? `<span class="cs-title__sub">${esc(sub)}</span>` : ''}</h1>
         <p class="cs-lead">${esc(p.desc || answer)}</p>
         <div class="cs-actions">
           ${p.link ? `<a class="cs-visit" href="${esc(p.link)}" target="_blank" rel="noopener noreferrer">
@@ -298,23 +301,71 @@ function renderCaseMain(o) {
       </figure>
     </section>`);
 
-  /* ---- o que é + o problema (texto curto, coluna de leitura) ---- */
-  const ill = (key) => {
-    const file = cfg.illustrations && cfg.illustrations[key];
-    return file ? `<figure class="cs-text__ill" aria-hidden="true"><img src="/img/projects/${p.id}/${file}" alt="" loading="lazy" decoding="async"></figure>` : '';
-  };
-  const textBlocks = [];
-  if (whatIs.length) textBlocks.push(`
-      <div class="cs-text${ill('whatIs') ? ' cs-text--ill' : ''}" data-reveal>${ill('whatIs')}
-        <h2 class="cs-h2"><span class="cs-h2__icon">${ICON.idea}</span>${u.whatIs}</h2>
-        ${whatIs.map(x => `<p>${x}</p>`).join('')}
-      </div>`);
-  if (problem.length) textBlocks.push(`
-      <div class="cs-text${ill('problem') ? ' cs-text--ill' : ''}" data-reveal>${ill('problem')}
-        <h2 class="cs-h2"><span class="cs-h2__icon cs-h2__icon--warn">${ICON.alert}</span>${u.problem}</h2>
-        ${problem.map(x => `<p>${x}</p>`).join('')}
-      </div>`);
-  if (textBlocks.length) sec.push(`<section class="cs-story${textBlocks.length > 1 ? ' cs-story--two' : ''}">${textBlocks.join('')}</section>`);
+  /* ---- o que é: painel com fundo geometrico + ficha do projeto ----
+     texto proprio do data/cases.json (whatIs) quando existir; senao o
+     longDesc filtrado. A ficha usa so fatos ja cadastrados. */
+  const ownWhat = cfg.whatIs && tx(cfg.whatIs, lang);
+  const whatParas = ownWhat ? ownWhat.split(/\n\s*\n/).map(x => x.trim()).filter(Boolean) : whatIs;
+  const CAT = { pt: { system: 'Plataforma web', site: 'Site', personal: 'Projeto pessoal', automation: 'Automação' },
+                en: { system: 'Web platform', site: 'Website', personal: 'Personal project', automation: 'Automation' } };
+  const facts = [
+    [u.fType, CAT[lang][p.category] || ''],
+    [u.fYear, p.year],
+    [u.fStatus, p.status],
+    [u.fRole, p.role],
+  ].filter(([, v]) => v);
+  const deco = `<svg class="cs-deco" viewBox="0 0 600 600" aria-hidden="true" focusable="false">
+      <defs><pattern id="csDots-${p.id}" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.3"/></pattern></defs>
+      <rect class="cs-deco__dots" width="600" height="600" fill="url(#csDots-${p.id})"/>
+      <circle class="cs-deco__ring" cx="470" cy="150" r="200"/><circle class="cs-deco__ring" cx="470" cy="150" r="140"/>
+      <circle class="cs-deco__ring" cx="470" cy="150" r="80"/><circle class="cs-deco__dot" cx="470" cy="150" r="7"/>
+      <path class="cs-deco__line" d="M0 470 L600 250"/><path class="cs-deco__line" d="M0 540 L600 320"/>
+      <rect class="cs-deco__sq" x="70" y="80" width="64" height="64" rx="10"/>
+    </svg>`;
+  if (whatParas.length) {
+    sec.push(`
+    <section class="cs-about" aria-labelledby="csWhat" data-reveal>
+      ${deco}
+      <div class="cs-about__main">
+        <h2 class="cs-h2" id="csWhat"><span class="cs-h2__icon">${ICON.idea}</span>${u.whatIs}</h2>
+        <p class="cs-about__lead">${esc(whatParas[0])}</p>
+        ${whatParas.slice(1, 3).map(x => `<p>${esc(x)}</p>`).join('')}
+      </div>
+      <aside class="cs-about__facts" aria-label="${u.facts}">
+        ${facts.map(([k, v]) => `<div class="cs-fact2"><span class="cs-fact2__k">${k}</span><span class="cs-fact2__v">${esc(v)}</span></div>`).join('')}
+        ${p.link ? `<a class="cs-fact2 cs-fact2--link" href="${esc(p.link)}" target="_blank" rel="noopener noreferrer"><span class="cs-fact2__k">${u.fSite}</span><span class="cs-fact2__v">${esc(host)} ${ICON.arrow}</span></a>` : ''}
+      </aside>
+    </section>`);
+  }
+
+  /* ---- o problema: so nos projetos que resolvem um problema real
+     (sistemas). Site de vitrine nao tem esse bloco. ---- */
+  if (problem.length) {
+    sec.push(`
+    <section class="cs-about cs-about--problem" aria-labelledby="csProblem" data-reveal>
+      <div class="cs-about__main">
+        <h2 class="cs-h2" id="csProblem"><span class="cs-h2__icon cs-h2__icon--warn">${ICON.alert}</span>${u.problem}</h2>
+        <p class="cs-about__lead">${esc(problem[0])}</p>
+        ${problem.slice(1, 2).map(x => `<p>${esc(x)}</p>`).join('')}
+      </div>
+    </section>`);
+  }
+
+  /* ---- frentes do produto (estilo dos apps do Moeda Nobre) ---- */
+  if (cfg.pillars && Array.isArray(cfg.pillars.items)) {
+    sec.push(`
+    <section class="cs-pillars" aria-labelledby="csPillars">
+      <h2 class="cs-h2" id="csPillars" data-reveal><span class="cs-h2__icon">${ICON.layersBig}</span>${esc(tx(cfg.pillars.title, lang))}</h2>
+      <div class="cs-pillars__grid" style="--n:${cfg.pillars.items.length}">
+        ${cfg.pillars.items.map((it, i) => `<article class="cs-pillar" data-reveal style="--i:${i}">
+          <span class="cs-pillar__num" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span>
+          <span class="cs-pillar__icon" aria-hidden="true">${PC_ICONS[it.icon] || PC_ICONS.layers}</span>
+          <h3 class="cs-pillar__name">${esc(tx(it.name, lang))}</h3>
+          <p class="cs-pillar__desc">${esc(tx(it.desc, lang))}</p>
+        </article>`).join('')}
+      </div>
+    </section>`);
+  }
 
   /* ---- aplicativos (cada um com icone, cor, o que faz, lojas e telas) ---- */
   if (Array.isArray(cfg.apps) && cfg.apps.length) {

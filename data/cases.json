@@ -1,15 +1,47 @@
 {
   "_doc": "Configuracao propria de cada pagina de projeto (lida por scripts/lib/case-render.js). embed: o site permite ser exibido ao vivo dentro da pagina. tour/gallery false: esconde o tour de prints / a galeria de prints. illustrations: imagem ao lado de 'O que e' / 'O problema' (arquivos em img/projects/<id>/). apps: aplicativos com icone, cor, texto, lojas e telas. marketing: banners/pecas de marketing. Tudo opcional.",
-  "brasa": { "embed": true },
-  "sereno": { "embed": true },
-  "amarofy": { "embed": true },
-  "automotiva-express": { "embed": true },
-  "modulo-engenharia": { "embed": true },
+  "brasa": {
+    "embed": true,
+    "whatIs": {
+      "pt": "Landing page da BRASA, cozinha de fogo autoral em São Paulo: cortes maturados sobre brasa de lenha viva, balcão de chef com doze lugares e menu em seis tempos. O site vende a sala antes de você entrar: o fogo acende conforme a rolagem, a página conta a história da casa, mostra o cardápio, sugere vinhos como um sommelier e termina na reserva. Funciona em português e inglês.",
+      "en": "Landing page for BRASA, a signature wood-fire kitchen in São Paulo: dry-aged cuts over live embers, a twelve-seat chef's counter and a six-course menu. The site sells the room before you walk in: the fire lights up as you scroll, the page tells the story of the house, shows the menu, suggests wines like a sommelier and ends at the booking. It works in Portuguese and English."
+    }
+  },
+  "sereno": {
+    "embed": true,
+    "whatIs": {
+      "pt": "Site do Sereno, estúdio de massagem e repouso na Savassi, em Belo Horizonte, que vende a pausa como um ritual. A rolagem leva a câmera pela sala até a recepção, apresenta os rituais e os planos avulso, mensal e anual, e termina num pedido de horário que chega pronto no WhatsApp do estúdio.",
+      "en": "Website for Sereno, a massage and rest studio in Savassi, Belo Horizonte, that sells the pause as a ritual. Scrolling moves the camera through the room to the reception, presents the rituals and the single, monthly and yearly plans, and ends with a booking request that lands ready in the studio's WhatsApp."
+    }
+  },
+  "amarofy": {
+    "embed": true,
+    "whatIs": {
+      "pt": "Site da Amaro.fy, ateliê de crochê de Belo Horizonte que faz cada peça do zero, no tamanho e na cor da cliente. A página conta o feito sob medida, mostra o processo em quatro passos e as peças prontas com orientações de tamanho e cuidado, e fecha com um pedido que monta sozinho a mensagem de WhatsApp.",
+      "en": "Website for Amaro.fy, a crochet studio in Belo Horizonte that makes every piece from scratch, in the client's size and color. The page tells the made-to-order story, shows the four-step process and the finished pieces with size and care guidance, and closes with an order form that writes the WhatsApp message by itself."
+    }
+  },
+  "automotiva-express": {
+    "embed": true,
+    "whatIs": {
+      "pt": "Site da Automotiva Express, oficina Bosch Car Service no Buritis, em Belo Horizonte, construído em cima de uma promessa: nada é mexido no carro antes de o cliente aprovar o preço. A página mostra como a oficina trabalha em quatro passos, o padrão Bosch e a garantia de cada serviço, e leva direto ao orçamento online.",
+      "en": "Website for Automotiva Express, a Bosch Car Service shop in Buritis, Belo Horizonte, built around one promise: nothing is touched on the car before the customer approves the price. The page shows how the shop works in four steps, the Bosch standard and the warranty on every job, and leads straight to the online quote."
+    }
+  },
+  "modulo-engenharia": {
+    "embed": true,
+    "whatIs": {
+      "pt": "Site institucional da Módulo Engenharia, empresa que automatiza e mantém as máquinas críticas da indústria pesada: mineração, siderurgia, offshore e energia. A página abre numa cena offshore em movimento, apresenta os seis serviços e os quatro setores em que a empresa atua, e termina num contato que já abre uma conversa no WhatsApp com um engenheiro.",
+      "en": "Corporate website for Módulo Engenharia, a company that automates and maintains the critical machinery of heavy industry: mining, steel, offshore and energy. The page opens on a moving offshore scene, presents the six services and the four sectors the company works in, and ends with a contact that opens a WhatsApp chat with an engineer."
+    }
+  },
   "moedanobre": {
     "tour": false,
     "gallery": false,
-    "illustrations": { "whatIs": "ill-circulo.webp", "problem": "ill-problema.webp" },
-    "appsTitle": { "pt": "Dois aplicativos, um em cada ponta", "en": "Two apps, one at each end" },
+    "appsTitle": {
+      "pt": "Dois aplicativos, um em cada ponta",
+      "en": "Two apps, one at each end"
+    },
     "appsLead": {
       "pt": "Quem recebe o benefício e quem vende usam apps diferentes, cada um feito pra sua tarefa. Os dois estão publicados nas lojas.",
       "en": "The people who receive the benefit and the shops that sell use different apps, each built for its own job. Both are live in the stores."
@@ -20,42 +52,221 @@
         "name": "Moeda Nobre Benefícios",
         "icon": "app-beneficios-icon.webp",
         "color": "#00B87A",
-        "who": { "pt": "Para quem recebe o benefício", "en": "For people who receive the benefit" },
+        "who": {
+          "pt": "Para quem recebe o benefício",
+          "en": "For people who receive the benefit"
+        },
         "desc": {
           "pt": "Os benefícios da empresa ou da prefeitura no celular. A pessoa vê quanto tem pra gastar e paga nos comércios credenciados apontando pro QR Code e confirmando com um PIN, sem cartão.",
           "en": "The company or city benefits on the phone. People see how much they can spend and pay at accredited shops by scanning a QR Code and confirming with a PIN, no card needed."
         },
         "features": {
-          "pt": ["Saldo de cada benefício a qualquer hora", "Pagar em três toques: QR Code, benefício e PIN", "Extrato de pra onde foi cada real", "Mapa dos comércios onde dá pra usar"],
-          "en": ["Balance of each benefit at any time", "Pay in three taps: QR Code, benefit and PIN", "Statement of where every real went", "Map of the shops that accept it"]
+          "pt": [
+            "Saldo de cada benefício a qualquer hora",
+            "Pagar em três toques: QR Code, benefício e PIN",
+            "Extrato de pra onde foi cada real",
+            "Mapa dos comércios onde dá pra usar"
+          ],
+          "en": [
+            "Balance of each benefit at any time",
+            "Pay in three taps: QR Code, benefit and PIN",
+            "Statement of where every real went",
+            "Map of the shops that accept it"
+          ]
         },
         "ios": "https://apps.apple.com/br/app/moeda-nobre/id6783990350",
         "android": "",
-        "screens": ["app-beneficios-1.webp", "app-beneficios-2.webp", "app-beneficios-3.webp", "app-beneficios-4.webp", "app-beneficios-5.webp", "app-beneficios-6.webp"]
+        "screens": [
+          "app-beneficios-1.webp",
+          "app-beneficios-2.webp",
+          "app-beneficios-3.webp",
+          "app-beneficios-4.webp",
+          "app-beneficios-5.webp",
+          "app-beneficios-6.webp"
+        ]
       },
       {
         "id": "vendas",
         "name": "Moeda Nobre Vendas",
         "icon": "app-vendas-icon.webp",
         "color": "#0060E8",
-        "who": { "pt": "Para o comércio credenciado", "en": "For accredited shops" },
+        "who": {
+          "pt": "Para o comércio credenciado",
+          "en": "For accredited shops"
+        },
         "desc": {
           "pt": "O app do lojista: digita o valor, mostra o QR Code no celular e a venda entra na hora, sem maquininha e sem papel. Cada vendedor tem o seu acesso e toda venda fica registrada.",
           "en": "The merchant app: type the amount, show the QR Code on the phone and the sale lands instantly, with no card machine and no paper. Each seller has their own access and every sale is logged."
         },
         "features": {
-          "pt": ["Cobrar em três toques: valor, QR Code e pronto", "Confirmação na hora, sem depender do print do cliente", "Histórico de vendas com comprovante", "Funciona em qualquer celular, sem maquininha"],
-          "en": ["Charge in three taps: amount, QR Code, done", "Instant confirmation, no customer screenshot needed", "Sales history with receipts", "Works on any phone, no card machine"]
+          "pt": [
+            "Cobrar em três toques: valor, QR Code e pronto",
+            "Confirmação na hora, sem depender do print do cliente",
+            "Histórico de vendas com comprovante",
+            "Funciona em qualquer celular, sem maquininha"
+          ],
+          "en": [
+            "Charge in three taps: amount, QR Code, done",
+            "Instant confirmation, no customer screenshot needed",
+            "Sales history with receipts",
+            "Works on any phone, no card machine"
+          ]
         },
         "ios": "https://apps.apple.com/br/app/moeda-nobre-vendas/id6803173064",
         "android": "https://play.google.com/store/apps/details?id=br.com.tribex.moedanobre.comercio",
-        "screens": ["app-vendas-1.webp", "app-vendas-2.webp", "app-vendas-3.webp", "app-vendas-4.webp", "app-vendas-5.webp", "app-vendas-6.webp"]
+        "screens": [
+          "app-vendas-1.webp",
+          "app-vendas-2.webp",
+          "app-vendas-3.webp",
+          "app-vendas-4.webp",
+          "app-vendas-5.webp",
+          "app-vendas-6.webp"
+        ]
       }
     ],
     "marketing": [
-      { "src": "mkt-beneficios-header.webp", "w": 1600, "h": 686, "alt": { "pt": "Peça de marketing do app Moeda Nobre na App Store", "en": "Moeda Nobre app marketing artwork for the App Store" } },
-      { "src": "mkt-beneficios-feature.webp", "w": 1024, "h": 500, "alt": { "pt": "Arte de destaque do Moeda Nobre Benefícios no Google Play", "en": "Moeda Nobre Benefícios feature graphic" } },
-      { "src": "mkt-vendas-feature.webp", "w": 1024, "h": 500, "alt": { "pt": "Arte de destaque do Moeda Nobre Vendas no Google Play", "en": "Moeda Nobre Vendas feature graphic" } }
-    ]
+      {
+        "src": "mkt-beneficios-header.webp",
+        "w": 1600,
+        "h": 686,
+        "alt": {
+          "pt": "Peça de marketing do app Moeda Nobre na App Store",
+          "en": "Moeda Nobre app marketing artwork for the App Store"
+        }
+      },
+      {
+        "src": "mkt-beneficios-feature.webp",
+        "w": 1024,
+        "h": 500,
+        "alt": {
+          "pt": "Arte de destaque do Moeda Nobre Benefícios no Google Play",
+          "en": "Moeda Nobre Benefícios feature graphic"
+        }
+      },
+      {
+        "src": "mkt-vendas-feature.webp",
+        "w": 1024,
+        "h": 500,
+        "alt": {
+          "pt": "Arte de destaque do Moeda Nobre Vendas no Google Play",
+          "en": "Moeda Nobre Vendas feature graphic"
+        }
+      }
+    ],
+    "whatIs": {
+      "pt": "O Moeda Nobre é uma moeda digital de benefícios. A empresa ou a prefeitura carrega o saldo das pessoas, e elas gastam nos comércios do bairro pagando pelo celular, com QR Code e PIN. O comércio recebe na hora e resgata em PIX quando quiser.\n\nNa prática são três produtos conversando entre si: a plataforma web, onde empresas, comércios e a operação acompanham e aprovam tudo, e dois aplicativos, um pra quem recebe o benefício e outro pra quem vende.",
+      "en": "Moeda Nobre is a digital benefits currency. A company or a city loads people's balances, and they spend them at neighborhood shops by paying with their phone, using a QR Code and a PIN. The shop gets paid instantly and cashes out by PIX whenever it wants.\n\nIn practice it is three products talking to each other: the web platform, where companies, shops and the operations team track and approve everything, and two apps, one for people who receive the benefit and one for the shops that sell."
+    }
+  },
+  "athena7": {
+    "whatIs": {
+      "pt": "O Athena7 é um canal de denúncias para empresas. Quem sofre assédio ou discriminação, ou presencia uma irregularidade, faz o relato sem se identificar: sem nome, sem e-mail e sem IP. A pessoa recebe um código e acompanha o caso por um chat com a empresa, sem nunca revelar quem é.\n\nDo outro lado, a empresa investiga cada caso num painel próprio, com prazos, relatórios e uma IA que ajuda a enquadrar o relato na lei. É o canal que a Lei 14.457/2022 e a NR-1 exigem, num produto em que as pessoas confiam pra falar.",
+      "en": "Athena7 is a whistleblowing channel for companies. People who suffer harassment or discrimination, or witness misconduct, report it without identifying themselves: no name, no e-mail, no IP. They get a code and follow the case through a chat with the company, never revealing who they are.\n\nOn the other side, the company investigates each case in its own panel, with deadlines, reports and an AI that helps frame the report under the law. It is the channel Brazilian Law 14.457/2022 and NR-1 require, in a product people actually trust enough to speak up."
+    },
+    "pillars": {
+      "title": {
+        "pt": "Um caso, três pontas",
+        "en": "One case, three sides"
+      },
+      "items": [
+        {
+          "icon": "shield",
+          "name": {
+            "pt": "Quem denuncia",
+            "en": "The reporter"
+          },
+          "desc": {
+            "pt": "Relata em minutos, sem se identificar, recebe um código e conversa com a empresa pelo chat, nos dois sentidos.",
+            "en": "Reports in minutes without identifying themselves, gets a code and talks to the company through a two-way chat."
+          }
+        },
+        {
+          "icon": "layers",
+          "name": {
+            "pt": "Quem investiga",
+            "en": "The investigators"
+          },
+          "desc": {
+            "pt": "Cada caso corre num quadro de etapas, com prazos, alertas, permissões por papel e relatórios em PDF agendados.",
+            "en": "Each case runs on a stage board, with deadlines, alerts, role permissions and scheduled PDF reports."
+          }
+        },
+        {
+          "icon": "sparkles",
+          "name": {
+            "pt": "A IA de apoio",
+            "en": "The AI assistant"
+          },
+          "desc": {
+            "pt": "Sugere o enquadramento legal de cada relato e orienta quem usa, além de treinamentos com certificado.",
+            "en": "Suggests the legal framing of each report and guides users, plus trainings with certificates."
+          }
+        }
+      ]
+    }
+  },
+  "iba": {
+    "whatIs": {
+      "pt": "A IBA é a plataforma da Innovation Business Alliance, uma rede só por convite que liga líderes de fintech, bancos, investidores e reguladores do Brasil, da Irlanda e do Reino Unido. Em vez de contatos perdidos em grupos de WhatsApp, a rede inteira vive num lugar só: membros aprovados um a um, eventos com check-in, comitês por tema e a memória de tudo o que já foi discutido.\n\nCada membro encontra a pessoa certa do outro lado do Atlântico pelo diretório e por sugestões de conexão, e consulta a base de conhecimento da rede conversando com uma IA. Tudo em cinco idiomas.",
+      "en": "IBA is the platform of the Innovation Business Alliance, an invitation-only network connecting fintech leaders, banks, investors and regulators across Brazil, Ireland and the United Kingdom. Instead of contacts lost in WhatsApp groups, the whole network lives in one place: members approved one by one, events with check-in, topic committees and a memory of everything already discussed.\n\nEvery member finds the right person across the Atlantic through the directory and connection suggestions, and searches the network's knowledge base by chatting with an AI. All of it in five languages."
+    },
+    "pillars": {
+      "title": {
+        "pt": "Quatro frentes, uma rede",
+        "en": "Four fronts, one network"
+      },
+      "items": [
+        {
+          "icon": "globe",
+          "name": {
+            "pt": "Site público",
+            "en": "Public website"
+          },
+          "desc": {
+            "pt": "Apresenta a aliança, os eventos e o manifesto, e recebe as candidaturas de quem quer entrar.",
+            "en": "Presents the alliance, its events and manifesto, and receives applications from people who want in."
+          }
+        },
+        {
+          "icon": "users",
+          "name": {
+            "pt": "Portal do membro",
+            "en": "Member portal"
+          },
+          "desc": {
+            "pt": "Diretório de membros, eventos com check-in por QR, comitês e a biblioteca de documentos da rede.",
+            "en": "Member directory, events with QR check-in, committees and the network's document library."
+          }
+        },
+        {
+          "icon": "shield",
+          "name": {
+            "pt": "Painel da aliança",
+            "en": "Alliance panel"
+          },
+          "desc": {
+            "pt": "Aprovação de cada membro, gestão de eventos, comitês e conteúdo, com permissões por papel.",
+            "en": "Approval of every member and management of events, committees and content, with role permissions."
+          }
+        },
+        {
+          "icon": "sparkles",
+          "name": {
+            "pt": "IA da rede",
+            "en": "Network AI"
+          },
+          "desc": {
+            "pt": "Responde com base nos documentos da rede e sugere conexões entre membros dos três países.",
+            "en": "Answers from the network's documents and suggests connections between members across the three countries."
+          }
+        }
+      ]
+    }
+  },
+  "portfolio": {
+    "whatIs": {
+      "pt": "Este é o site que você está vendo: o meu portfólio, onde reúno quem eu sou, o que faço, os projetos que construí e um blog com bastidores e eventos. Foi todo feito à mão, com um sistema visual próprio, animações leves e troca instantânea entre português e inglês.\n\nEle também é o meu laboratório: cada página é pensada pra abrir rápido em qualquer aparelho e pra ser encontrada por quem pesquisa o meu nome.",
+      "en": "This is the site you are looking at: my portfolio, where I bring together who I am, what I do, the projects I have built and a blog with behind-the-scenes posts and events. It is entirely handmade, with its own visual system, lightweight animations and instant switching between Portuguese and English.\n\nIt is also my lab: every page is built to open fast on any device and to be found by anyone searching for my name."
+    }
   }
 }
