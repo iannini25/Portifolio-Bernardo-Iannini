@@ -141,18 +141,6 @@
   ],
   "redirects": [
     {
-      "source": "/project.html",
-      "has": [
-        {
-          "type": "query",
-          "key": "slug",
-          "value": "(?<slug>[a-z0-9-]+)"
-        }
-      ],
-      "destination": "/projetos/:slug.html",
-      "permanent": true
-    },
-    {
       "source": "/img/athena7-cover.webp",
       "destination": "/img/covers/athena7.webp",
       "permanent": true
