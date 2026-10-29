@@ -401,7 +401,7 @@ function fillNav(shellHeader, lang, I18N) {
   h = h.replace(/\sdata-scroll(?![-\w])/g, '');
   h = h.replace(/href="#/g, `href="${t.home}#`);
   h = h.replace(/href="\/blog\.html"/g, `href="${t.blog}"`);
-  h = h.replace('href="Curriculo_Bernardo_Iannini.pdf"', 'href="/Curriculo_Bernardo_Iannini.pdf"');
+  h = h.replace('href="Curriculo_Bernardo_Iannini.pdf"', lang === 'en' ? 'href="/Resume_Bernardo_Iannini.pdf"' : 'href="/Curriculo_Bernardo_Iannini.pdf"');
   return h;
 }
 

@@ -1619,6 +1619,10 @@ function renderNav(lang) {
   const code = document.getElementById('langCode');
   if (code) code.textContent = lang.toUpperCase();
   document.documentElement.lang = I18N[lang].htmlLang || lang;
+  /* curriculo no idioma ativo: PT -> Curriculo_..., EN -> Resume_... */
+  document.querySelectorAll('a[href$="Curriculo_Bernardo_Iannini.pdf"], a[href$="Resume_Bernardo_Iannini.pdf"]').forEach(a => {
+    a.setAttribute('href', '/' + (lang === 'pt' ? 'Curriculo_Bernardo_Iannini.pdf' : 'Resume_Bernardo_Iannini.pdf'));
+  });
 }
 
 /* =========================================================
