@@ -199,18 +199,12 @@ function pjUpdatePanel(project, data) {
     const catEl  = panel.querySelector('[data-pj-cat]');
     const title  = panel.querySelector('[data-pj-title-detail]');
     const desc   = panel.querySelector('[data-pj-desc]');
-    const tech   = panel.querySelector('[data-pj-tech]');
     const caseEl = panel.querySelector('[data-pj-case]');
     const linkEl = panel.querySelector('[data-pj-link]');
 
     if (catEl) catEl.textContent = cats[project.category] || project.category;
     if (title) title.textContent = project.title;
     if (desc)  desc.textContent  = project.desc || '';
-    if (tech) {
-      tech.classList.remove('is-fx');
-      tech.innerHTML = (project.stack || [])
-        .map((t, i) => `<span class="ps-pill" style="--i:${i}">${t}</span>`).join('');
-    }
     if (caseEl) {
       caseEl.href = pjCaseHref(project);
       const lbl = caseEl.querySelector('[data-pj-case-label]');
@@ -226,16 +220,11 @@ function pjUpdatePanel(project, data) {
   /* crossfade discreto com GSAP quando disponível; senão troca direta */
   if (window.gsap && !pjReducedMotion()) {
     const parts = ['.pj-panel__meta', '[data-pj-title-detail]', '[data-pj-desc]',
-      '[data-pj-tech]', '.pj-panel__cta'].map(s => panel.querySelector(s)).filter(Boolean);
+      '.pj-panel__cta'].map(s => panel.querySelector(s)).filter(Boolean);
     gsap.to(parts, {
       autoAlpha: 0, y: -8, duration: .18, ease: 'power2.in', stagger: .02,
       onComplete: () => {
         write();
-        /* o crossfade do container é a entrada — desliga a keyframe
-           própria das pills (senão cada rotação re-toca a cascata de
-           ~680ms por cima do fade e o painel fica nervoso) */
-        const tech = panel.querySelector('[data-pj-tech]');
-        if (tech) tech.classList.add('is-fx');
         gsap.fromTo(parts, { autoAlpha: 0, y: 14 },
           { autoAlpha: 1, y: 0, duration: .45, ease: 'power3.out', stagger: .05, clearProps: 'visibility' });
       },

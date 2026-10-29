@@ -261,24 +261,17 @@ function renderCaseMain(o) {
         <p class="cs-by">${u.by} <a href="${t.about}" rel="author">Bernardo Iannini</a></p>
       </div>
       <figure class="cs-hero__media">
-        <div class="cs-win">
+        ${p.link ? `<a class="cs-win cs-win--link" href="${esc(p.link)}" target="_blank" rel="noopener noreferrer" aria-label="${u.visit}: ${esc(host)}">` : '<div class="cs-win">'}
           <div class="cs-win__bar" aria-hidden="true"><i></i><i></i><i></i><span>${esc(host)}</span></div>
           <picture>
             <source type="image/avif" srcset="${coverSet('avif')}" sizes="(max-width: 900px) 92vw, 46vw">
             <img class="cs-win__img" src="${coverSrc}" srcset="${coverSet('webp')}" sizes="(max-width: 900px) 92vw, 46vw"
                  alt="${esc(p.title)}" width="1600" height="900" fetchpriority="high" decoding="async">
           </picture>
-        </div>
+          ${p.link ? `<span class="cs-win__go" aria-hidden="true">${u.visit} ${ICON.arrow}</span>` : ''}
+        ${p.link ? '</a>' : '</div>'}
       </figure>
     </section>`);
-
-  /* ---- em números ---- */
-  if (metrics.length >= 2) {
-    sec.push(`
-    <section class="cs-facts" aria-label="${u.facts}" data-reveal>
-      ${metrics.map(m => `<div class="cs-fact"><span class="cs-fact__value">${m.value}</span><span class="cs-fact__label">${m.label}</span></div>`).join('')}
-    </section>`);
-  }
 
   /* ---- o que é + o problema (texto curto, coluna de leitura) ---- */
   const textBlocks = [];

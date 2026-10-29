@@ -2301,6 +2301,26 @@ body.pc-nav-hidden header {
   stroke-opacity: .20;
   stroke-width: 1.6;
 }
+/* lente acesa que segue o cursor (js/topo-glow.js): so transforms,
+   mascara radial ESTATICA na lente -> zero repaint ao mover */
+.pj-topo__lens {
+  position: absolute;
+  top: 0; left: 0;
+  width: 260px; height: 260px;
+  border-radius: 50%;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .45s ease;
+  will-change: transform;
+  -webkit-mask: radial-gradient(circle closest-side, #000 0, rgba(0, 0, 0, .35) 62%, transparent 100%);
+          mask: radial-gradient(circle closest-side, #000 0, rgba(0, 0, 0, .35) 62%, transparent 100%);
+}
+.pj-topo__lens.is-on { opacity: 1; }
+.pj-topo__lensin { position: absolute; top: 0; left: 0; will-change: transform; }
+.pj-topo__glowsvg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.pj-topo__glow { fill: none; stroke: #b4f06e; stroke-opacity: .9; stroke-width: 1.7; }
+.pj-topo__halo { fill: none; stroke: #a3e635; stroke-opacity: .22; stroke-width: 7; stroke-linecap: round; }
 /* HERO — o MESMO fundo topográfico dos projetos, reusando as curvas via
    <use href="#topoLines">. Assenta ATRÁS de todo o conteúdo da hero: o
    texto (.stack) não é posicionado, então z-index:0 o cobriria — -1 põe o
@@ -5531,6 +5551,7 @@ body:has(.cs) header::before {
   min-height: min(68vh, 640px);
   margin-top: clamp(16px, 2.5vw, 32px);
 }
+.cs-hero__text { container-type: inline-size; min-width: 0; }
 .cs-reg {
   display: flex;
   flex-wrap: wrap;
@@ -5551,7 +5572,10 @@ body:has(.cs) header::before {
 }
 .cs-title {
   margin: 0 0 18px;
-  font-size: clamp(2.8rem, 6.6vw, 5.6rem);
+  /* escala pela LARGURA DA COLUNA (cqi), nao da tela: nome longo como
+     "Automotiva" nunca passa da borda */
+  font-size: clamp(2.4rem, 14cqi, 5.6rem);
+  overflow-wrap: break-word;
   font-weight: 900;
   line-height: 1;
   letter-spacing: -.03em;
@@ -5649,6 +5673,26 @@ body:has(.cs) header::before {
 }
 .cs-win__img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
 .cs-hero__media { margin: 0; }
+/* a janela do topo leva ao site do projeto */
+.cs-win--link { display: block; color: inherit; text-decoration: none; transition: transform .35s var(--ps-ease), border-color .3s ease; }
+.cs-win--link:hover { transform: translateY(-4px); border-color: var(--g-22); }
+.cs-win--link:focus-visible { outline: 2px solid var(--lime); outline-offset: 4px; }
+.cs-win__go {
+  position: absolute;
+  right: 14px; bottom: 14px;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: .82rem; font-weight: 800;
+  color: #06120a;
+  background: var(--gradient-lime);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, .7);
+  opacity: 0; transform: translateY(6px);
+  transition: opacity .3s ease, transform .35s var(--ps-ease);
+}
+.cs-win__go svg { width: 14px; height: 14px; }
+.cs-win--link:hover .cs-win__go, .cs-win--link:focus-visible .cs-win__go { opacity: 1; transform: none; }
+@media (hover: none) { .cs-win__go { opacity: 1; transform: none; } }
 
 /* ---------- em números ---------- */
 .cs-facts {
