@@ -3,7 +3,7 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://bernardoiannini.com/</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T17:00:44-03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -18,7 +18,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/blog.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T15:46:24-03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -57,7 +57,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/en/about.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T15:46:24-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -69,7 +69,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/en/projects/amarofy.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T17:00:44-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -83,12 +83,6 @@
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/covers/amarofy-1200.webp?v=399ef1e5</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/amarofy/scroll.webp?v=mvtsaplp</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/amarofy/mscroll.webp?v=mvtshjrz</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/projects/amarofy/desk-1-800.webp?v=mvtsafly</image:loc>
@@ -171,7 +165,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/en/projects/athena7.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T17:00:44-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -240,7 +234,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/en/projects/automotiva-express.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T17:00:44-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -254,12 +248,6 @@
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/covers/automotiva-express-1200.webp?v=a50a7163</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/automotiva-express/scroll.webp?v=mvtsbzvu</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/automotiva-express/mscroll.webp?v=mvtsijm2</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/projects/automotiva-express/desk-1-800.webp?v=mvtsbqj0</image:loc>
@@ -342,7 +330,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/en/projects/brasa.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T17:00:44-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -356,12 +344,6 @@
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/covers/brasa-1200.webp?v=f3b139e7</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/brasa/scroll.webp?v=mvts8gip</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/brasa/mscroll.webp?v=mvtsg9ok</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/projects/brasa/desk-1-800.webp?v=mvts86g9</image:loc>
@@ -444,7 +426,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/en/projects/iba.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T17:00:44-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -546,7 +528,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/en/projects/modulo-engenharia.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T17:00:44-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -560,12 +542,6 @@
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/covers/modulo-engenharia-1200.webp?v=40529965</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/modulo-engenharia/scroll.webp?v=mvts7ce7</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/modulo-engenharia/mscroll.webp?v=mvtsf7h9</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/projects/modulo-engenharia/desk-1-800.webp?v=mvts725e</image:loc>
@@ -648,7 +624,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/en/projects/moedanobre.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T17:00:44-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -664,40 +640,64 @@
       <image:loc>https://bernardoiannini.com/img/covers/moedanobre-1200.webp?v=447d1696</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/scroll.webp?v=mvts5j08</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/ill-circulo.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mscroll.webp?v=mvtse859</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/ill-problema.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/desk-1-800.webp?v=mvts59og</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-icon.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/desk-1.webp?v=mvts59m4</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-1.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/desk-2-800.webp?v=mvts5avt</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-2.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/desk-2.webp?v=mvts5at7</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-3.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/desk-3-800.webp?v=mvts5c43</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-4.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/desk-3.webp?v=mvts5c0z</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-5.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/extra-apps.webp?v=mvtw95q7</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-6.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mob-1.webp?v=mvts5toy</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-icon.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mob-2.webp?v=mvts5uvp</image:loc>
+      <image:loc>https://bernardoiannini.com/img/badges/google-play-en.png</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mob-3.webp?v=mvts5w4p</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-2.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-3.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-4.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-5.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-6.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mkt-beneficios-header.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mkt-beneficios-feature.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mkt-vendas-feature.webp</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/eufoto1.webp</image:loc>
@@ -753,7 +753,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/en/projects/portfolio.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T17:00:44-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -855,7 +855,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/en/projects/sereno.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T17:00:44-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -869,12 +869,6 @@
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/covers/sereno-1200.webp?v=7c430872</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/sereno/scroll.webp?v=mvts9isu</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/sereno/mscroll.webp?v=mvtsgwy1</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/projects/sereno/desk-1-800.webp?v=mvts996t</image:loc>
@@ -957,7 +951,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/posts/ai-is-rewriting-the-rules-of-cybersecurity.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T15:46:24-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -990,7 +984,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/posts/ai-is-transforming-the-audiovisual-landscape.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T15:46:24-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -1026,7 +1020,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/posts/aws-hackathon.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T15:46:24-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -1056,7 +1050,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/posts/completed-mit-designing-products-services-with-ai.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T15:46:24-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -1077,7 +1071,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/posts/europe-is-trying-to-build-the-future-of-payments-brazil-has-already-lived-part-o.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T15:46:24-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -1110,7 +1104,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/posts/presence-on-money-2020-europe.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T15:46:24-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -1140,7 +1134,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/posts/theres-a-deeper-shift-happening-in-agentic-ai-fintech-and-its-quieter-than-peopl.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T15:46:24-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -1179,7 +1173,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/posts/today-we-launched-the-new-iba-platform.html</loc>
-    <lastmod>2026-10-29T18:29:44.367Z</lastmod>
+    <lastmod>2026-10-29T15:46:24-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -1200,7 +1194,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/projetos/amarofy.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T17:00:44-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -1214,12 +1208,6 @@
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/covers/amarofy-1200.webp?v=399ef1e5</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/amarofy/scroll.webp?v=mvtsaplp</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/amarofy/mscroll.webp?v=mvtshjrz</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/projects/amarofy/desk-1-800.webp?v=mvtsafly</image:loc>
@@ -1302,7 +1290,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/projetos/athena7.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T17:00:44-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -1371,7 +1359,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/projetos/automotiva-express.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T17:00:44-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -1385,12 +1373,6 @@
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/covers/automotiva-express-1200.webp?v=a50a7163</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/automotiva-express/scroll.webp?v=mvtsbzvu</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/automotiva-express/mscroll.webp?v=mvtsijm2</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/projects/automotiva-express/desk-1-800.webp?v=mvtsbqj0</image:loc>
@@ -1473,7 +1455,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/projetos/brasa.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T17:00:44-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -1487,12 +1469,6 @@
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/covers/brasa-1200.webp?v=f3b139e7</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/brasa/scroll.webp?v=mvts8gip</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/brasa/mscroll.webp?v=mvtsg9ok</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/projects/brasa/desk-1-800.webp?v=mvts86g9</image:loc>
@@ -1575,7 +1551,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/projetos/iba.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T17:00:44-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -1677,7 +1653,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/projetos/modulo-engenharia.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T17:00:44-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -1691,12 +1667,6 @@
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/covers/modulo-engenharia-1200.webp?v=40529965</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/modulo-engenharia/scroll.webp?v=mvts7ce7</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/modulo-engenharia/mscroll.webp?v=mvtsf7h9</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/projects/modulo-engenharia/desk-1-800.webp?v=mvts725e</image:loc>
@@ -1779,7 +1749,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/projetos/moedanobre.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T17:00:44-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -1795,40 +1765,64 @@
       <image:loc>https://bernardoiannini.com/img/covers/moedanobre-1200.webp?v=447d1696</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/scroll.webp?v=mvts5j08</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/ill-circulo.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mscroll.webp?v=mvtse859</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/ill-problema.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/desk-1-800.webp?v=mvts59og</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-icon.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/desk-1.webp?v=mvts59m4</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-1.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/desk-2-800.webp?v=mvts5avt</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-2.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/desk-2.webp?v=mvts5at7</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-3.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/desk-3-800.webp?v=mvts5c43</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-4.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/desk-3.webp?v=mvts5c0z</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-5.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/extra-apps.webp?v=mvtw95q7</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-6.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mob-1.webp?v=mvts5toy</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-icon.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mob-2.webp?v=mvts5uvp</image:loc>
+      <image:loc>https://bernardoiannini.com/img/badges/google-play-pt.png</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mob-3.webp?v=mvts5w4p</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-2.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-3.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-4.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-5.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-6.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mkt-beneficios-header.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mkt-beneficios-feature.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mkt-vendas-feature.webp</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/eufoto1.webp</image:loc>
@@ -1884,7 +1878,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/projetos/portfolio.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T17:00:44-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -1986,7 +1980,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/projetos/sereno.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T17:00:44-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -2000,12 +1994,6 @@
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/covers/sereno-1200.webp?v=7c430872</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/sereno/scroll.webp?v=mvts9isu</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/sereno/mscroll.webp?v=mvtsgwy1</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/projects/sereno/desk-1-800.webp?v=mvts996t</image:loc>
@@ -2088,7 +2076,7 @@
   </url>
   <url>
     <loc>https://bernardoiannini.com/sobre.html</loc>
-    <lastmod>2026-10-29T15:13:35-03:00</lastmod>
+    <lastmod>2026-10-29T15:46:24-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>

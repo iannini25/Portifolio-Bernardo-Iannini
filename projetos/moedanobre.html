@@ -381,6 +381,7 @@
             <span class="sr-only">(abre em nova aba)</span>
           </a>
           
+          <a class="cs-pill" href="#apps"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M10.5 18.3h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Ver os aplicativos</a>
         </div>
         <p class="cs-by">Projeto desenvolvido por <a href="/sobre.html" rel="author">Bernardo Iannini</a></p>
       </div>
@@ -397,32 +398,69 @@
       </figure>
     </section>
 <section class="cs-story cs-story--two">
-      <div class="cs-text" data-reveal>
-        <h2 class="cs-h2">O que é</h2>
+      <div class="cs-text cs-text--ill" data-reveal><figure class="cs-text__ill" aria-hidden="true"><img src="/img/projects/moedanobre/ill-circulo.webp" alt="" loading="lazy" decoding="async"></figure>
+        <h2 class="cs-h2"><span class="cs-h2__icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1.1 2V17h5v-1.2c.1-.8.5-1.5 1.1-2A6 6 0 0 0 12 3z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>O que é</h2>
         <p>Moeda Nobre é uma fintech de benefícios corporativos com moeda digital própria. Empresas contratantes depositam valores na plataforma e entregam aos colaboradores como saldos mensais, que são gastos numa rede de comércios credenciados pagando por QR Code com confirmação por PIN. Os comércios vão acumulando o que recebem e resgatam em PIX ou TED quando quiserem.</p><p>O sistema atende quatro perfis distintos, operadores da plataforma, empresas, comércios e colaboradores, e cada um tem seu próprio painel, permissões granulares e fluxos dedicados. Por cima disso, ele traz aprovação multi-etapa dos lançamentos financeiros, segregação de funções entre quem cria e quem aprova, importação em lote de colaboradores, log de auditoria completo, conformidade com a LGPD, dark mode e um app mobile-first para o colaborador.</p>
       </div>
-      <div class="cs-text" data-reveal>
-        <h2 class="cs-h2">O problema</h2>
+      <div class="cs-text cs-text--ill" data-reveal><figure class="cs-text__ill" aria-hidden="true"><img src="/img/projects/moedanobre/ill-problema.webp" alt="" loading="lazy" decoding="async"></figure>
+        <h2 class="cs-h2"><span class="cs-h2__icon cs-h2__icon--warn"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10v4.5M12 17.3v.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>O problema</h2>
         <p>O benefício corporativo tradicional é um vale que só funciona nas grandes redes. O dinheiro que a empresa injeta como benefício vaza direto pra fora da economia em volta do colaborador. O comércio local, onde as pessoas de fato vivem e gastam, fica de fora, porque não tem como aceitar aquele vale nem receber por ele de um jeito simples.</p><p>O Moeda Nobre vira esse jogo. Só que o desafio real nunca foi só "criar uma carteira". Era mover dinheiro de verdade entre quatro atores (a plataforma, a empresa, o comércio e o colaborador) com aprovação, segregação de funções e auditoria, pra que nada saísse do lugar sem deixar rastro.</p>
       </div></section>
 
-    <section class="cs-tour" data-cs-tour aria-labelledby="csTour">
-      <div class="cs-tour__sticky">
-        <div class="cs-tour__head">
-          <h2 class="cs-h2" id="csTour">Navegue pelo site</h2>
-          <p class="cs-tour__hint">Role a página: as telas andam junto com você.</p>
-        </div>
-        <div class="cs-tour__stage">
-          <div class="cs-tour__desk cs-win">
-            <div class="cs-win__bar" aria-hidden="true"><i></i><i></i><i></i><span>moedanobre.com</span></div>
-            <div class="cs-tour__view"><img data-cs-pan src="/img/projects/moedanobre/scroll.webp?v=mvts5j08" alt="Moeda Nobre: tela 1 no computador" width="960" height="3600" loading="lazy" decoding="async"></div>
-          </div>
-          <div class="cs-tour__phone" aria-hidden="true">
-            <div class="cs-tour__notch"></div>
-            <div class="cs-tour__view"><img data-cs-pan src="/img/projects/moedanobre/mscroll.webp?v=mvtse859" alt="Moeda Nobre: tela 1 no celular" width="520" height="7877" loading="lazy" decoding="async"></div>
-          </div>
-        </div>
+    <section class="cs-apps" id="apps" aria-labelledby="csApps">
+      <div class="cs-apps__head" data-reveal>
+        <h2 class="cs-h2" id="csApps"><span class="cs-h2__icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M10.5 18.3h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>Dois aplicativos, um em cada ponta</h2>
+        <p class="cs-apps__lead">Quem recebe o benefício e quem vende usam apps diferentes, cada um feito pra sua tarefa. Os dois estão publicados nas lojas.</p>
       </div>
+      
+      <article class="cs-app" style="--app:#00B87A" data-reveal>
+        <div class="cs-app__info">
+          <div class="cs-app__id">
+            <img class="cs-app__icon" src="/img/projects/moedanobre/app-beneficios-icon.webp" alt="" width="96" height="96" loading="lazy" decoding="async">
+            <div>
+              <h3 class="cs-app__name">Moeda Nobre Benefícios</h3>
+              <p class="cs-app__who">Para quem recebe o benefício</p>
+            </div>
+          </div>
+          <p class="cs-app__desc">Os benefícios da empresa ou da prefeitura no celular. A pessoa vê quanto tem pra gastar e paga nos comércios credenciados apontando pro QR Code e confirmando com um PIN, sem cartão.</p>
+          <ul class="cs-app__feats"><li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="m8 12.3 2.6 2.6L16 9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Saldo de cada benefício a qualquer hora</span></li><li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="m8 12.3 2.6 2.6L16 9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Pagar em três toques: QR Code, benefício e PIN</span></li><li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="m8 12.3 2.6 2.6L16 9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Extrato de pra onde foi cada real</span></li><li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="m8 12.3 2.6 2.6L16 9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Mapa dos comércios onde dá pra usar</span></li></ul>
+          <div class="cs-stores"><a class="cs-store" href="https://apps.apple.com/br/app/moeda-nobre/id6783990350" target="_blank" rel="noopener noreferrer" aria-label="Moeda Nobre Benefícios: Baixar na App Store"><img src="/img/badges/app-store.svg" alt="Baixar na App Store" width="120" height="40" class="cs-store__apple"></a></div>
+        </div>
+        <ul class="cs-app__screens" tabindex="0" aria-label="Moeda Nobre Benefícios: Celular">
+          <li><button type="button" class="cs-app__shot" data-cs-zoom="/img/projects/moedanobre/app-beneficios-1.webp" aria-label="Ampliar: Moeda Nobre Benefícios 1"><img src="/img/projects/moedanobre/app-beneficios-1.webp" alt="Moeda Nobre Benefícios: Tela 1" width="600" height="1300" loading="lazy" decoding="async"></button></li><li><button type="button" class="cs-app__shot" data-cs-zoom="/img/projects/moedanobre/app-beneficios-2.webp" aria-label="Ampliar: Moeda Nobre Benefícios 2"><img src="/img/projects/moedanobre/app-beneficios-2.webp" alt="Moeda Nobre Benefícios: Tela 2" width="600" height="1300" loading="lazy" decoding="async"></button></li><li><button type="button" class="cs-app__shot" data-cs-zoom="/img/projects/moedanobre/app-beneficios-3.webp" aria-label="Ampliar: Moeda Nobre Benefícios 3"><img src="/img/projects/moedanobre/app-beneficios-3.webp" alt="Moeda Nobre Benefícios: Tela 3" width="600" height="1300" loading="lazy" decoding="async"></button></li><li><button type="button" class="cs-app__shot" data-cs-zoom="/img/projects/moedanobre/app-beneficios-4.webp" aria-label="Ampliar: Moeda Nobre Benefícios 4"><img src="/img/projects/moedanobre/app-beneficios-4.webp" alt="Moeda Nobre Benefícios: Tela 4" width="600" height="1300" loading="lazy" decoding="async"></button></li><li><button type="button" class="cs-app__shot" data-cs-zoom="/img/projects/moedanobre/app-beneficios-5.webp" aria-label="Ampliar: Moeda Nobre Benefícios 5"><img src="/img/projects/moedanobre/app-beneficios-5.webp" alt="Moeda Nobre Benefícios: Tela 5" width="600" height="1300" loading="lazy" decoding="async"></button></li><li><button type="button" class="cs-app__shot" data-cs-zoom="/img/projects/moedanobre/app-beneficios-6.webp" aria-label="Ampliar: Moeda Nobre Benefícios 6"><img src="/img/projects/moedanobre/app-beneficios-6.webp" alt="Moeda Nobre Benefícios: Tela 6" width="600" height="1300" loading="lazy" decoding="async"></button></li>
+        </ul>
+      </article>
+      <article class="cs-app" style="--app:#0060E8" data-reveal>
+        <div class="cs-app__info">
+          <div class="cs-app__id">
+            <img class="cs-app__icon" src="/img/projects/moedanobre/app-vendas-icon.webp" alt="" width="96" height="96" loading="lazy" decoding="async">
+            <div>
+              <h3 class="cs-app__name">Moeda Nobre Vendas</h3>
+              <p class="cs-app__who">Para o comércio credenciado</p>
+            </div>
+          </div>
+          <p class="cs-app__desc">O app do lojista: digita o valor, mostra o QR Code no celular e a venda entra na hora, sem maquininha e sem papel. Cada vendedor tem o seu acesso e toda venda fica registrada.</p>
+          <ul class="cs-app__feats"><li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="m8 12.3 2.6 2.6L16 9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Cobrar em três toques: valor, QR Code e pronto</span></li><li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="m8 12.3 2.6 2.6L16 9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Confirmação na hora, sem depender do print do cliente</span></li><li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="m8 12.3 2.6 2.6L16 9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Histórico de vendas com comprovante</span></li><li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="m8 12.3 2.6 2.6L16 9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Funciona em qualquer celular, sem maquininha</span></li></ul>
+          <div class="cs-stores"><a class="cs-store" href="https://apps.apple.com/br/app/moeda-nobre-vendas/id6803173064" target="_blank" rel="noopener noreferrer" aria-label="Moeda Nobre Vendas: Baixar na App Store"><img src="/img/badges/app-store.svg" alt="Baixar na App Store" width="120" height="40" class="cs-store__apple"></a><a class="cs-store" href="https://play.google.com/store/apps/details?id=br.com.tribex.moedanobre.comercio" target="_blank" rel="noopener noreferrer" aria-label="Moeda Nobre Vendas: Disponível no Google Play"><img src="/img/badges/google-play-pt.png" alt="Disponível no Google Play" width="646" height="250" class="cs-store__play"></a></div>
+        </div>
+        <ul class="cs-app__screens" tabindex="0" aria-label="Moeda Nobre Vendas: Celular">
+          <li><button type="button" class="cs-app__shot" data-cs-zoom="/img/projects/moedanobre/app-vendas-1.webp" aria-label="Ampliar: Moeda Nobre Vendas 1"><img src="/img/projects/moedanobre/app-vendas-1.webp" alt="Moeda Nobre Vendas: Tela 1" width="600" height="1300" loading="lazy" decoding="async"></button></li><li><button type="button" class="cs-app__shot" data-cs-zoom="/img/projects/moedanobre/app-vendas-2.webp" aria-label="Ampliar: Moeda Nobre Vendas 2"><img src="/img/projects/moedanobre/app-vendas-2.webp" alt="Moeda Nobre Vendas: Tela 2" width="600" height="1300" loading="lazy" decoding="async"></button></li><li><button type="button" class="cs-app__shot" data-cs-zoom="/img/projects/moedanobre/app-vendas-3.webp" aria-label="Ampliar: Moeda Nobre Vendas 3"><img src="/img/projects/moedanobre/app-vendas-3.webp" alt="Moeda Nobre Vendas: Tela 3" width="600" height="1300" loading="lazy" decoding="async"></button></li><li><button type="button" class="cs-app__shot" data-cs-zoom="/img/projects/moedanobre/app-vendas-4.webp" aria-label="Ampliar: Moeda Nobre Vendas 4"><img src="/img/projects/moedanobre/app-vendas-4.webp" alt="Moeda Nobre Vendas: Tela 4" width="600" height="1300" loading="lazy" decoding="async"></button></li><li><button type="button" class="cs-app__shot" data-cs-zoom="/img/projects/moedanobre/app-vendas-5.webp" aria-label="Ampliar: Moeda Nobre Vendas 5"><img src="/img/projects/moedanobre/app-vendas-5.webp" alt="Moeda Nobre Vendas: Tela 5" width="600" height="1300" loading="lazy" decoding="async"></button></li><li><button type="button" class="cs-app__shot" data-cs-zoom="/img/projects/moedanobre/app-vendas-6.webp" aria-label="Ampliar: Moeda Nobre Vendas 6"><img src="/img/projects/moedanobre/app-vendas-6.webp" alt="Moeda Nobre Vendas: Tela 6" width="600" height="1300" loading="lazy" decoding="async"></button></li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="cs-mkt" aria-labelledby="csMkt" data-cs-gallery>
+      <h2 class="cs-h2" id="csMkt" data-reveal><span class="cs-h2__icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 10v4a1 1 0 0 0 1 1H7l7 4.5v-15L7 9H4.5a1 1 0 0 0-1 1z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M17.5 9a4 4 0 0 1 0 6M7 15l1.2 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>Na vitrine das lojas</h2>
+      <div class="cs-mkt__grid" data-cs-panel="mkt">
+        <figure class="cs-mkt__item cs-mkt__item--wide"><button type="button" class="cs-mkt__btn" data-cs-zoom="/img/projects/moedanobre/mkt-beneficios-header.webp" aria-label="Ampliar: Peça de marketing do app Moeda Nobre na App Store"><img src="/img/projects/moedanobre/mkt-beneficios-header.webp" alt="Peça de marketing do app Moeda Nobre na App Store" width="1600" height="686" loading="lazy" decoding="async"></button></figure>
+        <figure class="cs-mkt__item "><button type="button" class="cs-mkt__btn" data-cs-zoom="/img/projects/moedanobre/mkt-beneficios-feature.webp" aria-label="Ampliar: Arte de destaque do Moeda Nobre Benefícios no Google Play"><img src="/img/projects/moedanobre/mkt-beneficios-feature.webp" alt="Arte de destaque do Moeda Nobre Benefícios no Google Play" width="1024" height="500" loading="lazy" decoding="async"></button></figure><figure class="cs-mkt__item "><button type="button" class="cs-mkt__btn" data-cs-zoom="/img/projects/moedanobre/mkt-vendas-feature.webp" aria-label="Ampliar: Arte de destaque do Moeda Nobre Vendas no Google Play"><img src="/img/projects/moedanobre/mkt-vendas-feature.webp" alt="Arte de destaque do Moeda Nobre Vendas no Google Play" width="1024" height="500" loading="lazy" decoding="async"></button></figure>
+      </div>
+      <dialog class="cs-lightbox" data-cs-lightbox aria-label="Na vitrine das lojas">
+        <button type="button" class="cs-lightbox__close" data-cs-close aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+        <button type="button" class="cs-lightbox__arrow cs-lightbox__arrow--prev" data-cs-lprev aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m15 18-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <img alt="" data-cs-limg>
+        <button type="button" class="cs-lightbox__arrow cs-lightbox__arrow--next" data-cs-lnext aria-label="Próxima"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </dialog>
     </section>
 
     <section class="cs-how" aria-labelledby="csHow">
@@ -473,73 +511,6 @@
           <details class="cs-feat__more"><summary>Ver detalhes</summary><ul><li>O lançamento de saldo passa por 8 estados, do rascunho à distribuição, e pode ser rejeitado em qualquer etapa com motivo.</li><li>A segregação de funções é dura: quem cria não aprova, e quem aprova não paga (403 se tentar).</li><li>A importação em lote valida a planilha inteira antes de gravar um colaborador sequer.</li><li>Tudo é soft delete e cada ação vira registro de auditoria com estado antes/depois, IP e user agent.</li></ul></details>
         </article>
       </div>
-    </section>
-
-    <section class="cs-gallery" aria-labelledby="csGal" data-cs-gallery>
-      <div class="cs-gallery__head" data-reveal>
-        <h2 class="cs-h2" id="csGal">Telas do projeto</h2>
-        <div class="cs-tabs" role="tablist" aria-label="Telas do projeto">
-          <button type="button" role="tab" class="cs-tab" id="csTab-desktop" aria-controls="csPanel-desktop" aria-selected="true" data-cs-tab="desktop">Computador</button><button type="button" role="tab" class="cs-tab" id="csTab-mobile" aria-controls="csPanel-mobile" aria-selected="false" data-cs-tab="mobile">Celular</button>
-        </div>
-      </div>
-      <div class="cs-gal" id="csPanel-desktop" role="tabpanel" aria-labelledby="csTab-desktop" data-cs-panel="desktop">
-        <ul class="cs-gal__track" data-cs-track tabindex="0" aria-label="Telas do projeto: Computador">
-          <li class="cs-gal__item cs-gal__item--desktop">
-            <button type="button" class="cs-gal__btn" data-cs-zoom="/img/projects/moedanobre/desk-1.webp?v=mvts59m4" aria-label="Ampliar: Moeda Nobre: tela 1 no computador">
-              <img src="/img/projects/moedanobre/desk-1-800.webp?v=mvts59og" srcset="/img/projects/moedanobre/desk-1-800.webp?v=mvts59og 800w, /img/projects/moedanobre/desk-1.webp?v=mvts59m4 1280w" sizes="(max-width: 700px) 86vw, 640px" alt="Moeda Nobre: tela 1 no computador" width="1280" height="800" loading="lazy" decoding="async">
-              <span class="cs-gal__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            </button>
-          </li><li class="cs-gal__item cs-gal__item--desktop">
-            <button type="button" class="cs-gal__btn" data-cs-zoom="/img/projects/moedanobre/desk-2.webp?v=mvts5at7" aria-label="Ampliar: Moeda Nobre: tela 2 no computador">
-              <img src="/img/projects/moedanobre/desk-2-800.webp?v=mvts5avt" srcset="/img/projects/moedanobre/desk-2-800.webp?v=mvts5avt 800w, /img/projects/moedanobre/desk-2.webp?v=mvts5at7 1280w" sizes="(max-width: 700px) 86vw, 640px" alt="Moeda Nobre: tela 2 no computador" width="1280" height="800" loading="lazy" decoding="async">
-              <span class="cs-gal__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            </button>
-          </li><li class="cs-gal__item cs-gal__item--desktop">
-            <button type="button" class="cs-gal__btn" data-cs-zoom="/img/projects/moedanobre/desk-3.webp?v=mvts5c0z" aria-label="Ampliar: Moeda Nobre: tela 3 no computador">
-              <img src="/img/projects/moedanobre/desk-3-800.webp?v=mvts5c43" srcset="/img/projects/moedanobre/desk-3-800.webp?v=mvts5c43 800w, /img/projects/moedanobre/desk-3.webp?v=mvts5c0z 1280w" sizes="(max-width: 700px) 86vw, 640px" alt="Moeda Nobre: tela 3 no computador" width="1280" height="800" loading="lazy" decoding="async">
-              <span class="cs-gal__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            </button>
-          </li><li class="cs-gal__item cs-gal__item--desktop">
-            <button type="button" class="cs-gal__btn" data-cs-zoom="/img/projects/moedanobre/extra-apps.webp?v=mvtw95q7" aria-label="Ampliar: Moeda Nobre: tela 4 no computador">
-              <img src="/img/projects/moedanobre/extra-apps.webp?v=mvtw95q7" alt="Moeda Nobre: tela 4 no computador" width="1280" height="800" loading="lazy" decoding="async">
-              <span class="cs-gal__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            </button>
-          </li>
-        </ul>
-        <div class="cs-gal__nav">
-          <button type="button" class="cs-gal__arrow" data-cs-prev aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m15 18-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          <button type="button" class="cs-gal__arrow" data-cs-next aria-label="Próxima"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        </div>
-      </div><div class="cs-gal" id="csPanel-mobile" role="tabpanel" aria-labelledby="csTab-mobile" hidden data-cs-panel="mobile">
-        <ul class="cs-gal__track" data-cs-track tabindex="0" aria-label="Telas do projeto: Celular">
-          <li class="cs-gal__item cs-gal__item--mobile">
-            <button type="button" class="cs-gal__btn" data-cs-zoom="/img/projects/moedanobre/mob-1.webp?v=mvts5toy" aria-label="Ampliar: Moeda Nobre: tela 1 no celular">
-              <img src="/img/projects/moedanobre/mob-1.webp?v=mvts5toy" alt="Moeda Nobre: tela 1 no celular" width="780" height="1688" loading="lazy" decoding="async">
-              <span class="cs-gal__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            </button>
-          </li><li class="cs-gal__item cs-gal__item--mobile">
-            <button type="button" class="cs-gal__btn" data-cs-zoom="/img/projects/moedanobre/mob-2.webp?v=mvts5uvp" aria-label="Ampliar: Moeda Nobre: tela 2 no celular">
-              <img src="/img/projects/moedanobre/mob-2.webp?v=mvts5uvp" alt="Moeda Nobre: tela 2 no celular" width="780" height="1688" loading="lazy" decoding="async">
-              <span class="cs-gal__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            </button>
-          </li><li class="cs-gal__item cs-gal__item--mobile">
-            <button type="button" class="cs-gal__btn" data-cs-zoom="/img/projects/moedanobre/mob-3.webp?v=mvts5w4p" aria-label="Ampliar: Moeda Nobre: tela 3 no celular">
-              <img src="/img/projects/moedanobre/mob-3.webp?v=mvts5w4p" alt="Moeda Nobre: tela 3 no celular" width="780" height="1688" loading="lazy" decoding="async">
-              <span class="cs-gal__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            </button>
-          </li>
-        </ul>
-        <div class="cs-gal__nav">
-          <button type="button" class="cs-gal__arrow" data-cs-prev aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m15 18-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          <button type="button" class="cs-gal__arrow" data-cs-next aria-label="Próxima"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        </div>
-      </div>
-      <dialog class="cs-lightbox" data-cs-lightbox aria-label="Telas do projeto">
-        <button type="button" class="cs-lightbox__close" data-cs-close aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
-        <button type="button" class="cs-lightbox__arrow cs-lightbox__arrow--prev" data-cs-lprev aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m15 18-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <img alt="" data-cs-limg>
-        <button type="button" class="cs-lightbox__arrow cs-lightbox__arrow--next" data-cs-lnext aria-label="Próxima"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      </dialog>
     </section>
 
     <section class="cs-result" data-reveal aria-labelledby="csResult">

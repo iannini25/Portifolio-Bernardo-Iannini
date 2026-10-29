@@ -43,6 +43,8 @@ const fs   = require('fs');
 const path = require('path');
 const vm   = require('vm');
 const { renderCaseMain, projectMedia, splitTitle } = require('./lib/case-render');
+/* configuracao propria de cada pagina (apps, site ao vivo, blocos extras) */
+const CASES = (() => { try { return JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'cases.json'), 'utf8')); } catch { return {}; } })();
 
 const ROOT     = path.resolve(__dirname, '..');
 const SITE_URL = 'https://bernardoiannini.com';
@@ -485,7 +487,7 @@ ${jsonLd(p, lang, url)}
   ${fillNav(SHELL.header, lang, I18N)}
 
   ${renderCaseMain({
-    p, lang, t, others, root: ROOT,
+    p, lang, t, others, root: ROOT, cfg: CASES[p.id] || {},
     PC_ICONS: PC.PC_ICONS,
     hostname: PC.pcHostname,
     asset,

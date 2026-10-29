@@ -73,12 +73,6 @@
       <image:loc>https://bernardoiannini.com/img/covers/amarofy-1200.webp?v=399ef1e5</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/amarofy/scroll.webp?v=mvtsaplp</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/amarofy/mscroll.webp?v=mvtshjrz</image:loc>
-    </image:image>
-    <image:image>
       <image:loc>https://bernardoiannini.com/img/projects/amarofy/desk-1-800.webp?v=mvtsafly</image:loc>
     </image:image>
     <image:image>
@@ -238,12 +232,6 @@
       <image:loc>https://bernardoiannini.com/img/covers/automotiva-express-1200.webp?v=a50a7163</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/automotiva-express/scroll.webp?v=mvtsbzvu</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/automotiva-express/mscroll.webp?v=mvtsijm2</image:loc>
-    </image:image>
-    <image:image>
       <image:loc>https://bernardoiannini.com/img/projects/automotiva-express/desk-1-800.webp?v=mvtsbqj0</image:loc>
     </image:image>
     <image:image>
@@ -335,12 +323,6 @@
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/covers/brasa-1200.webp?v=f3b139e7</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/brasa/scroll.webp?v=mvts8gip</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/brasa/mscroll.webp?v=mvtsg9ok</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/projects/brasa/desk-1-800.webp?v=mvts86g9</image:loc>
@@ -535,12 +517,6 @@
       <image:loc>https://bernardoiannini.com/img/covers/modulo-engenharia-1200.webp?v=40529965</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/modulo-engenharia/scroll.webp?v=mvts7ce7</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/modulo-engenharia/mscroll.webp?v=mvtsf7h9</image:loc>
-    </image:image>
-    <image:image>
       <image:loc>https://bernardoiannini.com/img/projects/modulo-engenharia/desk-1-800.webp?v=mvts725e</image:loc>
     </image:image>
     <image:image>
@@ -634,40 +610,64 @@
       <image:loc>https://bernardoiannini.com/img/covers/moedanobre-1200.webp?v=447d1696</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/scroll.webp?v=mvts5j08</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/ill-circulo.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mscroll.webp?v=mvtse859</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/ill-problema.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/desk-1-800.webp?v=mvts59og</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-icon.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/desk-1.webp?v=mvts59m4</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-1.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/desk-2-800.webp?v=mvts5avt</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-2.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/desk-2.webp?v=mvts5at7</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-3.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/desk-3-800.webp?v=mvts5c43</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-4.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/desk-3.webp?v=mvts5c0z</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-5.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/extra-apps.webp?v=mvtw95q7</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-6.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mob-1.webp?v=mvts5toy</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-icon.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mob-2.webp?v=mvts5uvp</image:loc>
+      <image:loc>https://bernardoiannini.com/img/badges/google-play-en.png</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mob-3.webp?v=mvts5w4p</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-2.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-3.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-4.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-5.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-6.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mkt-beneficios-header.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mkt-beneficios-feature.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mkt-vendas-feature.webp</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/eufoto1.webp</image:loc>
@@ -833,12 +833,6 @@
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/covers/sereno-1200.webp?v=7c430872</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/sereno/scroll.webp?v=mvts9isu</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/sereno/mscroll.webp?v=mvtsgwy1</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/projects/sereno/desk-1-800.webp?v=mvts996t</image:loc>
@@ -1153,12 +1147,6 @@
       <image:loc>https://bernardoiannini.com/img/covers/amarofy-1200.webp?v=399ef1e5</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/amarofy/scroll.webp?v=mvtsaplp</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/amarofy/mscroll.webp?v=mvtshjrz</image:loc>
-    </image:image>
-    <image:image>
       <image:loc>https://bernardoiannini.com/img/projects/amarofy/desk-1-800.webp?v=mvtsafly</image:loc>
     </image:image>
     <image:image>
@@ -1318,12 +1306,6 @@
       <image:loc>https://bernardoiannini.com/img/covers/automotiva-express-1200.webp?v=a50a7163</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/automotiva-express/scroll.webp?v=mvtsbzvu</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/automotiva-express/mscroll.webp?v=mvtsijm2</image:loc>
-    </image:image>
-    <image:image>
       <image:loc>https://bernardoiannini.com/img/projects/automotiva-express/desk-1-800.webp?v=mvtsbqj0</image:loc>
     </image:image>
     <image:image>
@@ -1415,12 +1397,6 @@
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/covers/brasa-1200.webp?v=f3b139e7</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/brasa/scroll.webp?v=mvts8gip</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/brasa/mscroll.webp?v=mvtsg9ok</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/projects/brasa/desk-1-800.webp?v=mvts86g9</image:loc>
@@ -1615,12 +1591,6 @@
       <image:loc>https://bernardoiannini.com/img/covers/modulo-engenharia-1200.webp?v=40529965</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/modulo-engenharia/scroll.webp?v=mvts7ce7</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/modulo-engenharia/mscroll.webp?v=mvtsf7h9</image:loc>
-    </image:image>
-    <image:image>
       <image:loc>https://bernardoiannini.com/img/projects/modulo-engenharia/desk-1-800.webp?v=mvts725e</image:loc>
     </image:image>
     <image:image>
@@ -1714,40 +1684,64 @@
       <image:loc>https://bernardoiannini.com/img/covers/moedanobre-1200.webp?v=447d1696</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/scroll.webp?v=mvts5j08</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/ill-circulo.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mscroll.webp?v=mvtse859</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/ill-problema.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/desk-1-800.webp?v=mvts59og</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-icon.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/desk-1.webp?v=mvts59m4</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-1.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/desk-2-800.webp?v=mvts5avt</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-2.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/desk-2.webp?v=mvts5at7</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-3.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/desk-3-800.webp?v=mvts5c43</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-4.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/desk-3.webp?v=mvts5c0z</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-5.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/extra-apps.webp?v=mvtw95q7</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-beneficios-6.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mob-1.webp?v=mvts5toy</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-icon.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mob-2.webp?v=mvts5uvp</image:loc>
+      <image:loc>https://bernardoiannini.com/img/badges/google-play-pt.png</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mob-3.webp?v=mvts5w4p</image:loc>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-2.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-3.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-4.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-5.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/app-vendas-6.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mkt-beneficios-header.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mkt-beneficios-feature.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://bernardoiannini.com/img/projects/moedanobre/mkt-vendas-feature.webp</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/eufoto1.webp</image:loc>
@@ -1913,12 +1907,6 @@
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/covers/sereno-1200.webp?v=7c430872</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/sereno/scroll.webp?v=mvts9isu</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://bernardoiannini.com/img/projects/sereno/mscroll.webp?v=mvtsgwy1</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://bernardoiannini.com/img/projects/sereno/desk-1-800.webp?v=mvts996t</image:loc>

@@ -139,42 +139,74 @@
       syncArrows(panel);
     });
 
-    /* ampliação: <dialog> nativo (Esc fecha, foco preso pelo browser) */
-    const box = gallery.querySelector('[data-cs-lightbox]');
-    const bigImg = box && box.querySelector('[data-cs-limg]');
+  }
+  /* ---------- 5. ampliação: uma só pra página toda ----------
+     Qualquer [data-cs-zoom] abre no <dialog> nativo (Esc fecha, foco
+     preso pelo browser). As setas passeiam pelas imagens do mesmo grupo
+     (painel da galeria, telas de um app, peças de marketing). */
+  const box = root.querySelector('[data-cs-lightbox]');
+  const bigImg = box && box.querySelector('[data-cs-limg]');
+  if (box && bigImg) {
     let list = [];
     let at = 0;
     const show = (i) => {
       if (!list.length) return;
       at = (i + list.length) % list.length;
-      const btn = list[at];
-      bigImg.src = btn.dataset.csZoom;
-      bigImg.alt = (btn.querySelector('img') || {}).alt || '';
+      bigImg.src = list[at].dataset.csZoom;
+      bigImg.alt = (list[at].querySelector('img') || {}).alt || '';
     };
-    if (box && bigImg && typeof box.showModal === 'function') {
-      gallery.addEventListener('click', (e) => {
-        const btn = e.target.closest('[data-cs-zoom]');
-        if (!btn) return;
-        const panel = btn.closest('[data-cs-panel]');
-        list = [...panel.querySelectorAll('[data-cs-zoom]')];
-        show(list.indexOf(btn));
-        box.showModal();
-      });
-      box.querySelector('[data-cs-close]').addEventListener('click', () => box.close());
-      box.querySelector('[data-cs-lprev]').addEventListener('click', () => show(at - 1));
-      box.querySelector('[data-cs-lnext]').addEventListener('click', () => show(at + 1));
-      box.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight') show(at + 1);
-        if (e.key === 'ArrowLeft') show(at - 1);
-      });
-      /* clique no fundo escuro fecha */
-      box.addEventListener('click', (e) => { if (e.target === box) box.close(); });
-    } else if (box) {
-      /* browser sem <dialog>: abre a imagem direto */
-      gallery.addEventListener('click', (e) => {
-        const btn = e.target.closest('[data-cs-zoom]');
-        if (btn) window.open(btn.dataset.csZoom, '_blank', 'noopener');
-      });
+    root.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-cs-zoom]');
+      if (!btn) return;
+      if (typeof box.showModal !== 'function') { window.open(btn.dataset.csZoom, '_blank', 'noopener'); return; }
+      const group = btn.closest('[data-cs-panel], .cs-app__screens, .cs-mkt__grid') || root;
+      list = [...group.querySelectorAll('[data-cs-zoom]')];
+      show(list.indexOf(btn));
+      if (!box.open) box.showModal();
+    });
+    box.querySelector('[data-cs-close]').addEventListener('click', () => box.close());
+    box.querySelector('[data-cs-lprev]').addEventListener('click', () => show(at - 1));
+    box.querySelector('[data-cs-lnext]').addEventListener('click', () => show(at + 1));
+    box.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') show(at + 1);
+      if (e.key === 'ArrowLeft') show(at - 1);
+    });
+    box.addEventListener('click', (e) => { if (e.target === box) box.close(); });
+  }
+
+  /* ---------- 6. o site ao vivo ----------
+     O próprio site do projeto dentro das janelas, renderizado na largura
+     real (1440 no computador, 390 no celular) e reduzido por transform
+     pra caber. Só carrega quando a seção chega perto da tela. */
+  const live = root.querySelector('[data-cs-live]');
+  if (live) {
+    const vps = [...live.querySelectorAll('[data-cs-vp]')]
+      .filter(vp => vp.offsetParent !== null);          // no celular a janela de PC some
+    const fit = () => vps.forEach(vp => {
+      const frame = vp.querySelector('iframe');
+      const w = Number(vp.dataset.csVp);
+      const k = vp.clientWidth / w;
+      frame.style.width = w + 'px';
+      frame.style.height = Math.ceil(vp.clientHeight / k) + 'px';
+      frame.style.transform = `scale(${k})`;
+    });
+    const load = () => vps.forEach(vp => {
+      const frame = vp.querySelector('iframe');
+      if (frame.src) return;
+      frame.addEventListener('load', () => vp.classList.add('is-ready'), { once: true });
+      frame.src = frame.dataset.src;
+    });
+    fit();
+    window.addEventListener('resize', fit, { passive: true });
+    if ('IntersectionObserver' in window) {
+      const lio = new IntersectionObserver(([en]) => {
+        if (!en.isIntersecting) return;
+        load();
+        lio.disconnect();
+      }, { rootMargin: '500px 0px' });
+      lio.observe(live);
+    } else {
+      load();
     }
   }
 })();

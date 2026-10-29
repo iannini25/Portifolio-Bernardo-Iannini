@@ -31,12 +31,15 @@ const UI = {
   pt: {
     crumbHome: 'Início', crumbList: 'Projetos',
     visit: 'Visitar o site', newTab: 'abre em nova aba',
-    apps: 'Baixe o app',
+    apps: 'Baixe o app', seeApps: 'Ver os aplicativos', marketing: 'Na vitrine das lojas',
     playAlt: 'Disponível no Google Play', storeAlt: 'Baixar na App Store',
     by: 'Projeto desenvolvido por',
     facts: 'Em números',
     whatIs: 'O que é', problem: 'O problema',
     preview: 'Navegue pelo site',
+    live: 'Veja o site ao vivo',
+    liveHint: 'É o site real, na versão mais recente: role e clique dentro das janelas.',
+    liveLoad: 'Carregando o site…',
     previewHint: 'Role a página: as telas andam junto com você.',
     how: 'Como funciona',
     features: 'O que ele faz', more: 'Ver detalhes',
@@ -55,12 +58,15 @@ const UI = {
   en: {
     crumbHome: 'Home', crumbList: 'Projects',
     visit: 'Visit the website', newTab: 'opens in a new tab',
-    apps: 'Get the app',
+    apps: 'Get the app', seeApps: 'See the apps', marketing: 'In the store windows',
     playAlt: 'Get it on Google Play', storeAlt: 'Download on the App Store',
     by: 'Project built by',
     facts: 'In numbers',
     whatIs: 'What it is', problem: 'The problem',
     preview: 'Browse the website',
+    live: 'See the live website',
+    liveHint: 'This is the real site, latest version: scroll and click inside the windows.',
+    liveLoad: 'Loading the site…',
     previewHint: 'Scroll the page: the screens move with you.',
     how: 'How it works',
     features: 'What it does', more: 'See details',
@@ -79,6 +85,12 @@ const UI = {
 };
 
 const ICON = {
+  phone: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M10.5 18.3h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  check: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="m8 12.3 2.6 2.6L16 9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  megaphone: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 10v4a1 1 0 0 0 1 1H7l7 4.5v-15L7 9H4.5a1 1 0 0 0-1 1z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M17.5 9a4 4 0 0 1 0 6M7 15l1.2 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  idea: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1.1 2V17h5v-1.2c.1-.8.5-1.5 1.1-2A6 6 0 0 0 12 3z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  alert: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10v4.5M12 17.3v.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+  play: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="4.5" width="18" height="13" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M10 9.2v5.6l4.6-2.8L10 9.2z" fill="currentColor"/><path d="M8 20.5h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
   arrow: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   back: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   globe: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 12h17M12 3.5c2.4 2.2 3.6 5.1 3.6 8.5S14.4 18.3 12 20.5c-2.4-2.2-3.6-5.1-3.6-8.5S9.6 5.7 12 3.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>',
@@ -180,7 +192,7 @@ function projectMedia(root, id) {
 }
 
 function storeBadges(p, lang, u) {
-  const apps = p.apps || {};
+  const apps = (p.apps && !Array.isArray(p.apps)) ? p.apps : {};
   const out = [];
   if (apps.android) {
     out.push(`<a class="cs-store" href="${esc(apps.android)}" target="_blank" rel="noopener noreferrer">` +
@@ -193,6 +205,17 @@ function storeBadges(p, lang, u) {
   if (!out.length) return '';
   return `<div class="cs-stores" aria-label="${esc(u.apps)}">${out.join('')}</div>`;
 }
+
+function appBadges(app, lang, u) {
+  const out = [];
+  if (app.ios) out.push(`<a class="cs-store" href="${esc(app.ios)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(app.name)}: ${esc(u.storeAlt)}">` +
+    `<img src="/img/badges/app-store.svg" alt="${esc(u.storeAlt)}" width="120" height="40" class="cs-store__apple"></a>`);
+  if (app.android) out.push(`<a class="cs-store" href="${esc(app.android)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(app.name)}: ${esc(u.playAlt)}">` +
+    `<img src="/img/badges/google-play-${lang === 'pt' ? 'pt' : 'en'}.png" alt="${esc(u.playAlt)}" width="646" height="250" class="cs-store__play"></a>`);
+  return out.length ? `<div class="cs-stores">${out.join('')}</div>` : '';
+}
+
+const tx = (v, lang) => (v && typeof v === 'object' && !Array.isArray(v)) ? (v[lang] || v.pt || '') : (v || '');
 
 function shotFigure(item, i, total, title, u) {
   const alt = u.shotAlt(title, item.kind, i + 1);
@@ -210,6 +233,7 @@ function shotFigure(item, i, total, title, u) {
    --------------------------------------------------------------- */
 function renderCaseMain(o) {
   const { p, lang, t, others, root, PC_ICONS, coverSet, asset, hostname, answer } = o;
+  const cfg = o.cfg || {};
   const u = UI[lang];
   const { name, sub } = splitTitle(p.title);
   const host = hostname(p.link);
@@ -227,7 +251,7 @@ function renderCaseMain(o) {
       text: clean(tp.text),
       deep: (tp.deep || []).map(clean).filter(Boolean),
     }))
-    .filter(tp => tp.text);
+    .filter(tp => tp.text && tp.text.length >= 60);   // sobrou frase solta: o card sai
   const impact = clean((p.impact && p.impact.text) || '');
   const coverSrc = asset(p.cover);
   const reg = [p.status, p.year, p.role].filter(Boolean).map(esc);
@@ -257,6 +281,7 @@ function renderCaseMain(o) {
             <span class="sr-only">(${u.newTab})</span>
           </a>` : ''}
           ${storeBadges(p, lang, u)}
+          ${Array.isArray(cfg.apps) && cfg.apps.length ? `<a class="cs-pill" href="#apps">${ICON.phone}${u.seeApps}</a>` : ''}
         </div>
         <p class="cs-by">${u.by} <a href="${t.about}" rel="author">Bernardo Iannini</a></p>
       </div>
@@ -274,22 +299,101 @@ function renderCaseMain(o) {
     </section>`);
 
   /* ---- o que é + o problema (texto curto, coluna de leitura) ---- */
+  const ill = (key) => {
+    const file = cfg.illustrations && cfg.illustrations[key];
+    return file ? `<figure class="cs-text__ill" aria-hidden="true"><img src="/img/projects/${p.id}/${file}" alt="" loading="lazy" decoding="async"></figure>` : '';
+  };
   const textBlocks = [];
   if (whatIs.length) textBlocks.push(`
-      <div class="cs-text" data-reveal>
-        <h2 class="cs-h2">${u.whatIs}</h2>
+      <div class="cs-text${ill('whatIs') ? ' cs-text--ill' : ''}" data-reveal>${ill('whatIs')}
+        <h2 class="cs-h2"><span class="cs-h2__icon">${ICON.idea}</span>${u.whatIs}</h2>
         ${whatIs.map(x => `<p>${x}</p>`).join('')}
       </div>`);
   if (problem.length) textBlocks.push(`
-      <div class="cs-text" data-reveal>
-        <h2 class="cs-h2">${u.problem}</h2>
+      <div class="cs-text${ill('problem') ? ' cs-text--ill' : ''}" data-reveal>${ill('problem')}
+        <h2 class="cs-h2"><span class="cs-h2__icon cs-h2__icon--warn">${ICON.alert}</span>${u.problem}</h2>
         ${problem.map(x => `<p>${x}</p>`).join('')}
       </div>`);
   if (textBlocks.length) sec.push(`<section class="cs-story${textBlocks.length > 1 ? ' cs-story--two' : ''}">${textBlocks.join('')}</section>`);
 
-  /* ---- navegue pelo site: janela + celular presos na tela, as telas
-     reais rolam junto com a página (project-fx.js) ---- */
-  if (media.scroll || media.mscroll) {
+  /* ---- aplicativos (cada um com icone, cor, o que faz, lojas e telas) ---- */
+  if (Array.isArray(cfg.apps) && cfg.apps.length) {
+    sec.push(`
+    <section class="cs-apps" id="apps" aria-labelledby="csApps">
+      <div class="cs-apps__head" data-reveal>
+        <h2 class="cs-h2" id="csApps"><span class="cs-h2__icon">${ICON.phone}</span>${esc(tx(cfg.appsTitle, lang) || u.apps)}</h2>
+        ${cfg.appsLead ? `<p class="cs-apps__lead">${esc(tx(cfg.appsLead, lang))}</p>` : ''}
+      </div>
+      ${cfg.apps.map(app => `
+      <article class="cs-app" style="--app:${esc(app.color || '#22c55e')}" data-reveal>
+        <div class="cs-app__info">
+          <div class="cs-app__id">
+            <img class="cs-app__icon" src="/img/projects/${p.id}/${app.icon}" alt="" width="96" height="96" loading="lazy" decoding="async">
+            <div>
+              <h3 class="cs-app__name">${esc(app.name)}</h3>
+              <p class="cs-app__who">${esc(tx(app.who, lang))}</p>
+            </div>
+          </div>
+          <p class="cs-app__desc">${esc(tx(app.desc, lang))}</p>
+          <ul class="cs-app__feats">${(tx(app.features, lang) || []).map(ft => `<li>${ICON.check}<span>${esc(ft)}</span></li>`).join('')}</ul>
+          ${appBadges(app, lang, u)}
+        </div>
+        <ul class="cs-app__screens" tabindex="0" aria-label="${esc(app.name)}: ${u.mobile}">
+          ${(app.screens || []).map((sc, i) => `<li><button type="button" class="cs-app__shot" data-cs-zoom="/img/projects/${p.id}/${sc}" aria-label="${u.zoom}: ${esc(app.name)} ${i + 1}"><img src="/img/projects/${p.id}/${sc}" alt="${esc(app.name)}: ${u.screen} ${i + 1}" width="600" height="1300" loading="lazy" decoding="async"></button></li>`).join('')}
+        </ul>
+      </article>`).join('')}
+    </section>`);
+  }
+
+  /* ---- marketing (pecas publicadas) ---- */
+  if (Array.isArray(cfg.marketing) && cfg.marketing.length) {
+    const [first, ...rest] = cfg.marketing;
+    const fig = (m, cls) => `<figure class="cs-mkt__item ${cls}"><button type="button" class="cs-mkt__btn" data-cs-zoom="/img/projects/${p.id}/${m.src}" aria-label="${u.zoom}: ${esc(tx(m.alt, lang))}"><img src="/img/projects/${p.id}/${m.src}" alt="${esc(tx(m.alt, lang))}" width="${m.w}" height="${m.h}" loading="lazy" decoding="async"></button></figure>`;
+    sec.push(`
+    <section class="cs-mkt" aria-labelledby="csMkt" data-cs-gallery>
+      <h2 class="cs-h2" id="csMkt" data-reveal><span class="cs-h2__icon">${ICON.megaphone}</span>${u.marketing}</h2>
+      <div class="cs-mkt__grid" data-cs-panel="mkt">
+        ${fig(first, 'cs-mkt__item--wide')}
+        ${rest.map(m => fig(m, '')).join('')}
+      </div>
+      <dialog class="cs-lightbox" data-cs-lightbox aria-label="${u.marketing}">
+        <button type="button" class="cs-lightbox__close" data-cs-close aria-label="${u.close}">${ICON.close}</button>
+        <button type="button" class="cs-lightbox__arrow cs-lightbox__arrow--prev" data-cs-lprev aria-label="${u.prev}">${ICON.chevL}</button>
+        <img alt="" data-cs-limg>
+        <button type="button" class="cs-lightbox__arrow cs-lightbox__arrow--next" data-cs-lnext aria-label="${u.next}">${ICON.chevR}</button>
+      </dialog>
+    </section>`);
+  }
+
+  /* ---- o site AO VIVO: o proprio site carregado nas janelas (so quando
+     ele permite ser embutido). Interativo, sempre a versao mais recente,
+     com rolagem, efeitos e videos de verdade. Carrega ao se aproximar. ---- */
+  if (cfg.embed && p.link) {
+    sec.push(`
+    <section class="cs-live" data-cs-live aria-labelledby="csLive">
+      <div class="cs-tour__head" data-reveal>
+        <h2 class="cs-h2" id="csLive"><span class="cs-h2__icon">${ICON.play}</span>${u.live}</h2>
+        <p class="cs-tour__hint">${u.liveHint}</p>
+      </div>
+      <div class="cs-live__stage">
+        <div class="cs-live__desk cs-win">
+          <div class="cs-win__bar" aria-hidden="true"><i></i><i></i><i></i><span>${esc(host)}</span></div>
+          <div class="cs-live__vp" data-cs-vp="1440">
+            <img class="cs-live__poster" src="${coverSrc}" alt="" width="1600" height="900" loading="lazy" decoding="async">
+            <span class="cs-live__load">${u.liveLoad}</span>
+            <iframe data-src="${esc(p.link)}" title="${esc(name)} · ${u.desktop}" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" tabindex="0"></iframe>
+          </div>
+        </div>
+        <div class="cs-live__phone">
+          <div class="cs-tour__notch" aria-hidden="true"></div>
+          <div class="cs-live__vp" data-cs-vp="390">
+            <span class="cs-live__load">${u.liveLoad}</span>
+            <iframe data-src="${esc(p.link)}" title="${esc(name)} · ${u.mobile}" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" tabindex="0"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>`);
+  } else if (cfg.tour !== false && (media.scroll || media.mscroll)) {
     sec.push(`
     <section class="cs-tour" data-cs-tour aria-labelledby="csTour">
       <div class="cs-tour__sticky">
@@ -343,7 +447,7 @@ function renderCaseMain(o) {
   }
 
   /* ---- galeria ---- */
-  const kinds = [['desktop', media.desktop], ['mobile', media.mobile]].filter(([, l]) => l.length);
+  const kinds = cfg.gallery === false ? [] : [['desktop', media.desktop], ['mobile', media.mobile]].filter(([, l]) => l.length);
   if (kinds.length) {
     sec.push(`
     <section class="cs-gallery" aria-labelledby="csGal" data-cs-gallery>

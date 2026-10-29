@@ -1,0 +1,61 @@
+{
+  "_doc": "Configuracao propria de cada pagina de projeto (lida por scripts/lib/case-render.js). embed: o site permite ser exibido ao vivo dentro da pagina. tour/gallery false: esconde o tour de prints / a galeria de prints. illustrations: imagem ao lado de 'O que e' / 'O problema' (arquivos em img/projects/<id>/). apps: aplicativos com icone, cor, texto, lojas e telas. marketing: banners/pecas de marketing. Tudo opcional.",
+  "brasa": { "embed": true },
+  "sereno": { "embed": true },
+  "amarofy": { "embed": true },
+  "automotiva-express": { "embed": true },
+  "modulo-engenharia": { "embed": true },
+  "moedanobre": {
+    "tour": false,
+    "gallery": false,
+    "illustrations": { "whatIs": "ill-circulo.webp", "problem": "ill-problema.webp" },
+    "appsTitle": { "pt": "Dois aplicativos, um em cada ponta", "en": "Two apps, one at each end" },
+    "appsLead": {
+      "pt": "Quem recebe o benefício e quem vende usam apps diferentes, cada um feito pra sua tarefa. Os dois estão publicados nas lojas.",
+      "en": "The people who receive the benefit and the shops that sell use different apps, each built for its own job. Both are live in the stores."
+    },
+    "apps": [
+      {
+        "id": "beneficios",
+        "name": "Moeda Nobre Benefícios",
+        "icon": "app-beneficios-icon.webp",
+        "color": "#00B87A",
+        "who": { "pt": "Para quem recebe o benefício", "en": "For people who receive the benefit" },
+        "desc": {
+          "pt": "Os benefícios da empresa ou da prefeitura no celular. A pessoa vê quanto tem pra gastar e paga nos comércios credenciados apontando pro QR Code e confirmando com um PIN, sem cartão.",
+          "en": "The company or city benefits on the phone. People see how much they can spend and pay at accredited shops by scanning a QR Code and confirming with a PIN, no card needed."
+        },
+        "features": {
+          "pt": ["Saldo de cada benefício a qualquer hora", "Pagar em três toques: QR Code, benefício e PIN", "Extrato de pra onde foi cada real", "Mapa dos comércios onde dá pra usar"],
+          "en": ["Balance of each benefit at any time", "Pay in three taps: QR Code, benefit and PIN", "Statement of where every real went", "Map of the shops that accept it"]
+        },
+        "ios": "https://apps.apple.com/br/app/moeda-nobre/id6783990350",
+        "android": "",
+        "screens": ["app-beneficios-1.webp", "app-beneficios-2.webp", "app-beneficios-3.webp", "app-beneficios-4.webp", "app-beneficios-5.webp", "app-beneficios-6.webp"]
+      },
+      {
+        "id": "vendas",
+        "name": "Moeda Nobre Vendas",
+        "icon": "app-vendas-icon.webp",
+        "color": "#0060E8",
+        "who": { "pt": "Para o comércio credenciado", "en": "For accredited shops" },
+        "desc": {
+          "pt": "O app do lojista: digita o valor, mostra o QR Code no celular e a venda entra na hora, sem maquininha e sem papel. Cada vendedor tem o seu acesso e toda venda fica registrada.",
+          "en": "The merchant app: type the amount, show the QR Code on the phone and the sale lands instantly, with no card machine and no paper. Each seller has their own access and every sale is logged."
+        },
+        "features": {
+          "pt": ["Cobrar em três toques: valor, QR Code e pronto", "Confirmação na hora, sem depender do print do cliente", "Histórico de vendas com comprovante", "Funciona em qualquer celular, sem maquininha"],
+          "en": ["Charge in three taps: amount, QR Code, done", "Instant confirmation, no customer screenshot needed", "Sales history with receipts", "Works on any phone, no card machine"]
+        },
+        "ios": "https://apps.apple.com/br/app/moeda-nobre-vendas/id6803173064",
+        "android": "https://play.google.com/store/apps/details?id=br.com.tribex.moedanobre.comercio",
+        "screens": ["app-vendas-1.webp", "app-vendas-2.webp", "app-vendas-3.webp", "app-vendas-4.webp", "app-vendas-5.webp", "app-vendas-6.webp"]
+      }
+    ],
+    "marketing": [
+      { "src": "mkt-beneficios-header.webp", "w": 1600, "h": 686, "alt": { "pt": "Peça de marketing do app Moeda Nobre na App Store", "en": "Moeda Nobre app marketing artwork for the App Store" } },
+      { "src": "mkt-beneficios-feature.webp", "w": 1024, "h": 500, "alt": { "pt": "Arte de destaque do Moeda Nobre Benefícios no Google Play", "en": "Moeda Nobre Benefícios feature graphic" } },
+      { "src": "mkt-vendas-feature.webp", "w": 1024, "h": 500, "alt": { "pt": "Arte de destaque do Moeda Nobre Vendas no Google Play", "en": "Moeda Nobre Vendas feature graphic" } }
+    ]
+  }
+}

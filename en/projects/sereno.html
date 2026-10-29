@@ -379,6 +379,7 @@
             <span class="sr-only">(opens in a new tab)</span>
           </a>
           
+          
         </div>
         <p class="cs-by">Project built by <a href="/en/about.html" rel="author">Bernardo Iannini</a></p>
       </div>
@@ -396,24 +397,29 @@
     </section>
 <section class="cs-story">
       <div class="cs-text" data-reveal>
-        <h2 class="cs-h2">What it is</h2>
+        <h2 class="cs-h2"><span class="cs-h2__icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1.1 2V17h5v-1.2c.1-.8.5-1.5 1.1-2A6 6 0 0 0 12 3z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>What it is</h2>
         <p>Sereno is a quiet luxury studio in Savassi, Belo Horizonte, selling massage and rest as a ritual, from single sessions to monthly and annual plans. The site opens on a scroll-video hero: the camera advances through the room and descends to the reception, drawn frame by frame on a canvas tied to the scroll, so two AI generated clips read as one continuous shot.</p>
       </div></section>
 
-    <section class="cs-tour" data-cs-tour aria-labelledby="csTour">
-      <div class="cs-tour__sticky">
-        <div class="cs-tour__head">
-          <h2 class="cs-h2" id="csTour">Browse the website</h2>
-          <p class="cs-tour__hint">Scroll the page: the screens move with you.</p>
-        </div>
-        <div class="cs-tour__stage">
-          <div class="cs-tour__desk cs-win">
-            <div class="cs-win__bar" aria-hidden="true"><i></i><i></i><i></i><span>sereno-site-one.vercel.app</span></div>
-            <div class="cs-tour__view"><img data-cs-pan src="/img/projects/sereno/scroll.webp?v=mvts9isu" alt="Sereno: desktop screen 1" width="960" height="3600" loading="lazy" decoding="async"></div>
+    <section class="cs-live" data-cs-live aria-labelledby="csLive">
+      <div class="cs-tour__head" data-reveal>
+        <h2 class="cs-h2" id="csLive"><span class="cs-h2__icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="4.5" width="18" height="13" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M10 9.2v5.6l4.6-2.8L10 9.2z" fill="currentColor"/><path d="M8 20.5h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>See the live website</h2>
+        <p class="cs-tour__hint">This is the real site, latest version: scroll and click inside the windows.</p>
+      </div>
+      <div class="cs-live__stage">
+        <div class="cs-live__desk cs-win">
+          <div class="cs-win__bar" aria-hidden="true"><i></i><i></i><i></i><span>sereno-site-one.vercel.app</span></div>
+          <div class="cs-live__vp" data-cs-vp="1440">
+            <img class="cs-live__poster" src="/img/covers/sereno.webp?v=7c430872" alt="" width="1600" height="900" loading="lazy" decoding="async">
+            <span class="cs-live__load">Loading the site…</span>
+            <iframe data-src="https://sereno-site-one.vercel.app" title="Sereno · Desktop" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" tabindex="0"></iframe>
           </div>
-          <div class="cs-tour__phone" aria-hidden="true">
-            <div class="cs-tour__notch"></div>
-            <div class="cs-tour__view"><img data-cs-pan src="/img/projects/sereno/mscroll.webp?v=mvtsgwy1" alt="Sereno: mobile screen 1" width="520" height="7877" loading="lazy" decoding="async"></div>
+        </div>
+        <div class="cs-live__phone">
+          <div class="cs-tour__notch" aria-hidden="true"></div>
+          <div class="cs-live__vp" data-cs-vp="390">
+            <span class="cs-live__load">Loading the site…</span>
+            <iframe data-src="https://sereno-site-one.vercel.app" title="Sereno · Mobile" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" tabindex="0"></iframe>
           </div>
         </div>
       </div>

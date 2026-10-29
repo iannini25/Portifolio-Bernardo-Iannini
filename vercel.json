@@ -22,7 +22,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://rnupfyzpwwvspiwnttsl.supabase.co https:; connect-src 'self' https://rnupfyzpwwvspiwnttsl.supabase.co wss://rnupfyzpwwvspiwnttsl.supabase.co"
+          "value": "default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; frame-ancestors 'self'; frame-src 'self' https://*.vercel.app; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://rnupfyzpwwvspiwnttsl.supabase.co https:; connect-src 'self' https://rnupfyzpwwvspiwnttsl.supabase.co wss://rnupfyzpwwvspiwnttsl.supabase.co"
         },
         {
           "key": "X-Content-Type-Options",

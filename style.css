@@ -6115,6 +6115,134 @@ body:has(.cs) header::before {
 .cs-other:hover .cs-other__name { color: var(--lime); }
 .cs-other__sub { font-size: .88rem; line-height: 1.45; color: var(--text-hint); }
 
+/* ---------- ícone nos títulos de seção ---------- */
+.cs-h2 { display: flex; align-items: center; gap: 14px; }
+.cs-h2__icon {
+  display: grid; place-items: center; flex: none;
+  width: 44px; height: 44px;
+  border-radius: 13px;
+  color: var(--lime);
+  background: var(--g-08);
+  border: 1px solid var(--g-15);
+}
+.cs-h2__icon svg { width: 22px; height: 22px; }
+.cs-h2__icon--warn { color: #fbbf24; background: rgba(251, 191, 36, .08); border-color: rgba(251, 191, 36, .2); }
+.cs-text .cs-h2 { align-items: flex-start; flex-direction: column; gap: 14px; }
+
+/* ilustração oficial do projeto ao lado do texto */
+.cs-text--ill { grid-template-columns: minmax(160px, 260px) minmax(0, 1fr) minmax(200px, 340px); }
+.cs-text__ill { grid-column: 3; grid-row: 1 / span 20; margin: 0; align-self: center; }
+.cs-text__ill img { display: block; width: 100%; height: auto; filter: drop-shadow(0 24px 40px rgba(0, 0, 0, .45)); }
+
+/* ---------- aplicativos ---------- */
+.cs-apps { margin-top: var(--cs-gap); }
+.cs-apps__head { max-width: 720px; margin-bottom: 28px; }
+.cs-apps__lead { margin: 0; font-size: 1.05rem; line-height: 1.7; color: var(--text-soft); }
+.cs-app {
+  --app: #22c55e;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: center;
+  margin-top: 22px;
+  padding: clamp(22px, 3.5vw, 40px);
+  border-radius: 26px;
+  border: 1px solid color-mix(in oklab, var(--app) 30%, transparent);
+  background:
+    radial-gradient(70% 90% at 0% 0%, color-mix(in oklab, var(--app) 16%, transparent), transparent 70%),
+    rgba(255, 255, 255, .02);
+  overflow: hidden;
+}
+.cs-app__id { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; }
+.cs-app__icon { width: 72px; height: 72px; border-radius: 18px; box-shadow: 0 12px 30px -10px color-mix(in oklab, var(--app) 60%, transparent); }
+.cs-app__name { margin: 0; font-size: clamp(1.25rem, 2vw, 1.55rem); font-weight: 900; line-height: 1.15; color: var(--text); }
+.cs-app__who { margin: 4px 0 0; font-size: .9rem; font-weight: 700; color: color-mix(in oklab, var(--app) 70%, white); }
+.cs-app__desc { margin: 0 0 18px; font-size: 1rem; line-height: 1.7; color: var(--text-soft); }
+.cs-app__feats { display: grid; gap: 10px; margin: 0 0 22px; padding: 0; list-style: none; }
+.cs-app__feats li { display: flex; align-items: flex-start; gap: 10px; font-size: .95rem; line-height: 1.5; color: var(--text); }
+.cs-app__feats svg { flex: none; width: 20px; height: 20px; margin-top: 1px; color: color-mix(in oklab, var(--app) 75%, white); }
+.cs-app__screens {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: clamp(150px, 15vw, 200px);
+  gap: 14px;
+  margin: 0;
+  padding: 6px 2px 14px;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--app) 40%, transparent) transparent;
+}
+.cs-app__screens li { scroll-snap-align: start; }
+.cs-app__shot {
+  display: block; width: 100%; padding: 0;
+  border: 0; border-radius: 18px; overflow: hidden;
+  background: #fff;
+  cursor: zoom-in;
+  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, .8);
+  transition: transform .35s var(--ps-ease);
+}
+.cs-app__shot:hover { transform: translateY(-4px); }
+.cs-app__shot:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+.cs-app__shot img { display: block; width: 100%; height: auto; aspect-ratio: 1290 / 2796; object-fit: cover; }
+
+/* ---------- marketing ---------- */
+.cs-mkt { margin-top: var(--cs-gap); }
+.cs-mkt__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.cs-mkt__item { margin: 0; }
+.cs-mkt__item--wide { grid-column: 1 / -1; }
+.cs-mkt__btn { display: block; width: 100%; padding: 0; border: 1px solid var(--w-10); border-radius: 18px; overflow: hidden; background: var(--rail); cursor: zoom-in; }
+.cs-mkt__btn img { display: block; width: 100%; height: auto; transition: transform .6s var(--ps-ease); }
+.cs-mkt__btn:hover img { transform: scale(1.02); }
+
+/* ---------- o site ao vivo ---------- */
+.cs-live { margin-top: var(--cs-gap); }
+.cs-live .cs-tour__head { margin-bottom: 20px; }
+.cs-live__stage { display: flex; align-items: flex-end; justify-content: center; gap: clamp(18px, 3vw, 36px); }
+.cs-live__desk { flex: 1 1 auto; max-width: 900px; display: flex; flex-direction: column; }
+.cs-live__desk .cs-live__vp { aspect-ratio: 16 / 10; }
+.cs-live__phone {
+  position: relative; flex: none;
+  width: clamp(200px, 19vw, 250px);
+  padding: 10px; border-radius: 38px;
+  background: #0b0f0d;
+  border: 1px solid var(--w-10);
+  box-shadow: 0 40px 90px -36px rgba(0, 0, 0, .85);
+}
+.cs-live__phone .cs-live__vp { aspect-ratio: 390 / 800; border-radius: 28px; }
+.cs-live__vp { position: relative; overflow: hidden; background: var(--rail); }
+.cs-live__vp iframe {
+  position: absolute; top: 0; left: 0;
+  border: 0;
+  transform-origin: 0 0;
+  background: #fff;
+  opacity: 0;
+  transition: opacity .5s ease;
+}
+.cs-live__vp.is-ready iframe { opacity: 1; }
+.cs-live__poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cs-live__load {
+  position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%);
+  padding: 6px 12px; border-radius: 999px;
+  font-size: .78rem; font-weight: 700; color: var(--text);
+  background: rgba(6, 8, 7, .78);
+  white-space: nowrap;
+}
+.cs-live__vp.is-ready .cs-live__load { display: none; }
+
+@media (max-width: 900px) {
+  .cs-text--ill { grid-template-columns: 1fr; }
+  .cs-text__ill { grid-column: 1; grid-row: auto; max-width: 320px; order: 3; }
+  .cs-app { grid-template-columns: 1fr; }
+  .cs-app__screens { grid-auto-columns: 46%; }
+  .cs-mkt__grid { grid-template-columns: 1fr; }
+  .cs-live__desk { display: none; }
+  .cs-live__phone { width: min(78vw, 300px); }
+}
+
 /* ---------- reveals (só com JS) ---------- */
 html.cs-js .cs [data-reveal] {
   opacity: 0;
