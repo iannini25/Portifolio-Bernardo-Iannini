@@ -16,6 +16,7 @@
    ogl via CDN ESM (padrao GSAP/Lenis).
    ============================================================ */
 import { Renderer, Program, Mesh, Triangle } from 'https://cdn.jsdelivr.net/npm/ogl@1.0.11/+esm';
+import { createGovernor, isScrolling } from './gl-governor.js';
 
 const MAX_COLORS = 8;
 
@@ -257,17 +258,18 @@ function initFerrofluid(container, opts = {}) {
   const geometry = new Triangle(gl);
   const mesh = new Mesh(gl, { geometry, program });
 
+  let scaleNow = renderScale;
   let resizePending = false;
   const setSize = () => {
     const rect = container.getBoundingClientRect();
     const dpr = renderer.dpr || 1;
     // cap no maior lado do buffer: a experiencia e ALTA (cabecalho + timeline);
     // sem o cap o buffer explodiria. buffer real = w * dpr.
-    const bw = Math.max(1, rect.width * renderScale) * dpr;
-    const bh = Math.max(1, rect.height * renderScale) * dpr;
+    const bw = Math.max(1, rect.width * scaleNow) * dpr;
+    const bh = Math.max(1, rect.height * scaleNow) * dpr;
     const k = Math.min(1, maxBuffer / Math.max(bw, bh));
-    const w = Math.max(1, Math.floor(rect.width * renderScale * k));
-    const h = Math.max(1, Math.floor(rect.height * renderScale * k));
+    const w = Math.max(1, Math.floor(rect.width * scaleNow * k));
+    const h = Math.max(1, Math.floor(rect.height * scaleNow * k));
     renderer.setSize(w, h);
     // renderer.setSize mexe no style do canvas — devolvemos 100% pra o CSS
     // esticar de volta ao container (preenche a section inteira)
@@ -288,8 +290,8 @@ function initFerrofluid(container, opts = {}) {
   const handleMove = e => {
     const rect = container.getBoundingClientRect();
     const sc = renderer.dpr || 1;
-    mouseTarget[0] = (e.clientX - rect.left) * sc * renderScale;
-    mouseTarget[1] = (rect.height - (e.clientY - rect.top)) * sc * renderScale;
+    mouseTarget[0] = (e.clientX - rect.left) * sc * scaleNow;
+    mouseTarget[1] = (rect.height - (e.clientY - rect.top)) * sc * scaleNow;
     if (mouseDampening <= 0) { uniforms.iMouse.value[0] = mouseTarget[0]; uniforms.iMouse.value[1] = mouseTarget[1]; }
   };
   if (mouseInteraction) container.addEventListener('pointermove', handleMove, { passive: true });
@@ -298,7 +300,14 @@ function initFerrofluid(container, opts = {}) {
   let contextLost = false;
   let isVisible = false;
   let tabVisible = document.visibilityState !== 'hidden';
-  const frameInterval = 1000 / targetFps;
+  let frameInterval = 1000 / targetFps;
+  /* qualidade adaptativa: se a pagina perde fluidez neste aparelho, o
+     efeito baixa a resolucao interna (e no limite o fps) sozinho */
+  const governor = createGovernor({
+    scale: scaleNow, fps: targetFps,
+    onScale: v => { scaleNow = v; setSize(); },
+    onFps: v => { frameInterval = 1000 / v; },
+  });
   let lastFrame = 0;
   let lastMouseT = 0;
 
@@ -306,7 +315,12 @@ function initFerrofluid(container, opts = {}) {
 
   const loop = t => {
     if (contextLost || !isVisible || !tabVisible) return;
-    if (t - lastFrame < frameInterval) { raf = requestAnimationFrame(loop); return; }
+    governor(t);
+    /* rolando: o fundo (lento por natureza) segura o quadro atual e o
+       orcamento inteiro do frame fica com a rolagem; volta ao parar */
+    if (isScrolling(t)) { raf = requestAnimationFrame(loop); return; }
+    const budget = frameInterval;
+    if (t - lastFrame < budget) { raf = requestAnimationFrame(loop); return; }
     lastFrame = t;
 
     uniforms.iTime.value = t * 0.001;

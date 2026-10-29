@@ -361,6 +361,9 @@
     const duo = document.querySelector('.marquee-duo');
     let skew = 0;
     gsap.ticker.add((time, deltaTime) => {
+      /* fora da tela e ja reto: nao escreve nada (antes o skew era
+         reescrito todo frame, o site inteiro, a sessao inteira) */
+      if (!strips.some(s => s.active) && Math.abs(skew) < .01) return;
       eased += (flow - eased) * (1 - Math.pow(.9, deltaTime / 16.7));
       boost *= Math.pow(.94, deltaTime / 16.7); // decaimento por tempo
       const vel = eased * (1 + boost); // sentido do scroll × pico de velocidade

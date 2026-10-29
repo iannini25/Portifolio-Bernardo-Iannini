@@ -831,6 +831,13 @@ body.pc-nav-hidden header {
 /* Custom props animáveis pro tilt do terminal — @property garante que
    browser interpole valores de forma suave em transitions/var() changes. */
 @property --term-tilt-x { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+/* vars que o scrollfx anima a cada frame de rolagem. Registradas como
+   NAO herdaveis: sem isto, mudar a var de um card obrigava o browser a
+   recalcular o estilo do card E de todos os filhos, todo frame. */
+@property --rise-x { syntax: '<length>'; initial-value: 0px; inherits: false; }
+@property --rise-y { syntax: '<length>'; initial-value: 0px; inherits: false; }
+@property --rise-s { syntax: '<number>'; initial-value: 1; inherits: false; }
+@property --tl-draw { syntax: '<number>'; initial-value: 1; inherits: false; }
 @property --term-tilt-y { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
 @property --term-hover-y { syntax: '<length>'; initial-value: 0px; inherits: false; }
 
@@ -1849,7 +1856,6 @@ body.pc-nav-hidden header {
     #000 62%,
     rgba(0, 0, 0, .25) 86%,
     transparent 100%);
-  filter: blur(32px);
 }
 .services-section .section-head,
 .services-section .services-grid { position: relative; z-index: 1; }
@@ -1927,7 +1933,6 @@ body.pc-nav-hidden header {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  filter: blur(30px);
   -webkit-mask: linear-gradient(180deg,
     transparent 0%,
     rgba(0, 0, 0, .3) 14%,
@@ -3464,7 +3469,7 @@ body.pc-nav-hidden header {
    9) COMPLEMENTARES (resume, tema, language, modal)
    ============================= */
 /* Resume button — hover “wow” sem reflow */
-.resume-btn { display:inline-flex; align-items:center; gap:8px; font-weight:700; font-size:.9rem; opacity:.95; background: var(--w-05); padding:8px 16px; border-radius:999px; border:1px solid var(--w-10); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); transition: background .2s, opacity .2s; position: relative; overflow: hidden; isolation: isolate; backface-visibility: hidden; will-change: filter, box-shadow;  user-select: none;
+.resume-btn { display:inline-flex; align-items:center; gap:8px; font-weight:700; font-size:.9rem; opacity:.95; background: var(--w-05); padding:8px 16px; border-radius:999px; border:1px solid var(--w-10); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); transition: background .2s, opacity .2s; position: relative; overflow: hidden; isolation: isolate; backface-visibility: hidden; user-select: none;
   -webkit-user-select: none;   /* iOS/Safari */
   -moz-user-select: none;
   -ms-user-select: none;
@@ -3482,7 +3487,7 @@ body.pc-nav-hidden header {
 /* ativa a animação quando tiver esta classe */
 .resume-btn.resume-attn {
   animation: resume-breathe 2s ease-in-out infinite;
-  will-change: transform, filter, box-shadow;
+  will-change: transform;
 }
 
 /* usa os pseudo-elementos que você já tem como “glow” e “sheen” */
@@ -3508,8 +3513,8 @@ body.pc-nav-hidden header {
   50%     { transform: translateZ(0) scale(1.05); }
 }
 @keyframes resume-halo{
-  0%,100% { opacity: .12; filter: blur(14px); }
-  50%     { opacity: .28; filter: blur(22px); }
+  0%,100% { opacity: .12; }
+  50%     { opacity: .28; }
 }
 /* brilho que cruza o botão só no final do ciclo */
 @keyframes resume-sheen{

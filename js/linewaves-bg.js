@@ -14,6 +14,7 @@
    ogl carregado via CDN ESM, mesmo padrao de GSAP/Lenis no index.
    ============================================================ */
 import { Renderer, Program, Mesh, Triangle } from 'https://cdn.jsdelivr.net/npm/ogl@1.0.11/+esm';
+import { createGovernor, isScrolling } from './gl-governor.js';
 
 const hexToVec3 = hex => {
   const h = hex.replace('#', '');
@@ -231,17 +232,18 @@ function initLineWaves(container, opts = {}) {
     interactTarget.addEventListener('mouseleave', handleLeave, { passive: true });
   }
 
+  let scaleNow = renderScale;
   let resizePending = false;
   const setSize = () => {
     const rect = container.getBoundingClientRect();
     // Cap no maior lado do drawing-buffer: a section fica MUITO alta quando o
     // deck CardSwap pina (pin-spacer). Buffer real = w * dpr, contamos o dpr.
     const dpr = renderer.dpr || 1;
-    const bw = Math.max(1, rect.width * renderScale) * dpr;
-    const bh = Math.max(1, rect.height * renderScale) * dpr;
+    const bw = Math.max(1, rect.width * scaleNow) * dpr;
+    const bh = Math.max(1, rect.height * scaleNow) * dpr;
     const k = Math.min(1, maxBuffer / Math.max(bw, bh));
-    const width = Math.max(1, Math.floor(rect.width * renderScale * k));
-    const height = Math.max(1, Math.floor(rect.height * renderScale * k));
+    const width = Math.max(1, Math.floor(rect.width * scaleNow * k));
+    const height = Math.max(1, Math.floor(rect.height * scaleNow * k));
     renderer.setSize(width, height);
 
     // renderer.setSize sobrescreve o style do canvas com o tamanho do buffer —
@@ -267,7 +269,14 @@ function initLineWaves(container, opts = {}) {
   let contextLost = false;
   let isVisible = false;
   let tabVisible = document.visibilityState !== 'hidden';
-  const frameInterval = 1000 / targetFps;
+  let frameInterval = 1000 / targetFps;
+  /* qualidade adaptativa: se a pagina perde fluidez neste aparelho, o
+     efeito baixa a resolucao interna (e no limite o fps) sozinho */
+  const governor = createGovernor({
+    scale: scaleNow, fps: targetFps,
+    onScale: v => { scaleNow = v; setSize(); },
+    onFps: v => { frameInterval = 1000 / v; },
+  });
   let lastFrameTime = 0;
 
   const renderStaticFrame = () => {
@@ -277,7 +286,12 @@ function initLineWaves(container, opts = {}) {
 
   const loop = t => {
     if (contextLost || !isVisible || !tabVisible) return;
-    if (t - lastFrameTime < frameInterval) { raf = requestAnimationFrame(loop); return; }
+    governor(t);
+    /* rolando: o fundo (lento por natureza) segura o quadro atual e o
+       orcamento inteiro do frame fica com a rolagem; volta ao parar */
+    if (isScrolling(t)) { raf = requestAnimationFrame(loop); return; }
+    const budget = frameInterval;
+    if (t - lastFrameTime < budget) { raf = requestAnimationFrame(loop); return; }
     lastFrameTime = t;
 
     program.uniforms.uTime.value = t * 0.001;
@@ -378,8 +392,8 @@ function initLineWaves(container, opts = {}) {
     interactTarget: section,
     // linhas finas pedem nitidez no desktop; no toque nao ha mouse pra
     // interagir, entao 30fps + dpr 1 seguram a GPU movel e a bateria
-    renderScale: coarse ? 0.6 : 0.8,
-    maxDpr: coarse ? 1 : 1.5,
-    targetFps: coarse ? 30 : 60,
+    renderScale: coarse ? 0.55 : 0.7,
+    maxDpr: 1,
+    targetFps: coarse ? 30 : 40,
   });
 })();
