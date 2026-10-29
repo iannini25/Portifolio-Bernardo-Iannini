@@ -5556,6 +5556,19 @@ body:has(.cs) header::before {
   color: var(--text);
 }
 
+/* ---------- voltar ---------- */
+.cs-back {
+  display: inline-flex; align-items: center; gap: 10px;
+  min-height: 44px; padding: 0 18px 0 14px;
+  border-radius: 999px; border: 1px solid var(--w-10);
+  background: rgba(255, 255, 255, .03);
+  font-size: .92rem; font-weight: 700; color: var(--text); text-decoration: none;
+  transition: border-color .2s ease, color .2s ease, transform .25s var(--ps-ease);
+}
+.cs-back svg { width: 18px; height: 18px; transition: transform .25s var(--ps-ease); }
+.cs-back:hover { border-color: var(--g-22); color: var(--lime); }
+.cs-back:hover svg { transform: translateX(-3px); }
+.cs-back:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
 /* ---------- trilha ---------- */
 .cs-crumbs {
   display: flex;

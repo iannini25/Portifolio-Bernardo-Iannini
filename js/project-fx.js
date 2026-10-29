@@ -18,6 +18,19 @@
   const root = document.querySelector('.cs[data-pc-root]');
   if (!root) return;
 
+  /* ---------- 0. voltar ----------
+     Veio de outra pagina do site: history.back() devolve exatamente a
+     posicao em que a pessoa estava (a home restaura a rolagem). Abriu
+     direto (Google, link, nova aba): o href leva a secao de projetos. */
+  const back = root.querySelector('[data-cs-back]');
+  if (back) {
+    back.addEventListener('click', (e) => {
+      let fromSite = false;
+      try { fromSite = !!document.referrer && new URL(document.referrer).origin === location.origin; } catch (err) {}
+      if (fromSite && history.length > 1) { e.preventDefault(); history.back(); }
+    });
+  }
+
   /* ---------- 1. reveals ---------- */
   const revealEls = root.querySelectorAll('[data-reveal]');
   if ('IntersectionObserver' in window) {

@@ -29,7 +29,7 @@ const path = require('path');
 
 const UI = {
   pt: {
-    crumbHome: 'Início', crumbList: 'Projetos',
+    crumbHome: 'Início', crumbList: 'Projetos', back: 'Voltar',
     visit: 'Visitar o site', newTab: 'abre em nova aba',
     localTitle: 'Roda localmente', localSub: 'Sem site: vive num computador dentro do carro',
     fType: 'Tipo', fYear: 'Ano', fStatus: 'Status', fRole: 'Meu papel', fSite: 'Site',
@@ -58,7 +58,7 @@ const UI = {
     shotAlt: (t, kind, i) => `${t}: tela ${i} no ${kind === 'mobile' ? 'celular' : 'computador'}`,
   },
   en: {
-    crumbHome: 'Home', crumbList: 'Projects',
+    crumbHome: 'Home', crumbList: 'Projects', back: 'Back',
     visit: 'Visit the website', newTab: 'opens in a new tab',
     localTitle: 'Runs locally', localSub: 'No website: it lives on a computer inside the car',
     fType: 'Type', fYear: 'Year', fStatus: 'Status', fRole: 'My role', fSite: 'Website',
@@ -264,13 +264,11 @@ function renderCaseMain(o) {
 
   const sec = [];
 
-  /* ---- breadcrumb visível (mesma trilha do JSON-LD) ---- */
+  /* ---- voltar: pelo historico (volta exatamente onde estava); sem
+     historico do site (veio do Google/link direto), vai pra secao de
+     projetos. Comportamento em js/project-fx.js. ---- */
   sec.push(`
-    <nav class="cs-crumbs" aria-label="Breadcrumb">
-      <a href="${t.home}">${u.crumbHome}</a><span aria-hidden="true">/</span>
-      <a href="${t.list}">${u.crumbList}</a><span aria-hidden="true">/</span>
-      <span aria-current="page">${esc(name)}</span>
-    </nav>`);
+    <a class="cs-back" href="${t.list}" data-cs-back>${ICON.back}<span>${u.back}</span></a>`);
 
   /* ---- hero ---- */
   sec.push(`
