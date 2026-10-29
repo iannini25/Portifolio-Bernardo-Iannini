@@ -5505,7 +5505,19 @@ body:has(.cs) header::before {
   pointer-events: none;
   background: linear-gradient(180deg, var(--bg) 0%, var(--bg) 55%, rgba(6, 8, 7, 0) 100%);
 }
-@media (max-width: 900px) { body:has(.cs) header::before { height: 104px; } }
+@media (max-width: 900px) {
+  body:has(.cs) header::before { height: 104px; }
+  /* celular: o mesmo veu no site inteiro (texto nao rola por baixo dos botoes) */
+  header::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 96px;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg) 50%, rgba(6, 8, 7, 0) 100%);
+  }
+}
 .cs {
   --cs-w: 1180px;
   --cs-read: 64ch;

@@ -72,8 +72,10 @@
   let tl = null;
   let rebuildTimer = 0;
 
+  /* celular (<=820px): sem GSAP aqui. A pilha 3D com pin prendia a
+     rolagem; no celular os servicos sao uma lista que rola normal. */
   function canStack() {
-    return !!(window.gsap && window.ScrollTrigger);
+    return !!(window.gsap && window.ScrollTrigger) && !narrow.matches;
   }
 
   function killTriggers() {
