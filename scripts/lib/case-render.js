@@ -318,13 +318,11 @@ function renderCaseMain(o) {
     [u.fStatus, p.status],
     [u.fRole, p.role],
   ].filter(([, v]) => v);
-  const deco = `<svg class="cs-deco" viewBox="0 0 600 600" aria-hidden="true" focusable="false">
+  const deco = `<svg class="cs-deco" viewBox="0 0 1200 600" preserveAspectRatio="xMaxYMid slice" aria-hidden="true" focusable="false">
       <defs><pattern id="csDots-${p.id}" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.3"/></pattern></defs>
-      <rect class="cs-deco__dots" width="600" height="600" fill="url(#csDots-${p.id})"/>
-      <circle class="cs-deco__ring" cx="470" cy="150" r="200"/><circle class="cs-deco__ring" cx="470" cy="150" r="140"/>
-      <circle class="cs-deco__ring" cx="470" cy="150" r="80"/><circle class="cs-deco__dot" cx="470" cy="150" r="7"/>
-      <path class="cs-deco__line" d="M0 470 L600 250"/><path class="cs-deco__line" d="M0 540 L600 320"/>
-      <rect class="cs-deco__sq" x="70" y="80" width="64" height="64" rx="10"/>
+      <rect class="cs-deco__dots" width="1200" height="600" fill="url(#csDots-${p.id})"/>
+      <circle class="cs-deco__ring" cx="1010" cy="120" r="260"/><circle class="cs-deco__ring" cx="1010" cy="120" r="180"/>
+      <circle class="cs-deco__ring" cx="1010" cy="120" r="100"/><circle class="cs-deco__dot" cx="1010" cy="120" r="5"/>
     </svg>`;
   if (whatParas.length) {
     sec.push(`

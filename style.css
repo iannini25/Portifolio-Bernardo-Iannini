@@ -6299,12 +6299,13 @@ body:has(.cs) header::before {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  -webkit-mask: linear-gradient(110deg, transparent 15%, #000 70%);
-          mask: linear-gradient(110deg, transparent 15%, #000 70%);
+  /* some suave em todas as bordas, mais presente no canto superior direito */
+  -webkit-mask: radial-gradient(70% 90% at 85% 15%, #000 0%, rgba(0, 0, 0, .45) 45%, transparent 80%);
+          mask: radial-gradient(70% 90% at 85% 15%, #000 0%, rgba(0, 0, 0, .45) 45%, transparent 80%);
 }
-.cs-deco__dots { fill: rgba(163, 230, 53, .1); }
-.cs-deco__ring { fill: none; stroke: rgba(34, 197, 94, .16); stroke-width: 1.2; }
-.cs-deco__dot { fill: var(--lime); opacity: .7; }
+.cs-deco__dots { fill: rgba(163, 230, 53, .07); }
+.cs-deco__ring { fill: none; stroke: rgba(34, 197, 94, .13); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.cs-deco__dot { fill: var(--lime); opacity: .55; }
 .cs-deco__line { fill: none; stroke: rgba(163, 230, 53, .1); stroke-width: 1; }
 .cs-deco__sq { fill: none; stroke: rgba(34, 197, 94, .14); stroke-width: 1.2; }
 .cs-about .cs-h2 { margin-bottom: 20px; }
