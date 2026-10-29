@@ -45,6 +45,8 @@ fonts-woff2/
 # Ferramentas internas do estudio (definicoes de agentes/skills) — usadas so
 # no desenvolvimento local, NAO fazem parte do site.
 .agents/
+.claude/
+.cursor/
 skills-lock.json
 
 # Notas internas / rascunhos de conteudo - material de apoio, nao vai pro site.
@@ -95,10 +97,11 @@ docs-highlights/
 logos-highlights/
 shots-notag/
 
-# Saida do optimize-videos.sh (originais preservados localmente; nao versionar)
-videos/preview-backup/
-videos/preview-otimizado/
 
 # Backups gerados pelos scripts de otimizacao de imagem
 img/*-original.*
 img/**/*.bak
+
+# Capas-mestre dos projetos (PNG/JPG grandes). O build gera img/covers/
+# (npm run build:covers) e SO a saida otimizada e versionada.
+covers-src/

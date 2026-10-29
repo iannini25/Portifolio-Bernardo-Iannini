@@ -13,8 +13,6 @@ node_modules
 # Por isso admin.html, a pagina de login e blog-admin.js / blog-auth.js
 # DEVEM ir pro deploy. O acesso e protegido por Supabase Auth + RLS.
 
-# Servidor admin LOCAL legado (substituido pelo Supabase) — nao precisa em prod.
-scripts/admin-server.js
 
 # Biblioteca pessoal de fontes (centenas de arquivos) — o deploy usa só
 # o peso self-hosted copiado em /fonts. NAO subir a lib inteira.
@@ -41,3 +39,6 @@ desktop.ini
 
 # Estrutura e policies do banco: mapa de como o backend e protegido
 supabase/
+
+# Capas-mestre (o site serve so img/covers/, gerado pelo build:covers)
+covers-src

@@ -2,6 +2,10 @@
 
 > Bernardo Iannini é Full Stack Developer & AI Designer, baseado em Belo Horizonte, MG, Brasil. Constrói sistemas completos, da arquitetura ao deploy em produção, principalmente para SaaS, fintechs e automações. Também assume projetos que nasceram de IA, refaz a arquitetura por baixo e entrega algo que aguenta uso real.
 
+## In English
+
+Bernardo Iannini is a Full Stack Developer & AI Designer from Belo Horizonte, Brazil. He builds complete systems from architecture to production deploy, mostly SaaS, fintech and automation, and rebuilds projects born from AI into software that holds up in real use. Every project listed below is part of his work; each one has its own page in Portuguese (/projetos/) and English (/en/projects/).
+
 ## Fatos canônicos
 
 - Nome: Bernardo Iannini
@@ -31,9 +35,10 @@ Sou desenvolvedor Full Stack e construo sistemas completos, da arquitetura ao de
 
 - [Home](https://bernardoiannini.com/): apresentação, serviços, experiência e os projetos em destaque.
 - [Sobre](https://bernardoiannini.com/sobre.html): quem é Bernardo Iannini, como trabalha e no que se especializa.
+- [About (English)](https://bernardoiannini.com/en/about.html): the same profile in English.
 - [Blog](https://bernardoiannini.com/blog.html): eventos, projetos e bastidores do trabalho.
 
-## Projetos
+## Projetos (trabalho de Bernardo Iannini)
 
 - [Athena7](https://bernardoiannini.com/projetos/athena7.html): plataforma SaaS multi-tenant de Canal de Denúncias com relato 100% anônimo e chat bidirecional, feita para adequação à Lei 14.457/2022 e à NR-1.
 - [Moeda Nobre](https://bernardoiannini.com/projetos/moedanobre.html): moeda digital de benefícios que faz o dinheiro circular entre as empresas, os colaboradores e a economia local em volta deles.

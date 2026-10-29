@@ -175,6 +175,7 @@ function initLineWaves(container, opts = {}) {
       premultipliedAlpha: false,
       antialias: false,
       dpr: Math.min(window.devicePixelRatio || 1, maxDpr),
+      powerPreference: 'low-power',
     });
   } catch {
     return () => {};
@@ -359,6 +360,7 @@ function initLineWaves(container, opts = {}) {
     section.prepend(layer);
   }
 
+  const coarse = window.matchMedia('(pointer: coarse)').matches;
   initLineWaves(layer, {
     speed: 0.2,
     innerLineCount: 32,
@@ -374,8 +376,10 @@ function initLineWaves(container, opts = {}) {
     enableMouseInteraction: true,
     mouseInfluence: 0.8,
     interactTarget: section,
-    renderScale: 0.8,
-    maxDpr: 1.5,
-    targetFps: 60,
+    // linhas finas pedem nitidez no desktop; no toque nao ha mouse pra
+    // interagir, entao 30fps + dpr 1 seguram a GPU movel e a bateria
+    renderScale: coarse ? 0.6 : 0.8,
+    maxDpr: coarse ? 1 : 1.5,
+    targetFps: coarse ? 30 : 60,
   });
 })();

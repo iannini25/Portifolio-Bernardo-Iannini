@@ -12,8 +12,8 @@
    (clearColor 0) -> o fluido compoe sobre o --bg escuro do site.
 
    Perf: render em escala reduzida (renderScale) com cap de buffer, dpr
-   limitado, ~30fps, pausa fora da viewport / aba oculta, desktop-only,
-   respeita prefers-reduced-motion. ogl via CDN ESM (padrao GSAP/Lenis).
+   limitado, ~30fps (24 no toque), pausa fora da viewport / aba oculta.
+   ogl via CDN ESM (padrao GSAP/Lenis).
    ============================================================ */
 import { Renderer, Program, Mesh, Triangle } from 'https://cdn.jsdelivr.net/npm/ogl@1.0.11/+esm';
 
@@ -199,7 +199,7 @@ function initFerrofluid(container, opts = {}) {
     rimWidth = 0.2, sharpness = 2.5, shimmer = 1.5, glow = 2,
     flowDirection = 'down', opacity = 1,
     mouseInteraction = false, mouseStrength = 1, mouseRadius = 0.35, mouseDampening = 0.15,
-    renderScale = 0.8, maxDpr = 1.25, targetFps = 30, maxBuffer = 2200,
+    renderScale = 0.5, maxDpr = 1.25, targetFps = 30, maxBuffer = 1400,
   } = opts;
 
   let renderer;
@@ -207,7 +207,7 @@ function initFerrofluid(container, opts = {}) {
     renderer = new Renderer({
       dpr: Math.min(window.devicePixelRatio || 1, maxDpr),
       alpha: true,
-      antialias: true,
+      antialias: false,
       powerPreference: 'low-power',
     });
   } catch {
@@ -381,6 +381,7 @@ function initFerrofluid(container, opts = {}) {
     wrap.prepend(layer);
   }
 
+  const coarse = window.matchMedia('(pointer: coarse)').matches;
   initFerrofluid(layer, {
     // SO as cores mudaram (lima -> verde -> branco, tema do site);
     // o resto e o do exemplo de uso.
@@ -396,8 +397,12 @@ function initFerrofluid(container, opts = {}) {
     flowDirection: 'down',
     opacity: 1,
     mouseInteraction: false,
-    renderScale: 0.8,
-    maxDpr: 1.25,
-    targetFps: 30,
+    // fluido e macio por natureza: meia resolucao + upscale do CSS nao se
+    // ve, e corta ~60% dos pixels do shader. No toque (celular/tablet) cai
+    // mais um degrau: GPU movel + bateria.
+    renderScale: coarse ? 0.4 : 0.5,
+    maxDpr: coarse ? 1 : 1.25,
+    maxBuffer: coarse ? 900 : 1400,
+    targetFps: coarse ? 24 : 30,
   });
 })();

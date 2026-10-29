@@ -11,8 +11,6 @@
    ESTRATEGIAS
    · navegacao (HTML) -> network-first
    · estatico (css/js/img/fonte) -> stale-while-revalidate
-   · videos /videos/** -> cache-first (imuteveis; o smart-boot
-     aquece e grava; 2a visita nao rebaixa dezenas de MB)
 
    O QUE NUNCA ENTRA NO CACHE
    · /api/** e o Supabase
@@ -22,7 +20,7 @@
    ============================================================ */
 'use strict';
 
-const VERSAO = 'v4';
+const VERSAO = 'v5';
 const CACHE = `bi-${VERSAO}`;
 
 const CASCA = [
@@ -44,7 +42,6 @@ const BLOQUEADOS = [
 ];
 
 const ehBloqueado = (pathname) => BLOQUEADOS.some((re) => re.test(pathname));
-const ehVideo = (pathname) => pathname.startsWith('/videos/');
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -95,23 +92,6 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  /* videos: cache-first — sao grandes e nao mudam de URL */
-  if (ehVideo(url.pathname)) {
-    event.respondWith((async () => {
-      const cache = await caches.open(CACHE);
-      const hit = await cache.match(req);
-      if (hit) return hit;
-      try {
-        const resp = await fetch(req);
-        if (resp && resp.ok) cache.put(req, resp.clone()).catch(() => {});
-        return resp;
-      } catch {
-        return new Response('', { status: 504, statusText: 'offline' });
-      }
-    })());
-    return;
-  }
-
   // estatico -> stale-while-revalidate
   event.respondWith((async () => {
     const cache = await caches.open(CACHE);
@@ -135,7 +115,7 @@ self.addEventListener('message', (event) => {
     caches.keys().then((ns) => ns.forEach((n) => caches.delete(n)));
     return;
   }
-  /* smart-boot manda a lista completa quando chega a 100% */
+  /* smart-boot manda a lista (casca + capas) num idle frame apos o load */
   if (data && data.type === 'PRECACHE' && Array.isArray(data.urls)) {
     event.waitUntil((async () => {
       const cache = await caches.open(CACHE);

@@ -241,7 +241,6 @@ What drives me is solving real problems with technology, and I always go for the
         viewCase: "View case study",
         visitSite: "Visit live site",
         repoBtn: "Source",
-        videoSoon: "Video coming soon",
         notFound: "Project not found.",
         nextProject: "Next project",
         /* títulos dos atos editoriais (aceitam <em> serif — 1 palavra) */
@@ -285,7 +284,7 @@ The system runs two independent channels, Women's and Corporate Integrity, and i
           stack: ["TypeScript", "Node.js", "Express", "tRPC v11", "Drizzle ORM", "MySQL 8", "React 19", "Vite", "TailwindCSS", "Socket.io", "OpenPGP", "Google Gemini", "Resend", "PDFKit", "Docker", "Nginx"],
           link: "https://athena7.com.br",
           repo: "",
-          cover: "img/athena7-cover.webp",
+          cover: "img/covers/athena7.webp?v=23c866bb",
           id: "athena7",
           category: "system",
           featured: true,
@@ -295,9 +294,7 @@ The system runs two independent channels, Women's and Corporate Integrity, and i
           role: "evolution & deploy",
           /* preview animado do card (mp4/webm 1600x900 em loop, <=3MB) —
              vazio = usa a cover. Ver PROJETOS-EM-CONSTRUCAO.md. */
-          preview: "videos/preview/athena7.mp4",
           /* screen-recording: scroll através do site ao vivo (autoplay/loop) */
-          video: "videos/preview/athena7-site.mp4",
           story: {
             problem: {
               text: `Harassment and misconduct almost never become a report. The person who suffers is afraid of retaliation, doesn't trust that the report is really anonymous, and often has no safe channel to even start, so the whole thing dies in silence. On the other side, the company is exposed: since 2022, Brazilian Law 14.457 requires organizations to keep a whistleblowing channel and a harassment-prevention committee.
@@ -362,7 +359,10 @@ The system serves four distinct profiles, platform operators, companies, merchan
           stack: ["Next.js 16", "TypeScript", "TailwindCSS", "shadcn/ui", "Framer Motion", "TanStack Query", "Zustand", "Prisma ORM", "PostgreSQL", "NextAuth", "html5-qrcode", "TipTap", "Docker", "Nginx", "Redis", "private VPS"],
           link: "https://moedanobre.com",
           repo: "",
-          cover: "img/moedanobre-cover.webp",
+          /* links do app nas lojas: preenchido, a página do projeto mostra
+             os selos oficiais do Google Play / App Store */
+          apps: { android: "", ios: "" },
+          cover: "img/covers/moedanobre.webp?v=863fd4aa",
           featured: true,
           featuredOrder: 2,
           id: "moedanobre",
@@ -370,8 +370,6 @@ The system serves four distinct profiles, platform operators, companies, merchan
           status: "in production",
           year: "2026",
           role: "platform development",
-          preview: "videos/preview/moedanobre.mp4",
-          video: "videos/preview/moedanobre-site.mp4",
           story: {
             problem: {
               text: `Traditional corporate benefits are a voucher that only works at the big chains. The money a company puts in as a benefit leaks straight out of the economy around the employee. The local shops, where people actually live and spend, are left out because they have no simple way to accept that voucher or to get paid for it.
@@ -444,7 +442,7 @@ The product ties together four surfaces (a public site, the member portal, an ad
           stack: ["NestJS", "Next.js 16", "React 19", "TypeScript", "Prisma", "PostgreSQL", "Redis", "BullMQ", "Socket.IO", "OpenAI", "Anthropic", "Resend", "Twilio", "next-intl", "Docker", "Nginx"],
           link: "https://ibanetwork.org",
           repo: "",
-          cover: "img/iba-cover.webp",
+          cover: "img/covers/iba.webp?v=af7da049",
           featured: true,
           featuredOrder: 3,
           id: "iba",
@@ -452,8 +450,6 @@ The product ties together four surfaces (a public site, the member portal, an ad
           status: "in production",
           year: "2026",
           role: "full-stack, whole product",
-          preview: "videos/preview/iba.mp4",
-          video: "videos/preview/iba-site.mp4",
           story: {
             problem: {
               text: `Networking between the innovation ecosystems of Brazil, Ireland and the UK used to happen all over the place: WhatsApp groups nobody keeps up with, contacts that get lost, one-off events with no follow-through. There was no profile, no search, no memory, so finding the right company or the right person on the other side of the Atlantic came down to luck and to who you already knew.
@@ -525,14 +521,20 @@ Building the trust this corridor is missing is hard precisely because you can't 
           stack: ["Astro", "TypeScript", "GSAP", "Lenis", "Canvas", "CSS3", "Vitest"],
           link: "https://modulo-engenharia.vercel.app",
           repo: "https://github.com/iannini25/Modulo-engenharia",
-          cover: "img/modulo-engenharia.webp",
+          cover: "img/covers/modulo-engenharia.webp?v=abb8ae45",
           id: "modulo-engenharia",
+          flow: {
+            steps: [
+              { label: "Offshore hero", sub: "industry that can't stop" },
+              { label: "Six services", sub: "automation, electrical, maintenance" },
+              { label: "Four segments", sub: "where the company works" },
+              { label: "WhatsApp chat", sub: "straight to an engineer" }
+            ]
+          },
           category: "site",
           featured: false,
           status: "in production",
           year: "2026",
-          preview: "videos/preview/modulo-engenharia.mp4",
-          video: "videos/preview/modulo-engenharia.mp4",
           topics: [
             { icon: "sparkles", title: "Cinematic offshore hero",
               text: "An offshore oil platform at dusk slowly pulls back as you scroll, drawn as a frame sequence scrubbed on a canvas with GSAP and Lenis. It degrades to a static poster under reduced-motion, no-JS or missing frames." },
@@ -552,14 +554,20 @@ Building the trust this corridor is missing is hard precisely because you can't 
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP", "ScrollTrigger", "Lenis", "Canvas API"],
           link: "https://brasa-restaurante-ten.vercel.app",
           repo: "https://github.com/iannini25/brasa-restaurante",
-          cover: "img/brasa-restaurante.webp",
+          cover: "img/covers/brasa.webp?v=1b3bb6c5",
           id: "brasa",
+          flow: {
+            steps: [
+              { label: "Fire hero", sub: "the room before you walk in" },
+              { label: "The house", sub: "live wood-fire embers" },
+              { label: "Menu and sommelier", sub: "à la carte and pairings" },
+              { label: "Booking", sub: "12-seat chef's counter" }
+            ]
+          },
           category: "site",
           featured: false,
           status: "in production",
           year: "2026",
-          preview: "videos/preview/brasa.mp4",
-          video: "videos/preview/brasa.mp4",
           topics: [
             { icon: "sparkles", title: "Scroll-driven fire hero",
               text: "The hero is not a video. A 241-frame JPEG sequence paints on a canvas, where the scroll only sets a target frame and a requestAnimationFrame loop eases toward it, so a slow decode never stalls the page and the push-in stays smooth." },
@@ -579,14 +587,20 @@ Building the trust this corridor is missing is hard precisely because you can't 
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP", "ScrollTrigger", "Lenis", "Canvas API"],
           link: "https://sereno-site-one.vercel.app",
           repo: "https://github.com/iannini25/sereno-site",
-          cover: "img/sereno.webp",
+          cover: "img/covers/sereno.webp?v=a6a0ab9d",
           id: "sereno",
+          flow: {
+            steps: [
+              { label: "Into the room", sub: "the camera glides to reception" },
+              { label: "Gallery", sub: "the studio in detail" },
+              { label: "Plans", sub: "single, monthly or yearly" },
+              { label: "Booking", sub: "request ready on WhatsApp" }
+            ]
+          },
           category: "site",
           featured: false,
           status: "in production",
           year: "2026",
-          preview: "videos/preview/sereno.mp4",
-          video: "videos/preview/sereno.mp4",
           topics: [
             { icon: "sparkles", title: "Scroll-video hero on canvas",
               text: "182 JPG frames from two clips are drawn one by one on a canvas as you scroll, so the camera glides from the room down to the reception as one seamless shot." },
@@ -606,14 +620,20 @@ Building the trust this corridor is missing is hard precisely because you can't 
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP", "ScrollTrigger", "Lenis", "Canvas API"],
           link: "https://amarofy.vercel.app",
           repo: "https://github.com/iannini25/amaro.fy-website",
-          cover: "img/amarofy.webp",
+          cover: "img/covers/amarofy.webp?v=1d428176",
           id: "amarofy",
+          flow: {
+            steps: [
+              { label: "Manifesto", sub: "made to order" },
+              { label: "The process", sub: "four steps" },
+              { label: "Finished pieces", sub: "size, care and packaging" },
+              { label: "Order", sub: "message ready on WhatsApp" }
+            ]
+          },
           category: "site",
           featured: false,
           status: "in production",
           year: "2026",
-          preview: "videos/preview/amarofy.mp4",
-          video: "videos/preview/amarofy.mp4",
           topics: [
             { icon: "sparkles", title: "Scroll-scrub hero",
               text: "The opening plays a 100-frame image sequence drawn to a canvas as you scroll, with a widescreen set for desktop and a vertical set for phones." },
@@ -633,14 +653,20 @@ Building the trust this corridor is missing is hard precisely because you can't 
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP", "ScrollTrigger", "Lenis", "Canvas API"],
           link: "https://automotiva-express.vercel.app",
           repo: "https://github.com/iannini25/automotiva-express",
-          cover: "img/automotiva-express.webp",
+          cover: "img/covers/automotiva-express.webp?v=335f3ecc",
           id: "automotiva-express",
+          flow: {
+            steps: [
+              { label: "Quote", sub: "the price before any work" },
+              { label: "You approve", sub: "nothing without your ok" },
+              { label: "Repair", sub: "something new? the shop stops and calls" },
+              { label: "Warranty", sub: "every job is covered" }
+            ]
+          },
           category: "site",
           featured: false,
           status: "in production",
           year: "2026",
-          preview: "videos/preview/automotiva-express.mp4",
-          video: "videos/preview/automotiva-express.mp4",
           topics: [
             { icon: "shield", title: "You approve the price first",
               text: "Nothing gets touched before you approve the quote. If something new turns up mid-repair, the shop stops and tells you, so the surprise bill that dominates auto-shop reviews simply never happens." },
@@ -662,13 +688,11 @@ The EN/PT switch is an i18n engine written from scratch: the entire site changes
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP 3", "ScrollTrigger", "Lenis", "Node.js", "Markdown", "Supabase", "Vercel"],
           link: "https://bernardoiannini.com",
           repo: "https://github.com/iannini25/iannini-Frontend-Studio",
-          cover: "img/portfolio-cover.webp",
+          cover: "img/covers/portfolio.webp?v=c15b52b0",
           id: "portfolio",
           category: "personal",
           status: "in production",
           year: "2026",
-          preview: "",
-          video: "",
           topics: [
             { icon: "palette", title: "A design system in pure CSS",
               text: "Colors, spacing and type all resolve to CSS tokens, no framework underneath. GSAP 3, ScrollTrigger and Lenis handle motion on top of that base." },
@@ -1000,7 +1024,6 @@ O que me move é resolver problemas reais com tecnologia, e busco sempre o camin
         viewCase: "Ver estudo de caso",
         visitSite: "Visitar site",
         repoBtn: "Código",
-        videoSoon: "Vídeo em breve",
         notFound: "Projeto não encontrado.",
         nextProject: "Próximo projeto",
         /* títulos dos atos editoriais (aceitam <em> serif — 1 palavra) */
@@ -1042,7 +1065,7 @@ O sistema opera com dois canais independentes, Integridade da Mulher e Integrida
           stack: ["TypeScript", "Node.js", "Express", "tRPC v11", "Drizzle ORM", "MySQL 8", "React 19", "Vite", "TailwindCSS", "Socket.io", "OpenPGP", "Google Gemini", "Resend", "PDFKit", "Docker", "Nginx"],
           link: "https://athena7.com.br",
           repo: "",
-          cover: "img/athena7-cover.webp",
+          cover: "img/covers/athena7.webp?v=23c866bb",
           id: "athena7",
           category: "system",
           featured: true,
@@ -1052,9 +1075,7 @@ O sistema opera com dois canais independentes, Integridade da Mulher e Integrida
           role: "evolução e deploy",
           /* preview animado do card (mp4/webm 1600x900 em loop, ate 3MB);
              vazio = usa a cover. Ver PROJETOS-EM-CONSTRUCAO.md. */
-          preview: "videos/preview/athena7.mp4",
           /* gravacao de tela: scroll pelo site ao vivo (autoplay/loop) */
-          video: "videos/preview/athena7-site.mp4",
           story: {
             problem: {
               text: `Assédio e irregularidades quase nunca viram denúncia. Quem sofre tem medo de retaliação, não confia que o relato seja mesmo anônimo e muitas vezes não tem um canal seguro pra começar, então o problema morre no silêncio. Do outro lado, a empresa fica exposta: desde 2022, a Lei 14.457 obriga organizações a manter um canal de denúncias e uma comissão de prevenção ao assédio.
@@ -1119,7 +1140,10 @@ O sistema atende quatro perfis distintos, operadores da plataforma, empresas, co
           stack: ["Next.js 16", "TypeScript", "TailwindCSS", "shadcn/ui", "Framer Motion", "TanStack Query", "Zustand", "Prisma ORM", "PostgreSQL", "NextAuth", "html5-qrcode", "TipTap", "Docker", "Nginx", "Redis", "VPS privada"],
           link: "https://moedanobre.com",
           repo: "",
-          cover: "img/moedanobre-cover.webp",
+          /* links do app nas lojas: preenchido, a página do projeto mostra
+             os selos oficiais do Google Play / App Store */
+          apps: { android: "", ios: "" },
+          cover: "img/covers/moedanobre.webp?v=863fd4aa",
           featured: true,
           featuredOrder: 2,
           id: "moedanobre",
@@ -1127,8 +1151,6 @@ O sistema atende quatro perfis distintos, operadores da plataforma, empresas, co
           status: "em produção",
           year: "2026",
           role: "desenvolvimento da plataforma",
-          preview: "videos/preview/moedanobre.mp4",
-          video: "videos/preview/moedanobre-site.mp4",
           story: {
             problem: {
               text: `O benefício corporativo tradicional é um vale que só funciona nas grandes redes. O dinheiro que a empresa injeta como benefício vaza direto pra fora da economia em volta do colaborador. O comércio local, onde as pessoas de fato vivem e gastam, fica de fora, porque não tem como aceitar aquele vale nem receber por ele de um jeito simples.
@@ -1201,7 +1223,7 @@ O produto amarra quatro superfícies (um site público, o portal do membro, um p
           stack: ["NestJS", "Next.js 16", "React 19", "TypeScript", "Prisma", "PostgreSQL", "Redis", "BullMQ", "Socket.IO", "OpenAI", "Anthropic", "Resend", "Twilio", "next-intl", "Docker", "Nginx"],
           link: "https://ibanetwork.org",
           repo: "",
-          cover: "img/iba-cover.webp",
+          cover: "img/covers/iba.webp?v=af7da049",
           featured: true,
           featuredOrder: 3,
           id: "iba",
@@ -1209,8 +1231,6 @@ O produto amarra quatro superfícies (um site público, o portal do membro, um p
           status: "em produção",
           year: "2026",
           role: "full-stack, produto inteiro",
-          preview: "videos/preview/iba.mp4",
-          video: "videos/preview/iba-site.mp4",
           story: {
             problem: {
               text: `O networking entre os ecossistemas de inovação de Brasil, Irlanda e Reino Unido acontecia espalhado: grupos de WhatsApp que ninguém acompanha, contatos que se perdem, eventos pontuais sem continuidade. Não tinha perfil, não tinha busca, não tinha memória, então achar a empresa ou a pessoa certa do outro lado do Atlântico dependia de sorte e de quem você já conhecia.
@@ -1282,14 +1302,20 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
           stack: ["Astro", "TypeScript", "GSAP", "Lenis", "Canvas", "CSS3", "Vitest"],
           link: "https://modulo-engenharia.vercel.app",
           repo: "https://github.com/iannini25/Modulo-engenharia",
-          cover: "img/modulo-engenharia.webp",
+          cover: "img/covers/modulo-engenharia.webp?v=abb8ae45",
           id: "modulo-engenharia",
+          flow: {
+            steps: [
+              { label: "Hero offshore", sub: "a indústria que não pode parar" },
+              { label: "Seis serviços", sub: "automação, elétrica, manutenção" },
+              { label: "Quatro segmentos", sub: "onde a empresa atua" },
+              { label: "Conversa no WhatsApp", sub: "direto com um engenheiro" }
+            ]
+          },
           category: "site",
           featured: false,
           status: "em produção",
           year: "2026",
-          preview: "videos/preview/modulo-engenharia.mp4",
-          video: "videos/preview/modulo-engenharia.mp4",
           topics: [
             { icon: "sparkles", title: "Hero offshore cinematográfico",
               text: "Uma plataforma de petróleo offshore ao entardecer se afasta devagar conforme você rola, desenhada como sequência de frames num canvas comandado por GSAP e Lenis. Degrada para um pôster estático com reduced-motion, sem JS ou frames ausentes." },
@@ -1309,14 +1335,20 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP", "ScrollTrigger", "Lenis", "Canvas API"],
           link: "https://brasa-restaurante-ten.vercel.app",
           repo: "https://github.com/iannini25/brasa-restaurante",
-          cover: "img/brasa-restaurante.webp",
+          cover: "img/covers/brasa.webp?v=1b3bb6c5",
           id: "brasa",
+          flow: {
+            steps: [
+              { label: "Hero de fogo", sub: "a sala antes de você entrar" },
+              { label: "A casa", sub: "brasa de lenha viva" },
+              { label: "Cardápio e sommelier", sub: "à la carte e harmonização" },
+              { label: "Reserva", sub: "balcão de 12 lugares" }
+            ]
+          },
           category: "site",
           featured: false,
           status: "em produção",
           year: "2026",
-          preview: "videos/preview/brasa.mp4",
-          video: "videos/preview/brasa.mp4",
           topics: [
             { icon: "sparkles", title: "Hero de fogo dirigido pelo scroll",
               text: "O hero não é um vídeo. Uma sequência de 241 frames JPEG desenha num canvas, onde o scroll só define o frame-alvo e um loop requestAnimationFrame persegue esse alvo, então um decode lento nunca trava a página e o mergulho fica liso." },
@@ -1336,14 +1368,20 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP", "ScrollTrigger", "Lenis", "Canvas API"],
           link: "https://sereno-site-one.vercel.app",
           repo: "https://github.com/iannini25/sereno-site",
-          cover: "img/sereno.webp",
+          cover: "img/covers/sereno.webp?v=a6a0ab9d",
           id: "sereno",
+          flow: {
+            steps: [
+              { label: "Entrada na sala", sub: "a câmera desce até a recepção" },
+              { label: "Galeria", sub: "o estúdio em detalhes" },
+              { label: "Planos", sub: "avulso, mensal ou anual" },
+              { label: "Agendamento", sub: "pedido pronto no WhatsApp" }
+            ]
+          },
           category: "site",
           featured: false,
           status: "em produção",
           year: "2026",
-          preview: "videos/preview/sereno.mp4",
-          video: "videos/preview/sereno.mp4",
           topics: [
             { icon: "sparkles", title: "Hero de scroll-vídeo no canvas",
               text: "182 frames JPG de dois clipes desenhados um a um no canvas conforme a rolagem, com a câmera indo da sala até a recepção numa emenda invisível." },
@@ -1363,14 +1401,20 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP", "ScrollTrigger", "Lenis", "Canvas API"],
           link: "https://amarofy.vercel.app",
           repo: "https://github.com/iannini25/amaro.fy-website",
-          cover: "img/amarofy.webp",
+          cover: "img/covers/amarofy.webp?v=1d428176",
           id: "amarofy",
+          flow: {
+            steps: [
+              { label: "Manifesto", sub: "feito sob medida" },
+              { label: "O processo", sub: "quatro passos" },
+              { label: "Peças prontas", sub: "tamanho, cuidados e embalagem" },
+              { label: "Pedido", sub: "mensagem pronta no WhatsApp" }
+            ]
+          },
           category: "site",
           featured: false,
           status: "em produção",
           year: "2026",
-          preview: "videos/preview/amarofy.mp4",
-          video: "videos/preview/amarofy.mp4",
           topics: [
             { icon: "sparkles", title: "Herói controlado pelo scroll",
               text: "A abertura roda uma sequência de 100 frames desenhada num canvas conforme você rola, com um conjunto widescreen no desktop e um vertical no celular." },
@@ -1390,14 +1434,20 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP", "ScrollTrigger", "Lenis", "Canvas API"],
           link: "https://automotiva-express.vercel.app",
           repo: "https://github.com/iannini25/automotiva-express",
-          cover: "img/automotiva-express.webp",
+          cover: "img/covers/automotiva-express.webp?v=335f3ecc",
           id: "automotiva-express",
+          flow: {
+            steps: [
+              { label: "Orçamento", sub: "o preço antes de mexer" },
+              { label: "Você aprova", sub: "nada sem o seu ok" },
+              { label: "Reparo", sub: "apareceu algo novo? a oficina para e avisa" },
+              { label: "Garantia", sub: "todo serviço sai garantido" }
+            ]
+          },
           category: "site",
           featured: false,
           status: "em produção",
           year: "2026",
-          preview: "videos/preview/automotiva-express.mp4",
-          video: "videos/preview/automotiva-express.mp4",
           topics: [
             { icon: "shield", title: "Você aprova o preço antes",
               text: "Nada é mexido antes de você aprovar o orçamento. Se aparece algo novo no meio do reparo, a oficina para e te avisa, então o orçamento-surpresa que domina as avaliações de oficina simplesmente não acontece." },
@@ -1419,13 +1469,11 @@ A troca EN/PT é um motor de i18n escrito do zero: o site inteiro muda de idioma
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP 3", "ScrollTrigger", "Lenis", "Node.js", "Markdown", "Supabase", "Vercel"],
           link: "https://bernardoiannini.com",
           repo: "https://github.com/iannini25/iannini-Frontend-Studio",
-          cover: "img/portfolio-cover.webp",
+          cover: "img/covers/portfolio.webp?v=c15b52b0",
           id: "portfolio",
           category: "personal",
           status: "em produção",
           year: "2026",
-          preview: "",
-          video: "",
           topics: [
             { icon: "palette", title: "Design system em CSS puro",
               text: "Cores, espaçamentos e tipografia resolvem em tokens CSS, sem framework por baixo. GSAP 3, ScrollTrigger e Lenis cuidam do movimento por cima dessa base." },

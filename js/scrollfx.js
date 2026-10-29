@@ -33,10 +33,6 @@
 
   const hasPointer = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   const hasDraw = () => !!window.DrawSVGPlugin;
-  /* tier do js/perf-tier.js — decide quanto de motion/video roda */
-  const perfTier = () => 'high';
-  const perfIsLow = () => false;
-  const perfIsHigh = () => true;
 
   const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -524,43 +520,6 @@
     magnetize('.sbtn', .38);
     magnetize('.ps-cta, .ps-repos__btn', .22);
 
-    /* BRILHO TOPOGRÁFICO: as curvas de nível do fundo acendem de leve ao
-       redor do cursor. Em low: desligado (mousemove global + quickTo
-       em todo cursor = custo constante; o SVG base continua no lugar). */
-    if (!perfIsLow()) {
-    document.querySelectorAll('.pj-topo').forEach(topoEl => {
-      let tRect = topoEl.getBoundingClientRect();
-      const refreshTopo = () => { tRect = topoEl.getBoundingClientRect(); };
-      window.addEventListener('scroll', refreshTopo, { passive: true });
-      window.addEventListener('resize', refreshTopo, { passive: true });
-
-      const gpos = { x: -600, y: -600 };
-      const applyTopo = () => {
-        topoEl.style.setProperty('--mx', gpos.x.toFixed(1) + 'px');
-        topoEl.style.setProperty('--my', gpos.y.toFixed(1) + 'px');
-      };
-      const gqx = gsap.quickTo(gpos, 'x', { duration: .34, ease: 'power3', onUpdate: applyTopo });
-      const gqy = gsap.quickTo(gpos, 'y', { duration: .34, ease: 'power3' });
-      let topoPrimed = false, wasInside = false;
-      const within = e => e.clientX >= tRect.left && e.clientX <= tRect.right &&
-                          e.clientY >= tRect.top && e.clientY <= tRect.bottom;
-
-      document.addEventListener('mousemove', e => {
-        let inside = within(e);
-        if (inside && !wasInside) { refreshTopo(); inside = within(e); }  // rect fresco ao entrar
-        wasInside = inside;
-        if (!inside) {
-          if (topoEl.classList.contains('is-hot')) { topoEl.classList.remove('is-hot'); topoPrimed = false; }
-          return;
-        }
-        const x = e.clientX - tRect.left, y = e.clientY - tRect.top;
-        if (!topoPrimed) { topoPrimed = true; gpos.x = x; gpos.y = y; applyTopo(); }
-        gqx(x); gqy(y);
-        if (!topoEl.classList.contains('is-hot')) topoEl.classList.add('is-hot');
-      }, { passive: true });
-    });
-    }
-
     /* spotlight dos service-cards: --mx/--my seguem o cursor (delegado
        no grid — sobrevive ao re-render dos cards) */
     const grid = document.getElementById('servicesGrid');
@@ -641,62 +600,6 @@
       }
     }
 
-    /* anel de borda por proximidade nas janelas da pilha — a luz existe
-       no espaço: acende ANTES do hover, proporcional à distância. Só
-       escreve CSS vars (o ::before mask-composite faz o resto).
-       Em low/medium: desligado — e rAF + getBoundingClientRect em N
-       janelas a cada frame de mouse. */
-    if (stage && perfIsHigh()) {
-      const RADIUS = 260;
-      const clearGlow = () => stage.querySelectorAll('.pj-win')
-        .forEach(w => w.style.setProperty('--glow-i', '0'));
-
-      /* a lista de .pj-win so muda quando a pilha re-renderiza, nao a
-         cada movimento do mouse. Cacheamos e revalidamos no rebuild.
-         O observer tambem ve mudanca de CLASSE (is-front troca no avanco
-         automatico da pilha, que move as janelas por transform SEM
-         scroll/resize) -> invalida o cache de rect junto. Nossas escritas
-         de --glow-* mexem no atributo style, nao em class, entao NAO
-         disparam o observer. */
-      let wins = [];
-      const refreshWins = () => {
-        wins = Array.from(stage.querySelectorAll('.pj-win'));
-        rectDe.invalidar();
-      };
-      refreshWins();
-      new MutationObserver(refreshWins).observe(stage, {
-        childList: true, subtree: true, attributes: true, attributeFilter: ['class'],
-      });
-
-      onPointerFrame(stage, e => {
-        /* FASE 1 — so LE. nenhuma escrita entre as leituras, entao o
-           navegador resolve tudo com um layout so (ou nenhum, porque o
-           cache ja tem os rect). */
-        const dados = wins.map(w => {
-          const r = rectDe(w);
-          if (!r.width || !r.height) return null;
-          const d = Math.max(0,
-            Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2)) -
-            Math.max(r.width, r.height) / 2);
-          const prox = RADIUS * .5, fade = RADIUS * .75;
-          return {
-            w,
-            i: d <= prox ? 1 : d <= fade ? (fade - d) / (fade - prox) : 0,
-            x: ((e.clientX - r.left) / r.width) * 100,
-            y: ((e.clientY - r.top) / r.height) * 100
-          };
-        });
-
-        /* FASE 2 — so ESCREVE. */
-        for (const it of dados) {
-          if (!it) continue;
-          it.w.style.setProperty('--glow-i', it.i.toFixed(3));
-          it.w.style.setProperty('--glow-x', it.x.toFixed(1) + '%');
-          it.w.style.setProperty('--glow-y', it.y.toFixed(1) + '%');
-        }
-      }, { onLeave: clearGlow });
-    }
-
     /* eco do anel nos cards do arquivo (--mx/--my; o :hover liga) */
     if (list) {
       onPointerFrame(list, e => {
@@ -707,10 +610,6 @@
         frame.style.setProperty('--mx', (((e.clientX - r.left) / r.width) * 100).toFixed(1) + '%');
         frame.style.setProperty('--my', (((e.clientY - r.top) / r.height) * 100).toFixed(1) + '%');
       });
-
-      /* previews dos cards: loop AUTÔNOMO gerenciado em buildDynamic
-         (viewport-based) — o hover não toca no playback, só expande o
-         card; a animação continua correndo por baixo do reveal de cor. */
     }
 
     /* mesmo contorno-que-segue-o-cursor dos cards do arquivo, agora nos
@@ -736,9 +635,8 @@
     const stackX = gsap.quickTo('.hero .stack', 'x', { duration: 1.1, ease: 'power3.out' });
     const stackY = gsap.quickTo('.hero .stack', 'y', { duration: 1.1, ease: 'power3.out' });
 
-    /* fundo da hero = as MESMAS curvas de nível da section de projetos
-       (.pj-topo, acende ao redor do cursor — vive no HTML + buildMouse
-       acima). Aqui só resta o parallax delicado da foto/nome. */
+    /* fundo da hero = as MESMAS curvas de nível (estáticas) da section de
+       projetos. Aqui só resta o parallax delicado da foto/nome. */
     hero.addEventListener('mousemove', e => {
       const nx = e.clientX / window.innerWidth - .5;
       const ny = e.clientY / window.innerHeight - .5;
@@ -841,68 +739,24 @@
     /* filtros + contador chegam como uma linha só */
     riseSoft('.pj-cli__row');
 
-    /* arquivo: em high, cada fileira sobe em 3D + wipe + paralaxe.
-       Em medium/low o visual FINAL e o mesmo (card assentado) — so a
-       viagem fica mais barata (y/opacity), sem rotateX/clipPath por
-       card (cada um desses forca layer e compositing). */
-    if (perfIsHigh()) {
-      gsap.utils.toArray('.pj-row').forEach(row => {
-        const cards = gsap.utils.toArray(row.children);
-        if (!cards.length) return;
-        dynamicKills.push(gsap.fromTo(cards,
-          { y: 56, rotateX: -18, scale: .93, autoAlpha: 0,
-            transformPerspective: 900, transformOrigin: '50% 100%' },
-          {
-            y: 0, rotateX: 0, scale: 1, autoAlpha: 1, ease: 'power2.out', stagger: .09,
-            immediateRender: false,
-            scrollTrigger: { trigger: row, start: 'clamp(top 94%)', end: 'clamp(top 60%)', scrub: .5 },
-          }));
-      });
-      gsap.utils.toArray('.pj-card').forEach(card => {
-        const view = card.querySelector('.pj-card__view');
-        if (view) {
-          dynamicKills.push(gsap.fromTo(view,
-            { clipPath: 'inset(0 0 100% 0)' },
-            {
-              clipPath: 'inset(0 0 0% 0)',
-              ease: 'power2.out',
-              immediateRender: false,
-              scrollTrigger: { trigger: card, start: 'clamp(top 96%)', end: 'clamp(top 58%)', scrub: .5 },
-            }));
-        }
-        const img = card.querySelector('.pj-card__img');
-        if (!img) return;
-        dynamicKills.push(gsap.fromTo(img,
-          { yPercent: -5, scale: 1.12 },
-          {
-            yPercent: 5,
-            scale: 1.12,
-            ease: 'none',
-            immediateRender: false,
-            scrollTrigger: { trigger: card, start: 'top bottom', end: 'bottom top', scrub: .4 },
-          }));
-      });
-    } else if (!perfIsLow()) {
-      /* medium: rise simples por fileira, sem 3D/wipe/paralaxe */
-      gsap.utils.toArray('.pj-row').forEach(row => {
-        const cards = gsap.utils.toArray(row.children);
-        if (!cards.length) return;
-        dynamicKills.push(gsap.fromTo(cards,
-          { y: 36, autoAlpha: 0 },
-          {
-            y: 0, autoAlpha: 1, ease: 'power2.out', stagger: .06,
-            immediateRender: false,
-            scrollTrigger: { trigger: row, start: 'clamp(top 92%)', end: 'clamp(top 62%)', scrub: .4 },
-          }));
-      });
-    } else {
-      /* low: so um fade leve da fileira — zero scrub por card */
-      riseSoft('.pj-row');
-    }
+    /* arquivo: cada fileira sobe com y + opacity (só compositor).
+       Sem rotateX/clip-path/paralaxe por card: cada um desses forçava
+       uma layer própria e repaint a cada frame de scroll. */
+    gsap.utils.toArray('.pj-row').forEach(row => {
+      const cards = gsap.utils.toArray(row.children);
+      if (!cards.length) return;
+      dynamicKills.push(gsap.fromTo(cards,
+        { y: 40, autoAlpha: 0 },
+        {
+          y: 0, autoAlpha: 1, ease: 'power2.out', stagger: .07,
+          immediateRender: false,
+          scrollTrigger: { trigger: row, start: 'clamp(top 94%)', end: 'clamp(top 64%)', scrub: .4 },
+        }));
+    });
 
-    /* a Corrente: pulsos so em high (loop infinito = trabalho constante) */
+    /* a Corrente: pulsos nas guias (pausados fora da viewport) */
     const guides = gsap.utils.toArray('.pj-guide__pulse');
-    if (guides.length && perfIsHigh()) {
+    if (guides.length) {
       const pulseTweens = guides.map((pulse, i) => {
         const tl = gsap.timeline({ repeat: -1, delay: i * 2.4, paused: true });
         tl.set(pulse, { yPercent: -110, opacity: 0 })
@@ -920,102 +774,6 @@
       }));
     }
 
-    /* janelas com preview: so a da FRENTE toca. Em low nao ha <video>
-       (projects.js renderiza <img>); em medium/high sincroniza. */
-    const stackEl = document.querySelector('[data-pj-stack]');
-    const winVideos = (!perfIsLow() && stackEl)
-      ? gsap.utils.toArray(stackEl.querySelectorAll('video.pj-win__img')) : [];
-    if (winVideos.length) {
-      let stageInView = false;
-      const syncWinVideos = () => winVideos.forEach(v => {
-        const isFront = stageInView &&
-          !!v.closest('.pj-win')?.classList.contains('is-front');
-        if (isFront) {
-          if (v.paused) {
-            const play = () => { v.play?.().catch(() => {}); };
-            if (typeof window.biWhenAssetReady === 'function') {
-              window.biWhenAssetReady(v.getAttribute('src') || '', play);
-            } else play();
-          }
-        }
-        else if (!v.paused) v.pause?.();
-      });
-      dynamicKills.push(ScrollTrigger.create({
-        trigger: '.pj-stage',
-        start: 'top bottom',
-        end: 'bottom top',
-        onToggle: self => { stageInView = self.isActive; syncWinVideos(); },
-      }));
-      const winObserver = new MutationObserver(syncWinVideos);
-      winVideos.forEach(v => {
-        const win = v.closest('.pj-win');
-        if (win) winObserver.observe(win, { attributes: true, attributeFilter: ['class'] });
-      });
-      dynamicKills.push({ kill: () => winObserver.disconnect() });
-    }
-
-    /* previews do ARQUIVO: efeitos intactos, mas no maximo UM video
-       tocando por vez (o mais perto do centro da viewport). Decodificar
-       4–6 H.264 juntos e o que faz notebook potente engasgar aqui. */
-    if (perfIsHigh()) {
-      const cardVideos = gsap.utils.toArray(
-        document.querySelectorAll('.pj-arch video.pj-card__img'));
-      if (cardVideos.length) {
-        const visible = new Set();
-        const syncArchiveVideos = () => {
-          let best = null;
-          let bestDist = Infinity;
-          const midY = (window.innerHeight || 0) * 0.5;
-          visible.forEach(v => {
-            const r = v.getBoundingClientRect();
-            if (!r.height) return;
-            const dist = Math.abs((r.top + r.bottom) * 0.5 - midY);
-            if (dist < bestDist) { bestDist = dist; best = v; }
-          });
-          cardVideos.forEach(v => {
-            if (v === best) {
-              const rate = parseFloat(v.dataset.rate);
-              if (rate) v.playbackRate = rate;
-              if (v.paused) {
-                const play = () => { v.play?.().catch(() => {}); };
-                if (typeof window.biWhenAssetReady === 'function') {
-                  window.biWhenAssetReady(v.getAttribute('src') || '', play);
-                } else play();
-              }
-            } else if (!v.paused) {
-              v.pause?.();
-            }
-          });
-        };
-        const cardIO = new IntersectionObserver(entries => {
-          entries.forEach(en => {
-            if (en.isIntersecting) visible.add(en.target);
-            else {
-              visible.delete(en.target);
-              if (!en.target.paused) en.target.pause?.();
-            }
-          });
-          syncArchiveVideos();
-        }, { rootMargin: '40px 0px', threshold: [0, 0.2, 0.5, 0.8] });
-        cardVideos.forEach(v => cardIO.observe(v));
-        let scrollRaf = 0;
-        const onScrollSync = () => {
-          if (scrollRaf) return;
-          scrollRaf = requestAnimationFrame(() => {
-            scrollRaf = 0;
-            syncArchiveVideos();
-          });
-        };
-        window.addEventListener('scroll', onScrollSync, { passive: true });
-        dynamicKills.push({
-          kill: () => {
-            cardIO.disconnect();
-            window.removeEventListener('scroll', onScrollSync);
-            if (scrollRaf) cancelAnimationFrame(scrollRaf);
-          }
-        });
-      }
-    }
   }
 
   function killDynamic() {

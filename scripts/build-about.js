@@ -73,6 +73,7 @@ const T = {
     sTrajetoria: 'A trajetória', sEsp: 'Especialidades', sExp: 'Experiência',
     sForm: 'Formação', sCursos: 'Cursos e certificações', sPerfis: 'Perfis',
     sFaq: 'Perguntas frequentes', crumbHome: 'Início', crumbAbout: 'Sobre',
+    sProj: 'Projetos', projUrl: (id) => `/projetos/${id}.html`,
     present: 'atual',
   },
   en: {
@@ -83,6 +84,7 @@ const T = {
     sTrajetoria: 'The path', sEsp: 'Specialties', sExp: 'Experience',
     sForm: 'Education', sCursos: 'Courses and certifications', sPerfis: 'Profiles',
     sFaq: 'Frequently asked questions', crumbHome: 'Home', crumbAbout: 'About',
+    sProj: 'Projects', projUrl: (id) => `/en/projects/${id}.html`,
     present: 'present',
   },
 };
@@ -184,6 +186,7 @@ function graph(lang, t, faqs) {
     url: SITE_URL + t.url,
     name: t.title,
     inLanguage: t.htmlLang,
+    mainEntity: { '@id': PERSON },          // exigido pelo Google em ProfilePage
     about: { '@id': PERSON },
     isPartOf: { '@id': SITE },
     primaryImageOfPage: { '@type': 'ImageObject', url: AUTHOR.image },
@@ -192,7 +195,7 @@ function graph(lang, t, faqs) {
     '@type': 'BreadcrumbList',
     '@id': SITE_URL + t.url + '#breadcrumb',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: t.crumbHome, item: SITE_URL + (lang === 'en' ? '/en/' : '/') },
+      { '@type': 'ListItem', position: 1, name: t.crumbHome, item: SITE_URL + '/' },
       { '@type': 'ListItem', position: 2, name: t.crumbAbout, item: SITE_URL + t.url },
     ],
   };
@@ -221,6 +224,12 @@ function page(I18N, lang) {
   const prof = (xp.prof || []).map(e => entry(e, t)).join('\n        ');
   const acad = (xp.acad || []).map(e => entry(e, t)).join('\n        ');
   const cursos = (xp.courses || []).map(e => entry(e, t)).join('\n        ');
+  /* projetos com página própria (mesmo critério do build-projects):
+     o elo visível pessoa -> obra, em cada idioma */
+  const projs = ((I18N[lang].projects && I18N[lang].projects.list) || [])
+    .filter(p => p && p.cover && p.link && p.id)
+    .map(p => `<li><a href="${t.projUrl(p.id)}"><strong>${esc(p.title)}</strong></a> ${esc(p.desc || '')}</li>`)
+    .join('\n          ');
   const perfis = AUTHOR.sameAs.map(u =>
     `<li><a href="${esc(u)}" rel="me noopener" target="_blank">${esc(u.replace(/^https?:\/\//, ''))}</a></li>`).join('\n          ');
   const faqHtml = faqs.map(f =>
@@ -282,10 +291,10 @@ ${graph(lang, t, faqs)}
     <div class="nav">
       <div class="nav-center">
         <nav class="pill">
-          <a href="${lang === 'en' ? '/en/' : '/'}">${esc(t.navHome)}</a>
-          <a href="${lang === 'en' ? '/en/#projects' : '/#projects'}">${esc(t.navWork)}</a>
-          <a href="${lang === 'en' ? '/en/blog.html' : '/blog.html'}" class="nav-blog-link">${esc(t.navBlog)}</a>
-          <a href="${lang === 'en' ? '/en/#contato' : '/#contato'}">${esc(t.navContact)}</a>
+          <a href="/">${esc(t.navHome)}</a>
+          <a href="/#projects">${esc(t.navWork)}</a>
+          <a href="/blog.html" class="nav-blog-link">${esc(t.navBlog)}</a>
+          <a href="/#contato">${esc(t.navContact)}</a>
         </nav>
       </div>
     </div>
@@ -331,6 +340,13 @@ ${graph(lang, t, faqs)}
       ${cursos ? `<section aria-labelledby="ab-cur">
         <h2 id="ab-cur">${esc(t.sCursos)}</h2>
         ${cursos}
+      </section>` : ''}
+
+      ${projs ? `<section aria-labelledby="ab-proj">
+        <h2 id="ab-proj">${esc(t.sProj)}</h2>
+        <ul class="ab-list">
+          ${projs}
+        </ul>
       </section>` : ''}
 
       <section aria-labelledby="ab-perf">

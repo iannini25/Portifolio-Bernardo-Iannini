@@ -42,6 +42,7 @@
 const fs   = require('fs');
 const path = require('path');
 const vm   = require('vm');
+const { renderCaseMain, projectMedia, splitTitle } = require('./lib/case-render');
 
 const ROOT     = path.resolve(__dirname, '..');
 const SITE_URL = 'https://bernardoiannini.com';
@@ -75,7 +76,7 @@ function loadCase() {
   ctx.globalThis = ctx;
   vm.createContext(ctx);
   vm.runInContext(
-    src + '\n;globalThis.__PC = { PC_ICONS, pcSlug, pcHostname };',
+    src + '\n;globalThis.__PC = { PC_ICONS, pcSlug, pcHostname, pcCoverSet, PC_COVER_SIZES, PC_NEXT_SIZES };',
     ctx, { timeout: 10000 });
   if (!ctx.__PC || !ctx.__PC.PC_ICONS) throw new Error('PC_ICONS nao encontrado em js/project-case.js');
   return ctx.__PC;
@@ -218,14 +219,16 @@ const L = {
   pt: {
     dir: () => path.join(ROOT, 'projetos'),
     url: (s) => `/projetos/${s}.html`,
-    home: '/', list: '/#projects', blog: '/blog.html',
+    home: '/', list: '/#projects', blog: '/blog.html', about: '/sobre.html',
     htmlLang: 'pt-BR', locale: 'pt_BR', altLocale: 'en_US',
     crumbHome: 'Início', crumbList: 'Projetos',
   },
   en: {
     dir: () => path.join(ROOT, 'en', 'projects'),
     url: (s) => `/en/projects/${s}.html`,
-    home: '/en/', list: '/en/#projects', blog: '/en/blog.html',
+    /* a home e o blog sao uma URL so (idioma troca no cliente): nao
+       existe /en/ nem /en/blog.html, linkar pra eles dava 404 */
+    home: '/', list: '/#projects', blog: '/blog.html', about: '/en/about.html',
     htmlLang: 'en', locale: 'en_US', altLocale: 'pt_BR',
     crumbHome: 'Home', crumbList: 'Projects',
   },
@@ -285,25 +288,57 @@ function answerBlock(p) {
 function jsonLd(p, lang, url) {
   const t = L[lang];
   const isSoftware = p.category === 'system' || p.category === 'automation';
+  const media = projectMedia(ROOT, p.id);
+  const { name } = splitTitle(p.title);
+  const img = (src, caption) => ({
+    '@type': 'ImageObject',
+    contentUrl: abs(src.split('?')[0]),
+    caption,
+    creator: { '@id': PERSON },
+    creditText: 'Bernardo Iannini',
+    copyrightNotice: 'Bernardo Iannini',
+  });
+  const images = [];
+  if (p.cover) images.push(img(p.cover, p.title));
+  media.desktop.concat(media.mobile).slice(0, 6)
+    .forEach((m, i) => images.push(img(m.src, `${name} · ${i + 1}`)));
+
   const work = {
     '@type': isSoftware ? 'SoftwareApplication' : 'CreativeWork',
     '@id': SITE_URL + url + '#projeto',
     name: p.title,
+    alternateName: name,
     description: p.desc || '',
+    abstract: answerBlock(p),
     url: SITE_URL + url,
     inLanguage: t.htmlLang,
     author:    { '@id': PERSON },   // sempre por referencia, nunca duplicar
-    publisher: { '@id': PERSON },
     creator:   { '@id': PERSON },
+    publisher: { '@id': PERSON },
     isPartOf:  { '@id': SITE_URL + '/#site' },
+    mainEntityOfPage: { '@id': SITE_URL + url + '#pagina' },
   };
-  if (p.cover) work.image = abs(p.cover);
+  if (images.length) work.image = images;
   if (p.year)  work.dateCreated = String(p.year);
   if (p.link)  work.sameAs = [p.link];
-  if (Array.isArray(p.stack) && p.stack.length) {
-    work.keywords = p.stack.join(', ');
-    if (isSoftware) { work.applicationCategory = 'WebApplication'; work.operatingSystem = 'Web'; }
+  if (Array.isArray(p.stack) && p.stack.length) work.keywords = p.stack.join(', ');
+  if (isSoftware) {
+    work.applicationCategory = 'BusinessApplication';
+    work.operatingSystem = (p.apps && (p.apps.android || p.apps.ios)) ? 'Web, Android, iOS' : 'Web';
+    if (p.link) work.url = p.link;
   }
+  const pageNode = {
+    '@type': 'WebPage',
+    '@id': SITE_URL + url + '#pagina',
+    url: SITE_URL + url,
+    name: `${p.title} · Bernardo Iannini`,
+    inLanguage: t.htmlLang,
+    isPartOf: { '@id': SITE_URL + '/#site' },
+    about: { '@id': SITE_URL + url + '#projeto' },
+    author: { '@id': PERSON },
+    breadcrumb: { '@id': SITE_URL + url + '#breadcrumb' },
+  };
+  if (p.cover) pageNode.primaryImageOfPage = { '@type': 'ImageObject', url: abs(p.cover.split('?')[0]) };
   const crumbs = {
     '@type': 'BreadcrumbList',
     '@id': SITE_URL + url + '#breadcrumb',
@@ -313,230 +348,17 @@ function jsonLd(p, lang, url) {
       { '@type': 'ListItem', position: 3, name: p.title, item: SITE_URL + url },
     ],
   };
-  return JSON.stringify({ '@context': 'https://schema.org', '@graph': [work, crumbs] }, null, 2);
-}
-
-/* =========================================================
-   BLOCOS — espelho fiel de js/project-case.js
-   Mesmas classes, mesma ordem, mesmos separadores. Se algo mudar la,
-   muda aqui (e o diff das duas paginas denuncia na hora).
-   ========================================================= */
-function makeBlocks(PC) {
-  const { PC_ICONS, pcSlug, pcHostname } = PC;
-
-  /* linha de registro: status · dominio · ano · papel */
-  const regHtml = (p) => {
-    const host = pcHostname(p.link);
-    const items = [];
-    if (p.status) items.push(`<span class="pc-reg__item pc-reg__status"><i class="pc-reg__dot" aria-hidden="true"></i>${p.status}</span>`);
-    if (host)     items.push(`<a class="pc-reg__item pc-reg__host" href="${p.link}" target="_blank" rel="noopener noreferrer">${host}</a>`);
-    if (p.year)   items.push(`<span class="pc-reg__item">${p.year}</span>`);
-    if (p.role)   items.push(`<span class="pc-reg__item">${p.role}</span>`);
-    return items.join('<span class="pc-reg__sep" aria-hidden="true">·</span>');
+  /* a pessoa por referencia + o vinculo explicito "fez este projeto" */
+  const person = {
+    '@type': 'Person',
+    '@id': PERSON,
+    name: 'Bernardo Iannini',
+    url: SITE_URL + '/',
+    image: SITE_URL + '/img/eufoto1.png',
+    jobTitle: 'Full Stack Developer & AI Designer',
+    sameAs: ['https://www.linkedin.com/in/bernardo-iannini', 'https://github.com/iannini25'],
   };
-
-  const techHtml = (p) => (p.stack || [])
-    .map((t, i) => `<span class="ps-pill" style="--i:${i}">${t}</span>`).join('');
-
-  /* cap duro de 3 paragrafos: o instrumento precisa chegar cedo */
-  const storyTextHtml = (raw) => String(raw).split(/\n\s*\n/).slice(0, 3)
-    .map(x => `<p>${x.trim()}</p>`).join('');
-
-  /* nota de margem: fio 1px + tag "// nota do engenheiro" + corpo mono */
-  const noteHtml = (text, labels) =>
-    '<i class="pc-note__wire" aria-hidden="true"></i>' +
-    `<span class="pc-note__tag"><b aria-hidden="true">//</b> ${labels.noteLabel || "engineer's note"}</span>` +
-    `<span class="pc-note__body">${text}</span>`;
-
-  const flowHtml = (steps) => steps.map(s =>
-    `<span class="pc-flow__step"><span class="pc-flow__label">${s.label}</span>` +
-    `${s.sub ? `<span class="pc-flow__sub">${s.sub}</span>` : ''}</span>`
-  ).join('<span class="pc-flow__arrow" aria-hidden="true">→</span>');
-
-  /* registro-dev: no MAXIMO UM por topico — deep vence tech */
-  const topicsHtml = (p, labels) => (p.topics || []).map((t, i) => {
-    const realPath = t.path ? '/' + String(t.path).replace(/^\/+/, '') : '';
-    const dev = (t.deep && t.deep.length)
-      ? `<details class="pd-deep">` +
-        `<summary class="pd-deep__sum"><b aria-hidden="true">$</b> ${labels.deepLabel || 'how i solved it'}</summary>` +
-        `<div class="pd-deep__body">${t.deep.map(l => `<span>${l}</span>`).join('')}</div></details>`
-      : (t.tech ? `<p class="pd-topic__tech"><b aria-hidden="true">//</b> ${t.tech}</p>` : '');
-    return `
-      <article class="pd-topic" style="--i:${i}" data-path="${realPath || pcSlug(t.title)}"${t.shot ? ` data-shot="${asset(t.shot)}"` : ''}>
-        <span class="pd-topic__icon" aria-hidden="true">${PC_ICONS[t.icon] || PC_ICONS.layers}</span>
-        <div class="pd-topic__body">
-          <h3 class="pd-topic__title">${t.title}</h3>
-          <p class="pd-topic__text">${t.text}</p>
-          ${dev}
-        </div>
-      </article>
-    `;
-  }).join('');
-
-  const metricsHtml = (metrics) => metrics.map(m =>
-    `<div class="pc-metric"><span class="pc-metric__value">${m.value}</span>` +
-    `<span class="pc-metric__label">${m.label}</span>` +
-    `${m.detail ? `<span class="pc-metric__detail">${m.detail}</span>` : ''}</div>`
-  ).join('');
-
-  const specsHtml = (rows) => rows.map(r =>
-    `<div class="pc-specs__row"><dt>${r.k}</dt>` +
-    `<dd>${r.link ? `<a href="${r.link}" target="_blank" rel="noopener noreferrer">${r.v}</a>` : r.v}</dd></div>`
-  ).join('');
-
-  return { regHtml, techHtml, storyTextHtml, noteHtml, flowHtml, topicsHtml, metricsHtml, specsHtml, pcHostname };
-}
-
-/* =========================================================
-   MAIN — preenche os slots do shell
-   ========================================================= */
-function fillMain(shellMain, p, lang, next, I18N, B) {
-  const t = L[lang];
-  const labels = (I18N[lang].projects && I18N[lang].projects.case) || {};
-  let h = shellMain;
-
-  /* ---- voltar ---- */
-  h = h.replace('<a class="pc-back" href="/#projects">', `<a class="pc-back" href="${t.list}">`);
-  h = fillEl(h, 'data-i18n="projects.case.back"', {
-    inner: esc(labels.back || 'All projects'),
-    tag: tg => setAttr(tg, 'data-i18n', null),
-  });
-
-  /* ---- linha de registro ---- */
-  const reg = B.regHtml(p);
-  h = fillEl(h, 'data-pc-reg', { inner: reg, tag: tg => setAttr(tg, 'hidden', reg ? null : true) });
-
-  /* ---- hero ---- */
-  h = fillEl(h, 'data-pc-title', { inner: esc(p.title) });
-  h = fillEl(h, 'data-pc-desc',  { inner: esc(answerBlock(p)) });
-  h = fillEl(h, 'data-pc-tech',  { inner: B.techHtml(p) });
-
-  /* ---- CTAs ---- */
-  h = fillEl(h, 'data-pc-link', {
-    tag: tg => setAttr(setAttr(tg, 'href', p.link || '#'), 'style', p.link ? null : 'display: none'),
-  });
-  h = fillEl(h, 'data-pc-link-label', { inner: esc(labels.visitSite || 'Visit live site') });
-  h = fillEl(h, 'data-pc-repo', {
-    tag: tg => setAttr(setAttr(tg, 'href', p.repo || '#'), 'style', p.repo ? null : 'display: none'),
-  });
-  // sem repo o runtime nem toca no rotulo (o CTA fica display:none) — igual aqui
-  if (p.repo) h = fillEl(h, 'data-pc-repo-label', { inner: esc(labels.repoBtn || 'Source') });
-
-  /* ---- ato "o problema" — story.problem quando existir, senao o longDesc ---- */
-  const prob = (p.story && p.story.problem) || null;
-  const storyText = (prob && prob.text) || p.longDesc || '';
-  const storyNote = prob && prob.note;
-  h = fillEl(h, 'data-pc-story', {
-    tag: tg => {
-      let out = setAttr(tg, 'hidden', storyText ? null : true);
-      if (storyText && !storyNote) out = addClass(out, 'pc-act--solo');
-      return out;
-    },
-  });
-  h = fillEl(h, 'data-pc-story-title', {
-    inner: !storyText ? '' : ((prob && prob.title)
-      || (prob ? (labels.problemTitle || 'The problem') : (labels.aboutTitle || 'About the project'))),
-  });
-  h = fillEl(h, 'data-pc-story-text', { inner: storyText ? B.storyTextHtml(storyText) : '' });
-  h = fillEl(h, 'data-pc-story-note', {
-    inner: storyText && storyNote ? B.noteHtml(storyNote, labels) : '',
-    tag: tg => setAttr(tg, 'hidden', storyText && storyNote ? null : true),
-  });
-
-  /* linha de fluxo — o momento "recontavel em 10 segundos" */
-  const steps = (storyText && p.flow && p.flow.steps) || [];
-  h = fillEl(h, 'data-pc-flow', {
-    inner: steps.length < 2 ? '' : B.flowHtml(steps),
-    tag: tg => setAttr(tg, 'hidden', steps.length < 2 ? true : null),
-  });
-
-  /* ---- janela: URL viva + video (ou capa + selo "em breve") ---- */
-  h = fillEl(h, 'data-pc-url', { inner: esc(B.pcHostname(p.link)) });
-  h = fillEl(h, 'data-pc-video', {
-    tag: tg => {
-      if (!p.video) return setAttr(tg, 'hidden', true);
-      let out = setAttr(tg, 'src', asset(p.video));
-      if (p.cover) out = setAttr(out, 'poster', asset(p.cover));
-      /* preload="none" e regra de performance do site (ver js/projects.js):
-         com autoplay o browser ignora a dica, entao nao custa playback. */
-      return setAttr(setAttr(out, 'preload', 'none'), 'hidden', null);
-    },
-  });
-  h = fillEl(h, 'data-pc-cover', {
-    tag: tg => {
-      if (p.video) return setAttr(tg, 'hidden', true);
-      let out = setAttr(setAttr(tg, 'src', asset(p.cover)), 'alt', esc(p.title));
-      return setAttr(out, 'hidden', p.cover ? null : true);
-    },
-  });
-  h = fillEl(h, 'data-pc-soon', {
-    inner: esc(labels.videoSoon || 'Video coming soon'),
-    tag: tg => setAttr(setAttr(tg, 'data-i18n', null), 'hidden', p.video ? true : null),
-  });
-
-  /* ---- topicos ---- */
-  h = fillEl(h, 'data-pc-built-title', { inner: labels.builtTitle || 'How it was built' });
-  h = fillEl(h, 'data-pc-topics', { inner: B.topicsHtml(p, labels) });
-
-  /* ---- ato "o que isso mudou" — so com impact.text ou metrics >= 2 ---- */
-  const imp = p.impact || {};
-  const metrics = (p.metrics || []).slice(0, 4);
-  const hasMetrics = metrics.length >= 2;
-  const showImpact = !!imp.text || hasMetrics;
-  h = fillEl(h, 'data-pc-impact', {
-    tag: tg => {
-      let out = setAttr(tg, 'hidden', showImpact ? null : true);
-      if (!showImpact) return out;
-      out = setAttr(out, 'data-path', labels.impactPath || 'impact');
-      return imp.note ? out : addClass(out, 'pc-act--solo');
-    },
-  });
-  h = fillEl(h, 'data-pc-impact-title', { inner: showImpact ? (labels.impactTitle || 'What it changed') : '' });
-  h = fillEl(h, 'data-pc-impact-text', {
-    inner: showImpact && imp.text ? esc(imp.text) : '',
-    tag: tg => setAttr(tg, 'hidden', showImpact && imp.text ? null : true),
-  });
-  h = fillEl(h, 'data-pc-metrics', {
-    inner: showImpact && hasMetrics ? B.metricsHtml(metrics) : '',
-    tag: tg => showImpact && hasMetrics
-      ? setAttr(setAttr(tg, 'hidden', null), 'style', `--pc-metrics-n: ${metrics.length}`)
-      : setAttr(tg, 'hidden', true),
-  });
-  h = fillEl(h, 'data-pc-impact-note', {
-    inner: showImpact && imp.note ? B.noteHtml(imp.note, labels) : '',
-    tag: tg => setAttr(tg, 'hidden', showImpact && imp.note ? null : true),
-  });
-
-  /* ---- ficha tecnica ($ cat specs.txt) — so com specs[] ---- */
-  const specRows = (p.specs || []).slice();
-  if (specRows.length && p.repo) specRows.push({ k: 'source', v: p.repo, link: p.repo });
-  h = fillEl(h, 'data-pc-specs', { tag: tg => setAttr(tg, 'hidden', specRows.length ? null : true) });
-  h = fillEl(h, 'data-pc-specs-cmd', { inner: esc(labels.specsCmd || 'cat specs.txt') });
-  h = fillEl(h, 'data-pc-specs-comment', {
-    inner: specRows.length ? esc('  ' + (labels.specsComment || '# for the technical reader')) : '',
-  });
-  h = fillEl(h, 'data-pc-specs-list', { inner: specRows.length ? B.specsHtml(specRows) : '' });
-
-  /* ---- assinatura (porta de contato) ---- */
-  h = h.replace('<a class="ps-cta ps-cta--ghost pc-sign__cta" href="/#contato">',
-                `<a class="ps-cta ps-cta--ghost pc-sign__cta" href="${t.home}#contato">`);
-  h = fillEl(h, 'data-pc-sign-line', { inner: labels.signLine || '' });
-  h = fillEl(h, 'data-pc-sign-cta',  { inner: esc(labels.signCta || 'Get in touch') });
-
-  /* ---- proximo projeto (URL real, nao ?slug=) ---- */
-  h = fillEl(h, 'data-i18n="projects.case.nextProject"', {
-    inner: esc(labels.nextProject || 'Next project'),
-    tag: tg => setAttr(tg, 'data-i18n', null),
-  });
-  h = fillEl(h, 'data-pc-next',       { tag: tg => setAttr(tg, 'href', t.url(next.id)) });
-  h = fillEl(h, 'data-pc-next-title', { inner: esc(next.title) });
-  h = fillEl(h, 'data-pc-next-img',   { tag: tg => setAttr(tg, 'src', asset(next.cover)) });
-  if (!next.cover) {
-    h = h.replace('<span class="pc-next__thumb" aria-hidden="true">',
-                  '<span class="pc-next__thumb" aria-hidden="true" style="display: none">');
-  }
-
-  return h;
+  return JSON.stringify({ '@context': 'https://schema.org', '@graph': [work, pageNode, crumbs, person] }, null, 2);
 }
 
 /* =========================================================
@@ -584,7 +406,7 @@ function fillNav(shellHeader, lang, I18N) {
 /* =========================================================
    PAGINA
    ========================================================= */
-function page(p, lang, next, I18N, SHELL, B) {
+function page(p, lang, others, I18N, SHELL, PC) {
   const t   = L[lang];
   const url = t.url(p.id);
   const cover = p.cover ? abs(p.cover) : abs('img/eufoto1.png');
@@ -633,6 +455,7 @@ function page(p, lang, next, I18N, SHELL, B) {
   </script>
 
   ${SHELL.fx}
+  <script>document.documentElement.classList.add('cs-js');</script>
 
   <meta property="og:type" content="article" />
   <meta property="og:site_name" content="Bernardo Iannini" />
@@ -640,7 +463,10 @@ function page(p, lang, next, I18N, SHELL, B) {
   <meta property="og:description" content="${esc(metaDesc)}" />
   <meta property="og:url" content="${SITE_URL}${url}" />
   <meta property="og:image" content="${esc(cover)}" />
-  <meta property="og:image:alt" content="${esc(p.title)}" />
+  <meta property="og:image:width" content="1600" />
+  <meta property="og:image:height" content="900" />
+  <meta property="og:image:alt" content="${esc(p.title)} · Bernardo Iannini" />
+  <meta property="article:author" content="${SITE_URL}${t.about}" />
   <meta property="og:locale" content="${t.locale}" />
   <meta property="og:locale:alternate" content="${t.altLocale}" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -658,7 +484,15 @@ ${jsonLd(p, lang, url)}
 
   ${fillNav(SHELL.header, lang, I18N)}
 
-  ${fillMain(SHELL.main, p, lang, next, I18N, B)}
+  ${renderCaseMain({
+    p, lang, t, others, root: ROOT,
+    PC_ICONS: PC.PC_ICONS,
+    hostname: PC.pcHostname,
+    asset,
+    answer: answerBlock(p),
+    coverSet: (ext) => PC.pcCoverSet(asset(p.cover), ext),
+    coverSetFor: (op, ext) => PC.pcCoverSet(asset(op.cover), ext),
+  })}
 
   <!-- language.js ANTES do UI.js: o init() do UI.js chama applyI18n() de
        forma sincrona assim que carrega. project-case.js NAO entra aqui de
@@ -668,14 +502,9 @@ ${jsonLd(p, lang, url)}
   <script src="/js/UI.js" defer></script>
   <script src="/js/sw-register.js" defer></script>
 
-  <!-- GSAP + Lenis (defer) + a camada de motion da pagina, igual ao
-       project.html. O project-fx.js so precisa do [data-pc-root] ja
-       populado — exatamente o nosso caso. Sem eles a pagina fica 100%
-       legivel e funcional. DrawSVG: traco dos icones dos topicos. -->
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js" defer></script>
+  <!-- camada de interacao da pagina (vanilla, sem GSAP/Lenis): reveals,
+       tour pelas telas, passos e galeria. Sem ela a pagina fica 100%
+       legivel e funcional. -->
   <script src="/js/project-fx.js" defer></script>
 
   <script>
@@ -723,7 +552,6 @@ function build(langs = ['pt']) {
   const I18N  = loadI18N();
   const PC    = loadCase();
   const SHELL = loadShell();
-  const B     = makeBlocks(PC);
   const report = [];
 
   for (const lang of langs) {
@@ -733,8 +561,8 @@ function build(langs = ['pt']) {
     fs.mkdirSync(dir, { recursive: true });
 
     list.forEach((p, i) => {
-      const next = list[(i + 1) % list.length];
-      const html = page(p, lang, next, I18N, SHELL, B);
+      const others = [1, 2, 3].map(k => list[(i + k) % list.length]).filter(o => o.id !== p.id);
+      const html = page(p, lang, others, I18N, SHELL, PC);
       if (html.includes('[object Object]')) {
         throw new Error(`[build-projects] ${lang}/${p.id}: [object Object] no HTML`);
       }

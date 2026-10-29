@@ -111,7 +111,10 @@ html.lenis iframe { pointer-events: none; }
 
   /* hacks locais */
   --tl-gutter: -18px;
-  --hero-nudge: -110px;
+  /* desloca a hero pra esquerda SO o que a margem lateral permite:
+     -110px em tela larga, encolhendo ate 0 perto de 1120px (antes a
+     foto saia pela borda entre ~1025 e 1340px) */
+  --hero-nudge: clamp(-110px, calc((1140px - 100vw) / 2), 0px);
 
   /* Section de projetos não usa mais painel sólido (evita marcação
      visível entre sections). A variável permanece pra borda do
@@ -142,6 +145,11 @@ body {
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
   line-height: 1.6;
   position: relative;
+}
+/* Safari < 16 nao conhece overflow:clip -> sem isso o iPhone antigo
+   ganha rolagem lateral pelos elementos full-bleed */
+@supports not (overflow: clip) {
+  html, body { overflow-x: hidden; }
 }
 body::before {
   content: "";
@@ -452,7 +460,10 @@ body.pc-nav-hidden header {
   min-height: 100svh; /* svh: altura estável no mobile — não pula quando a barra do browser some/aparece */
   display: grid;
   grid-template-columns: auto 1fr auto;
-  align-items: center; gap: 84px;
+  /* gap e foto encolhem juntos entre ~1025 e 1500px: em notebook de
+     1280 a soma (foto + 2 gaps + nome + rail) passava da coluna de 1120
+     e cortava os botoes sociais na borda */
+  align-items: center; gap: clamp(56px, 5.6vw, 84px);
   padding: 84px 20px 32px;
   position: relative; left: var(--hero-nudge);
 }
@@ -460,7 +471,7 @@ body.pc-nav-hidden header {
    clip-path: ellipse() recorta a box retangular da <img> num oval,
    eliminando os cantos onde a "box" aparecia. ===== */
 .photo {
-  width: 500px;
+  width: clamp(420px, 37vw, 500px);
   height: auto;
   position: relative;
   overflow: hidden;
@@ -468,6 +479,12 @@ body.pc-nav-hidden header {
   cursor: pointer;
   /* Recorta o figure num oval — visualmente não existe mais retângulo. */
   clip-path: ellipse(50% 50% at center);
+}
+/* notebook pequeno / tablet deitado (1025-1240px): a coluna é a tela
+   inteira, sem margem lateral — foto e espaços menores pra rail caber */
+@media (min-width: 1025px) and (max-width: 1240px) {
+  .hero { gap: 40px; }
+  .photo { width: 340px; }
 }
 
 /* Layout — primeira img define a altura natural da figure */
@@ -2279,29 +2296,6 @@ body.pc-nav-hidden header {
   stroke-opacity: .20;
   stroke-width: 1.6;
 }
-/* camada ACESA — as MESMAS linhas em lima com brilho suave. Revelada só
-   num círculo que segue o cursor: a máscara vive no DIV .pj-topo__glowbox
-   (px reais, preciso) — não no <svg> (que usava coord. do viewBox
-   escalado por slice, e deslocava). --mx/--my via scrollfx (suavizado
-   por GSAP), herdados de .pj-topo. Só as LINHAS dentro do círculo
-   acendem; entre elas fica escuro. */
-.pj-topo__glowbox {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity .5s ease;
-  -webkit-mask: radial-gradient(circle 128px at var(--mx, -600px) var(--my, -600px), #000 0, rgba(0, 0, 0, .22) 60%, transparent 100%);
-          mask: radial-gradient(circle 128px at var(--mx, -600px) var(--my, -600px), #000 0, rgba(0, 0, 0, .22) 60%, transparent 100%);
-}
-.pj-topo.is-hot .pj-topo__glowbox { opacity: 1; }
-.pj-topo__glow {
-  fill: none;
-  stroke: #a6ea62;
-  stroke-opacity: .62;
-  stroke-width: 1.6;
-  filter: drop-shadow(0 0 2.2px rgba(163, 230, 53, .45));
-}
-@media (hover: none) { .pj-topo__glowbox { display: none; } }
 /* HERO — o MESMO fundo topográfico dos projetos, reusando as curvas via
    <use href="#topoLines">. Assenta ATRÁS de todo o conteúdo da hero: o
    texto (.stack) não é posicionado, então z-index:0 o cobriria — -1 põe o
@@ -2784,14 +2778,14 @@ body.pc-nav-hidden header {
 .skills-tiles .tile-square:hover .tile-ico{ border-color: color-mix(in oklab, var(--green) 55%, var(--border)); box-shadow: 0 18px 44px rgba(0,0,0,.42) }
 .skills-tiles .tile-square:hover .tile-ico::after{ transform: translateX(140%); opacity: .9 }
 .skills-tiles .tile-square:hover .tile-ico img{ transform: scale(1.08) rotate(-2deg); filter: drop-shadow(0 0 8px rgba(34,197,94,.35)) }
-.skills-tiles .tile-square::after{ content: attr(data-label); position: absolute; left: 50%; bottom: -34px; transform: translateX(-50%) translateY(6px); padding: 6px 10px; font-weight: 800; font-size: 12px; letter-spacing: .02em; white-space: nowrap; color: var(--text); background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(8px); border-radius: 10px; box-shadow: 0 8px 18px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.06); pointer-events: none; opacity: 0; z-index: 10; transition: opacity .18s ease, transform .18s ease }
+.skills-tiles .tile-square::after{ content: attr(data-label); position: absolute; left: 50%; bottom: -34px; transform: translateX(-50%) translateY(6px); padding: 6px 10px; font-weight: 800; font-size: 12px; letter-spacing: .02em; white-space: nowrap; color: var(--text); background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-radius: 10px; box-shadow: 0 8px 18px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.06); pointer-events: none; opacity: 0; z-index: 10; transition: opacity .18s ease, transform .18s ease }
 .skills-tiles .tile-square:hover::after{ opacity: 1; transform: translateX(-50%) translateY(0) }
 .skills-tiles .tile-reveal{ position: absolute; top: 0; bottom: 0; left: calc(100% + 12px); width: var(--reveal-w); display: grid; align-content: center; justify-items: start; background: linear-gradient(180deg, var(--glass), var(--glass-2)); border: 1px solid rgba(65,110,84,.35); border-radius: 14px; padding: 12px 14px; box-shadow: 0 20px 50px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.02); opacity: 0; transform: translateX(12px); pointer-events: none; transition: opacity .28s ease, transform .28s ease, border-color .28s ease, background .28s ease }
 .skills-tiles .reveal-grid{ display: grid; grid-auto-flow: column; grid-auto-columns: max-content; gap: 12px; align-items: center }
 .skills-tiles .reveal-grid li{ width: 52px; aspect-ratio: 1/1; border-radius: 12px; display: grid; place-items: center; background: var(--rail); border: 1px solid var(--border); box-shadow: 0 12px 28px rgba(0,0,0,.35); transition: transform .2s ease, border-color .2s ease, filter .2s ease; position: relative }
 .skills-tiles .reveal-grid li:hover{ transform: translateY(-3px); border-color: color-mix(in oklab, var(--green) 55%, var(--border)); filter: drop-shadow(0 0 10px rgba(34,197,94,.35)) }
 .skills-tiles .reveal-grid img{ width: 70%; height: 70%; object-fit: contain }
-.skills-tiles .reveal-grid li::after{ content: attr(data-label); position: absolute; left: 50%; top: -32px; transform: translate(-50%, 6px); padding: 6px 8px; font-weight: 800; font-size: 12px; letter-spacing: .02em; white-space: nowrap; background: var(--w-05); border: 1px solid var(--w-10); backdrop-filter: blur(8px); border-radius: 8px; box-shadow: 0 8px 18px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.04); color: var(--text); opacity: 0; pointer-events: none; z-index: 20; transition: opacity .18s ease, transform .18s ease }
+.skills-tiles .reveal-grid li::after{ content: attr(data-label); position: absolute; left: 50%; top: -32px; transform: translate(-50%, 6px); padding: 6px 8px; font-weight: 800; font-size: 12px; letter-spacing: .02em; white-space: nowrap; background: var(--w-05); border: 1px solid var(--w-10); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-radius: 8px; box-shadow: 0 8px 18px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.04); color: var(--text); opacity: 0; pointer-events: none; z-index: 20; transition: opacity .18s ease, transform .18s ease }
 .skills-tiles .reveal-grid li:hover::after{ opacity: 1; transform: translate(-50%, 0) }
 .skills-tiles .tile-square.open{ --slideX: calc(-1 * var(--shift)); box-shadow: 0 18px 44px rgba(0,0,0,.42); border-color: color-mix(in oklab, var(--green) 45%, var(--border)) }
 .skills-tiles .tile-square.open .tile-reveal{ opacity: 1; transform: translateX(0); pointer-events: auto }
@@ -2889,6 +2883,7 @@ body.pc-nav-hidden header {
   background: none;
   border: none;
   border-radius: 0;
+  -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
 .contact-hero__kicker::before {
@@ -3131,7 +3126,7 @@ body.pc-nav-hidden header {
   --svc-45: rgba(163, 230, 53, .45);
   --svc-15: rgba(163, 230, 53, .15);
   border: none; background: transparent; padding: 0; margin: auto;
-  max-width: 100vw; max-height: 100vh; width: 100%; height: 100%;
+  max-width: 100vw; max-height: 100vh; max-height: 100dvh; width: 100%; height: 100%;
   color: var(--text); overflow: visible;
 }
 .ctm[open] { display: grid; place-items: center }
@@ -3141,6 +3136,7 @@ body.pc-nav-hidden header {
     radial-gradient(ellipse 50% 60% at 30% 30%, rgba(163,230,53,.05), transparent 70%),
     radial-gradient(ellipse 50% 60% at 70% 30%, rgba(34,197,94,.06), transparent 70%),
     radial-gradient(circle at 50% 60%, rgba(8,18,12,.6) 0%, rgba(0,0,0,.88) 80%);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   animation: ctm-backdrop-in .35s ease forwards;
 }
@@ -3468,7 +3464,7 @@ body.pc-nav-hidden header {
    9) COMPLEMENTARES (resume, tema, language, modal)
    ============================= */
 /* Resume button — hover “wow” sem reflow */
-.resume-btn { display:inline-flex; align-items:center; gap:8px; font-weight:700; font-size:.9rem; opacity:.95; background: var(--w-05); padding:8px 16px; border-radius:999px; border:1px solid var(--w-10); backdrop-filter: blur(8px); transition: background .2s, opacity .2s; position: relative; overflow: hidden; isolation: isolate; backface-visibility: hidden; will-change: filter, box-shadow;  user-select: none;
+.resume-btn { display:inline-flex; align-items:center; gap:8px; font-weight:700; font-size:.9rem; opacity:.95; background: var(--w-05); padding:8px 16px; border-radius:999px; border:1px solid var(--w-10); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); transition: background .2s, opacity .2s; position: relative; overflow: hidden; isolation: isolate; backface-visibility: hidden; will-change: filter, box-shadow;  user-select: none;
   -webkit-user-select: none;   /* iOS/Safari */
   -moz-user-select: none;
   -ms-user-select: none;
@@ -3533,11 +3529,11 @@ input[type="text"], input[type="email"], textarea, .btn-link, .btn-more,
 
 /* Switch de language (à esquerda do header) */
 .lang-slot{ position:relative; justify-self: start; z-index: 40 }
-.lang-switch.pill{ display:flex; align-items:center; gap:8px; height: 38px; padding: 0 14px; border-radius: 999px; background: var(--w-05); backdrop-filter: blur(8px); border: 1px solid var(--w-10); color: var(--text); box-shadow: 0 6px 16px rgba(0,0,0,.18), inset 0 1px 0 var(--w-06); cursor:pointer; transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease }
+.lang-switch.pill{ display:flex; align-items:center; gap:8px; height: 38px; padding: 0 14px; border-radius: 999px; background: var(--w-05); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border: 1px solid var(--w-10); color: var(--text); box-shadow: 0 6px 16px rgba(0,0,0,.18), inset 0 1px 0 var(--w-06); cursor:pointer; transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease }
 .lang-switch:hover{ box-shadow: 0 10px 24px rgba(0,0,0,.22), inset 0 1px 0 var(--w-06) }
 .lang-switch:active{ transform: translateY(1px) scale(.98) }
 .lang-switch .lang-ico{ font-size: 15px; line-height: 0 } .lang-switch .caret{ opacity:.8 }
-.lang-menu{ position:absolute; top: calc(100% + 10px); left: 0; min-width: 180px; background: var(--w-05); border:1px solid var(--w-10); border-radius: 12px; box-shadow: 0 18px 44px rgba(0,0,0,.26), inset 0 1px 0 var(--w-06); backdrop-filter: blur(10px); padding:10px 8px; list-style:none; display:none }
+.lang-menu{ position:absolute; top: calc(100% + 10px); left: 0; min-width: 180px; background: var(--w-05); border:1px solid var(--w-10); border-radius: 12px; box-shadow: 0 18px 44px rgba(0,0,0,.26), inset 0 1px 0 var(--w-06); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); padding:10px 8px; list-style:none; display:none }
 .lang-menu.open{ display:block }
 .lang-menu li{ position:relative; overflow:hidden; isolation:isolate; padding:10px 12px; border-radius:10px; color: var(--text); cursor:pointer; transition: color .28s cubic-bezier(.4,0,.2,1) }
 /* mesmo efeito da casa: círculo lime sobe e preenche o item no hover */
@@ -3594,6 +3590,7 @@ input[type="text"], input[type="email"], textarea, .btn-link, .btn-more,
 /* fundo escuro atrás do dialog */
 .cert-modal::backdrop {
   background: rgba(0, 0, 0, 0.65);
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
 }
 
@@ -3674,6 +3671,7 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   border-radius: 12px;
   border: 1px solid var(--w-10);
   background: var(--w-05);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   display:none; /* só no mobile */
   align-items:center; justify-content:center;
@@ -3709,6 +3707,7 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   border: 1px solid var(--w-10);
   border-radius: 16px;
   box-shadow: 0 18px 44px rgba(0,0,0,.26), inset 0 1px 0 var(--w-06);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
 .mobile-nav a{
@@ -4070,6 +4069,7 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   margin: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4080,6 +4080,7 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
 /* backdrop escuro com blur */
 .proj-modal::backdrop {
   background: radial-gradient(circle at top, rgba(0,0,0,.7), rgba(0,0,0,.96));
+  -webkit-backdrop-filter: blur(18px);
   backdrop-filter: blur(18px);
 }
 
@@ -4262,6 +4263,7 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   background: var(--g-10);
   color: var(--text-mint);
   box-shadow: 0 6px 14px rgba(0,0,0,.6);
+  -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   white-space: nowrap;
   user-select: none;
@@ -4948,10 +4950,7 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   transform:
     translate(calc(-50% + var(--tx)), calc(-50% + var(--ty) + var(--lift)))
     scale(var(--sc)) rotate(var(--rot));
-  transition:
-    transform var(--pj-swap) var(--ps-ease),
-    filter var(--pj-color) var(--ps-ease),
-    box-shadow var(--pj-swap) var(--ps-ease);
+  transition: transform var(--pj-swap) var(--ps-ease);
   will-change: transform;
 }
 .pj-win.is-slot-0 {
@@ -4965,38 +4964,19 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   --ty: calc(clamp(48px, 5vw, 74px) * -1);
   --sc: .92; --rot: 1deg;
   z-index: 2;
-  filter: saturate(.35) brightness(.62);
 }
 .pj-win.is-slot-2 {
   --tx: clamp(30px, 3.5vw, 56px);
   --ty: clamp(58px, 6vw, 92px);
   --sc: .875; --rot: -1.2deg;
   z-index: 1;
-  filter: saturate(.3) brightness(.52);
 }
 /* janela de tras: convida — sobe um fio e clareia um pouco */
 .pj-win:not(.is-front) { cursor: pointer; }
-.pj-win:not(.is-front):hover { --lift: -8px; filter: saturate(.55) brightness(.78); }
+.pj-win:not(.is-front):hover { --lift: -8px; }
 
-/* anel de borda por proximidade — SO a borda acende, nunca o miolo.
-   --glow-i/x/y escritos pelo scrollfx (mousemove no palco). */
-.pj-win::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  padding: 1px;
-  border-radius: inherit;
-  background: radial-gradient(240px circle at var(--glow-x, 50%) var(--glow-y, 50%),
-    rgba(163, 230, 53, calc(var(--glow-i, 0) * .5)),
-    rgba(163, 230, 53, calc(var(--glow-i, 0) * .18)) 42%,
-    transparent 72%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  pointer-events: none;
-  z-index: 4;
-}
+.pj-win { border-color: var(--w-05); }
+.pj-win.is-front:hover { border-color: var(--g-22); }
 
 .pj-win__view {
   aspect-ratio: 16 / 9;
@@ -5015,15 +4995,27 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   opacity: .8;
   pointer-events: none;
 }
+/* janelas de trás escurecem por um véu chapado (só opacity anima;
+   filter em imagem grande repintava a cada troca da pilha) */
+.pj-win__veil::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 8, 6, .55);
+  opacity: 0;
+  transition: opacity var(--pj-color) var(--ps-ease);
+}
+.pj-win:not(.is-front) .pj-win__veil { opacity: 1; }
+.pj-win:not(.is-front) .pj-win__veil::after { opacity: 1; }
+.pj-win:not(.is-front):hover .pj-win__veil::after { opacity: .7; }
 /* "planta tecnica": janelas de tras ganham matriz de pontos lima que
    morre quando a janela vem pra frente (revela o produto real) */
 .pj-win__view::after {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(126, 180, 48, .55) 1px, transparent 1.4px);
+  background-image: radial-gradient(rgba(126, 180, 48, .22) 1px, transparent 1.4px);
   background-size: 4px 4px;
-  mix-blend-mode: multiply;
   opacity: 0;
   transition: opacity var(--pj-color) var(--ps-ease);
   pointer-events: none;
@@ -5217,19 +5209,12 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 20px;
-  transition: grid-template-columns .5s var(--ps-ease);
 }
-.pj-row[data-hot="0"] { grid-template-columns: 1.8fr .85fr .85fr; }
-.pj-row[data-hot="1"] { grid-template-columns: .85fr 1.8fr .85fr; }
-.pj-row[data-hot="2"] { grid-template-columns: .85fr .85fr 1.8fr; }
 /* fileira incompleta fecha o bento (sem buraco de coluna vazia):
    2 cards dividem a fileira; card solitário já nasce na largura
    "expandida" (o hover dele só revela a gaveta, nada re-pondera) */
 .pj-row[data-n="2"] { grid-template-columns: 1fr 1fr; }
-.pj-row[data-n="2"][data-hot="0"] { grid-template-columns: 1.45fr 1fr; }
-.pj-row[data-n="2"][data-hot="1"] { grid-template-columns: 1fr 1.45fr; }
-.pj-row[data-n="1"],
-.pj-row[data-n="1"][data-hot="0"] {
+.pj-row[data-n="1"] {
   grid-template-columns: minmax(0, calc((100% - 40px) / 3 * 1.8));
 }
 
@@ -5247,11 +5232,13 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   overflow: hidden;
   background: var(--rail);
   box-shadow: 0 16px 40px -24px rgba(0, 0, 0, .55);
-  transition: box-shadow .5s var(--ps-ease), border-color .3s ease;
+  transform: translateZ(0);
+  transition: transform .45s var(--ps-ease), border-color .3s ease;
 }
-.pj-card.is-hot .pj-card__frame {
-  box-shadow: 0 26px 58px -28px rgba(0, 0, 0, .62);
-}
+/* hover: o card sobe e a capa aproxima — só transform (compositor),
+   nada de re-ponderar colunas (relayout + resize de imagem por frame) */
+.pj-card.is-hot .pj-card__frame { transform: translateY(-6px); border-color: var(--g-22); }
+.pj-card.is-hot .pj-card__img { transform: scale(1.045); }
 /* SPOTLIGHT (GlowCard adaptado): no hover um brilho verde SEGUE o cursor
    sobre a capa e a borda acende na direção dele. O scrollfx escreve --mx/--my
    (em %) no .pj-card__frame; a classe .is-hot (o hover) liga o efeito. */
@@ -5263,9 +5250,8 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   z-index: 2;
   pointer-events: none;
   background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%),
-    color-mix(in oklab, var(--green) 32%, transparent), transparent 60%);
+    color-mix(in oklab, var(--green) 18%, transparent), transparent 60%);
   opacity: 0;
-  mix-blend-mode: screen;
   transition: opacity .4s ease;
 }
 .pj-card.is-hot .pj-card__frame::after { opacity: 1; }
@@ -5294,11 +5280,9 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
 .pj-card__view {
   position: relative;
   display: block;
-  /* ALTURA FIXA: alargar a coluna revela mais laterais do screenshot
-     (object-fit cover) — a tela se abre, nada pula */
-  height: clamp(178px, 17vw, 248px);
+  /* mesma proporção da capa (16:9): a capa aparece inteira */
+  aspect-ratio: 16 / 9;
   overflow: hidden;
-  isolation: isolate; /* contém o blend do duotone dentro da view */
 }
 .pj-card__img {
   position: absolute;
@@ -5306,11 +5290,8 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* cor cheia já em repouso: sem duotone verde nem cinza (a pedido) */
-  filter: none;
+  transition: transform .6s var(--ps-ease);
 }
-/* (removido a pedido) o duotone verde das capas dos cards — a capa aparece
-   em cor cheia desde o repouso, sem nenhum verde por cima. */
 /* legenda editorial abaixo do frame */
 .pj-card__cap {
   display: flex;
@@ -5423,14 +5404,13 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
 }
 @media (max-width: 900px) {
   /* fileiras viram GRADE 2-col compacta (nunca trem de cards de tela
-     inteira): altura da janela continua FIXA — o card largo do span
-     só revela mais laterais do screenshot, mesma mecânica do desktop */
+     inteira); o card que sobra ocupa a linha num crop panorâmico */
   .pj-arch { gap: 16px; }
-  .pj-row,
-  .pj-row[data-hot] { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .pj-row { grid-template-columns: 1fr 1fr; gap: 16px; }
   .pj-row[data-n="1"] { grid-template-columns: 1fr; }
   .pj-row[data-n="3"] .pj-card:nth-child(3) { grid-column: 1 / -1; }
-  .pj-card__view { height: clamp(150px, 24vw, 214px); }
+  .pj-row[data-n="1"] .pj-card__view,
+  .pj-row[data-n="3"] .pj-card:nth-child(3) .pj-card__view { aspect-ratio: 21 / 9; }
   .pj-cli__count { margin-left: 0; width: 100%; }
 }
 @media (max-width: 640px) {
@@ -5451,43 +5431,17 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
      grande é o ponto num portfólio) */
   .pj-arch { gap: 18px; }
   .pj-row,
-  .pj-row[data-hot],
   .pj-row[data-n="1"] { grid-template-columns: 1fr; gap: 18px; }
   .pj-row[data-n="3"] .pj-card:nth-child(3) { grid-column: auto; }
+  .pj-row .pj-card .pj-card__view { aspect-ratio: 16 / 9; }
 }
 
-/* touch: sem hover pra revelar cor — as telas já entram em COR cheia; a
-   placa é só o screenshot (sem gaveta). Mídia em fluxo 16:9, tap navega. */
+/* touch: sem hover — tap navega direto; nada de estado "grudado" */
 @media (hover: none) {
-  .pj-card__view { height: auto; }
-  .pj-card__img {
-    position: static;
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 9;
-    filter: none;                 /* cor cheia no toque */
-    transform: none !important;   /* parallax-zoom morre no toque */
-  }
-  .pj-card__view::after { display: none; } /* sem véu no toque */
   .pj-win:not(.is-front):hover { --lift: 0px; }
-  /* hover que "gruda" no tap não pode clarear a janela de trás */
-  .pj-win.is-slot-1:hover { filter: saturate(.35) brightness(.62); }
-  .pj-win.is-slot-2:hover { filter: saturate(.3) brightness(.52); }
-}
-/* touch acima de 900px (iPad landscape): grade 3-col não re-pondera */
-@media (hover: none) and (min-width: 901px) {
-  .pj-row[data-hot] { grid-template-columns: 1fr 1fr 1fr; }
-}
-/* touch tablet: card largo (fileira de 1 ou o span da fileira de 3)
-   ganha crop panorâmico em vez de um 16:9 gigante */
-@media (hover: none) and (min-width: 641px) and (max-width: 900px) {
-  .pj-row[data-n="1"] .pj-card__img,
-  .pj-row[data-n="3"] .pj-card:nth-child(3) .pj-card__img {
-    aspect-ratio: auto;
-    height: clamp(180px, 28vw, 250px);
-    object-fit: cover;
-  }
+  .pj-win:not(.is-front):hover .pj-win__veil::after { opacity: 1; }
+  .pj-card.is-hot .pj-card__frame { transform: none; }
+  .pj-card.is-hot .pj-card__img { transform: none; }
 }
 
 /* dedo, não cursor: alvos de toque >= 44px + :active tátil no lugar
@@ -5505,784 +5459,656 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   .pj-panel__cta .ps-cta:active { color: var(--text); }
 }
 
-/* reduced-motion: estados finais diretos, zero coreografia */
 /* ==================================================================
-   PROJECT CASE STUDY (project.html) — página individual de um projeto.
-   Reaproveita .ps-frame, .ps-cta e .ps-pill (já polidos na showcase);
-   as classes .pc-* aqui são só o que é exclusivo desta página.
+   PÁGINA DO PROJETO (/projetos/<id>.html) — .cs-*
+   Montada por scripts/lib/case-render.js; interação em js/project-fx.js.
+   Leitura antes de tudo: coluna de texto de ~64ch, títulos curtos,
+   uma ideia por bloco. Movimento só com transform/opacity.
+   Sem JS a página é completa: os estados "escondidos" dos reveals só
+   existem sob html.cs-js (classe posta no <head>).
    ================================================================== */
-.pc-main {
-  max-width: 980px;
+.cs, .cs *, .cs *::before, .cs *::after { box-sizing: border-box; }
+.cs {
+  --cs-w: 1180px;
+  --cs-read: 64ch;
+  --cs-gap: clamp(72px, 10vw, 136px);
+  width: 100%;
+  max-width: var(--cs-w);
   margin: 0 auto;
-  padding: calc(var(--nav-h) + 56px) 20px 120px;
+  /* o menu fixo tem ~2x o --nav-h com respiro: o conteúdo começa abaixo dele */
+  padding: calc(var(--nav-h, 56px) + 60px) 20px 72px;
+  padding-left: max(20px, env(safe-area-inset-left));
+  padding-right: max(20px, env(safe-area-inset-right));
+  overflow-x: clip;
+}
+.cs-h2 {
+  margin: 0 0 18px;
+  font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -.015em;
+  color: var(--text);
 }
 
-.pc-top { margin-bottom: clamp(28px, 5vw, 48px); }
-.pc-back {
-  display: inline-flex;
+/* ---------- trilha ---------- */
+.cs-crumbs {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
   font-family: "JetBrains Mono", monospace;
-  font-size: .78rem;
+  font-size: .74rem;
   letter-spacing: .04em;
   color: var(--text-hint);
-  transition: color .22s ease;
 }
-.pc-back svg { width: 15px; height: 15px; transition: transform .28s var(--ps-ease, cubic-bezier(.22,1,.36,1)); }
-.pc-back:hover { color: var(--text); }
-.pc-back:hover svg { transform: translateX(-3px); }
+.cs-crumbs a { color: var(--text-hint); text-decoration: none; padding: 6px 0; transition: color .2s ease; }
+.cs-crumbs a:hover { color: var(--lime); }
+.cs-crumbs [aria-current] { color: var(--text-soft); }
 
-/* ---------- FUNDO TOPOGRÁFICO do hero do caso ----------
-   As mesmas curvas de nível do site (defs duplicados no project.html),
-   mais apagadas que na home (.13 vs .18), morrendo em fade antes do
-   corpo do caso. Reusa .pj-topo__layer/__glowbox/__glow globais;
-   o glow de cursor é ligado pelo project-fx.js (só pointer fino). */
-.pc-topo {
-  position: absolute;
-  top: 0;
-  left: calc(50% - 50vw);
-  width: 100vw;
-  height: 120vh;
-  z-index: -1;
-  pointer-events: none;
-  -webkit-mask: linear-gradient(180deg, #000 0%, #000 38%, transparent 92%);
-          mask: linear-gradient(180deg, #000 0%, #000 38%, transparent 92%);
+/* ---------- hero ---------- */
+.cs-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: clamp(32px, 5vw, 72px);
+  align-items: center;
+  margin-top: clamp(20px, 3vw, 36px);
 }
-.pc-topo__base {
-  fill: none;
-  stroke: var(--ink);
-  stroke-opacity: .13;
-  stroke-width: 1;
-}
-.pc-topo.is-hot .pj-topo__glowbox { opacity: 1; }
-@media (hover: none) { .pc-topo .pj-topo__glowbox { display: none; } }
-
-/* ---------- HERO do caso ---------- */
-/* linha de registro — fatos secos em mono no lugar do kicker decorativo:
-   dot verde ESTÁTICO (nada pulsa no site) + status + domínio real
-   clicável + ano + papel. Cada item só existe se o campo existir. */
-.pc-reg {
+.cs-reg {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 6px 10px;
   margin: 0 0 18px;
   font-family: "JetBrains Mono", monospace;
-  font-size: .74rem;
-  letter-spacing: .08em;
+  font-size: .72rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
   color: var(--text-hint);
 }
-.pc-reg__item { display: inline-flex; align-items: center; gap: 7px; }
-.pc-reg__status { color: var(--text-mint); text-transform: uppercase; }
-.pc-reg__dot {
-  width: 6px;
-  height: 6px;
+.cs-reg__dot {
+  width: 7px; height: 7px;
   border-radius: 50%;
   background: var(--green);
-  box-shadow: 0 0 8px var(--g-50);
+  box-shadow: 0 0 0 4px var(--g-15);
 }
-.pc-reg__sep { color: var(--gline-42); }
-a.pc-reg__host { padding: 12px 0; margin: -12px 0; transition: color .22s ease; }
-a.pc-reg__host:hover { color: var(--text); }
-.pc-hero__title {
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
-  font-size: clamp(2.4rem, 5vw, 4.2rem);
-  font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: .01em;
-  text-transform: uppercase;
-  /* mesma assinatura verde→lima dos títulos do catálogo */
+.cs-title {
+  margin: 0 0 18px;
+  font-size: clamp(2.5rem, 6vw, 4.4rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -.03em;
   background: var(--gradient-lime);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  margin: 0 0 20px;
 }
-.pc-hero__desc {
-  max-width: 62ch;
-  font-size: clamp(1.02rem, 1.5vw, 1.18rem);
-  line-height: 1.6;
+.cs-title__sub {
+  display: block;
+  margin-top: 12px;
+  font-size: clamp(1.05rem, 1.9vw, 1.35rem);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.3;
+  -webkit-text-fill-color: var(--text-soft);
   color: var(--text-soft);
-  margin: 0 0 26px;
 }
-.pc-hero__tech {
+.cs-lead {
+  max-width: 56ch;
+  margin: 0 0 28px;
+  font-size: clamp(1rem, 1.35vw, 1.12rem);
+  line-height: 1.7;
+  color: var(--text-soft);
+}
+.cs-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0 2px;
-  margin-bottom: 30px;
+  gap: 14px 18px;
 }
-.pc-hero__cta {
-  display: flex;
-  flex-wrap: wrap;
+/* o link do site: grande, com o domínio escrito — impossível não achar */
+.cs-visit {
+  display: inline-flex;
   align-items: center;
-  gap: 28px;
+  gap: 14px;
+  min-height: 56px;
+  padding: 10px 14px 10px 12px;
+  border-radius: 16px;
+  background: var(--gradient-lime);
+  color: #06120a;
+  text-decoration: none;
+  box-shadow: 0 14px 40px -16px rgba(163, 230, 53, .55);
+  transition: transform .25s var(--ps-ease), box-shadow .25s ease;
 }
+.cs-visit:hover { transform: translateY(-2px); box-shadow: 0 18px 46px -14px rgba(163, 230, 53, .7); }
+.cs-visit:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+.cs-visit__icon {
+  display: grid; place-items: center;
+  width: 36px; height: 36px;
+  border-radius: 11px;
+  background: rgba(6, 18, 10, .12);
+}
+.cs-visit__icon svg { width: 20px; height: 20px; }
+.cs-visit__text { display: grid; line-height: 1.15; }
+.cs-visit__text b { font-size: .98rem; font-weight: 800; }
+.cs-visit__text span { font-family: "JetBrains Mono", monospace; font-size: .74rem; opacity: .78; }
+.cs-visit__arrow svg { width: 18px; height: 18px; transition: transform .25s var(--ps-ease); }
+.cs-visit:hover .cs-visit__arrow svg { transform: translate(2px, -2px); }
+.cs-stores { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.cs-store { display: inline-block; line-height: 0; border-radius: 10px; transition: transform .2s ease; }
+.cs-store:hover { transform: translateY(-2px); }
+.cs-store img { height: 48px; width: auto; }
+.cs-store__play { height: 70px !important; margin: -11px -9px; } /* o PNG oficial traz respiro embutido */
+.cs-by { margin: 22px 0 0; font-size: .9rem; color: var(--text-hint); }
+.cs-by a { color: var(--text); font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--g-22); }
+.cs-by a:hover { color: var(--lime); border-color: var(--lime); }
 
-/* ---------- CORPO DO CASO — vídeo STICKY no topo + tópicos ----------
-   O palco gruda logo abaixo do navbar; os tópicos rolam por baixo e
-   somem atrás dele (o ::after faz o fade). A largura da janela é
-   limitada pela ALTURA disponível: sempre sobra uma faixa >=300px
-   embaixo pro tópico ativo respirar. */
-.pd-body {
+/* janela de browser (hero + tour) */
+.cs-win {
   position: relative;
-  margin-top: clamp(8px, 1.5vw, 20px);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--w-10);
+  background: var(--rail);
+  box-shadow: 0 40px 90px -36px rgba(0, 0, 0, .8);
 }
-/* BASE (mobile/tablet): empilha — a janela do vídeo inline no topo, os
-   tópicos abaixo. Sem sticky, sem dock (o toque não combina com pin). */
-.pd-stage {
-  position: static;
-  z-index: 2;
-  margin: 0 0 clamp(26px, 6vw, 40px);
-  background: none;
+.cs-win__bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 14px;
+  background: rgba(255, 255, 255, .04);
+  border-bottom: 1px solid var(--w-05);
 }
-.pd-stage::after { display: none; }
-.pd-stage .pc-video__win {
-  width: 100%;
-  min-width: 0;
-  margin: 0 auto;
+.cs-win__bar i { width: 10px; height: 10px; border-radius: 50%; background: rgba(255, 255, 255, .14); }
+.cs-win__bar span {
+  margin-left: 10px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: .72rem;
+  color: var(--text-hint);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
+.cs-win__img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+.cs-hero__media { margin: 0; }
 
-/* DESKTOP: duas colunas. PROGRESSO à esquerda, VÍDEO fixo à direita.
-   O vídeo entra centralizado (subindo de baixo da tela), "atraca" na
-   coluna da direita conforme rola e fica sticky enquanto os tópicos
-   sobem à esquerda; solta no fim e a página segue normal. O movimento
-   centro→direita é do GSAP (project-fx.js, translate no scrub); aqui
-   fica só o layout e o sticky que segura a janela na direita. */
-@media (min-width: 861px) {
-  /* o corpo do caso ESCAPA da coluna de 980px do .pc-main pra ocupar a
-     tela: mais largura => texto sem quebrar em tantas linhas, vídeo maior
-     e um respiro (gap) real entre progresso e vídeo. Breakout por margem
-     negativa (nada de transform aqui — quebraria o position:sticky do
-     palco). */
-  .pd-body {
-    /* largo, com respiro de ~50px de cada lado
-       (cap em 2000px pra ultrawide não esparramar) */
-    width: min(calc(100vw - 100px), 2000px);
-    margin-left: calc((100% - min(calc(100vw - 100px), 2000px)) / 2);
-    display: grid;
-    /* colunas com TETO: em telas grandes (24"+) o texto não estica e deixa
-       um vão no meio. O par texto+vídeo tem largura limitada e é
-       CENTRALIZADO (justify-content) — preserva a proporção do notebook e
-       elimina o espaço vazio. No notebook as colunas preenchem normal. */
-    grid-template-columns: minmax(0, 680px) clamp(500px, 42vw, 760px);
-    column-gap: clamp(36px, 3.4vw, 76px);
-    justify-content: center;
-    align-items: start;
-  }
-  .pd-topics {
-    grid-column: 1;
-    grid-row: 1;
-    margin-top: 0;
-    /* NADA de sobreposição: os tópicos (e o título) começam ABAIXO da
-       dobra. Enquanto o vídeo entra centralizado e atraca à direita, a
-       coluna da esquerda fica vazia — não há texto pra ele cobrir. Só
-       sobem depois que o vídeo já está estacionado na direita. */
-    padding-top: 98vh;
-    padding-bottom: clamp(48px, 10vh, 150px);
-  }
-  .pd-stage {
-    grid-column: 2;
-    grid-row: 1;
-    position: sticky;
-    top: 0;
-    height: 100svh;
-    display: grid;
-    place-items: center;
-    margin: 0;
-  }
-  .pd-stage .pc-video__win {
-    width: 100%;
-    will-change: transform;
-    transform-origin: center center;
-    /* backface pra o scale não serrilhar no scrub */
-    backface-visibility: hidden;
-  }
-}
-/* URL viva: o path digita-se ao lado do hostname; caret pisca enquanto
-   digita. O contador 01/NN vive na direita da barra. */
-.pd-path { color: var(--term-path); }
-.pd-caret {
-  display: inline-block;
-  width: 6px;
-  height: 10px;
-  margin-left: 3px;
-  background: var(--lime);
-  opacity: 0;
-  vertical-align: -1px;
-}
-.pd-caret.is-on { animation: pj-caret-blink .9s steps(1) infinite; opacity: 1; }
-/* contador 01/04 no topo da janela removido a pedido */
-.pd-step { display: none; }
-
-/* ---------- VÍDEO — mesma "janela de browser" das capas ---------- */
-.pc-video__win {
-  position: relative;
+/* ---------- em números ---------- */
+.cs-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1px;
+  margin-top: var(--cs-gap);
   border-radius: 18px;
   overflow: hidden;
   border: 1px solid var(--w-05);
-  background: rgba(255, 255, 255, .015);
-  box-shadow: 0 30px 80px -24px rgba(0, 0, 0, .75);
+  background: var(--w-05);
 }
-.pc-video__view {
+.cs-fact { display: grid; gap: 6px; padding: 24px 22px; background: var(--bg); }
+.cs-fact__value {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -.02em;
+  color: var(--text);
+}
+.cs-fact__label { font-size: .9rem; line-height: 1.4; color: var(--text-hint); }
+
+/* ---------- o que é / o problema ---------- */
+.cs-story { display: grid; gap: clamp(40px, 6vw, 72px); margin-top: var(--cs-gap); }
+.cs-story--two { grid-template-columns: 1fr 1fr; }
+.cs-text { max-width: var(--cs-read); }
+.cs-text p { margin: 0 0 16px; font-size: 1.04rem; line-height: 1.8; color: var(--text-soft); }
+.cs-text p:last-child { margin-bottom: 0; }
+
+/* ---------- tour pelas telas (sticky + pan no scroll) ---------- */
+.cs-tour {
   position: relative;
-  aspect-ratio: 3 / 2; /* mais alto que o 16/9: mostra mais do projeto no preview da direita */
+  height: 260vh;
+  margin-top: var(--cs-gap);
+}
+.cs-tour__sticky {
+  position: sticky;
+  /* abaixo do menu flutuante (pill de ~56px + respiro) */
+  top: calc(var(--nav-h, 56px) + 44px);
+  height: calc(100vh - var(--nav-h, 56px) - 64px);
+  height: calc(100svh - var(--nav-h, 56px) - 64px);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 20px;
+}
+.cs-tour__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 24px; }
+.cs-tour__head .cs-h2 { margin: 0; }
+.cs-tour__hint { margin: 0; font-size: .9rem; color: var(--text-hint); }
+.cs-tour__stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(20px, 3vw, 40px);
+  min-height: 0;
+}
+.cs-tour__desk {
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 880px);
+  height: min(100%, 560px);
+}
+.cs-tour__view {
+  position: relative;
+  flex: 1;
   overflow: hidden;
-  background: linear-gradient(135deg, var(--rail), var(--bg));
+  background: var(--rail);
 }
-.pc-video__el,
-.pc-video__cover {
+.cs-tour__view img {
   position: absolute;
-  inset: 0;
+  top: 0; left: 0;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
-.pc-video__soon {
+.cs-tour__phone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  width: clamp(170px, 17vw, 240px);
+  aspect-ratio: 390 / 844;
+  max-height: 100%;
+  padding: 10px;
+  border-radius: 36px;
+  background: #0b0f0d;
+  border: 1px solid var(--w-10);
+  box-shadow: 0 40px 90px -36px rgba(0, 0, 0, .85), inset 0 0 0 2px rgba(255, 255, 255, .03);
+}
+.cs-tour__phone .cs-tour__view { border-radius: 27px; }
+.cs-tour__notch {
   position: absolute;
-  left: 14px;
-  bottom: 14px;
+  top: 16px; left: 50%;
+  z-index: 2;
+  width: 34%; height: 18px;
+  border-radius: 12px;
+  background: #0b0f0d;
+  transform: translateX(-50%);
+}
+/* celular "espiando" sobre a janela no desktop largo */
+@media (min-width: 901px) {
+  .cs-tour__desk + .cs-tour__phone { margin-left: calc(clamp(170px, 17vw, 240px) * -.45); align-self: flex-end; }
+}
+
+/* ---------- como funciona ---------- */
+.cs-how { margin-top: var(--cs-gap); }
+.cs-steps {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr));
+  gap: 18px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
+}
+/* trilho que liga os passos e enche conforme eles acendem */
+.cs-steps::before,
+.cs-steps::after {
+  content: "";
+  position: absolute;
+  top: 27px; left: 28px; right: 28px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--w-10);
+}
+.cs-steps::after {
+  background: var(--gradient-lime);
+  transform-origin: left center;
+  transform: scaleX(var(--cs-fill, 1));
+  transition: transform .9s var(--ps-ease);
+}
+.cs-step { position: relative; z-index: 1; display: grid; gap: 8px; align-content: start; }
+.cs-step__num {
+  display: grid; place-items: center;
+  width: 56px; height: 56px;
+  margin-bottom: 8px;
+  border-radius: 50%;
+  font-family: "JetBrains Mono", monospace;
+  font-size: .9rem;
+  font-weight: 700;
+  color: #06120a;
+  background: var(--gradient-lime);
+  box-shadow: 0 0 0 6px var(--bg);
+  transition: transform .5s var(--ps-ease), background-color .4s ease, color .4s ease;
+}
+.cs-step__label { font-size: 1.08rem; font-weight: 800; line-height: 1.25; color: var(--text); }
+.cs-step__sub { font-size: .92rem; line-height: 1.5; color: var(--text-hint); }
+
+/* ---------- o que ele faz ---------- */
+.cs-features { margin-top: var(--cs-gap); }
+.cs-feat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 8px;
+}
+.cs-feat {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 26px 24px 24px;
+  border-radius: 18px;
+  border: 1px solid var(--w-05);
+  background: linear-gradient(180deg, rgba(255, 255, 255, .025), rgba(255, 255, 255, .008));
+  transition: border-color .3s ease, transform .35s var(--ps-ease);
+}
+.cs-feat:hover { border-color: var(--g-22); transform: translateY(-3px); }
+.cs-feat__icon {
+  display: grid; place-items: center;
+  width: 44px; height: 44px;
+  margin-bottom: 6px;
+  border-radius: 12px;
+  color: var(--lime);
+  background: var(--g-08);
+  border: 1px solid var(--g-15);
+}
+.cs-feat__icon svg { width: 22px; height: 22px; }
+.cs-feat__title { margin: 0; font-size: 1.15rem; font-weight: 800; line-height: 1.25; color: var(--text); }
+.cs-feat__text { margin: 0; font-size: 1rem; line-height: 1.7; color: var(--text-soft); }
+.cs-feat__more { margin-top: 4px; }
+.cs-feat__more summary {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 7px 13px;
-  border-radius: 999px;
-  border: 1px solid var(--g-22);
-  background: rgba(6, 8, 7, .78);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  font-family: "JetBrains Mono", monospace;
-  font-size: .68rem;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--text-mint);
-}
-.pc-video__soon::before {
-  content: "";
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--green);
-  box-shadow: 0 0 8px var(--g-50);
-}
-
-/* ---------- TÓPICOS — rail com fio + tópico ativo aceso ----------
-   SEM JS/GSAP: tudo legível e o fio cheio (estados "apagados" só
-   existem sob .fx-on — progressive enhancement honesto). */
-.pd-topics {
-  position: relative;
-  z-index: 1;
-  margin: clamp(44px, 6vw, 72px) 0 0;
-  /* respiro final: o ÚLTIMO tópico consegue chegar na zona de leitura
-     (abaixo do vídeo sticky) antes da página soltar o sticky */
-  padding-bottom: clamp(120px, 22vh, 260px);
-}
-.pd-topics__title { margin-bottom: clamp(24px, 4vw, 36px); }
-.pd-rail { position: relative; }
-.pd-wire {
-  position: absolute;
-  left: 22px;                 /* centro exato da coluna do ícone (44px) */
-  transform: translateX(-50%);
-  top: 22px;                  /* começa no centro do 1º ícone, não acima dele */
-  bottom: 30px;               /* termina perto do último nó, não solto no fim */
-  width: 2px;
-  border-radius: 2px;
-  background: var(--w-05);
-  overflow: hidden;
-}
-.pd-wire i {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: var(--gradient-lime);
-  box-shadow: 0 0 6px var(--g-45);  /* glow contido pra não vazar sobre os ícones */
-  transform-origin: top center;
-  /* o GSAP anima scaleY 0->1 no scrub; sem fx fica cheio */
-}
-.fx-on .pd-wire i { transform: scaleY(0); }
-.pd-list {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(30px, 4.5vw, 46px);
-}
-.pd-topic {
-  display: grid;
-  grid-template-columns: 44px 1fr;
-  gap: 22px;
-  align-items: start;
-  transition: opacity .4s ease;
-}
-.pd-topic__icon {
-  position: relative;
-  z-index: 1; /* cobre o fio */
-  width: 44px;
-  height: 44px;
-  display: grid;
-  place-items: center;
-  color: var(--text-hint);
-  border: 1px solid var(--w-08);
-  border-radius: 12px;
-  background: var(--bg);
-  transition: color .35s ease, border-color .35s ease, background-color .35s ease, box-shadow .35s ease;
-}
-.pd-topic__icon svg { width: 22px; height: 22px; }
-.pd-topic__title {
-  margin: 2px 0 6px;
-  font-size: 1.1rem;
+  min-height: 44px;
+  font-size: .88rem;
   font-weight: 700;
-  letter-spacing: -.01em;
-  color: var(--text);
-  transition: color .35s ease;
-}
-.pd-topic__text {
-  margin: 0;
-  max-width: 62ch;
-  font-size: .96rem;
-  line-height: 1.62;
-  color: var(--text-soft);
-  transition: color .35s ease;
-}
-/* com a camada fx ativa, os tópicos não-ativos recuam e o ativo acende
-   (ícone com anel verde — a Corrente chega aqui também). O recuo é .55
-   (não menos): título 5.8:1 e corpo 5.1:1 — recuado E legível (AA). */
-.fx-on .pd-topic { opacity: .55; }
-.fx-on .pd-topic.is-active { opacity: 1; }
-/* registro-dev no tópico RECUADO: hint×.55 cai a 3.33:1 (< AA) —
-   sobe pra text-soft (soft×.55 = 5.06:1, mesmo AA do corpo) */
-.fx-on .pd-topic:not(.is-active) .pd-topic__tech,
-.fx-on .pd-topic:not(.is-active) .pd-deep__sum,
-.fx-on .pd-topic:not(.is-active) .pd-deep__body { color: var(--text-soft); }
-.fx-on .pd-topic.is-active .pd-topic__icon {
   color: var(--green);
-  border-color: var(--g-45);
-  /* opaco (tinta verde sobre o bg): o fio não vaza por trás do nó ativo */
-  background: linear-gradient(var(--g-08), var(--g-08)), var(--bg);
-  box-shadow: 0 0 16px var(--g-15);
-}
-
-/* [hidden] SEMPRE vence: as seções do caso têm display explícito
-   (grid/flex) que derrotaria o hidden do UA — sem isto, seção vazia
-   vira vão morto (ex.: ato de impacto sem métricas = ~112px de nada). */
-#pcMain [hidden] { display: none !important; }
-
-/* ==================================================================
-   LEVANTAMENTO DE CAMPO — o dossiê anotado.
-   A tinta rgb(65,110,84) que desenha as curvas de nível agora ANOTA
-   a história: atos editoriais de 62ch em linguagem humana + margem
-   de 240px com notas de engenheiro em mono. Toda linha técnica da
-   página começa com "//" verde (código visual aprendível). Tudo
-   degrada: sem campo, sem seção; sem GSAP, tudo visível.
-   ================================================================== */
-
-/* atos editoriais — grid duplo-registro (história + margem de tinta) */
-.pc-act {
-  display: grid;
-  grid-template-columns: minmax(0, 62ch) 240px;
-  gap: 40px 48px;
-  align-items: start;
-  margin: clamp(48px, 7vw, 84px) 0 0;
-}
-.pc-act--solo { grid-template-columns: minmax(0, 62ch); }
-.pc-act__title {
-  margin: 0 0 18px;
-  font-size: clamp(1.5rem, 2.4vw, 2.1rem);
-  font-weight: 800;
-  letter-spacing: -.015em;
-  line-height: 1.15;
-  color: var(--text);
-}
-.pc-act__title em {
-  font-family: "Instrument Serif", Georgia, serif;
-  font-style: italic;
-  font-weight: 400;
-  background: var(--gradient-lime);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.pc-act__text p {
-  margin: 0 0 16px;
-  font-size: 1.02rem;
-  line-height: 1.65;
-  color: var(--text-soft);
-}
-.pc-act__text p:last-child { margin-bottom: 0; }
-.pc-act__lead {
-  margin: 0;
-  max-width: 62ch;
-  font-size: 1.02rem;
-  line-height: 1.65;
-  color: var(--text-soft);
-}
-
-/* nota de margem — a assinatura: fio de tinta 1px + "// nota do
-   engenheiro" + corpo mono. Zero fundo, zero borda, zero ícone. */
-.pc-note {
-  position: relative;
-  padding-left: 12px;
-  margin-top: 6px;
-  font-family: "JetBrains Mono", monospace;
-}
-.pc-note__wire {
-  position: absolute;
-  left: 0;
-  top: 3px;
-  bottom: 3px;
-  width: 1px;
-  background: var(--gline-35);
-  transform-origin: top center;
-}
-/* sob fx o fio nasce recolhido (o GSAP o desenha no scroll) */
-.fx-on .pc-note__wire { transform: scaleY(0); }
-.pc-note__tag {
-  display: block;
-  margin-bottom: 8px;
-  font-size: .66rem;
-  letter-spacing: .08em;
-  color: var(--text-hint);
-}
-.pc-note__tag b,
-.pd-topic__tech b,
-.pd-deep__sum b { font-weight: 700; font-style: normal; color: var(--green); }
-.pc-note__body {
-  display: block;
-  font-size: .72rem;
-  line-height: 1.6;
-  color: var(--text-hint);
-}
-
-/* linha de fluxo — o "recontável em 10 segundos": passos em texto puro
-   ligados por glifos → na tinta da grade. Zero SVG, zero caixas. */
-.pc-flow {
-  grid-column: 1 / -1; /* atravessa 62ch + margem — 4 passos numa linha */
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 8px 18px;
-  margin-top: 8px; /* o row-gap do grid (40px) já dá o respiro */
-}
-.pc-flow__step { display: inline-flex; flex-direction: column; gap: 2px; }
-.pc-flow__label { font-size: .95rem; font-weight: 600; color: var(--text); }
-.pc-flow__sub {
-  font-family: "JetBrains Mono", monospace;
-  font-size: .7rem;
-  color: var(--text-hint);
-}
-.pc-flow__arrow {
-  font-family: "JetBrains Mono", monospace;
-  color: var(--ink);
-  align-self: center;
-}
-@media (max-width: 720px) {
-  .pc-flow {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-    padding-left: 12px;
-    border-left: 1px solid var(--gline-35);
-  }
-  .pc-flow__arrow { display: none; }
-}
-
-/* a janela que NAVEGA — shot da tela do tópico ativo em crossfade
-   sobre a capa (GSAP anima só a opacity do BOX); duotone verde →
-   cor via classe .is-color (transition CSS — um motor por prop.) */
-.pc-shotbox {
-  position: absolute;
-  inset: 0;
-  display: block;
-  opacity: 0;
-  z-index: 1;
-  isolation: isolate;
-  pointer-events: none;
-}
-.pc-shot {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: grayscale(1) brightness(.92);
-  transition: filter .55s ease;
-}
-.pc-shot__veil {
-  position: absolute;
-  inset: 0;
-  background: #2c5438;
-  mix-blend-mode: multiply;
-  opacity: 1;
-  transition: opacity .55s ease;
-}
-.pc-shotbox.is-color .pc-shot { filter: none; }
-.pc-shotbox.is-color .pc-shot__veil { opacity: 0; }
-
-/* registro-dev do tópico (máx UM por tópico — deep vence tech) */
-.pd-topic__tech {
-  margin: 8px 0 0;
-  font-family: "JetBrains Mono", monospace;
-  font-size: .7rem;
-  line-height: 1.55;
-  color: var(--text-hint);
-}
-.pd-deep { margin-top: 10px; }
-.pd-deep__sum {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  min-height: 28px;
   cursor: pointer;
   list-style: none;
-  font-family: "JetBrains Mono", monospace;
-  font-size: .78rem;
-  color: var(--text-mint);
-  transition: color .22s ease;
 }
-.pd-deep__sum::-webkit-details-marker { display: none; }
-.pd-deep__sum::after {
-  content: "";
-  width: 7px;
-  height: 7px;
-  margin-top: -3px;
-  border-right: 1.5px solid var(--chev);
-  border-bottom: 1.5px solid var(--chev);
-  transform: rotate(45deg);
-  transition: transform .25s var(--ps-ease, cubic-bezier(.22,1,.36,1));
-}
-.pd-deep[open] .pd-deep__sum::after { transform: rotate(225deg); margin-top: 3px; }
-.pd-deep__sum:hover { color: var(--text); }
-.pd-deep__body {
-  display: grid;
-  gap: 6px;
-  padding: 10px 0 2px 14px;
-  font-family: "JetBrains Mono", monospace;
-  font-size: .8rem;
-  line-height: 1.55;
-  color: var(--text-hint);
-}
-@media (pointer: coarse) { .pd-deep__sum { min-height: 44px; } }
+.cs-feat__more summary::-webkit-details-marker { display: none; }
+.cs-feat__more summary::after { content: "+"; font-size: 1.1rem; line-height: 1; transition: transform .25s ease; }
+.cs-feat__more[open] summary::after { transform: rotate(45deg); }
+.cs-feat__more ul { margin: 2px 0 0; padding-left: 18px; display: grid; gap: 8px; }
+.cs-feat__more li { font-size: .94rem; line-height: 1.6; color: var(--text-soft); }
+.cs-feat__more li::marker { color: var(--green); }
 
-/* régua de leituras — impacto com estética de medição: valores
-   contidos, brancos, tabulares; divisórias verticais de tabela.
-   Colunas = nº de métricas (var setada pelo render) = linha única. */
-.pc-metrics {
-  display: grid;
-  grid-template-columns: repeat(var(--pc-metrics-n, 3), minmax(0, 1fr));
-  /* respiro entre colunas: o divisor (border-left) e o texto nowrap de um
-     valor largo (ex.: "QR + PIN") ficam separados pelo vao, entao o valor
-     nunca encosta/atravessa a linha da coluna vizinha. */
-  column-gap: clamp(18px, 2vw, 30px);
-  margin-top: 28px;
+/* ---------- galeria ---------- */
+.cs-gallery { margin-top: var(--cs-gap); }
+.cs-gallery__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; margin-bottom: 18px; }
+.cs-gallery__head .cs-h2 { margin: 0; }
+.cs-tabs {
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 999px;
+  border: 1px solid var(--w-10);
+  background: rgba(255, 255, 255, .02);
 }
-.pc-metric { min-width: 0; padding-right: 18px; }
-.pc-metric + .pc-metric { border-left: 1px solid var(--w-05); padding-left: 24px; }
-.pc-metric__value {
-  display: block;
-  margin-bottom: 6px;
-  /* teto menor: em telas largas o valor batia 2rem e o nowrap largo
-     ("QR + PIN") estourava a coluna estreita ate a linha vizinha. */
-  font-size: clamp(1.4rem, 2.1vw, 1.8rem);
-  font-weight: 800;
-  letter-spacing: -.02em;
-  line-height: 1.1;
-  color: var(--text);
-  font-variant-numeric: tabular-nums;
-  /* valor NUNCA quebra no meio (ex.: "PT·EN·ES" virava "PT·E / N·ES") —
-     legibilidade; fonte um pouco menor pra os valores largos caberem */
-  white-space: nowrap;
-}
-.pc-metric__label { display: block; font-size: .92rem; color: var(--text-soft); }
-.pc-metric__detail {
-  display: block;
-  margin-top: 4px;
-  font-family: "JetBrains Mono", monospace;
-  font-size: .7rem;
+.cs-tab {
+  min-height: 40px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  font: inherit;
+  font-size: .9rem;
+  font-weight: 700;
   color: var(--text-hint);
+  cursor: pointer;
+  transition: color .2s ease, background-color .2s ease;
 }
-@media (max-width: 720px) {
-  .pc-metrics { grid-template-columns: 1fr; }
-  .pc-metric { padding-right: 0; }
-  .pc-metric + .pc-metric {
-    border-left: 0;
-    border-top: 1px solid var(--w-05);
-    padding-left: 0;
-    padding-top: 16px;
-    margin-top: 16px;
-  }
-}
-
-/* ficha técnica — $ cat specs.txt  # para quem é técnico */
-.pc-specs {
-  margin-top: clamp(48px, 7vw, 72px);
-  border: 1px solid var(--w-05);
-  border-radius: 16px;
-  background: var(--glass);
-  padding: 20px 24px;
-}
-.pc-specs__cmd {
-  margin: 0 0 10px;
-  font-family: "JetBrains Mono", monospace;
-  font-size: .78rem;
-  color: var(--text-mint);
-  white-space: pre-wrap;
-}
-.pc-specs__dollar { color: var(--green); font-weight: 700; }
-.pc-specs__comment { color: var(--text-hint); }
-.pc-specs__list { margin: 0; }
-.pc-specs__row {
+.cs-tab[aria-selected="true"] { background: var(--gradient-lime); color: #06120a; }
+.cs-tab:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
+.cs-gal { position: relative; }
+.cs-gal__track {
   display: grid;
-  grid-template-columns: 160px minmax(0, 1fr);
+  grid-auto-flow: column;
+  grid-auto-columns: min(78%, 640px);
   gap: 16px;
-  padding: 12px 0;
-  border-top: 1px solid var(--w-05);
-}
-.pc-specs__row:last-child { padding-bottom: 2px; }
-.pc-specs__row dt {
   margin: 0;
-  padding-top: 2px;
-  font-family: "JetBrains Mono", monospace;
-  font-size: .74rem;
-  letter-spacing: .05em;
-  color: var(--text-hint);
+  padding: 4px 2px 14px;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: var(--g-22) transparent;
+  -webkit-overflow-scrolling: touch;
 }
-.pc-specs__row dd {
-  margin: 0;
-  font-size: .92rem;
-  line-height: 1.5;
-  color: var(--text-soft);
-  overflow-wrap: anywhere;
-}
-.pc-specs__row dd a {
-  color: var(--text-accent);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-color: var(--g-28);
-  transition: color .2s ease;
-}
-.pc-specs__row dd a:hover { color: var(--text); }
-@media (max-width: 560px) {
-  .pc-specs__row { grid-template-columns: 1fr; gap: 2px; }
-}
-
-/* assinatura — a porta de contato (único CTA de ação da página) */
-.pc-sign {
-  margin-top: clamp(48px, 7vw, 72px);
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px 28px;
-}
-.pc-sign__line { margin: 0; font-size: .95rem; color: var(--text-soft); }
-.pc-sign__line em {
-  font-family: "Instrument Serif", Georgia, serif;
-  font-style: italic;
-  font-weight: 400;
-  background: var(--gradient-lime);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-/* colapso do duplo-registro: a nota flui inline após o texto do ato */
-@media (max-width: 1060px) {
-  .pc-act { grid-template-columns: minmax(0, 62ch); }
-  .pc-note { margin-top: 2px; }
-}
-
-/* ---------- PRÓXIMO PROJETO ---------- */
-.pc-next { margin-top: clamp(56px, 8vw, 96px); }
-.pc-next__link {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 22px 26px;
-  border-radius: 16px;
-  border: 1px solid var(--w-05);
-  background: var(--glass);
-  transition: border-color .26s ease, transform .26s ease;
-}
-.pc-next__link:hover { border-color: var(--g-28); transform: translateY(-2px); }
-.pc-next__meta { flex: 1; min-width: 0; }
-.pc-next__label {
-  display: block;
-  font-family: "JetBrains Mono", monospace;
-  font-size: .68rem;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--text-hint);
-  margin-bottom: 4px;
-}
-.pc-next__title { font-size: 1.15rem; font-weight: 700; color: var(--text); }
-/* mini-janela duotone da capa do próximo — ganha cor no hover do card
-   (mesma receita do catálogo: grayscale + véu verde multiply) */
-.pc-next__thumb {
+.cs-gal__track:focus-visible { outline: 2px solid var(--lime); outline-offset: 4px; border-radius: 12px; }
+.cs-gal[data-cs-panel="mobile"] .cs-gal__track { grid-auto-columns: clamp(180px, 24%, 260px); }
+.cs-gal__item { scroll-snap-align: start; }
+.cs-gal__btn {
   position: relative;
-  flex: 0 0 auto;
-  width: 168px;
-  height: 94px;
-  border-radius: 10px;
-  overflow: hidden;
-  isolation: isolate;
-}
-.pc-next__thumb img {
   display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: grayscale(1) brightness(.92);
-  transition: filter .35s ease;
+  padding: 0;
+  border: 1px solid var(--w-10);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--rail);
+  cursor: zoom-in;
 }
-.pc-next__thumb::after {
-  content: "";
+.cs-gal__btn img { display: block; width: 100%; height: auto; transition: transform .6s var(--ps-ease); }
+.cs-gal__item--desktop img { aspect-ratio: 16 / 10; object-fit: cover; object-position: top; }
+.cs-gal__item--mobile .cs-gal__btn { border-radius: 22px; }
+.cs-gal__item--mobile img { aspect-ratio: 390 / 844; object-fit: cover; object-position: top; }
+.cs-gal__btn:hover img { transform: scale(1.03); }
+.cs-gal__btn:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+.cs-gal__zoom {
   position: absolute;
-  inset: 0;
-  background: #2c5438;
-  mix-blend-mode: multiply;
-  pointer-events: none;
-  transition: opacity .35s ease;
+  right: 10px; bottom: 10px;
+  display: grid; place-items: center;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  color: var(--text);
+  background: rgba(6, 8, 7, .72);
+  opacity: 0;
+  transition: opacity .25s ease;
 }
-.pc-next__link:hover .pc-next__thumb img { filter: none; }
-.pc-next__link:hover .pc-next__thumb::after { opacity: 0; }
-.pc-next__arrow { width: 20px; height: 20px; color: var(--green); flex: 0 0 auto; transition: transform .26s var(--ps-ease, cubic-bezier(.22,1,.36,1)); }
-.pc-next__link:hover .pc-next__arrow { transform: translateX(4px); }
-@media (max-width: 560px) {
-  .pd-topic { grid-template-columns: 38px 1fr; gap: 14px; }
-  .pd-topic__icon { width: 38px; height: 38px; border-radius: 10px; }
-  .pd-topic__icon svg { width: 18px; height: 18px; }
-  .pd-wire { left: 18px; }
-  .pd-step { display: none; }
-  .pc-next__link { flex-direction: column; align-items: flex-start; gap: 10px; }
-  /* thumb vira faixa 16:9 acima do título, já em cor (sem hover no toque) */
-  .pc-next__thumb { order: -1; width: 100%; height: auto; aspect-ratio: 16 / 9; }
-  .pc-next__thumb img { filter: none; }
-  .pc-next__thumb::after { display: none; }
+.cs-gal__zoom svg { width: 16px; height: 16px; }
+.cs-gal__btn:hover .cs-gal__zoom, .cs-gal__btn:focus-visible .cs-gal__zoom { opacity: 1; }
+.cs-gal__nav { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
+.cs-gal__arrow {
+  display: grid; place-items: center;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--w-10);
+  background: rgba(255, 255, 255, .03);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color .2s ease, color .2s ease, opacity .2s ease;
 }
+.cs-gal__arrow svg { width: 20px; height: 20px; }
+.cs-gal__arrow:hover { border-color: var(--g-22); color: var(--lime); }
+.cs-gal__arrow:disabled { opacity: .35; cursor: default; }
+.cs-lightbox {
+  width: min(96vw, 1400px);
+  max-width: none;
+  max-height: 92vh;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
+}
+.cs-lightbox::backdrop { background: rgba(3, 5, 4, .9); }
+.cs-lightbox img {
+  display: block;
+  max-width: 100%;
+  max-height: 86vh;
+  margin: 0 auto;
+  border-radius: 12px;
+  object-fit: contain;
+}
+.cs-lightbox__close,
+.cs-lightbox__arrow {
+  position: absolute;
+  display: grid; place-items: center;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--w-10);
+  background: rgba(10, 14, 12, .85);
+  color: var(--text);
+  cursor: pointer;
+}
+.cs-lightbox__close svg, .cs-lightbox__arrow svg { width: 20px; height: 20px; }
+.cs-lightbox__close { top: -56px; right: 0; }
+.cs-lightbox__arrow { top: 50%; transform: translateY(-50%); }
+.cs-lightbox__arrow--prev { left: 8px; }
+.cs-lightbox__arrow--next { right: 8px; }
 
-/* dedo, não cursor: alvos >= 44px nos links de texto do caso */
-@media (pointer: coarse) {
-  .pc-back { padding: 12px 8px; margin: -12px 0 -6px -8px; }
-  .pc-back:active { color: var(--text); }
-  .pc-hero__cta { gap: 12px 24px; }
-  .pc-hero__cta .ps-cta { padding: 10px 4px; min-height: 44px; }
-  .pc-hero__cta .ps-cta:active { color: var(--text); }
-  .pc-next__link { min-height: 64px; }
-  /* único CTA de ação da página + link do domínio: alvo >= 44px */
-  .pc-sign__cta { padding: 10px 4px; min-height: 44px; }
-  .pc-sign__cta:active { color: var(--text); }
-  a.pc-reg__host { padding: 13px 0; margin: -13px 0; }
+/* ---------- resultado ---------- */
+.cs-result {
+  margin-top: var(--cs-gap);
+  padding: clamp(28px, 4vw, 44px);
+  border-radius: 22px;
+  border: 1px solid var(--g-15);
+  background: radial-gradient(80% 120% at 0% 0%, var(--g-08), transparent 70%), rgba(255, 255, 255, .015);
 }
+.cs-result p { max-width: var(--cs-read); margin: 0; font-size: clamp(1.05rem, 1.5vw, 1.2rem); line-height: 1.75; color: var(--text-soft); }
 
-/* viewport BAIXA (landscape de celular): o sticky comeria a tela toda —
-   vira fluxo normal e o vídeo rola junto. Largura contida pela ALTURA
-   da tela (senão o 16:9 full-width fica mais alto que a viewport). */
+/* ---------- quem construiu ---------- */
+.cs-author {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(22px, 4vw, 44px);
+  align-items: center;
+  margin-top: var(--cs-gap);
+  padding-top: clamp(40px, 6vw, 64px);
+  border-top: 1px solid var(--w-05);
+}
+.cs-author__photo {
+  width: clamp(120px, 15vw, 180px);
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid var(--g-22);
+}
+.cs-author__kicker {
+  margin: 0 0 4px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: .74rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--green);
+}
+.cs-author__name { margin: 0; font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 900; line-height: 1.1; letter-spacing: -.02em; }
+.cs-author__name a { color: var(--text); text-decoration: none; }
+.cs-author__name a:hover { color: var(--lime); }
+.cs-author__role { margin: 6px 0 12px; font-size: .92rem; color: var(--text-hint); }
+.cs-author__bio { max-width: 60ch; margin: 0 0 20px; font-size: 1rem; line-height: 1.7; color: var(--text-soft); }
+.cs-author__links { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.cs-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid var(--w-10);
+  font-size: .92rem;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color .2s ease, color .2s ease, transform .2s ease;
+}
+.cs-pill svg { width: 16px; height: 16px; }
+.cs-pill:hover { border-color: var(--g-22); color: var(--lime); }
+.cs-pill--solid { border-color: transparent; background: var(--gradient-lime); color: #06120a; }
+.cs-pill--solid:hover { color: #06120a; transform: translateY(-2px); }
+.cs-icon {
+  display: grid; place-items: center;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--w-10);
+  color: var(--text);
+  transition: border-color .2s ease, color .2s ease;
+}
+.cs-icon svg { width: 18px; height: 18px; }
+.cs-icon:hover { border-color: var(--g-22); color: var(--lime); }
+
+/* ---------- outros projetos ---------- */
+.cs-others { margin-top: var(--cs-gap); }
+.cs-others__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; margin-bottom: 18px; }
+.cs-others__head .cs-h2 { margin: 0; }
+.cs-others__all {
+  display: inline-flex; align-items: center; gap: 6px;
+  min-height: 44px;
+  font-size: .92rem; font-weight: 700;
+  color: var(--green); text-decoration: none;
+}
+.cs-others__all svg { width: 16px; height: 16px; }
+.cs-others__all:hover { color: var(--lime); }
+.cs-others__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin: 0; padding: 0; list-style: none; }
+.cs-other { display: grid; gap: 6px; color: inherit; text-decoration: none; }
+.cs-other__img { display: block; border-radius: 14px; overflow: hidden; border: 1px solid var(--w-05); background: var(--rail); }
+.cs-other__img img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; transition: transform .6s var(--ps-ease); }
+.cs-other:hover .cs-other__img img { transform: scale(1.04); }
+.cs-other__name { margin-top: 6px; font-size: 1.02rem; font-weight: 800; color: var(--text); }
+.cs-other:hover .cs-other__name { color: var(--lime); }
+.cs-other__sub { font-size: .88rem; line-height: 1.45; color: var(--text-hint); }
+
+/* ---------- reveals (só com JS) ---------- */
+html.cs-js .cs [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition: opacity .7s ease, transform .8s var(--ps-ease);
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+html.cs-js .cs [data-reveal].is-in { opacity: 1; transform: none; }
+/* passos acendem em sequência; trilho enche junto */
+html.cs-js .cs-steps { --cs-fill: 0; }
+html.cs-js .cs-step .cs-step__num { background: var(--rail); color: var(--text-hint); box-shadow: 0 0 0 6px var(--bg), inset 0 0 0 1px var(--w-10); transform: scale(.88); }
+html.cs-js .cs-step.is-on .cs-step__num { background: var(--gradient-lime); color: #06120a; box-shadow: 0 0 0 6px var(--bg); transform: none; }
+html.cs-js .cs-step .cs-step__label,
+html.cs-js .cs-step .cs-step__sub { opacity: .45; transition: opacity .5s ease; }
+html.cs-js .cs-step.is-on .cs-step__label,
+html.cs-js .cs-step.is-on .cs-step__sub { opacity: 1; }
+
+/* ---------- responsivo ---------- */
+@media (min-width: 1800px) {
+  .cs { --cs-w: 1360px; }
+  .cs-tour__desk { width: min(100%, 1040px); height: min(100%, 660px); }
+}
+@media (max-width: 900px) {
+  .cs-hero { grid-template-columns: 1fr; }
+  .cs-hero__media { order: -1; }
+  .cs-story--two { grid-template-columns: 1fr; }
+  .cs-feat-grid { grid-template-columns: 1fr; }
+  .cs-others__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* tour: o celular vira o protagonista (a janela larga não cabe) */
+  .cs-tour { height: 220vh; }
+  .cs-tour__stage { justify-content: center; }
+  .cs-tour__desk:has(+ .cs-tour__phone) { display: none; }
+  .cs-tour__phone { width: auto; height: 100%; max-width: 78vw; }
+  /* passos em coluna, trilho vertical */
+  .cs-steps { grid-template-columns: 1fr; gap: 22px; }
+  .cs-steps::before, .cs-steps::after { top: 28px; bottom: 28px; left: 27px; right: auto; width: 2px; height: auto; }
+  .cs-steps::after { transform-origin: center top; transform: scaleY(var(--cs-fill, 1)); }
+  .cs-step { grid-template-columns: 56px minmax(0, 1fr); column-gap: 18px; row-gap: 4px; }
+  .cs-step__num { grid-row: span 2; margin: 0; }
+  .cs-step__label { align-self: end; }
+}
+@media (max-width: 640px) {
+  .cs { padding-top: calc(var(--nav-h, 60px) + 44px); }
+  .cs-title { font-size: clamp(2.2rem, 11vw, 3rem); }
+  .cs-visit { width: 100%; }
+  .cs-visit__arrow { margin-left: auto; }
+  .cs-author { grid-template-columns: 1fr; text-align: left; }
+  .cs-others__list { grid-template-columns: 1fr; }
+  .cs-gal__track { grid-auto-columns: 86%; }
+  .cs-gal[data-cs-panel="mobile"] .cs-gal__track { grid-auto-columns: 62%; }
+  .cs-gal__nav { display: none; } /* no toque o gesto já é o deslize */
+  .cs-lightbox__close { top: 8px; right: 8px; }
+}
+@media (hover: none) {
+  .cs-gal__zoom { opacity: 1; }
+  .cs-feat:hover { transform: none; }
+}
+/* telas baixas (notebook 1366x768, celular deitado): tour mais curto */
 @media (max-height: 560px) {
-  .pd-stage { position: static; }
-  .pd-stage::after { display: none; }
-  .pd-stage .pc-video__win {
-    width: min(100%, calc(82svh * 1.7778));
-    min-width: 0;
-  }
+  .cs-tour { height: 200vh; }
+  .cs-tour__hint { display: none; }
 }
 
 /* ==================================================================
@@ -6366,6 +6192,7 @@ body.blog-body { min-height: 100vh; }
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  min-height: 100dvh;
   padding: calc(var(--nav-h) + 80px) clamp(20px, 4vw, 64px) 80px;
 }
 .blog-soon-wrap {
@@ -8248,27 +8075,3 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
   .ab-photo { width: 150px; height: 150px; }
 }
 
-/* ============================================================
-   SMART BOOT — barra lime no topo (so cache frio / 1a visita)
-   ============================================================ */
-#bi-smart-boot {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  z-index: 10000;
-  pointer-events: none;
-  background: transparent;
-}
-#bi-smart-boot .bi-smart-boot__fill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, var(--green), var(--lime));
-  box-shadow: 0 0 12px rgba(163, 230, 53, .45);
-  transition: width .35s cubic-bezier(.22, .61, .36, 1);
-}
-#bi-smart-boot.is-done {
-  opacity: 0;
-  transition: opacity .4s ease;
-}

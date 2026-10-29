@@ -22,8 +22,7 @@ let pjSwapBusy = false;
 let pjBound = false;          /* listeners são delegados e presos UMA vez */
 
 /* ---- auto-rotação do featured: cada projeto fica PJ_AUTO_MS (6s) e troca ----
-   Tempo fixo por projeto. A janela da frente toca o preview desde o começo
-   (reset no pjPromote), e a troca acontece aos 6s. Nunca troca quando é
+   Tempo fixo por projeto. Nunca troca quando é
    inútil/proibido (fora da tela, aba oculta, reduced-motion): nesses casos
    re-checa sozinho sem prender. Interação manual REINICIA a contagem. */
 const pjTouchMode = window.matchMedia('(hover: none)').matches;
@@ -32,7 +31,7 @@ let pjAutoTimer = null;
 
 /* contexto do render atual — os handlers delegados leem daqui, então a
    troca de idioma (re-render) nunca deixa closure velha viva */
-const pjCtx = { projects: [], featured: [], data: null };
+const pjCtx = { projects: [], featured: [], data: null, lang: 'en' };
 
 const pjReducedMotion = () => false;
 
@@ -41,9 +40,6 @@ const pjReducedMotion = () => false;
 const pjPerf = () =>
   document.documentElement.dataset.perf || 'high';
 
-/* A home mostra so a capa. O video completo fica na pagina do case. */
-const pjWantVideo = () => false;
-
 /* featured com QUALQUER parte na viewport (medido na hora — à prova de
    flag presa; um getBoundingClientRect a cada 5s é irrelevante) */
 function pjFeaturedVisible() {
@@ -51,13 +47,6 @@ function pjFeaturedVisible() {
   if (!wrap || wrap.style.display === 'none') return false;
   const r = wrap.getBoundingClientRect();
   return r.bottom > 0 && r.top < (window.innerHeight || document.documentElement.clientHeight);
-}
-
-/* vídeo (preview) da janela da frente, se houver */
-function pjFrontVideo() {
-  const stack = document.querySelector('[data-pj-stack]');
-  const win = stack && stack.querySelector('.pj-win.is-front');
-  return (win && win.querySelector('video.pj-win__img')) || null;
 }
 
 /* limpa o timer pendente da rotação */
@@ -84,8 +73,7 @@ function pjAdvance() {
   if (next) pjPromote(next.id); /* pjPromote re-agenda no fim */
 }
 
-/* agenda a próxima troca: tempo FIXO de PJ_AUTO_MS (6s) por projeto. O vídeo
-   da frente é reiniciado no pjPromote e roda em loop; a troca vem aos 6s.
+/* agenda a próxima troca: tempo FIXO de PJ_AUTO_MS (6s) por projeto.
    Chamado no setup, em cada promoção e ao voltar pra aba. */
 function pjScheduleAdvance() {
   pjClearAdvance();
@@ -130,14 +118,41 @@ function pjHost(link) {
   }
 }
 
+/* página estática do case no idioma ativo (gerada pelo build-projects):
+   link direto, sem o redirect do project.html?slug= */
 function pjCaseHref(p) {
-  return `project.html?slug=${encodeURIComponent(p.id)}`;
+  const id = encodeURIComponent(p.id);
+  return pjCtx.lang === 'en' ? `/en/projects/${id}.html` : `/projetos/${id}.html`;
 }
 
-/* Capa estatica. A da frente da pilha entra eager; o arquivo fica lazy. */
-function pjMediaHTML(p, imgClass, eager) {
+/* Capa estatica responsiva. Capas geradas pelo build:covers vivem em
+   img/covers/<id>.webp(?v=hash) com variantes -480/-800/-1200 em AVIF e
+   WebP: o <picture> deixa o browser escolher formato + largura pela tela
+   (celular baixa ~10KB, TV/retina a de 1600). Fora desse padrao, <img> puro. */
+const PJ_COVER_W = [480, 800, 1200, 1600];
+const PJ_SIZES = {
+  win:  '(max-width: 640px) 92vw, (max-width: 1080px) 560px, 620px',
+  card: '(max-width: 640px) 92vw, (max-width: 900px) 46vw, 430px',
+};
+
+function pjCoverSet(cover, ext) {
+  const m = /^(.*\/covers\/[^/?]+)\.webp(\?[^#]*)?$/.exec(cover || '');
+  if (!m) return '';
+  const [, base, q = ''] = m;
+  return PJ_COVER_W.map((w, i) =>
+    `${base}${i === PJ_COVER_W.length - 1 ? '' : '-' + w}.${ext}${q} ${w}w`).join(', ');
+}
+
+function pjMediaHTML(p, imgClass, eager, sizes) {
+  /* a section fica abaixo da dobra: nada de fetchpriority alto (roubaria
+     banda da foto da hero, o LCP). A janela da frente só não é lazy. */
   const loading = eager ? 'eager' : 'lazy';
-  return `<img class="${imgClass}" src="${p.cover}" alt="${p.title}" loading="${loading}" decoding="async">`;
+  const img = `<img class="${imgClass}" src="${p.cover}" alt="${p.title}" width="1600" height="900" ` +
+    `loading="${loading}" decoding="async"`;
+  const webp = pjCoverSet(p.cover, 'webp');
+  if (!webp) return `${img}>`;
+  return `<picture><source type="image/avif" srcset="${pjCoverSet(p.cover, 'avif')}" sizes="${sizes}">` +
+    `${img} srcset="${webp}" sizes="${sizes}"></picture>`;
 }
 
 /* =========================================================
@@ -158,7 +173,7 @@ function buildFeaturedWindow(p, slot) {
     </div>
     <a class="pj-win__view ps-frame__view" href="${pjCaseHref(p)}" tabindex="${slot === 0 ? 0 : -1}"
        aria-label="${p.title}">
-      ${pjMediaHTML(p, 'pj-win__img', slot === 0)}
+      ${pjMediaHTML(p, 'pj-win__img', slot === 0, PJ_SIZES.win)}
       <span class="pj-win__veil" aria-hidden="true"></span>
     </a>
   `;
@@ -281,11 +296,6 @@ function pjPromote(id) {
       if (slot === 0) win.classList.add('is-front');
       const view = win.querySelector('.pj-win__view');
       if (view) view.tabIndex = slot === 0 ? 0 : -1;
-      /* janela que saiu da frente volta pro POSTER (a capa): sem reset ela
-         congela no último frame preto do vídeo já tocado. load() reexibe o
-         poster (ex.: athena7 no fundo mostra img/athena7-cover.webp). */
-      const bv = win.querySelector('video.pj-win__img');
-      if (bv && slot !== 0) { try { bv.pause(); bv.load(); } catch (e) {} }
     });
   }
 
@@ -296,16 +306,6 @@ function pjPromote(id) {
   /* trava re-cliques até a coreografia CSS assentar (~.65s) */
   setTimeout(() => { pjSwapBusy = false; }, pjReducedMotion() ? 0 : 620);
 
-  /* o novo da frente toca desde o começo — so se o tier permitir video.
-     Em low nao ha <video>; em medium/high o scrollfx tambem sincroniza. */
-  const fv = pjFrontVideo();
-  if (fv && pjWantVideo('featured')) {
-    try { fv.currentTime = 0; } catch (e) {}
-    const play = () => { fv.play?.().catch(() => {}); };
-    if (typeof window.biWhenAssetReady === 'function') {
-      window.biWhenAssetReady(fv.getAttribute('src') || '', play);
-    } else play();
-  }
   pjScheduleAdvance();
 }
 
@@ -334,8 +334,7 @@ function pjSetupFeatured() {
   pjUpdatePanel(active, pjCtx.data);
   pjUpdateNav(featured, activeId);
 
-  /* (re)agenda a rotação pro vídeo da frente atual — cobre também o
-     rebuild na troca de idioma, que recria os elementos <video> */
+  /* (re)agenda a rotação — cobre também o rebuild na troca de idioma */
   pjScheduleAdvance();
 }
 
@@ -426,7 +425,7 @@ function buildArchCard(p, data) {
     <a class="pj-card__frame ps-frame__view" href="${pjCaseHref(p)}"
        aria-label="${p.title} · ${caseLabels.viewCase || 'View case study'}">
       <span class="pj-card__view">
-        ${pjMediaHTML(p, 'pj-card__img', false)}
+        ${pjMediaHTML(p, 'pj-card__img', false, PJ_SIZES.card)}
       </span>
     </a>
     <div class="pj-card__cap">
@@ -456,28 +455,13 @@ function pjMountRows(arch, cards) {
   });
 }
 
-/* hover-expand: o card sob o cursor vira data-hot da fileira; o CSS
-   anima grid-template-columns (vizinhos cedem num único layout pass).
-   focus-within espelha pro teclado. No touch (hover: none) os eventos
-   de mouse SINTÉTICOS do tap não armam o estado — o tap navega direto
-   e a gaveta já é conteúdo estático (CSS cuida). */
+/* hover: o card sob o cursor ganha .is-hot (o CSS sobe o frame e
+   aproxima a capa, só transform). focus-within espelha pro teclado. No
+   touch (hover: none) os eventos de mouse SINTÉTICOS do tap não armam o
+   estado — o tap navega direto. */
 function pjBindRowHover(arch) {
   const touch = window.matchMedia('(hover: none)');
-  const setHot = (card, on) => {
-    const row = card.closest('.pj-row');
-    if (!row) return;
-    const idx = [...row.children].indexOf(card);
-    if (on) {
-      row.dataset.hot = idx;
-      card.classList.add('is-hot');
-    } else if (row.dataset.hot === String(idx)) {
-      delete row.dataset.hot;
-      card.classList.remove('is-hot');
-    }
-    row.querySelectorAll('.pj-card').forEach(c => {
-      if (c !== card || !on) c.classList.remove('is-hot');
-    });
-  };
+  const setHot = (card, on) => card.classList.toggle('is-hot', on);
 
   arch.addEventListener('mouseover', e => {
     if (touch.matches) return;
@@ -548,9 +532,7 @@ function pjApplyFilter(slug) {
     if (Math.abs(delta) > 1) window.scrollBy(0, delta);
   };
 
-  /* touch/reduced-motion/low|medium: troca instantânea ancorada.
-     A coreografia 3D (rotateX + scale) e cara pra compositor fraco
-     e o visual final e o mesmo — so a viagem muda. */
+  /* sem GSAP: troca instantânea ancorada (o visual final é o mesmo) */
   const canAnim = !!window.gsap;
   if (!canAnim) {
     rebuild();
@@ -574,20 +556,19 @@ function pjApplyFilter(slug) {
   const animateIn = () => {
     const incoming = Array.prototype.slice.call(arch.querySelectorAll('.pj-card'));
     if (!incoming.length) { done(); return; }
-    /* ENTRA: cada card sobe virando de baixo (rotateX 3D) + escala com um
-       leve overshoot (back.out), em cascata pela direção do filtro. */
+    /* ENTRA: cada card sobe com escala e leve overshoot (back.out), em
+       cascata pela direção do filtro. Só transform + opacity. */
     gsap.fromTo(incoming,
-      { autoAlpha: 0, scale: .8, y: 54, rotateX: -30, transformPerspective: 760,
-        transformOrigin: '50% 100%' },
-      { autoAlpha: 1, scale: 1, y: 0, rotateX: 0, duration: .64, ease: 'back.out(1.5)',
+      { autoAlpha: 0, scale: .92, y: 40 },
+      { autoAlpha: 1, scale: 1, y: 0, duration: .55, ease: 'back.out(1.4)',
         stagger: { each: .075, from: dir < 0 ? 'end' : 'start' },
         clearProps: 'all', onComplete: done });
   };
 
   if (outgoing.length) {
-    /* SAI: os antigos giram e somem pra cima, rápido, antes de remontar. */
+    /* SAI: os antigos encolhem e somem pra cima, rápido, antes de remontar. */
     gsap.to(outgoing, {
-      autoAlpha: 0, scale: .86, y: -22, rotateX: 18, transformPerspective: 760,
+      autoAlpha: 0, scale: .94, y: -18,
       duration: .26, ease: 'power2.in',
       stagger: { each: .028, from: dir < 0 ? 'start' : 'end' },
       onComplete: () => { rebuild(); reanchor(); animateIn(); },
@@ -654,9 +635,8 @@ function pjBindOnce(arch) {
   const emptyCta = document.querySelector('[data-pj-empty-cta]');
   if (emptyCta) emptyCta.addEventListener('click', () => pjApplyFilter('all'));
 
-  /* auto-rotação do featured: dirigida pelo fim do vídeo da frente (ou
-     tempo fixo p/ cover). Ao voltar pra aba, re-agenda na hora — o vídeo
-     volta a tocar e o 'ended' dispara a troca quando terminar. */
+  /* auto-rotação do featured: tempo fixo por capa; ao voltar pra aba,
+     re-agenda a contagem do zero. */
   pjScheduleAdvance();
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) pjScheduleAdvance();
@@ -745,6 +725,7 @@ function renderProjects(lang) {
   pjCtx.projects = projects;
   pjCtx.featured = pjFeaturedList(projects);
   pjCtx.data = data;
+  pjCtx.lang = lang;
 
   /* três atos */
   pjSetupFeatured();

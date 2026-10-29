@@ -53,7 +53,15 @@ security invoker
 set search_path = ''
 as $$
 begin
-  new.updated_at = pg_catalog.now();
+  -- so conteudo conta: o +1 de views NAO e edicao (senao todo post
+  -- vira "modificado hoje" no dateModified do Google a cada visita)
+  if (pg_catalog.to_jsonb(new) - 'views' - 'updated_at')
+     is distinct from
+     (pg_catalog.to_jsonb(old) - 'views' - 'updated_at') then
+    new.updated_at = pg_catalog.now();
+  else
+    new.updated_at = old.updated_at;
+  end if;
   return new;
 end;
 $$;

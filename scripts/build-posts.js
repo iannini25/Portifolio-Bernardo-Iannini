@@ -30,6 +30,11 @@ const ROOT       = path.resolve(__dirname, '..');
 const POSTS_SRC  = path.join(ROOT, 'data', 'posts');
 const POSTS_OUT  = path.join(ROOT, 'posts');
 const SITE_URL   = 'https://bernardoiannini.com';
+/* @id estavel da pessoa: o MESMO usado em sobre.html, na home e nas
+   paginas de projeto. Toda mencao de autor aponta pra ele, entao o Google
+   e as IAs leem UMA entidade "Bernardo Iannini", nao uma por pagina. */
+const PERSON_ID = 'https://bernardoiannini.com/#pessoa';
+
 const AUTHOR     = {
   name: 'Bernardo Iannini',
   fullName: 'Bernardo Araujo Iannini',
@@ -478,7 +483,25 @@ function navbarHtml() {
    Template do post estatico
    ========================================================= */
 
+/* idioma real do post: campo lang (se o autor marcou) ou deteccao por
+   palavras-funcao. Os posts sao escritos em ingles e saiam marcados
+   pt-BR, o que fazia o Google oferecer o texto ao publico errado. */
+const PT_WORDS = /(?<!\p{L})(que|não|nao|para|com|uma|mais|isso|como|está|esta|também|tambem|sobre|pela|pelo|são|sao|foi|meu|minha)(?!\p{L})/giu;
+const EN_WORDS = /(?<!\p{L})(the|and|that|with|this|for|from|was|are|have|it's|into|about|their|which|what|my)(?!\p{L})/giu;
+function postLang(post) {
+  const l = String(post.lang || post.language || '').toLowerCase();
+  if (l.startsWith('pt')) return 'pt-BR';
+  if (l.startsWith('en')) return 'en';
+  const text = `${post.title || ''} ${post.subtitle || ''} ${stripMd(post.content || '')}`;
+  const pt = (text.match(PT_WORDS) || []).length;
+  const en = (text.match(EN_WORDS) || []).length;
+  return en > pt ? 'en' : 'pt-BR';
+}
+
 function postPageHtml(post, related) {
+  const lang = postLang(post);
+  const ogLocale = lang === 'en' ? 'en_US' : 'pt_BR';
+  const ogLocaleAlt = lang === 'en' ? 'pt_BR' : 'en_US';
   const url = `${SITE_URL}/posts/${post.slug}.html`;
   const desc = (post.subtitle || stripMd(post.content)).slice(0, 158).trim();
   // absoluteUrl NAO reprefixa URL do Storage: og:image/twitter:image saem
@@ -491,8 +514,6 @@ function postPageHtml(post, related) {
   const ogImageTags = [
     `<meta property="og:image" content="${escapeAttr(cover)}"/>`,
     `<meta property="og:image:alt" content="${escapeAttr(post.coverAlt)}"/>`,
-    `<meta property="og:image:width" content="1200"/>`,
-    `<meta property="og:image:height" content="630"/>`,
   ].join('\n  ');
 
   // JSON-LD BlogPosting
@@ -527,17 +548,18 @@ function postPageHtml(post, related) {
     dateModified:  isoDate(post.updated),
     author: {
       '@type': 'Person',
+      '@id': PERSON_ID,
       name: AUTHOR.name,
       alternateName: AUTHOR.alternateName,
       url: AUTHOR.url,
       image: AUTHOR.image,
       sameAs: AUTHOR.sameAs,
     },
-    publisher: { '@type': 'Person', name: AUTHOR.name, url: AUTHOR.url },
+    publisher: { '@type': 'Person', '@id': PERSON_ID, name: AUTHOR.name, url: AUTHOR.url },
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
     keywords: [...(post.tags || []), AUTHOR.name, 'Belo Horizonte', 'Full Stack Developer', 'AI Designer'].join(', '),
     articleSection: post.category,
-    inLanguage: 'pt-BR',
+    inLanguage: lang,
     url,
     wordCount: wordCount(post.content),
     timeRequired: `PT${readMin}M`,
@@ -637,10 +659,10 @@ function postPageHtml(post, related) {
     : '<div class="post-page-cover-spacer"></div>';
 
   return `<!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="${lang}">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <title>${escapeHtml(post.title)} - Bernardo Iannini</title>
   <meta name="description" content="${escapeAttr(desc)}"/>
   <meta name="author" content="${escapeAttr(AUTHOR.name)}"/>
@@ -665,8 +687,8 @@ function postPageHtml(post, related) {
   <meta property="og:description" content="${escapeAttr(desc)}"/>
   ${ogImageTags}
   <meta property="og:url" content="${url}"/>
-  <meta property="og:locale" content="pt_BR"/>
-  <meta property="og:locale:alternate" content="en_US"/>
+  <meta property="og:locale" content="${ogLocale}"/>
+  <meta property="og:locale:alternate" content="${ogLocaleAlt}"/>
   <meta property="article:published_time" content="${isoDate(post.date)}"/>
   <meta property="article:modified_time" content="${isoDate(post.updated)}"/>
   <meta property="article:author" content="${AUTHOR.url}"/>
@@ -1191,7 +1213,7 @@ function buildBlogJsonLd(posts) {
     datePublished: isoDate(p.date),
     dateModified: isoDate(p.updated),
     image: p.cover ? absoluteUrl(p.cover) : `${SITE_URL}/img/eufoto1.png`,
-    author: { '@type': 'Person', name: AUTHOR.name, url: AUTHOR.url },
+    author: { '@type': 'Person', '@id': PERSON_ID, name: AUTHOR.name, url: AUTHOR.url },
   }));
   return {
     '@context': 'https://schema.org',
@@ -1202,13 +1224,14 @@ function buildBlogJsonLd(posts) {
     inLanguage: 'pt-BR',
     author: {
       '@type': 'Person',
+      '@id': PERSON_ID,
       name: AUTHOR.name,
       alternateName: AUTHOR.alternateName,
       url: AUTHOR.url,
       image: AUTHOR.image,
       sameAs: AUTHOR.sameAs,
     },
-    publisher: { '@type': 'Person', name: AUTHOR.name, url: AUTHOR.url },
+    publisher: { '@type': 'Person', '@id': PERSON_ID, name: AUTHOR.name, url: AUTHOR.url },
     blogPost: items,
   };
 }
@@ -1306,6 +1329,27 @@ function writePostsJson(posts) {
   fs.writeFileSync(path.join(ROOT, 'data', 'posts.json'), JSON.stringify(liteList, null, 2), 'utf8');
 }
 
+/* dateModified honesto: se titulo, subtitulo, capa e texto nao mudaram
+   desde o ultimo build (js/blog-seed.js guarda a versao anterior), a data
+   de edicao continua a anterior. O banco regravava updated_at a cada +1
+   de views, e cada visita virava "editado hoje" pro Google. */
+function stabilizeUpdated(posts) {
+  let prev = [];
+  try {
+    const src = fs.readFileSync(path.join(ROOT, 'js', 'blog-seed.js'), 'utf8');
+    const json = src.slice(src.indexOf('['), src.lastIndexOf(']') + 1);
+    prev = JSON.parse(json);
+  } catch { return; }
+  const bySlug = new Map(prev.map(p => [p.slug, p]));
+  for (const p of posts) {
+    const old = bySlug.get(p.slug);
+    if (!old || !old.updatedAt) continue;
+    const same = old.title === p.title && old.subtitle === p.subtitle &&
+      old.cover === p.cover && old.content === p.content;
+    if (same && old.updatedAt < String(p.updated || '')) p.updated = old.updatedAt;
+  }
+}
+
 function writeBlogSeed(posts) {
   // Mantem compat com blog-seed.js antigo (admin usa pra rascunho local)
   const seed = posts.map(p => ({
@@ -1361,6 +1405,7 @@ async function main() {
   const localPosts = loadPosts();
   const remote     = await fetchSupabasePosts();
   const posts = mergePosts(localPosts, remote.posts);
+  stabilizeUpdated(posts);
 
   /* MODO DEGRADADO: o banco nao respondeu (DNS, timeout, chave rotacionada,
      RLS mexido). Como o banco e a fonte principal, seguir em frente aqui
