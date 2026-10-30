@@ -396,6 +396,27 @@ function renderCaseMain(o) {
     </section>`);
   }
 
+  /* ---- sistema por dentro (telas reais do produto, com legenda) ---- */
+  if (cfg.system && Array.isArray(cfg.system.items) && cfg.system.items.length) {
+    const [first, ...rest] = cfg.system.items;
+    const title = tx(cfg.system.title, lang);
+    const fig = (m, cls) => `<figure class="cs-mkt__item cs-sys__item ${cls}" data-reveal><button type="button" class="cs-mkt__btn" data-cs-zoom="/img/projects/${p.id}/${m.src}" aria-label="${u.zoom}: ${esc(tx(m.alt, lang))}"><img src="/img/projects/${p.id}/${m.src}" alt="${esc(tx(m.alt, lang))}" width="1280" height="800" loading="lazy" decoding="async"></button><figcaption class="cs-sys__cap"><strong>${esc(tx(m.name, lang))}</strong> ${esc(tx(m.cap, lang))}</figcaption></figure>`;
+    sec.push(`
+    <section class="cs-mkt cs-sys" aria-labelledby="csSys" data-cs-gallery>
+      <h2 class="cs-h2" id="csSys" data-reveal><span class="cs-h2__icon">${ICON.layersBig}</span>${esc(title)}</h2>
+      <div class="cs-mkt__grid" data-cs-panel="sys">
+        ${fig(first, 'cs-mkt__item--wide')}
+        ${rest.map(m => fig(m, '')).join('')}
+      </div>
+      <dialog class="cs-lightbox" data-cs-lightbox aria-label="${esc(title)}">
+        <button type="button" class="cs-lightbox__close" data-cs-close aria-label="${u.close}">${ICON.close}</button>
+        <button type="button" class="cs-lightbox__arrow cs-lightbox__arrow--prev" data-cs-lprev aria-label="${u.prev}">${ICON.chevL}</button>
+        <img alt="" data-cs-limg>
+        <button type="button" class="cs-lightbox__arrow cs-lightbox__arrow--next" data-cs-lnext aria-label="${u.next}">${ICON.chevR}</button>
+      </dialog>
+    </section>`);
+  }
+
   /* ---- marketing (pecas publicadas) ---- */
   if (Array.isArray(cfg.marketing) && cfg.marketing.length) {
     const [first, ...rest] = cfg.marketing;

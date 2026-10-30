@@ -702,7 +702,7 @@ Building the trust this corridor is missing is hard precisely because you can't 
           stack: ["Next.js 16","React 19","TypeScript","Python","PostgreSQL","Docker","Caddy"],
           link: "https://besafebr.com",
           repo: "",
-          cover: "img/covers/besafe.webp?v=b01c1adb",
+          cover: "img/covers/besafe.webp?v=edd128ab",
           id: "besafe",
           flow: {
             steps: [
@@ -1577,7 +1577,7 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
           stack: ["Next.js 16","React 19","TypeScript","Python","PostgreSQL","Docker","Caddy"],
           link: "https://besafebr.com",
           repo: "",
-          cover: "img/covers/besafe.webp?v=b01c1adb",
+          cover: "img/covers/besafe.webp?v=edd128ab",
           id: "besafe",
           flow: {
             steps: [

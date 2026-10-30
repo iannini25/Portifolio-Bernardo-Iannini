@@ -6249,6 +6249,8 @@ body:has(.cs) header::before {
 .cs-mkt__btn { display: block; width: 100%; padding: 0; border: 1px solid var(--w-10); border-radius: 18px; overflow: hidden; background: var(--rail); cursor: zoom-in; }
 .cs-mkt__btn img { display: block; width: 100%; height: auto; transition: transform .6s var(--ps-ease); }
 .cs-mkt__btn:hover img { transform: scale(1.02); }
+.cs-sys__cap { margin: 12px 4px 0; font-size: .92rem; line-height: 1.5; color: var(--text-soft); }
+.cs-sys__cap strong { color: var(--text); font-weight: 600; }
 
 /* ---------- o site ao vivo ---------- */
 .cs-live { margin-top: var(--cs-gap); }

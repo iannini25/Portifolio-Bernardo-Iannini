@@ -48,30 +48,29 @@
   <!-- =================================================================
        ANTI-FLICKER de i18n + transição entre páginas
        ================================================================= -->
-  <!-- ABERTURA: curvas topograficas se desenhando em volta do monograma.
-       CSS/JS inline de proposito (pinta no 1o frame, zero download). So na
-       1a visita da sessao; nunca ao voltar pelo historico. Max ~3s. -->
+  <!-- ABERTURA: o esqueleto da pagina se montando em tracos discretos e uma
+       linha fina de progresso no topo. CSS/JS inline de proposito (pinta no
+       1o frame, zero download). So na 1a visita da sessao; nunca ao voltar
+       pelo historico. Max ~2,5s. -->
   <style id="bi-intro-css">
-    #bi-intro{position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;background:#060807;
-      transition:opacity .55s cubic-bezier(.22,1,.36,1),visibility 0s linear .55s}
+    #bi-intro{position:fixed;inset:0;z-index:2147483000;background:#060807;
+      transition:opacity .6s cubic-bezier(.22,1,.36,1),visibility 0s linear .6s}
     #bi-intro.is-out{opacity:0;visibility:hidden}
     html.bi-intro-lock,html.bi-intro-lock body{overflow:hidden}
-    #bi-intro .bi-i{position:relative;width:min(46vmin,260px);aspect-ratio:1;transition:transform .7s cubic-bezier(.22,1,.36,1)}
-    #bi-intro.is-out .bi-i{transform:scale(1.18)}
-    #bi-intro svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-    #bi-intro path{fill:none;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:bi-draw 1.25s cubic-bezier(.65,0,.35,1) forwards}
-    #bi-intro .r1{stroke:#a3e635;stroke-width:1.6;animation-delay:.05s}
-    #bi-intro .r2{stroke:#22c55e;stroke-width:1.2;opacity:.75;animation-delay:.18s}
-    #bi-intro .r3{stroke:#22c55e;stroke-width:1;opacity:.45;animation-delay:.3s}
-    #bi-intro .r4{stroke:#22c55e;stroke-width:.8;opacity:.25;animation-delay:.42s}
-    #bi-intro .bi-m{position:absolute;inset:0;display:grid;place-items:center;font:900 clamp(34px,9vmin,54px)/1 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
-      letter-spacing:-.04em;background:linear-gradient(135deg,#22c55e,#a3e635);-webkit-background-clip:text;background-clip:text;color:transparent;
-      opacity:0;transform:translateY(6px);animation:bi-in .7s cubic-bezier(.22,1,.36,1) .55s forwards}
-    #bi-intro .bi-dot{position:absolute;left:50%;top:6%;width:7px;height:7px;margin-left:-3.5px;border-radius:50%;background:#a3e635;
-      box-shadow:0 0 14px #a3e635;opacity:0;animation:bi-in .4s ease .9s forwards, bi-orbit 2.4s linear 1s infinite;transform-origin:3.5px calc(min(46vmin,260px)*.44)}
-    @keyframes bi-draw{to{stroke-dashoffset:0}}
-    @keyframes bi-in{to{opacity:1;transform:none}}
-    @keyframes bi-orbit{to{transform:rotate(360deg)}}
+    #bi-intro .bi-bar{position:absolute;left:0;top:0;height:2px;width:100%;background:#a3e635;transform-origin:0 50%;
+      transform:scaleX(0);animation:bi-grow 1.5s cubic-bezier(.65,0,.35,1) forwards}
+    #bi-intro .bi-sk{position:absolute;inset:0;transition:transform .7s cubic-bezier(.22,1,.36,1)}
+    #bi-intro.is-out .bi-sk{transform:translateY(-10px)}
+    #bi-intro i{position:absolute;display:block;height:var(--h,10px);border-radius:99px;background:rgba(255,255,255,.07);
+      transform-origin:0 50%;transform:scaleX(0);animation:bi-grow .8s cubic-bezier(.22,1,.36,1) forwards}
+    #bi-intro .n{left:6%;right:6%;top:34px;height:1px;border-radius:0;animation-delay:.1s}
+    #bi-intro .n1{left:6%;top:28px;width:90px;--h:12px;animation-delay:.2s}
+    #bi-intro .t1{left:8%;top:calc(50% - 72px);width:min(62%,560px);--h:22px;animation-delay:.35s}
+    #bi-intro .t2{left:8%;top:calc(50% - 34px);width:min(44%,400px);--h:22px;animation-delay:.47s}
+    #bi-intro .p1{left:8%;top:calc(50% + 14px);width:min(52%,460px);--h:8px;animation-delay:.6s}
+    #bi-intro .p2{left:8%;top:calc(50% + 32px);width:min(36%,320px);--h:8px;animation-delay:.68s}
+    #bi-intro .b1{left:8%;top:calc(50% + 72px);width:132px;--h:38px;background:rgba(163,230,53,.14);animation-delay:.8s}
+    @keyframes bi-grow{to{transform:none}}
   </style>
   <style id="page-fx">
     /* Body: só opacity — NÃO usar transform/filter aqui (quebra position:fixed do header) */
@@ -289,16 +288,8 @@
 
 <body>
   <div id="bi-intro" aria-hidden="true">
-    <div class="bi-i">
-      <svg viewBox="0 0 200 200">
-        <path class="r1" pathLength="1" d="M100 22C146 20 180 52 178 98C176 146 142 180 98 178C52 176 20 144 22 100C24 56 56 24 100 22Z"/>
-        <path class="r2" pathLength="1" d="M101 38C138 37 164 62 162 99C160 137 135 162 99 162C62 161 37 136 38 100C39 64 64 39 101 38Z"/>
-        <path class="r3" pathLength="1" d="M99 55C127 53 147 73 145 100C144 128 125 146 100 145C72 145 54 126 55 99C56 74 73 56 99 55Z"/>
-        <path class="r4" pathLength="1" d="M100 70C118 69 131 82 130 100C129 118 117 131 100 130C82 130 69 118 70 100C71 83 83 71 100 70Z"/>
-      </svg>
-      <span class="bi-m">BI</span>
-      <span class="bi-dot"></span>
-    </div>
+    <span class="bi-bar"></span>
+    <div class="bi-sk"><i class="n"></i><i class="n1"></i><i class="t1"></i><i class="t2"></i><i class="p1"></i><i class="p2"></i><i class="b1"></i></div>
   </div>
   <script>
     (function () {
@@ -309,7 +300,7 @@
       /* ja viu nesta sessao, voltou pelo historico ou chegou por #ancora: sem abertura */
       if (seen || (nav && nav.type === 'back_forward') || location.hash.length > 1) { el.parentNode.removeChild(el); return; }
       document.documentElement.classList.add('bi-intro-lock');
-      var t0 = performance.now(), MIN = 1650, MAX = 2400, done = false;
+      var t0 = performance.now(), MIN = 1500, MAX = 2200, done = false;
       function out() {
         if (done) return; done = true;
         el.classList.add('is-out');
