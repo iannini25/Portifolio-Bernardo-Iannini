@@ -38,7 +38,7 @@ const RAIZ = path.resolve(__dirname, '..');
 const SITE = 'https://www.bernardoiannini.com';
 
 /** Diretórios varridos além da raiz. Não precisam existir ainda. */
-const DIRETORIOS_VARRIDOS = ['posts', 'projetos', 'en'];
+const DIRETORIOS_VARRIDOS = ['posts', 'projetos', 'en', 'pt'];
 
 /**
  * Páginas que nunca entram na descoberta, comparadas pelo nome do arquivo.
@@ -217,6 +217,7 @@ function decodificarEntidades(texto) {
 /** URL pública de um arquivo HTML, a partir do caminho relativo. */
 function urlDaPagina(caminhoRelativo) {
   if (caminhoRelativo === 'index.html') return '/';
+  if (caminhoRelativo === 'pt/index.html') return '/pt';   // home pt (sem barra final, igual ao canonical)
   if (/^(.+)\/index\.html$/.test(caminhoRelativo)) {
     return '/' + caminhoRelativo.replace(/index\.html$/, '');
   }
@@ -225,7 +226,7 @@ function urlDaPagina(caminhoRelativo) {
 
 /** changefreq e priority conforme o tipo de página. */
 function classificarUrl(url) {
-  if (url === '/' || url === '/en/') return { prioridade: '1.0', changefreq: 'weekly' };
+  if (url === '/' || url === '/pt' || url === '/en/') return { prioridade: '1.0', changefreq: 'weekly' };
   if (/^\/(?:en\/)?blog\.html$/.test(url)) return { prioridade: '0.9', changefreq: 'weekly' };
   if (/^\/(?:en\/)?(?:sobre|about)\.html$/.test(url)) return { prioridade: '0.8', changefreq: 'monthly' };
   if (/^\/(?:en\/)?(?:projetos|projects)\//.test(url)) return { prioridade: '0.8', changefreq: 'monthly' };

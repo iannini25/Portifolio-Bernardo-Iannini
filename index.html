@@ -39,6 +39,14 @@
 
   <link rel="alternate" type="application/rss+xml" title="Blog · Bernardo Iannini" href="https://www.bernardoiannini.com/feed.xml" />
   <link rel="canonical" href="https://www.bernardoiannini.com/" />
+  <link rel="alternate" hreflang="en" href="https://www.bernardoiannini.com/" />
+  <link rel="alternate" hreflang="pt-BR" href="https://www.bernardoiannini.com/pt" />
+  <link rel="alternate" hreflang="x-default" href="https://www.bernardoiannini.com/" />
+  <script>
+    /* idioma = ROTA (/ = en, /pt = pt), nao estado de cliente. O middleware
+       ja mandou cada visitante pra versao do pais dele (ou da escolha salva). */
+    try { localStorage.setItem('lang', 'en'); } catch (e) {}
+  </script>
 
   <!-- IndieWeb / Mastodon — rel=me reforça identidade nas redes -->
   <link rel="me" href="https://www.linkedin.com/in/bernardo-iannini">

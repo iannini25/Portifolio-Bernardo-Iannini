@@ -527,6 +527,7 @@ ${jsonLd(p, lang, url)}
         if (!url) return;
         e.preventDefault();
         e.stopPropagation();
+        document.cookie = 'lang=' + li.getAttribute('data-lang') + '; path=/; max-age=31536000; samesite=lax';
         location.href = url;
       }
       menu.addEventListener('click', go, true);

@@ -1847,6 +1847,12 @@ function applyI18n(lang) {
 /* =========================================================
    LANGUAGE SWITCH (menu suspenso do header)
    ========================================================= */
+/* escolha explicita de idioma: cookie que o middleware.js le no servidor
+   (vale mais que o pais do IP nas proximas visitas) */
+function rememberLang(lang) {
+  document.cookie = 'lang=' + lang + '; path=/; max-age=31536000; samesite=lax';
+}
+
 (function languageSwitch() {
   const btn = document.getElementById('langBtn');
   const menu = document.getElementById('langMenu');
@@ -1870,6 +1876,13 @@ function applyI18n(lang) {
     const lang = li.getAttribute('data-lang');
     if (!lang) return;
     closeMenu(true);
+    rememberLang(lang);
+    /* pagina com versao propria no outro idioma (hreflang): vai pra ela */
+    const alt = document.querySelector(`link[rel="alternate"][hreflang^="${lang}"]`);
+    if (alt) {
+      const dest = new URL(alt.href);
+      if (dest.pathname !== location.pathname) { location.href = dest.pathname + location.hash; return; }
+    }
     applyI18n(lang); // já sincroniza aria-selected das opções
   }
 

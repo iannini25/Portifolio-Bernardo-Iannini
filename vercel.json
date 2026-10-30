@@ -190,5 +190,11 @@
       "destination": "/",
       "permanent": true
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/pt",
+      "destination": "/pt/index.html"
+    }
   ]
 }
