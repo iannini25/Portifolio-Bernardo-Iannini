@@ -400,7 +400,7 @@ function renderCaseMain(o) {
   if (cfg.system && Array.isArray(cfg.system.items) && cfg.system.items.length) {
     const [first, ...rest] = cfg.system.items;
     const title = tx(cfg.system.title, lang);
-    const fig = (m, cls) => `<figure class="cs-mkt__item cs-sys__item ${cls}" data-reveal><button type="button" class="cs-mkt__btn" data-cs-zoom="/img/projects/${p.id}/${m.src}" aria-label="${u.zoom}: ${esc(tx(m.alt, lang))}"><img src="/img/projects/${p.id}/${m.src}" alt="${esc(tx(m.alt, lang))}" width="1280" height="800" loading="lazy" decoding="async"></button><figcaption class="cs-sys__cap"><strong>${esc(tx(m.name, lang))}</strong> ${esc(tx(m.cap, lang))}</figcaption></figure>`;
+    const fig = (m, cls) => `<figure class="cs-mkt__item cs-sys__item ${cls}" data-reveal><button type="button" class="cs-mkt__btn" data-cs-zoom="/img/projects/${p.id}/${tx(m.src, lang)}" aria-label="${u.zoom}: ${esc(tx(m.alt, lang))}"><img src="/img/projects/${p.id}/${tx(m.src, lang)}" alt="${esc(tx(m.alt, lang))}" width="1280" height="800" loading="lazy" decoding="async"></button><figcaption class="cs-sys__cap"><strong>${esc(tx(m.name, lang))}</strong> <span class="cs-sys__desc">${esc(tx(m.cap, lang))}</span></figcaption></figure>`;
     sec.push(`
     <section class="cs-mkt cs-sys" aria-labelledby="csSys" data-cs-gallery>
       <h2 class="cs-h2" id="csSys" data-reveal><span class="cs-h2__icon">${ICON.layersBig}</span>${esc(title)}</h2>

@@ -5472,6 +5472,13 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   .cs-pillar__desc, .cs-feat__text { font-size: .94rem; }
   .cs-app__feats li:nth-child(n+4) { display: none; }
   .cs-other__sub { display: none; }
+  /* resumo extra: so o essencial de cada bloco */
+  .cs-sys__desc { display: none; }
+  .cs-feat__text, .cs-pillar__desc, .cs-step__sub, .cs-author__bio {
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+  .cs-feat:nth-child(n+4) { display: none; }
+  .svc-desc { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+  .svc-features li:nth-child(n+4) { display: none; }
 }
 /* celular: sem a pilha de destaques; a secao vai direto pra lista */
 @media (max-width: 820px) {
@@ -7201,6 +7208,7 @@ body.blog-body { min-height: 100vh; }
   color: var(--lime);
 }
 .ps-cursorchip__core svg { width: 17px; height: 17px; display: block; }
+@media (hover: none), (pointer: coarse) { .ps-cursorchip { display: none !important; } }
 @keyframes ps-chip-spin { to { transform: rotate(360deg); } }
 
 /* ==================================================================

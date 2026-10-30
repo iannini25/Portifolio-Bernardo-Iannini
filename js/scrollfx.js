@@ -551,7 +551,10 @@
        featured (as de trás promovem no clique, não ganham badge). */
     const list = document.querySelector('[data-ps-list]');
     const stage = document.querySelector('[data-pj-stage]');
-    if (list || stage) {
+    /* so com mouse de verdade: no toque o tap gera mousemove sintetico e o
+       selo ficava parado na tela */
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if ((list || stage) && finePointer) {
       const chip = document.createElement('span');
       chip.className = 'ps-cursorchip';
       chip.setAttribute('aria-hidden', 'true');

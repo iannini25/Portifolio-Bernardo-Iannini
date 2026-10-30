@@ -312,37 +312,100 @@
       ]
     },
     "system": {
-      "title": { "pt": "O sistema por dentro", "en": "Inside the system" },
+      "title": {
+        "pt": "O sistema por dentro",
+        "en": "Inside the system"
+      },
       "items": [
         {
-          "src": "sys-1-verificar.webp",
-          "name": { "pt": "Verificador com IA.", "en": "AI message checker." },
-          "cap": { "pt": "O colaborador cola a mensagem suspeita e recebe o veredito, a chance de golpe, o que chamou atenção e o que fazer agora.", "en": "Employees paste a suspicious message and get the verdict, the scam likelihood, what stood out and what to do next." },
-          "alt": { "pt": "Resultado do verificador da BeSafe: provável golpe, 75% de chance, com sinais e próximos passos", "en": "BeSafe checker result: likely scam, 75% likelihood, with red flags and next steps" }
+          "src": {
+            "pt": "sys-1-verificar.webp",
+            "en": "sys-1-verificar-en.webp"
+          },
+          "name": {
+            "pt": "Verificador com IA.",
+            "en": "AI message checker."
+          },
+          "cap": {
+            "pt": "O colaborador cola a mensagem suspeita e recebe o veredito, a chance de golpe, o que chamou atenção e o que fazer agora.",
+            "en": "Employees paste a suspicious message and get the verdict, the scam likelihood, what stood out and what to do next."
+          },
+          "alt": {
+            "pt": "Ilustração: resultado do verificador da BeSafe: provável golpe, 75% de chance, com sinais e próximos passos",
+            "en": "Illustration: beSafe checker result: likely scam, 75% likelihood, with red flags and next steps"
+          }
         },
         {
-          "src": "sys-2-plano.webp",
-          "name": { "pt": "Assistente monta o plano.", "en": "The assistant builds the plan." },
-          "cap": { "pt": "Um pedido em linguagem natural vira um plano de ataque e teste de 90 dias, com etapas e metas.", "en": "A plain-language request becomes a 90-day attack-and-test plan with stages and goals." },
-          "alt": { "pt": "Assistente de IA da BeSafe gerando um plano de ataque e teste de 90 dias", "en": "BeSafe AI assistant generating a 90-day attack and test plan" }
+          "src": {
+            "pt": "sys-2-plano.webp",
+            "en": "sys-2-plano-en.webp"
+          },
+          "name": {
+            "pt": "Assistente monta o plano.",
+            "en": "The assistant builds the plan."
+          },
+          "cap": {
+            "pt": "Um pedido em linguagem natural vira um plano de ataque e teste de 90 dias, com etapas e metas.",
+            "en": "A plain-language request becomes a 90-day attack-and-test plan with stages and goals."
+          },
+          "alt": {
+            "pt": "Ilustração: assistente de IA da BeSafe gerando um plano de ataque e teste de 90 dias",
+            "en": "Illustration: beSafe AI assistant generating a 90-day attack and test plan"
+          }
         },
         {
-          "src": "sys-4-config.webp",
-          "name": { "pt": "E configura com permissão.", "en": "And sets it up, with consent." },
-          "cap": { "pt": "Cria grupos e agenda campanhas sozinho, sempre pedindo confirmação antes.", "en": "It creates groups and schedules campaigns on its own, always asking for confirmation first." },
-          "alt": { "pt": "Assistente da BeSafe confirmando que criou o grupo Financeiro e agendou a campanha", "en": "BeSafe assistant confirming it created the Finance group and scheduled the campaign" }
+          "src": {
+            "pt": "sys-3-config.webp",
+            "en": "sys-3-config-en.webp"
+          },
+          "name": {
+            "pt": "E configura com permissão.",
+            "en": "And sets it up, with consent."
+          },
+          "cap": {
+            "pt": "Cria grupos e agenda campanhas sozinho, sempre pedindo confirmação antes.",
+            "en": "It creates groups and schedules campaigns on its own, always asking for confirmation first."
+          },
+          "alt": {
+            "pt": "Ilustração: assistente da BeSafe confirmando que criou o grupo Financeiro e agendou a campanha",
+            "en": "Illustration: beSafe assistant confirming it created the Finance group and scheduled the campaign"
+          }
         },
         {
-          "src": "sys-3-duvida.webp",
-          "name": { "pt": "Tira dúvidas mostrando o caminho.", "en": "Answers and shows its work." },
-          "cap": { "pt": "Cada resposta diz de onde veio e já leva para a tela certa.", "en": "Every answer shows where it came from and links straight to the right screen." },
-          "alt": { "pt": "Assistente da BeSafe respondendo onde criar uma campanha, com as etapas do raciocínio", "en": "BeSafe assistant answering where to create a campaign, with its reasoning steps" }
+          "src": {
+            "pt": "sys-4-duvida.webp",
+            "en": "sys-4-duvida-en.webp"
+          },
+          "name": {
+            "pt": "Tira dúvidas mostrando o caminho.",
+            "en": "Answers and shows its work."
+          },
+          "cap": {
+            "pt": "Cada resposta diz de onde veio e já leva para a tela certa.",
+            "en": "Every answer shows where it came from and links straight to the right screen."
+          },
+          "alt": {
+            "pt": "Ilustração: assistente da BeSafe respondendo onde criar uma campanha, com as etapas do raciocínio",
+            "en": "Illustration: beSafe assistant answering where to create a campaign, with its reasoning steps"
+          }
         },
         {
-          "src": "sys-5-acesso.webp",
-          "name": { "pt": "Acesso sem senha.", "en": "Passwordless sign-in." },
-          "cap": { "pt": "O colaborador entra no portal com um código de 6 dígitos enviado por e-mail.", "en": "Employees sign in to their portal with a 6-digit code sent by email." },
-          "alt": { "pt": "Tela de login da BeSafe com código de 6 dígitos", "en": "BeSafe sign-in screen with a 6-digit code" }
+          "src": {
+            "pt": "sys-5-acesso.webp",
+            "en": "sys-5-acesso-en.webp"
+          },
+          "name": {
+            "pt": "Acesso sem senha.",
+            "en": "Passwordless sign-in."
+          },
+          "cap": {
+            "pt": "O colaborador entra no portal com um código de 6 dígitos enviado por e-mail.",
+            "en": "Employees sign in to their portal with a 6-digit code sent by email."
+          },
+          "alt": {
+            "pt": "Ilustração: tela de login da BeSafe com código de 6 dígitos",
+            "en": "Illustration: beSafe sign-in screen with a 6-digit code"
+          }
         }
       ]
     }

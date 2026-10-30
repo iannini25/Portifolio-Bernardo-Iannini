@@ -1,16 +1,17 @@
 /* =========================================================
    Middleware (Vercel Routing Middleware)
 
-   1) IDIOMA POR PAIS
+   1) IDIOMA DO VISITANTE
       Paginas que existem nos dois idiomas:
         /                    <->  /pt
         /projetos/<id>.html  <->  /en/projects/<id>.html
         /sobre.html          <->  /en/about.html
       Quem chega numa versao que nao e a sua vai pra outra (302):
-        - escolha salva no seletor (cookie lang) vale primeiro;
-        - senao, o pais do IP (header x-vercel-ip-country):
-          paises de lingua portuguesa -> pt, resto -> en;
-        - sem pais, o Accept-Language do navegador.
+        1. escolha salva no seletor (cookie lang);
+        2. idioma preferido do navegador (Accept-Language), se ele
+           pedir portugues ou ingles;
+        3. pais do IP (header x-vercel-ip-country): paises de lingua
+           portuguesa -> pt, resto -> en.
       Robos de busca e previews de link NUNCA sao redirecionados:
       o Google rastreia dos EUA e precisa ver as duas versoes
       (o hreflang de cada pagina diz a ele qual mostrar em cada pais).
@@ -40,14 +41,25 @@ function counterpart(pathname) {
   return null;
 }
 
+/* 1o idioma da lista do navegador (por ordem de q) que seja pt ou en */
+function browserLang(header) {
+  const langs = header.split(',').map((part, i) => {
+    const [tag, ...params] = part.trim().toLowerCase().split(';');
+    const q = params.map(p => p.trim()).find(p => p.startsWith('q='));
+    return { tag, q: q ? parseFloat(q.slice(2)) || 0 : 1, i };
+  }).filter(l => l.tag && l.q > 0).sort((a, b) => b.q - a.q || a.i - b.i);
+  const hit = langs.find(l => /^(pt|en)/.test(l.tag));
+  return hit ? hit.tag.slice(0, 2) : null;
+}
+
 function wantedLang(request) {
   const cookie = request.headers.get('cookie') || '';
   const saved = cookie.match(/(?:^|;\s*)lang=(pt|en)\b/);
   if (saved) return saved[1];
+  const browser = browserLang(request.headers.get('accept-language') || '');
+  if (browser) return browser;
   const country = (request.headers.get('x-vercel-ip-country') || '').toUpperCase();
   if (country) return LUSOPHONE.has(country) ? 'pt' : 'en';
-  const al = (request.headers.get('accept-language') || '').toLowerCase();
-  if (al) return al.trim().startsWith('pt') ? 'pt' : 'en';
   return null;
 }
 

@@ -702,7 +702,7 @@ Building the trust this corridor is missing is hard precisely because you can't 
           stack: ["Next.js 16","React 19","TypeScript","Python","PostgreSQL","Docker","Caddy"],
           link: "https://besafebr.com",
           repo: "",
-          cover: "img/covers/besafe.webp?v=edd128ab",
+          cover: "img/covers/besafe.webp?v=86534ea2",
           id: "besafe",
           flow: {
             steps: [
@@ -1577,7 +1577,7 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
           stack: ["Next.js 16","React 19","TypeScript","Python","PostgreSQL","Docker","Caddy"],
           link: "https://besafebr.com",
           repo: "",
-          cover: "img/covers/besafe.webp?v=edd128ab",
+          cover: "img/covers/besafe.webp?v=86534ea2",
           id: "besafe",
           flow: {
             steps: [
@@ -1764,7 +1764,14 @@ A troca EN/PT é um motor de i18n escrito do zero: o site inteiro muda de idioma
   }
 };
 
-let LANG = localStorage.getItem('lang') || 'en';
+/* idioma inicial: o salvo (paginas bilingues gravam o da rota antes deste
+   script) > o preferido do navegador, se for pt ou en > ingles */
+function browserLang() {
+  const list = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ''];
+  const hit = list.find(l => /^(pt|en)/i.test(l));
+  return hit ? hit.slice(0, 2).toLowerCase() : null;
+}
+let LANG = localStorage.getItem('lang') || browserLang() || 'en';
 
 /* =========================================================
    NAVBAR (apenas lang code + lang do <html>)
