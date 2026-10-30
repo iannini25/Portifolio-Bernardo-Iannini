@@ -32,6 +32,11 @@
   let muted = false; // ignora mutations causadas pelo próprio rebuild
 
   const hasPointer = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  /* TOQUE (celular/tablet): entradas "scrubadas" (recalculadas a cada
+     pixel rolado) viram "toca uma vez ao entrar na tela". Mesmo efeito,
+     sem trabalho por frame de rolagem: era o que engasgava no celular. */
+  const TOUCH = window.matchMedia('(pointer: coarse)').matches;
+  const SCR = (v) => TOUCH ? { scrub: false, toggleActions: 'play none none none', once: true } : { scrub: v };
   const hasDraw = () => !!window.DrawSVGPlugin;
 
   const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -107,7 +112,7 @@
           /* clamp(): em telas altas a ultima section nao tem scroll
              suficiente — o range encolhe pro que existe e o reveal
              SEMPRE completa */
-          scrollTrigger: { trigger: el, start: 'clamp(top 94%)', end: 'clamp(top 55%)', scrub: .5 },
+          scrollTrigger: { trigger: el, start: 'clamp(top 94%)', end: 'clamp(top 55%)', ...SCR(.5) },
         }));
     });
   }
@@ -131,7 +136,7 @@
           trigger: opts.trigger || items[0],
           start: `clamp(${opts.start || 'top 92%'})`,
           end: `clamp(${opts.end || 'top 50%'})`,
-          scrub: .5,
+          ...SCR(.5),
         },
       }));
   }
@@ -145,7 +150,7 @@
           y: 0,
           autoAlpha: 1,
           ease: 'power2.out',
-          scrollTrigger: { trigger: el, start: 'clamp(top 95%)', end: 'clamp(top 66%)', scrub: .5 },
+          scrollTrigger: { trigger: el, start: 'clamp(top 95%)', end: 'clamp(top 66%)', ...SCR(.5) },
         }));
     });
   }
@@ -184,7 +189,7 @@
       gsap.fromTo(path, { drawSVG: '0% 0%' }, {
         drawSVG: '0% 100%',
         ease: 'none',
-        scrollTrigger: { trigger: about, start: 'top 80%', end: 'bottom 70%', scrub: .6 },
+        scrollTrigger: { trigger: about, start: 'top 80%', end: 'bottom 70%', ...SCR(.6) },
       });
     }
 
@@ -254,7 +259,7 @@
             trigger: '#servicesGrid',
             start: 'clamp(top 90%)',
             end: 'clamp(top 48%)',
-            scrub: .5,
+            ...SCR(.5),
           },
         }));
     });
@@ -269,7 +274,7 @@
             drawSVG: '0% 100%',
             ease: 'none',
             stagger: .05,
-            scrollTrigger: { trigger: '#servicesGrid', start: 'top 92%', end: 'top 48%', scrub: .5 },
+            scrollTrigger: { trigger: '#servicesGrid', start: 'top 92%', end: 'top 48%', ...SCR(.5) },
           }));
       }
     }
@@ -387,8 +392,9 @@
      ============================================================ */
   function buildHeroIntro() {
     const els = gsap.utils.toArray(
-      ['.hero .photo', '.hero .hello', '.hero .name', '.hero .tagline',
-        '.hero .rail', '.scroll-cue']);
+      /* foto e nome (o LCP) entram por CSS desde a 1a pintura: esperar o
+         GSAP baixar pra revelar atrasava o LCP em segundos no celular */
+      ['.hero .hello', '.hero .tagline', '.hero .rail', '.scroll-cue']);
     if (!els.length) return;
     gsap.from(els, {
       autoAlpha: 0,
@@ -403,6 +409,7 @@
      PROFUNDIDADE — paralaxe (hero, aurora)
      ============================================================ */
   function buildDepth() {
+    if (TOUCH) return;   // parallax e efeito de mouse/rolagem fina: no toque so pesava
     const hero = document.querySelector('.hero');
     if (hero) {
       gsap.timeline({
@@ -698,7 +705,7 @@
           trigger: entry,
           start: 'clamp(top 90%)',
           end: 'clamp(top 42%)',
-          scrub: .5,
+          ...SCR(.5),
         },
       });
       tl.fromTo(branch, { scaleX: 0 }, { scaleX: 1, duration: .16, ease: 'none' }, .02);
@@ -753,7 +760,7 @@
         {
           y: 0, autoAlpha: 1, ease: 'power2.out', stagger: .07,
           immediateRender: false,
-          scrollTrigger: { trigger: row, start: 'clamp(top 94%)', end: 'clamp(top 64%)', scrub: .4 },
+          scrollTrigger: { trigger: row, start: 'clamp(top 94%)', end: 'clamp(top 64%)', ...SCR(.4) },
         }));
     });
 

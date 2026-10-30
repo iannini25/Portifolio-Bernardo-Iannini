@@ -14,6 +14,10 @@
 let scrollingUntil = 0;
 window.addEventListener('scroll', () => { scrollingUntil = performance.now() + 180; }, { passive: true });
 
+/* toque (celular/tablet): durante a rolagem o fundo segura o quadro e
+   o orcamento inteiro do frame vai pra rolagem; no desktop segue vivo */
+export const TOUCH = window.matchMedia('(pointer: coarse)').matches;
+
 export function isScrolling(now) {
   return now < scrollingUntil;
 }

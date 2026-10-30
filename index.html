@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <!-- classificacao de performance ANTES do 1o paint (sem defer de proposito:
        o arquivo e pequeno, nao faz I/O, e decide se os fundos WebGL ligam) -->
-  <script src="/js/perf-tier.js"></script>
+  <script src="/js/perf-tier.js" defer></script>
   <title>Bernardo Iannini · Full Stack Developer &amp; AI Designer</title>
   <meta name="author" content="Bernardo Iannini">
   <meta name="description" content="Bernardo Iannini is a Full Stack Developer &amp; AI Designer from Belo Horizonte, Brazil, building complete systems from architecture to production: SaaS, fintech, ERPs and AI." />
@@ -14,9 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;600;700&family=Instrument+Serif:ital@0;1&display=swap"
-    rel="stylesheet">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;600;700&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;600;700&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;600;700&family=Instrument+Serif:ital@0;1&display=swap"></noscript></noscript>
   <link rel="stylesheet" href="/style.css">
 
   <!-- Preload do provável LCP (foto do hero) — busca antes do parser chegar na tag -->
@@ -1010,6 +1008,7 @@
   <script src="/js/scrollfx.js" defer></script>
   <script src="/js/topo-glow.js" defer></script>
   <script src="/js/scroll-restore.js" defer></script>
+  <script src="/js/anim-pause.js" defer></script>
 
   <!-- Fundo LineWaves WebGL da section de Serviços (ogl via CDN ESM).
        Módulo = defer implícito; self-contained, degrada sem quebrar nada. -->

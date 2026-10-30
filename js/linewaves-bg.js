@@ -14,7 +14,7 @@
    ogl carregado via CDN ESM, mesmo padrao de GSAP/Lenis no index.
    ============================================================ */
 import { Renderer, Program, Mesh, Triangle } from 'https://cdn.jsdelivr.net/npm/ogl@1.0.11/+esm';
-import { createGovernor, isScrolling } from './gl-governor.js';
+import { createGovernor, isScrolling, TOUCH } from './gl-governor.js';
 
 const hexToVec3 = hex => {
   const h = hex.replace('#', '');
@@ -287,8 +287,11 @@ function initLineWaves(container, opts = {}) {
   const loop = t => {
     if (contextLost || !isVisible || !tabVisible) return;
     governor(t);
-    /* rolando: metade da taxa (o fundo segue vivo, a rolagem ganha folga) */
-    const budget = isScrolling(t) ? frameInterval * 2 : frameInterval;
+    /* rolando: no toque o fundo segura o quadro (rolagem tem prioridade);
+       no desktop segue vivo na metade da taxa */
+    const rolling = isScrolling(t);
+    if (rolling && TOUCH) { raf = requestAnimationFrame(loop); return; }
+    const budget = rolling ? frameInterval * 2 : frameInterval;
     if (t - lastFrameTime < budget) { raf = requestAnimationFrame(loop); return; }
     lastFrameTime = t;
 
@@ -373,25 +376,36 @@ function initLineWaves(container, opts = {}) {
   }
 
   const coarse = window.matchMedia('(pointer: coarse)').matches;
+    /* so compila o shader quando a secao chega perto da tela: no load o
+     fundo nao existe ainda, e a pagina abre sem esse custo no processador */
+  const start = () => {
   initLineWaves(layer, {
-    speed: 0.2,
-    innerLineCount: 32,
-    outerLineCount: 40,
-    warpIntensity: 1.0,
-    rotation: -52,
-    edgeFadeWidth: 0.0,
-    colorCycleSpeed: 1.0,
-    brightness: 0.1,
-    color1: '#22c55e',       // verde institucional (--green)
-    color2: '#a3e635',       // lima do tema (--lime)
-    color3: '#ffffff',       // realce
-    enableMouseInteraction: true,
-    mouseInfluence: 0.8,
-    interactTarget: section,
-    // linhas finas pedem nitidez no desktop; no toque nao ha mouse pra
-    // interagir, entao 30fps + dpr 1 seguram a GPU movel e a bateria
-    renderScale: coarse ? 0.6 : 0.8,
-    maxDpr: coarse ? 1 : 1.5,
-    targetFps: coarse ? 30 : 60,
-  });
+      speed: 0.2,
+      innerLineCount: 32,
+      outerLineCount: 40,
+      warpIntensity: 1.0,
+      rotation: -52,
+      edgeFadeWidth: 0.0,
+      colorCycleSpeed: 1.0,
+      brightness: 0.1,
+      color1: '#22c55e',       // verde institucional (--green)
+      color2: '#a3e635',       // lima do tema (--lime)
+      color3: '#ffffff',       // realce
+      enableMouseInteraction: true,
+      mouseInfluence: 0.8,
+      interactTarget: section,
+      // linhas finas pedem nitidez no desktop; no toque nao ha mouse pra
+      // interagir, entao 30fps + dpr 1 seguram a GPU movel e a bateria
+      renderScale: coarse ? 0.6 : 0.8,
+      maxDpr: coarse ? 1 : 1.5,
+      targetFps: coarse ? 30 : 60,
+    });
+  };
+  if (!('IntersectionObserver' in window)) { start(); return; }
+  const io = new IntersectionObserver((entries) => {
+    if (!entries.some(e => e.isIntersecting)) return;
+    io.disconnect();
+    (window.requestIdleCallback || ((f) => setTimeout(f, 1)))(start, { timeout: 600 });
+  }, { rootMargin: '900px 0px' });
+  io.observe(section);
 })();

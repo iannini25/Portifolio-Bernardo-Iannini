@@ -16,7 +16,7 @@
    ogl via CDN ESM (padrao GSAP/Lenis).
    ============================================================ */
 import { Renderer, Program, Mesh, Triangle } from 'https://cdn.jsdelivr.net/npm/ogl@1.0.11/+esm';
-import { createGovernor, isScrolling } from './gl-governor.js';
+import { createGovernor, isScrolling, TOUCH } from './gl-governor.js';
 
 const MAX_COLORS = 8;
 
@@ -316,8 +316,11 @@ function initFerrofluid(container, opts = {}) {
   const loop = t => {
     if (contextLost || !isVisible || !tabVisible) return;
     governor(t);
-    /* rolando: metade da taxa (o fundo segue vivo, a rolagem ganha folga) */
-    const budget = isScrolling(t) ? frameInterval * 2 : frameInterval;
+    /* rolando: no toque o fundo segura o quadro (rolagem tem prioridade);
+       no desktop segue vivo na metade da taxa */
+    const rolling = isScrolling(t);
+    if (rolling && TOUCH) { raf = requestAnimationFrame(loop); return; }
+    const budget = rolling ? frameInterval * 2 : frameInterval;
     if (t - lastFrame < budget) { raf = requestAnimationFrame(loop); return; }
     lastFrame = t;
 
@@ -394,27 +397,38 @@ function initFerrofluid(container, opts = {}) {
   }
 
   const coarse = window.matchMedia('(pointer: coarse)').matches;
+    /* so compila o shader quando a secao chega perto da tela: no load o
+     fundo nao existe ainda, e a pagina abre sem esse custo no processador */
+  const start = () => {
   initFerrofluid(layer, {
-    // SO as cores mudaram (lima -> verde -> branco, tema do site);
-    // o resto e o do exemplo de uso.
-    colors: ['#a3e635', '#22c55e', '#ffffff'],
-    speed: 0.1,
-    scale: 1.5,
-    turbulence: 0.5,
-    fluidity: 0.19,
-    rimWidth: 0.2,
-    sharpness: 5,
-    shimmer: 1,
-    glow: 2.1,
-    flowDirection: 'down',
-    opacity: 1,
-    mouseInteraction: false,
-    // fluido e macio por natureza: meia resolucao + upscale do CSS nao se
-    // ve, e corta ~60% dos pixels do shader. No toque (celular/tablet) cai
-    // mais um degrau: GPU movel + bateria.
-    renderScale: coarse ? 0.4 : 0.5,
-    maxDpr: coarse ? 1 : 1.25,
-    maxBuffer: coarse ? 900 : 1400,
-    targetFps: coarse ? 24 : 30,
-  });
+      // SO as cores mudaram (lima -> verde -> branco, tema do site);
+      // o resto e o do exemplo de uso.
+      colors: ['#a3e635', '#22c55e', '#ffffff'],
+      speed: 0.1,
+      scale: 1.5,
+      turbulence: 0.5,
+      fluidity: 0.19,
+      rimWidth: 0.2,
+      sharpness: 5,
+      shimmer: 1,
+      glow: 2.1,
+      flowDirection: 'down',
+      opacity: 1,
+      mouseInteraction: false,
+      // fluido e macio por natureza: meia resolucao + upscale do CSS nao se
+      // ve, e corta ~60% dos pixels do shader. No toque (celular/tablet) cai
+      // mais um degrau: GPU movel + bateria.
+      renderScale: coarse ? 0.4 : 0.5,
+      maxDpr: coarse ? 1 : 1.25,
+      maxBuffer: coarse ? 900 : 1400,
+      targetFps: coarse ? 24 : 30,
+    });
+  };
+  if (!('IntersectionObserver' in window)) { start(); return; }
+  const io = new IntersectionObserver((entries) => {
+    if (!entries.some(e => e.isIntersecting)) return;
+    io.disconnect();
+    (window.requestIdleCallback || ((f) => setTimeout(f, 1)))(start, { timeout: 600 });
+  }, { rootMargin: '900px 0px' });
+  io.observe(wrap);
 })();

@@ -8427,3 +8427,12 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
   .ab-photo { width: 150px; height: 150px; }
 }
 
+
+/* secao fora da tela: animacoes CSS pausadas (js/anim-pause.js) */
+.is-off, .is-off * { animation-play-state: paused !important; }
+
+/* entrada da hero (foto + nome) em CSS: começa na 1a pintura, sem esperar
+   o GSAP. Opacidade minima > 0 pro browser contar o LCP no 1o frame. */
+@keyframes hero-in { from { opacity: .01; } to { opacity: 1; } }
+.hero .photo { animation: hero-in .9s cubic-bezier(.22, 1, .36, 1) both; }
+.hero .name { animation: hero-in .9s cubic-bezier(.22, 1, .36, 1) .12s both; }
