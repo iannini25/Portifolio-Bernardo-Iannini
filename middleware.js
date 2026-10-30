@@ -48,7 +48,7 @@ function browserLang(header) {
     const q = params.map(p => p.trim()).find(p => p.startsWith('q='));
     return { tag, q: q ? parseFloat(q.slice(2)) || 0 : 1, i };
   }).filter(l => l.tag && l.q > 0).sort((a, b) => b.q - a.q || a.i - b.i);
-  const hit = langs.find(l => /^(pt|en)/.test(l.tag));
+  const hit = langs.find(l => /^(pt|en)(-|$)/.test(l.tag));
   return hit ? hit.tag.slice(0, 2) : null;
 }
 
