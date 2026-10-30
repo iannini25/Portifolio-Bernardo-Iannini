@@ -49,7 +49,9 @@ async function renderTerminal(lang) {
   if (!term) return;
 
   term.innerHTML = '';
-  const script = I18N[lang].about.terminal;
+  /* celular: versao curta (sem o contact --show), quando existir */
+  const mobile = window.matchMedia('(max-width: 640px)').matches;
+  const script = (mobile && I18N[lang].about.terminalMobile) || I18N[lang].about.terminal;
 
   for (const step of script) {
     if (step.type === 'type') await typeKaliPromptAndCmd(step.text);

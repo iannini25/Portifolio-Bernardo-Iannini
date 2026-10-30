@@ -337,6 +337,7 @@ function buildSkillsFolders() {
     if (btn) btn.addEventListener('click', () => toggleFolder(folder));
   });
   initBoxSpotlight(host);
+  buildSkillsMobile(host);
 
   // Esc fecha a pasta aberta e devolve o foco ao botao
   document.addEventListener('keydown', e => {
@@ -349,6 +350,33 @@ function buildSkillsFolders() {
   });
 }
 
+/* -------- celular: lista em sanfona no lugar das pastas --------
+   As pastas 3D pedem espaco e hover; no celular viravam um painel de
+   2.400px com uma pasta por tela. Aqui cada categoria e um <details>
+   (uma aberta por vez via name=, a 1a ja aberta) com as ferramentas em
+   etiquetas. O CSS mostra uma ou outra versao pela largura. */
+function buildSkillsMobile(host) {
+  const list = document.createElement('div');
+  list.className = 'skm';
+  list.id = 'skillsMobile';
+  SKILLS_FOLDERS.forEach((cat, i) => {
+    const d = document.createElement('details');
+    d.className = 'skm-cat';
+    d.name = 'skm';
+    d.setAttribute('name', 'skm');
+    if (i === 0) d.open = true;
+    d.dataset.key = cat.key;
+    d.innerHTML =
+      `<summary><span class="skm-ico"><img src="/${cat.icon}" alt="" width="22" height="22" loading="lazy"></span>` +
+      `<span class="skm-name">${cat.label}</span><span class="skm-count">${cat.files.length}</span>` +
+      `<svg class="skm-chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>` +
+      `<div class="skm-chips">${cat.files.map(f =>
+        `<span class="skm-chip"><img src="/${f.icon}" alt="" width="20" height="20" loading="lazy">${f.name}</span>`).join('')}</div>`;
+    list.appendChild(d);
+  });
+  host.insertAdjacentElement('afterend', list);
+}
+
 /* -------- i18n: titulo, subtitulo e labels das pastas -------- */
 function renderSkills(lang) {
   const S = (typeof I18N !== 'undefined' && I18N[lang] && I18N[lang].skills) || null;
@@ -359,6 +387,15 @@ function renderSkills(lang) {
     if (title) title.textContent = S.title;
     if (sub) sub.textContent = S.sub;
   }
+  /* celular: a instrucao fala de tocar numa categoria, nao de pasta */
+  if (sub && window.matchMedia('(max-width: 640px)').matches) {
+    sub.textContent = lang === 'pt' ? 'Toque numa categoria pra ver as ferramentas.' : 'Tap a category to see the tools.';
+  }
+  document.querySelectorAll('#skillsMobile .skm-cat').forEach(d => {
+    const name = d.querySelector('.skm-name');
+    const key = d.dataset.key;
+    if (name && S && S.tilesLabels && S.tilesLabels[key]) name.textContent = S.tilesLabels[key];
+  });
 
   const toolsWord = lang === 'pt' ? 'ferramentas' : 'tools';
   const skillsWord = lang === 'pt' ? 'habilidades' : 'skills';

@@ -319,6 +319,24 @@
       "items": [
         {
           "src": {
+            "pt": "sys-6-simulacao.webp",
+            "en": "sys-6-simulacao-en.webp"
+          },
+          "name": {
+            "pt": "Simulação com aula na hora.",
+            "en": "Simulation with an instant lesson."
+          },
+          "cap": {
+            "pt": "A empresa dispara um golpe falso pelo e-mail, Teams ou WhatsApp; quem clica vê que era treino e ganha uma aula curta na hora.",
+            "en": "The company sends a fake scam by email, Teams or WhatsApp; whoever clicks learns it was practice and gets a short lesson right away."
+          },
+          "alt": {
+            "pt": "Ilustração: mensagem falsa no WhatsApp e a tela \"Isto era uma simulação\" com aula de 2 minutos",
+            "en": "Illustration: fake WhatsApp message and the \"This was a simulation\" screen with a 2-minute lesson"
+          }
+        },
+        {
+          "src": {
             "pt": "sys-1-verificar.webp",
             "en": "sys-1-verificar-en.webp"
           },

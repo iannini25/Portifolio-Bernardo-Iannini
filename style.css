@@ -5710,7 +5710,7 @@ body:has(.cs) header::before {
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid var(--w-10);
-  background: var(--rail);
+  background: #111;   /* neutro: o --rail (verde-escuro) tingia a capa enquanto ela carregava */
   box-shadow: 0 40px 90px -36px rgba(0, 0, 0, .8);
 }
 .cs-win__bar {
@@ -6258,6 +6258,18 @@ body:has(.cs) header::before {
 .cs-mkt__btn:hover img { transform: scale(1.02); }
 .cs-sys__cap { margin: 12px 4px 0; font-size: .92rem; line-height: 1.5; color: var(--text-soft); }
 .cs-sys__cap strong { color: var(--text); font-weight: 600; }
+.cs-sys__grid { gap: 28px 22px; }
+.cs-sys__item { display: flex; flex-direction: column; }
+.cs-sys__item .cs-mkt__btn { aspect-ratio: 16 / 10; }
+.cs-sys__item .cs-mkt__btn img { height: 100%; object-fit: cover; }
+/* celular: carrossel de deslizar em vez de 6 imagens grandes empilhadas */
+@media (max-width: 640px) {
+  .cs-mkt__grid.cs-sys__grid { display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 86%;
+    gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+    margin: 0 -16px; padding: 0 16px 6px; scrollbar-width: none; }
+  .cs-sys__grid::-webkit-scrollbar { display: none; }
+  .cs-sys__item { scroll-snap-align: center; }
+}
 
 /* ---------- o site ao vivo ---------- */
 .cs-live { margin-top: var(--cs-gap); }
@@ -8446,3 +8458,39 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
 @keyframes hero-in { from { opacity: .01; } to { opacity: 1; } }
 .hero .photo { animation: hero-in .9s cubic-bezier(.22, 1, .36, 1) both; }
 .hero .name { animation: hero-in .9s cubic-bezier(.22, 1, .36, 1) .12s both; }
+
+/* celular/tablet: com os botoes sociais em linha embaixo do nome, a seta
+   (que no desktop sobe -90px pro canto da hero) caia em cima deles.
+   Aqui ela desce pra baixo dos botoes, com respiro. */
+@media (max-width: 900px) {
+  .scroll-cue { margin-top: 28px; }
+}
+
+/* ---------- skills no celular: sanfona de categorias (js/skills.js) ---------- */
+.skm { display: none; }
+@media (max-width: 640px) {
+  .skills-tiles .skills-folders { display: none !important; }
+  .skm { display: grid; gap: 10px; margin-top: 26px; }
+  .skm-cat { border: 1px solid var(--w-10); border-radius: 18px; background: var(--rail); overflow: hidden; transition: border-color .25s ease; }
+  .skm-cat[open] { border-color: var(--g-22); }
+  .skm-cat summary { list-style: none; display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .skm-cat summary::-webkit-details-marker { display: none; }
+  .skm-ico { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; flex: none;
+    background: linear-gradient(135deg, rgba(34,197,94,.22), rgba(163,230,53,.12)); }
+  .skm-ico img { width: 22px; height: 22px; object-fit: contain; }
+  .skm-name { font-weight: 700; font-size: 1.02rem; color: var(--text); }
+  .skm-count { margin-left: auto; font-size: .8rem; font-weight: 700; color: var(--lime); background: rgba(163,230,53,.1); border-radius: 99px; padding: 3px 9px; }
+  .skm-chev { width: 18px; height: 18px; color: var(--text-hint); transition: transform .3s cubic-bezier(.22,1,.36,1); flex: none; }
+  .skm-cat[open] .skm-chev { transform: rotate(180deg); color: var(--lime); }
+  .skm-chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 2px 16px 16px; }
+  .skm-chip { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px 8px 9px; border-radius: 12px;
+    background: rgba(255,255,255,.04); border: 1px solid var(--w-08); font-size: .9rem; font-weight: 600; color: var(--text); }
+  .skm-chip img { width: 20px; height: 20px; object-fit: contain; }
+  .skm-cat[open] .skm-chip { animation: skm-in .35s cubic-bezier(.22,1,.36,1) both; }
+  .skm-cat[open] .skm-chip:nth-child(2) { animation-delay: .03s; }
+  .skm-cat[open] .skm-chip:nth-child(3) { animation-delay: .06s; }
+  .skm-cat[open] .skm-chip:nth-child(4) { animation-delay: .09s; }
+  .skm-cat[open] .skm-chip:nth-child(5) { animation-delay: .12s; }
+  .skm-cat[open] .skm-chip:nth-child(n+6) { animation-delay: .15s; }
+  @keyframes skm-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+}

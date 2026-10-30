@@ -62,6 +62,15 @@ What drives me is solving real problems with technology, and I always go for the
         },
         { type: "type", text: "contact --show" },
         { type: "out", text: "LinkedIn: linkedin.com/in/bernardo-iannini\nGitHub: github.com/iannini25\nEmail: bernardo.iannini14@gmail.com" }
+      ],
+      /* celular: so o essencial, sem o contact --show */
+      terminalMobile: [
+        { type: "type", text: "cat about.txt" },
+        { type: "out", text: `I'm Bernardo Iannini, 19, a Full Stack Developer. I build complete systems, from architecture to production, and study Web and Mobile Development at COTEMIG.
+
+I came from video editing and motion design, and that still shapes how I think about interface and product.
+
+I work with SaaS, fintechs, automations and AI-born projects that need to become real systems.` }
       ]
     },
     services: {
@@ -938,6 +947,15 @@ O que me move é resolver problemas reais com tecnologia, e busco sempre o camin
         },
         { type: "type", text: "contact --show" },
         { type: "out", text: "LinkedIn: linkedin.com/in/bernardo-iannini\nGitHub: github.com/iannini25\nEmail: bernardo.iannini14@gmail.com" }
+      ],
+      /* celular: so o essencial, sem o contact --show */
+      terminalMobile: [
+        { type: "type", text: "cat about.txt" },
+        { type: "out", text: `Sou Bernardo Iannini, 19 anos, desenvolvedor Full Stack. Construo sistemas completos, da arquitetura à produção, e curso Desenvolvimento Web e Mobile no COTEMIG.
+
+Venho da edição de vídeo e do motion design, e isso ainda molda como penso interface e produto.
+
+Trabalho com SaaS, fintechs, automações e projetos nascidos de IA que precisam virar sistema de verdade.` }
       ]
     },
     services: {

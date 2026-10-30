@@ -398,15 +398,16 @@ function renderCaseMain(o) {
 
   /* ---- sistema por dentro (telas reais do produto, com legenda) ---- */
   if (cfg.system && Array.isArray(cfg.system.items) && cfg.system.items.length) {
-    const [first, ...rest] = cfg.system.items;
     const title = tx(cfg.system.title, lang);
-    const fig = (m, cls) => `<figure class="cs-mkt__item cs-sys__item ${cls}" data-reveal><button type="button" class="cs-mkt__btn" data-cs-zoom="/img/projects/${p.id}/${tx(m.src, lang)}" aria-label="${u.zoom}: ${esc(tx(m.alt, lang))}"><img src="/img/projects/${p.id}/${tx(m.src, lang)}" alt="${esc(tx(m.alt, lang))}" width="1280" height="800" loading="lazy" decoding="async"></button><figcaption class="cs-sys__cap"><strong>${esc(tx(m.name, lang))}</strong> <span class="cs-sys__desc">${esc(tx(m.cap, lang))}</span></figcaption></figure>`;
+    /* ?v= pela data do arquivo: a imagem e cache imutavel, trocar o arquivo
+       com o mesmo nome nao chegava em quem ja tinha visitado */
+    const srcOf = (m) => { const f = tx(m.src, lang); let v = ''; try { v = '?v=' + Math.round(fs.statSync(path.join(root, 'img', 'projects', p.id, f)).mtimeMs).toString(36); } catch (e) {} return `/img/projects/${p.id}/${f}${v}`; };
+    const fig = (m, cls) => `<figure class="cs-mkt__item cs-sys__item ${cls}" data-reveal><button type="button" class="cs-mkt__btn" data-cs-zoom="${srcOf(m)}" aria-label="${u.zoom}: ${esc(tx(m.alt, lang))}"><img src="${srcOf(m)}" alt="${esc(tx(m.alt, lang))}" width="1280" height="800" loading="lazy" decoding="async"></button><figcaption class="cs-sys__cap"><strong>${esc(tx(m.name, lang))}</strong> <span class="cs-sys__desc">${esc(tx(m.cap, lang))}</span></figcaption></figure>`;
     sec.push(`
     <section class="cs-mkt cs-sys" aria-labelledby="csSys" data-cs-gallery>
       <h2 class="cs-h2" id="csSys" data-reveal><span class="cs-h2__icon">${ICON.layersBig}</span>${esc(title)}</h2>
-      <div class="cs-mkt__grid" data-cs-panel="sys">
-        ${fig(first, 'cs-mkt__item--wide')}
-        ${rest.map(m => fig(m, '')).join('')}
+      <div class="cs-mkt__grid cs-sys__grid" data-cs-panel="sys">
+        ${cfg.system.items.map(m => fig(m, '')).join('')}
       </div>
       <dialog class="cs-lightbox" data-cs-lightbox aria-label="${esc(title)}">
         <button type="button" class="cs-lightbox__close" data-cs-close aria-label="${u.close}">${ICON.close}</button>
