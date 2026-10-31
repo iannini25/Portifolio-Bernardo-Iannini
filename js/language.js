@@ -16,7 +16,37 @@ const I18N = {
   en: {
     htmlLang: "en",
     nav: { home: "Home", about: "About", services: "Services", work: "Work", experience: "Experience", skills: "Skills", projects: "Projects", blog: "Blog", blogSoon: "soon", contact: "Contact", resume: "CV" },
-    a11y: { skip: "Skip to content" },
+    a11y: {
+      skip: "Skip to content",
+      menuOpen: "Open menu",
+      academic: "Academic",
+      termControls: "Terminal controls",
+      courses: "Courses & Specializations",
+      featured: "Featured projects",
+      closeRed: "Close (red)",
+      close: "Close",
+      filter: "Filter projects by category",
+      langSwitch: "Change language",
+      langMenu: "Language",
+      maximize: "Maximize (green)",
+      minimize: "Minimize (yellow)",
+      professional: "Professional",
+      scrollNext: "Scroll to next section",
+      intro: "introduction",
+      contact: "contact",
+      xp: "experience",
+      xpList: "experiences",
+      xpIcons: "experience icons",
+      social: "social links",
+      projects: "projects",
+      services: "services",
+      about: "about me",
+      photoA: "Bernardo Iannini, Full Stack Developer and AI Designer, profile photo",
+      photoB: "Bernardo Iannini, alternate profile photo",
+      techs: "Technologies",
+      viewSite: "View site",
+      closeCert: "Close certificate"
+    },
     modes: { prof: "Professional", acad: "Academic", courses: "Courses & Certifications" },
     tabAway: "come back here :(",
     hero: { hello: "Hi, I'm" },
@@ -901,12 +931,42 @@ The EN/PT switch is an i18n engine written from scratch: the entire site changes
   pt: {
     htmlLang: "pt-BR",
     nav: { home: "Início", about: "Sobre", services: "Serviços", work: "Trabalhos", experience: "Experiência", skills: "Habilidades", projects: "Projetos", blog: "Blog", blogSoon: "em breve", contact: "Contato", resume: "Currículo" },
-    a11y: { skip: "Pular para o conteúdo" },
+    a11y: {
+      skip: "Pular para o conteúdo",
+      menuOpen: "Abrir menu",
+      academic: "Acadêmica",
+      termControls: "Controles do terminal",
+      courses: "Cursos & Especializações",
+      featured: "Projetos em destaque",
+      closeRed: "Fechar (vermelho)",
+      close: "Fechar",
+      filter: "Filtrar projetos por categoria",
+      langSwitch: "Trocar idioma",
+      langMenu: "Idioma",
+      maximize: "Maximizar (verde)",
+      minimize: "Minimizar (amarelo)",
+      professional: "Profissional",
+      scrollNext: "Ir para a próxima seção",
+      intro: "apresentação",
+      contact: "contato",
+      xp: "experiência",
+      xpList: "experiências",
+      xpIcons: "ícones de experiência",
+      social: "links sociais",
+      projects: "projetos",
+      services: "serviços",
+      about: "sobre mim",
+      photoA: "Bernardo Iannini, desenvolvedor Full Stack e AI Designer, em foto de perfil",
+      photoB: "Bernardo Iannini, foto alternativa de perfil",
+      techs: "Tecnologias",
+      viewSite: "Ver site",
+      closeCert: "Fechar certificado"
+    },
     tabAway: "volta aqui :(",
     modes: { prof: "Profissional", acad: "Acadêmica", courses: "Cursos & Certificações" },
     hero: { hello: "Olá, eu sou" },
     taglines: [
-      "Full Stack Developer.",
+      "Desenvolvedor Full Stack.",
       "Corrijo erros do Vibe Coding.",
       "Crio plataformas e MVPs.",
       "Automações & IA.",
@@ -1037,7 +1097,7 @@ Trabalho com SaaS, fintechs, automações e projetos nascidos de IA que precisam
             skills: ["TypeScript", "React", "Node.js", "MySQL", "Integração IA", "Deploy", "AWS", "VPS"]
           },
           {
-            title: "Software Engineer",
+            title: "Engenheiro de Software",
             org: "TribeX Tecnologia Financeira S/A",
             role: "Freelance",
             loc: "Remoto · Brasil",
@@ -1053,7 +1113,7 @@ Trabalho com SaaS, fintechs, automações e projetos nascidos de IA que precisam
             skills: ["Infraestrutura de Software", "Desenvolvimento iOS", "Android", "Next.js", "PostgreSQL", "Pix"]
           },
           {
-            title: "Full Stack Developer",
+            title: "Desenvolvedor Full Stack",
             org: "Freelancer",
             role: "Autônomo",
             loc: "Remoto · Brasil/Irlanda",
@@ -1127,7 +1187,7 @@ Trabalho com SaaS, fintechs, automações e projetos nascidos de IA que precisam
       tilesLabels: {
         os: "Sistemas & Cloud",
         programming: "Programação",
-        web: "Web & Mobile",
+        web: "Web e Mobile",
         creative: "Design & IA"
       }
     },
@@ -1756,7 +1816,7 @@ A troca EN/PT é um motor de i18n escrito do zero: o site inteiro muda de idioma
       },
       author: {
         kicker: "Autor",
-        bio: "19 anos · Full Stack Developer · AI Designer. Escrevo sobre o que aprendo no caminho: engenharia, IA, design e os bastidores dos projetos que construo.",
+        bio: "19 anos · Desenvolvedor Full Stack · AI Designer. Escrevo sobre o que aprendo no caminho: engenharia, IA, design e os bastidores dos projetos que construo.",
         contact: "Contato"
       },
       featured: {
@@ -1774,7 +1834,7 @@ A troca EN/PT é um motor de i18n escrito do zero: o site inteiro muda de idioma
       related: { kicker: "Continue lendo", title: "Posts relacionados" },
       author: {
         kicker: "Sobre o autor",
-        bio: "19 anos · Full Stack Developer · AI Designer. Escrevo sobre o que aprendo no caminho: engenharia, IA, design e os bastidores dos projetos que construo.",
+        bio: "19 anos · Desenvolvedor Full Stack · AI Designer. Escrevo sobre o que aprendo no caminho: engenharia, IA, design e os bastidores dos projetos que construo.",
         contact: "Contato"
       },
       footer: { back: "Voltar ao blog", portfolio: "Portfólio" }
@@ -1849,13 +1909,14 @@ function applyI18n(lang) {
 
   // Atributos com data-i18n-attr (formato "attr:key.path")
   document.querySelectorAll('[data-i18n-attr]').forEach(el => {
-    const spec = el.getAttribute('data-i18n-attr');
-    const [attr, keyPath] = spec.split(':');
-    if (!attr || !keyPath) return;
-    const val = keyPath
-      .split('.')
-      .reduce((obj, k) => obj?.[k], I18N[lang]);
-    if (typeof val === 'string') el.setAttribute(attr, val);
+    el.getAttribute('data-i18n-attr').split(';').forEach(spec => {
+      const [attr, keyPath] = spec.split(':');
+      if (!attr || !keyPath) return;
+      const val = keyPath
+        .split('.')
+        .reduce((obj, k) => obj?.[k], I18N[lang]);
+      if (typeof val === 'string') el.setAttribute(attr.trim(), val);
+    });
   });
 
   // Sincroniza a seleção do menu de idioma com o lang ativo — precisa

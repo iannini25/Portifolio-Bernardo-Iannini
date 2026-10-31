@@ -294,7 +294,7 @@
       </nav>
 
       <!-- Language switch (ESQUERDA) -->
-      <div class="lang-slot" aria-label="Language switch">
+      <div class="lang-slot" aria-label="Trocar idioma" data-i18n-attr="aria-label:a11y.langSwitch">
         <button id="langBtn" class="lang-switch pill" aria-haspopup="listbox" aria-expanded="false">
           <span class="lang-ico" aria-hidden="true">🌐</span>
           <span id="langCode">PT</span>
@@ -302,7 +302,7 @@
             <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
           </svg>
         </button>
-        <ul id="langMenu" class="lang-menu" role="listbox" aria-label="Language / Idioma">
+        <ul id="langMenu" class="lang-menu" role="listbox" aria-label="Idioma" data-i18n-attr="aria-label:a11y.langMenu">
           <li data-lang="en" role="option" tabindex="0" aria-selected="false">English</li>
           <li data-lang="pt" role="option" tabindex="0" aria-selected="true">Português</li>
         </ul>
@@ -334,7 +334,7 @@
       </div>
 
       <!-- BOTÃO HAMBÚRGUER (aparece no mobile) -->
-      <button id="menuBtn" class="menu-btn" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobileNav">
+      <button id="menuBtn" class="menu-btn" aria-label="Abrir menu" data-i18n-attr="aria-label:a11y.menuOpen" aria-expanded="false" aria-controls="mobileNav">
         <span class="menu-line"></span>
         <span class="menu-line"></span>
         <span class="menu-line"></span>
@@ -624,6 +624,7 @@
   <script src="/js/language.js" defer></script>
   <script src="/js/UI.js" defer></script>
   <script src="/js/sw-register.js" defer></script>
+  <script src="/js/img-skeleton.js" defer></script>
 
   <!-- camada de interacao da pagina (vanilla, sem GSAP/Lenis): reveals,
        tour pelas telas, passos e galeria. Sem ela a pagina fica 100%

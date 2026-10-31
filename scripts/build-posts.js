@@ -21,6 +21,10 @@ const path  = require('path');
 const matter = require('gray-matter');
 const { Marked } = require('marked');
 const { fetchSupabasePosts, slugify } = require('./lib/supabase-posts');
+const { localizeStatic, tagHeaderLabels } = require('./lib/i18n-static');
+/* I18N lido do js/language.js (mesma fonte do navegador) */
+let I18N_POSTS = null;
+try { I18N_POSTS = require('./build-projects.js').loadI18N(); } catch (e) { console.warn('[build-posts] I18N indisponivel:', e.message); }
 
 let sharp = null;
 try { sharp = require('sharp'); }
@@ -865,6 +869,7 @@ ${articleBody}
   <script src="/js/supabase-config.js" defer></script>
   <script src="/js/post-static.js" defer></script>
   <script src="/js/sw-register.js" defer></script>
+  <script src="/js/img-skeleton.js" defer></script>
   <!-- contorno que segue o cursor nos cards de "leia tambem" (mesmo do blog) -->
   <script src="/js/blog-fx.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
@@ -1447,7 +1452,7 @@ async function main() {
   let writtenPosts = 0;
   for (const post of posts) {
     const related = pickRelated(post, posts, 3);
-    const html = postPageHtml(post, related);
+    const html = localizeStatic(tagHeaderLabels(postPageHtml(post, related)), I18N_POSTS && I18N_POSTS[postLang(post)]);
     const dst = path.join(POSTS_OUT, `${post.slug}.html`);
     fs.writeFileSync(dst, html, 'utf8');
     writtenPosts++;

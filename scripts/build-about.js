@@ -26,6 +26,7 @@
 const fs   = require('fs');
 const path = require('path');
 const { loadI18N, SITE_URL, PERSON } = require('./build-projects.js');
+const { localizeStatic, tagHeaderLabels } = require('./lib/i18n-static');
 
 const ROOT = path.resolve(__dirname, '..');
 const SITE = SITE_URL + '/#site';
@@ -55,6 +56,14 @@ const AUTHOR = {
     'Integração de IA em produto',
     'Recuperação de projetos gerados por IA',
     'Migração e operação de infraestrutura (AWS e VPS)',
+  ],
+  knowsAboutEn: [
+    'Multi-tenant SaaS platforms',
+    'ERP systems',
+    'Fintech and digital social currency platforms',
+    'AI integration in products',
+    'Rescuing AI-generated projects',
+    'Infrastructure migration and operations (AWS and VPS)',
   ],
 };
 
@@ -161,7 +170,7 @@ function graph(lang, t, faqs) {
     image: { '@type': 'ImageObject', url: AUTHOR.image, caption: AUTHOR.name },
     jobTitle: AUTHOR.jobTitle,
     description: BIO[lang],
-    knowsAbout: AUTHOR.knowsAbout,
+    knowsAbout: lang === 'en' ? AUTHOR.knowsAboutEn : AUTHOR.knowsAbout,
     knowsLanguage: ['pt-BR', 'en'],
     email: 'mailto:' + AUTHOR.email,
     homeLocation: {
@@ -219,7 +228,7 @@ function page(I18N, lang) {
   const faqs = faq(lang, bio);
   const altUrl = lang === 'en' ? T.pt.url : T.en.url;
 
-  const esp = AUTHOR.knowsAbout.map(k => `<li>${esc(k)}</li>`).join('\n          ');
+  const esp = (lang === 'en' ? AUTHOR.knowsAboutEn : AUTHOR.knowsAbout).map(k => `<li>${esc(k)}</li>`).join('\n          ');
   const svc = services.map(s => `<li><strong>${esc(s.title)}</strong> ${esc(s.desc)}</li>`).join('\n          ');
   const prof = (xp.prof || []).map(e => entry(e, t)).join('\n        ');
   const acad = (xp.acad || []).map(e => entry(e, t)).join('\n        ');
@@ -306,7 +315,7 @@ ${graph(lang, t, faqs)}
       <p class="ab-lead">${esc(BIO[lang])}</p>
 
       <img class="ab-photo" src="/img/eufoto1.webp" width="320" height="320"
-           alt="${esc(AUTHOR.name)}, ${esc(AUTHOR.jobTitle)}, em ${esc(AUTHOR.locality)}" decoding="async"/>
+           alt="${lang === 'en' ? `${esc(AUTHOR.name)}, Full Stack Developer &amp; AI Designer, in ${esc(AUTHOR.locality)}` : `${esc(AUTHOR.name)}, desenvolvedor Full Stack e AI Designer, em ${esc(AUTHOR.locality)}`}" decoding="async"/>
 
       <section aria-labelledby="ab-traj">
         <h2 id="ab-traj">${esc(t.sTrajetoria)}</h2>
@@ -381,7 +390,7 @@ function build(langs = ['pt', 'en']) {
     const t = T[lang];
     const dest = path.join(ROOT, t.file);
     fs.mkdirSync(path.dirname(dest), { recursive: true });
-    fs.writeFileSync(dest, page(I18N, lang), 'utf8');
+    fs.writeFileSync(dest, localizeStatic(tagHeaderLabels(page(I18N, lang)), I18N[lang]), 'utf8');
     out.push(t.url);
     console.log(`  ${lang}: ${t.url}`);
   }

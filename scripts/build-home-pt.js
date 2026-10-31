@@ -85,6 +85,18 @@ function build() {
     return typeof v === 'string' && !/<\2\b/i.test(inner) ? open + v + close : m;
   });
 
+  /* atributos traduziveis (aria-label, alt, title...) tambem em portugues */
+  s = s.replace(/<[a-z][^>]*\sdata-i18n-attr="([^"]+)"[^>]*>/gi, (tag, specs) => {
+    specs.split(';').forEach(spec => {
+      const [attr, key] = spec.split(':');
+      const v = key && pick(pt, key.trim());
+      if (typeof v !== 'string') return;
+      const re = new RegExp(`(\\s${attr.trim()}=")[^"]*(")`);
+      tag = tag.replace(re, (m, a, b) => a + v.replace(/&/g, '&amp;').replace(/"/g, '&quot;') + b);
+    });
+    return tag;
+  });
+
   /* caminhos relativos -> absolutos (fora dos <script>, que montam HTML
      com template string e nao devem ser tocados) */
   s = s.split(/(<script\b[\s\S]*?<\/script>)/i).map((part, i) => i % 2 ? part

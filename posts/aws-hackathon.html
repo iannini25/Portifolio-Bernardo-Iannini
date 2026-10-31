@@ -237,7 +237,7 @@
         <a href="/blog.html" class="nav-blog-link active-link"><span data-i18n="nav.blog">Blog</span></a>
         <a href="/index.html#contato" data-i18n="nav.contact">Contact</a>
       </nav>
-      <div class="lang-slot" aria-label="Language switch">
+      <div class="lang-slot" aria-label="Change language" data-i18n-attr="aria-label:a11y.langSwitch">
         <button id="langBtn" class="lang-switch pill" aria-haspopup="listbox" aria-expanded="false">
           <span class="lang-ico" aria-hidden="true">&#127760;</span>
           <span id="langCode">EN</span>
@@ -272,7 +272,7 @@
           <a href="/index.html#contato" data-i18n="nav.contact">Contact</a>
         </nav>
       </div>
-      <button id="menuBtn" class="menu-btn" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobileNav">
+      <button id="menuBtn" class="menu-btn" aria-label="Open menu" data-i18n-attr="aria-label:a11y.menuOpen" aria-expanded="false" aria-controls="mobileNav">
         <span class="menu-line"></span><span class="menu-line"></span><span class="menu-line"></span>
       </button>
       <div class="nav-right">
@@ -280,7 +280,7 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M12 3v11m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          <span data-i18n="nav.resume">Curriculo</span>
+          <span data-i18n="nav.resume">CV</span>
         </a>
       </div>
     </div>
@@ -294,7 +294,7 @@
             <path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </span>
-        <span class="post-back-text" data-i18n="post.back">Voltar ao blog</span>
+        <span class="post-back-text" data-i18n="post.back">Back to blog</span>
       </a>
     </div>
 
@@ -385,7 +385,7 @@
       
       
       <div class="post-share-bar">
-      <span class="post-share-label" data-i18n="post.share.label">Compartilhar este post</span>
+      <span class="post-share-label" data-i18n="post.share.label">Share this post</span>
       <div class="post-share-buttons">
         <a class="post-share-btn" href="https://twitter.com/intent/tweet?text=AWS%20Hackathon%20-%20Bernardo%20Iannini&amp;url=https%3A%2F%2Fwww.bernardoiannini.com%2Fposts%2Faws-hackathon.html" target="_blank" rel="noopener" aria-label="Compartilhar no Twitter">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 5.92a8.5 8.5 0 0 1-2.36.65 4.13 4.13 0 0 0 1.8-2.27 8.22 8.22 0 0 1-2.61 1 4.1 4.1 0 0 0-6.98 3.74A11.65 11.65 0 0 1 3.4 4.9a4.1 4.1 0 0 0 1.27 5.48 4.07 4.07 0 0 1-1.86-.51v.05a4.1 4.1 0 0 0 3.29 4.02 4.1 4.1 0 0 1-1.86.07 4.1 4.1 0 0 0 3.83 2.85A8.23 8.23 0 0 1 2 18.57a11.62 11.62 0 0 0 6.29 1.84c7.55 0 11.68-6.25 11.68-11.68v-.53A8.36 8.36 0 0 0 22 5.92z"/></svg>
@@ -406,8 +406,8 @@
     </div>
       
     <section class="post-related">
-      <p class="kicker" data-i18n="post.related.kicker">Continue lendo</p>
-      <h2 class="post-related-title" data-i18n="post.related.title">Posts relacionados</h2>
+      <p class="kicker" data-i18n="post.related.kicker">Keep reading</p>
+      <h2 class="post-related-title" data-i18n="post.related.title">Related posts</h2>
       <div class="post-related-grid">
         <a class="post-related-card" href="/posts/today-we-launched-the-new-iba-platform.html" data-slug="today-we-launched-the-new-iba-platform">
             <div class="post-related-card-cover">
@@ -457,13 +457,13 @@
           <img src="/img/eufoto1.webp" alt="Bernardo Iannini, Full Stack Developer &amp; AI Designer" loading="lazy" width="120" height="120"/>
         </div>
         <div class="post-author-card-info">
-          <p class="kicker" data-i18n="post.author.kicker">Sobre o autor</p>
+          <p class="kicker" data-i18n="post.author.kicker">About the author</p>
           <h3>Bernardo Iannini</h3>
-          <p class="post-author-card-bio" data-i18n="post.author.bio">19 anos &middot; Full Stack Developer &middot; AI Designer. Escrevo sobre o que aprendo no caminho - engenharia, IA, design e os bastidores dos projetos que construo.</p>
+          <p class="post-author-card-bio" data-i18n="post.author.bio">19 years old · Full Stack Developer · AI Designer. I write about what I learn along the way: engineering, AI, design and the behind-the-scenes of the projects I build.</p>
           <div class="post-author-card-actions">
             <a href="https://www.linkedin.com/in/bernardo-iannini" target="_blank" rel="noopener">LinkedIn</a>
             <a href="https://github.com/iannini25" target="_blank" rel="noopener">GitHub</a>
-            <a href="/index.html#contato" data-i18n="post.author.contact">Contato</a>
+            <a href="/index.html#contato" data-i18n="post.author.contact">Contact</a>
           </div>
         </div>
       </div>
@@ -488,9 +488,9 @@
 
     <footer class="post-footer">
       <div class="post-footer-inner">
-        <p>&copy; <span id="footerYear">2026</span> Bernardo Iannini &middot; <span data-i18n="blog.footer.rights">Todos os direitos reservados</span></p>
+        <p>&copy; <span id="footerYear">2026</span> Bernardo Iannini &middot; <span data-i18n="blog.footer.rights">All rights reserved</span></p>
         <div class="post-footer-links">
-          <a href="/blog.html" data-i18n="post.footer.back">Voltar ao blog</a>
+          <a href="/blog.html" data-i18n="post.footer.back">Back to blog</a>
           <span aria-hidden="true">&middot;</span>
           <a href="/index.html" data-i18n="post.footer.portfolio">Portfolio</a>
         </div>
@@ -503,6 +503,7 @@
   <script src="/js/supabase-config.js" defer></script>
   <script src="/js/post-static.js" defer></script>
   <script src="/js/sw-register.js" defer></script>
+  <script src="/js/img-skeleton.js" defer></script>
   <!-- contorno que segue o cursor nos cards de "leia tambem" (mesmo do blog) -->
   <script src="/js/blog-fx.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>

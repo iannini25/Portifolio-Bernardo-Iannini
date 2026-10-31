@@ -41,6 +41,7 @@
 
 const fs   = require('fs');
 const path = require('path');
+const { localizeStatic, tagHeaderLabels } = require('./lib/i18n-static');
 const vm   = require('vm');
 const { renderCaseMain, projectMedia, splitTitle } = require('./lib/case-render');
 /* configuracao propria de cada pagina (apps, site ao vivo, blocos extras) */
@@ -504,6 +505,7 @@ ${jsonLd(p, lang, url)}
   <script src="/js/language.js" defer></script>
   <script src="/js/UI.js" defer></script>
   <script src="/js/sw-register.js" defer></script>
+  <script src="/js/img-skeleton.js" defer></script>
 
   <!-- camada de interacao da pagina (vanilla, sem GSAP/Lenis): reveals,
        tour pelas telas, passos e galeria. Sem ela a pagina fica 100%
@@ -566,7 +568,7 @@ function build(langs = ['pt']) {
 
     list.forEach((p, i) => {
       const others = [1, 2, 3].map(k => list[(i + k) % list.length]).filter(o => o.id !== p.id);
-      const html = page(p, lang, others, I18N, SHELL, PC);
+      const html = localizeStatic(tagHeaderLabels(page(p, lang, others, I18N, SHELL, PC)), I18N[lang]);
       if (html.includes('[object Object]')) {
         throw new Error(`[build-projects] ${lang}/${p.id}: [object Object] no HTML`);
       }

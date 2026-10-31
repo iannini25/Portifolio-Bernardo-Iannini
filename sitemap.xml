@@ -3,7 +3,7 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://www.bernardoiannini.com/</loc>
-    <lastmod>2026-10-30T16:03:59-03:00</lastmod>
+    <lastmod>2026-10-30T16:14:47-03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -18,7 +18,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/pt</loc>
-    <lastmod>2026-10-30T19:13:01.791Z</lastmod>
+    <lastmod>2026-10-30T16:14:47-03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -84,7 +84,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/en/projects/amarofy.html</loc>
-    <lastmod>2026-10-30T16:03:59-03:00</lastmod>
+    <lastmod>2026-10-30T16:58:37-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -142,16 +142,16 @@
       <image:loc>https://www.bernardoiannini.com/img/covers/automotiva-express-1200.webp?v=a50a7163</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/jarvis.webp?v=e5c56b6e</image:loc>
@@ -180,7 +180,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/en/projects/athena7.html</loc>
-    <lastmod>2026-10-30T14:59:24-03:00</lastmod>
+    <lastmod>2026-10-30T16:14:47-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -249,7 +249,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/en/projects/automotiva-express.html</loc>
-    <lastmod>2026-10-30T16:03:59-03:00</lastmod>
+    <lastmod>2026-10-30T16:58:37-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -295,16 +295,16 @@
       <image:loc>https://www.bernardoiannini.com/img/eufoto1.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/jarvis.webp?v=e5c56b6e</image:loc>
@@ -345,35 +345,38 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/en/projects/besafe.html</loc>
-    <lastmod>2026-10-30T16:03:59-03:00</lastmod>
+    <lastmod>2026-10-30T17:44:47-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/sys-1-verificar.webp</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/sys-6-simulacao-en.webp?v=mvvfqxxl</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/sys-2-plano.webp</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/sys-1-verificar-en.webp?v=mvvfqve1</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/sys-4-config.webp</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/sys-2-plano-en.webp?v=mvvfqvv4</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/sys-3-duvida.webp</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/sys-3-config-en.webp?v=mvvfqwcb</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/sys-5-acesso.webp</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/sys-4-duvida-en.webp?v=mvvfqwu2</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/sys-5-acesso-en.webp?v=mvvfqxe8</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/projects/besafe/scroll.webp?v=mvu0etgv</image:loc>
@@ -448,21 +451,21 @@
       <image:loc>https://www.bernardoiannini.com/img/covers/athena7-1200.webp?v=c56c4bc5</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.avif?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.avif?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.avif?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.avif?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.avif?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.avif?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.avif?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.avif?v=86534ea2</image:loc>
     </image:image>
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/en/projects/brasa.html</loc>
-    <lastmod>2026-10-30T14:59:24-03:00</lastmod>
+    <lastmod>2026-10-30T16:14:47-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -558,7 +561,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/en/projects/iba.html</loc>
-    <lastmod>2026-10-30T14:59:24-03:00</lastmod>
+    <lastmod>2026-10-30T16:14:47-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -660,7 +663,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/en/projects/jarvis.html</loc>
-    <lastmod>2026-10-30T14:59:24-03:00</lastmod>
+    <lastmod>2026-10-30T16:14:47-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -732,7 +735,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/en/projects/modulo-engenharia.html</loc>
-    <lastmod>2026-10-30T14:59:24-03:00</lastmod>
+    <lastmod>2026-10-30T16:14:47-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -828,7 +831,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/en/projects/moedanobre.html</loc>
-    <lastmod>2026-10-30T14:59:24-03:00</lastmod>
+    <lastmod>2026-10-30T16:14:47-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -951,7 +954,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/en/projects/portfolio.html</loc>
-    <lastmod>2026-10-30T14:59:24-03:00</lastmod>
+    <lastmod>2026-10-30T16:14:47-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -1053,7 +1056,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/en/projects/sereno.html</loc>
-    <lastmod>2026-10-30T16:03:59-03:00</lastmod>
+    <lastmod>2026-10-30T16:58:37-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -1123,16 +1126,16 @@
       <image:loc>https://www.bernardoiannini.com/img/covers/automotiva-express-1200.webp?v=a50a7163</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/sereno-480.avif?v=7c430872</image:loc>
@@ -1392,7 +1395,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/projetos/amarofy.html</loc>
-    <lastmod>2026-10-30T16:03:59-03:00</lastmod>
+    <lastmod>2026-10-30T16:58:37-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -1450,16 +1453,16 @@
       <image:loc>https://www.bernardoiannini.com/img/covers/automotiva-express-1200.webp?v=a50a7163</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/jarvis.webp?v=e5c56b6e</image:loc>
@@ -1488,7 +1491,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/projetos/athena7.html</loc>
-    <lastmod>2026-10-30T14:59:24-03:00</lastmod>
+    <lastmod>2026-10-30T16:14:47-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -1557,7 +1560,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/projetos/automotiva-express.html</loc>
-    <lastmod>2026-10-30T16:03:59-03:00</lastmod>
+    <lastmod>2026-10-30T16:58:37-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -1603,16 +1606,16 @@
       <image:loc>https://www.bernardoiannini.com/img/eufoto1.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/jarvis.webp?v=e5c56b6e</image:loc>
@@ -1653,35 +1656,38 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/projetos/besafe.html</loc>
-    <lastmod>2026-10-30T16:03:59-03:00</lastmod>
+    <lastmod>2026-10-30T17:44:47-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/sys-1-verificar.webp</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/sys-6-simulacao.webp?v=mvvfquvk</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/sys-2-plano.webp</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/sys-1-verificar.webp?v=mvvfqsu4</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/sys-4-config.webp</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/sys-2-plano.webp?v=mvvfqt80</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/sys-3-duvida.webp</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/sys-3-config.webp?v=mvvfqtlf</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/sys-5-acesso.webp</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/sys-4-duvida.webp?v=mvvfqtz5</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/besafe/sys-5-acesso.webp?v=mvvfqued</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/projects/besafe/scroll.webp?v=mvu0etgv</image:loc>
@@ -1756,21 +1762,21 @@
       <image:loc>https://www.bernardoiannini.com/img/covers/athena7-1200.webp?v=c56c4bc5</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.avif?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.avif?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.avif?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.avif?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.avif?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.avif?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.avif?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.avif?v=86534ea2</image:loc>
     </image:image>
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/projetos/brasa.html</loc>
-    <lastmod>2026-10-30T14:59:24-03:00</lastmod>
+    <lastmod>2026-10-30T16:14:47-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -1866,7 +1872,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/projetos/iba.html</loc>
-    <lastmod>2026-10-30T14:59:24-03:00</lastmod>
+    <lastmod>2026-10-30T16:14:47-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -1968,7 +1974,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/projetos/jarvis.html</loc>
-    <lastmod>2026-10-30T14:59:24-03:00</lastmod>
+    <lastmod>2026-10-30T16:14:47-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -2040,7 +2046,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/projetos/modulo-engenharia.html</loc>
-    <lastmod>2026-10-30T14:59:24-03:00</lastmod>
+    <lastmod>2026-10-30T16:14:47-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -2136,7 +2142,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/projetos/moedanobre.html</loc>
-    <lastmod>2026-10-30T14:59:24-03:00</lastmod>
+    <lastmod>2026-10-30T16:14:47-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -2259,7 +2265,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/projetos/portfolio.html</loc>
-    <lastmod>2026-10-30T14:59:24-03:00</lastmod>
+    <lastmod>2026-10-30T16:14:47-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -2361,7 +2367,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/projetos/sereno.html</loc>
-    <lastmod>2026-10-30T16:03:59-03:00</lastmod>
+    <lastmod>2026-10-30T16:58:37-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -2431,16 +2437,16 @@
       <image:loc>https://www.bernardoiannini.com/img/covers/automotiva-express-1200.webp?v=a50a7163</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-480.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-800.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.webp?v=edd128ab</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/besafe-1200.webp?v=86534ea2</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/sereno-480.avif?v=7c430872</image:loc>
