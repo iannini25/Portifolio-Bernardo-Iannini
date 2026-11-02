@@ -398,63 +398,6 @@ const state = {
   sort: 'recent',
 };
 
-/* ---------- Bento layout planner ----------
-   Distribuição assimétrica inspirada no About.tsx.
-   Recebe o total de posts e devolve um array de classes que SEMPRE
-   preenche 6 colunas sem deixar buracos.
-
-   Larguras (em colunas de um grid de 6):
-     featured = 4×2  | tall = 2×2  | wide = 3×1  | normal = 2×1  | full = 6×1
-*/
-function planLayout(total) {
-  const out = [];
-  if (total <= 0) return out;
-
-  // Caso especial: 1 post → full-width
-  if (total === 1) return ['blog-post-card--featured'];
-
-  // Caso especial: 2 → featured + tall (fila 1 completa)
-  if (total === 2) return ['blog-post-card--featured', 'blog-post-card--tall'];
-
-  // Caso especial: 3 → featured + tall + full
-  if (total === 3) return ['blog-post-card--featured', 'blog-post-card--tall', 'blog-post-card--full'];
-
-  // Caso 4 → featured + tall + 2 wide (fila 3 completa)
-  if (total === 4) return ['blog-post-card--featured', 'blog-post-card--tall', 'blog-post-card--wide', 'blog-post-card--wide'];
-
-  // Caso 5 → featured + tall + 2 wide + full
-  if (total === 5) return ['blog-post-card--featured', 'blog-post-card--tall', 'blog-post-card--wide', 'blog-post-card--wide', 'blog-post-card--full'];
-
-  // A partir de 6 posts: começa com featured + tall + 2 wide,
-  // depois aloca em blocos de 6 colunas que preencham linhas inteiras.
-  out.push('blog-post-card--featured');                        // 4 cols, 2 rows
-  out.push('blog-post-card--tall');                            // 2 cols, 2 rows  (linha 1-2 cheia)
-  out.push('blog-post-card--wide');                            // 3 cols, 1 row
-  out.push('blog-post-card--wide');                            // 3 cols, 1 row   (linha 3 cheia)
-
-  let remaining = total - 4;
-  while (remaining > 0) {
-    if (remaining >= 3) {
-      // tall (2×2) + normal (2×1) + normal (2×1) — depois normal+normal+normal pra fila seguinte
-      // Usamos 3 normais (3 × 2 col = 6 cols) por linha — mais limpo e respira melhor
-      out.push('blog-post-card--normal');
-      out.push('blog-post-card--normal');
-      out.push('blog-post-card--normal');
-      remaining -= 3;
-    } else if (remaining === 2) {
-      // 2 últimos → 2× wide (3 cols cada) para encher a linha
-      out.push('blog-post-card--wide');
-      out.push('blog-post-card--wide');
-      remaining = 0;
-    } else {
-      // 1 último → full width
-      out.push('blog-post-card--full');
-      remaining = 0;
-    }
-  }
-  return out;
-}
-
 /* ---------- Render ----------
    Os posts usam URL pública estática `/posts/<slug>.html`. O título também
    é um <a> real pra compatibilidade SEO + crawlers que ignoram JS. */
@@ -480,454 +423,48 @@ const toWebp = (p) => isRemoteUrl(p)
   ? String(p || '')
   : String(p || '').replace(/\.(jpe?g|png)$/i, '.webp');
 
-function postCardHtml(post, layout, views) {
-  const lang = activeLang();
-  const t = (I18N?.[lang]?.blog) || {};
-  const content = post.excerpt || post.content || '';
-  const readTime = post.readTimeMin || estimateReadTime(post.content);
-  const hasCover = !!post.cover;
-  // Views: banco (build) + localStorage do aparelho (visita nesta sessão)
-  const viewCount = Math.max(
-    Number(post.views) || 0,
-    views[post.slug] || 0,
-    views[post.id] || 0
-  );
-  const url = postUrl(post);
-  const badgeLabel = t.featured?.badge || (lang === 'pt' ? 'Destaque' : 'Featured');
-  const viewsLabel = lang === 'pt' ? 'Visualizações' : 'Views';
-  const readLabel = lang === 'pt' ? 'min de leitura' : 'min read';
-  return `
-    <article class="blog-post-card ${layout} ${hasCover ? '' : 'blog-post-card--no-image'}"
-             data-id="${escapeHtml(post.id)}" data-slug="${escapeHtml(post.slug || post.id)}"
-             data-action="open" data-href="${escapeHtml(url)}"
-             data-cover="${escapeHtml(toWebp(post.cover) || '')}">
-      ${hasCover ? `
-        <div class="blog-post-cover">
-          <img src="${escapeHtml(toWebp(post.cover))}" alt="${escapeHtml(post.coverAlt || post.title)}" loading="lazy" width="800" height="500"/>
-        </div>
-      ` : '<div class="blog-post-cover"></div>'}
-
-      ${post.featured ? `
-        <span class="blog-post-featured-badge">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 6.6L21 9.2l-5 4.6L17.4 21 12 17.7 6.6 21 8 13.8 3 9.2l6.6-.6z"/></svg>
-          ${escapeHtml(badgeLabel)}
-        </span>
-      ` : ''}
-
-      ${viewCount > 0 ? `
-        <span class="blog-post-views" title="${escapeHtml(viewsLabel)}">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-          ${viewCount}
-        </span>
-      ` : ''}
-
-      <div class="blog-post-content">
-        <div class="blog-post-meta">
-          ${post.category ? `<span class="blog-post-category">${escapeHtml(post.category)}</span>` : ''}
-          <span class="blog-post-date">${formatDate(post.createdAt)}</span>
-          <span class="blog-post-readtime">${readTime} ${readLabel}</span>
-        </div>
-        <h3 class="blog-post-title"><a href="${escapeHtml(url)}">${escapeHtml(post.title)}</a></h3>
-        ${post.subtitle ? `<p class="blog-post-excerpt">${escapeHtml(post.subtitle)}</p>` : ''}
-        ${post.tags?.length ? `
-          <div class="blog-post-tags">
-            ${post.tags.slice(0, 3).map(t => `<span class="blog-post-tag">#${escapeHtml(t)}</span>`).join('')}
-          </div>
-        ` : ''}
-      </div>
-    </article>
-  `;
+/* temas do cartao de pilulas: categorias e as tags mais usadas */
+function blogFacets() {
+  const pub = state.posts.filter(p => p.status === 'published');
+  const count = {};
+  pub.forEach(p => (p.tags || []).forEach(t => { count[t] = (count[t] || 0) + 1; }));
+  return {
+    categories: [...new Set(pub.map(p => p.category).filter(Boolean))],
+    tags: Object.keys(count).sort((x, y) => count[y] - count[x]).slice(0, 8),
+  };
 }
 
+let lastBento = '';
 function renderBento() {
   const grid = document.getElementById('blogBento');
   const empty = document.getElementById('blogEmpty');
-  const list = state.filtered;
-  const views = loadViews();
-
-  if (!list.length) {
-    grid.innerHTML = '';
-    empty.hidden = false;
-    return;
-  }
-  empty.hidden = true;
-
-  const plan = planLayout(list.length);
-  grid.innerHTML = list.map((post, i) => postCardHtml(post, plan[i] || 'blog-post-card--normal', views)).join('');
-}
-
-/* Featured tile dentro do bento de identidade (topo) */
-function renderIdentityFeatured() {
-  const target = document.getElementById('bidFeatured');
-  if (!target) return;
-
-  const published = state.posts.filter(p => p.status === 'published');
-  const featured = published.find(p => p.featured) ||
-                   published.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0];
-
-  const lang = (typeof LANG !== 'undefined' && LANG) || 'en';
-  const t = (I18N?.[lang]?.blog) || {};
-
-  if (!featured) {
-    target.innerHTML = `<div class="bid-featured-inner bid-featured-inner--empty">
-      <div class="bid-featured-content">
-        <p class="bid-kicker">${t.featured?.spotlight || 'Spotlight'}</p>
-        <h3 class="bid-featured-title">${lang === 'pt' ? 'O primeiro post está chegando.' : 'The first post is coming soon.'}</h3>
-      </div>
-    </div>`;
-    return;
-  }
-
-  const readTime = Number(featured.readTimeMin) || estimateReadTime(featured.content);
-  const hasCover = !!featured.cover;
-  const badgeText = featured.featured
-    ? (t.featured?.spotlight || 'Spotlight')
-    : (t.featured?.latest || 'Latest');
-
-  target.dataset.id = featured.id;
-  target.dataset.action = 'open';
-  target.dataset.cover = toWebp(featured.cover) || '';
-  target.innerHTML = `
-    <div class="bid-featured-inner">
-      ${hasCover ? `
-        <div class="bid-featured-img">
-          <img src="${escapeHtml(toWebp(featured.cover))}" alt="${escapeHtml(featured.title)}" loading="lazy"/>
-        </div>
-      ` : '<div class="bid-featured-img bid-featured-img--gradient"></div>'}
-      <div class="bid-featured-noise" aria-hidden="true"></div>
-      <div class="bid-featured-content">
-        <span class="bid-featured-badge">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 6.6L21 9.2l-5 4.6L17.4 21 12 17.7 6.6 21 8 13.8 3 9.2l6.6-.6z"/></svg>
-          ${escapeHtml(badgeText)}
-        </span>
-        <h3 class="bid-featured-title">${escapeHtml(featured.title)}</h3>
-        <div class="bid-featured-meta">
-          <span>${formatDate(featured.createdAt)}</span>
-          <span>·</span>
-          <span>${readTime} min</span>
-          ${featured.category ? `<span>·</span><span>${escapeHtml(featured.category)}</span>` : ''}
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-/* Identity tag cloud (dentro do tile bid-topics) */
-function renderIdentityTags() {
-  const wrap = document.getElementById('blogTagCloud');
-  if (!wrap) return;
-  const tagFreq = {};
-  state.posts.filter(p => p.status === 'published').forEach(p => {
-    (p.tags || []).forEach(t => { tagFreq[t] = (tagFreq[t] || 0) + 1; });
+  const lang = activeLang();
+  const t = (typeof I18N !== 'undefined' && I18N[lang] && I18N[lang].blog) || {};
+  const html = BlogLayout.render(state.filtered.map(p => ({
+    id: p.id,
+    slug: p.slug || p.id,
+    title: p.title,
+    excerpt: p.excerpt || p.subtitle || '',
+    cover: p.cover,
+    coverAlt: p.coverAlt,
+    category: p.category,
+    tags: p.tags,
+    date: p.createdAt,
+    readMin: Number(p.readTimeMin) || estimateReadTime(p.content),
+    featured: p.featured,
+    url: postUrl(p),
+  })), {
+    lang,
+    labels: t.bento || {},
+    coverOf: toWebp,
+    facets: blogFacets(),
+    filter: state.filter,
+    query: state.query,
   });
-  const sorted = Object.entries(tagFreq).sort((a, b) => b[1] - a[1]).slice(0, 12);
-  if (!sorted.length) {
-    const noTags = activeLang() === 'pt' ? 'Nenhuma tag ainda.' : 'No tags yet.';
-    wrap.innerHTML = `<p style="color:var(--text-hint);font-size:12px;">${noTags}</p>`;
-    return;
-  }
-  const max = sorted[0][1];
-  wrap.innerHTML = sorted.map(([tag, count]) => {
-    const big = count / max > .6 ? 'bid-tag--big' : '';
-    return `<span class="bid-tag ${big}" data-tag="${escapeHtml(tag)}">#${escapeHtml(tag)}</span>`;
-  }).join('');
-}
-
-/* Center preview — carrossel automático aleatório com pausa no hover.
-   Cada ciclo escolhe um post aleatório (uniforme), evitando repetir o
-   último. O tile é CLICÁVEL: ao clicar, navega para o post que está
-   sendo exibido naquele momento (seja do carrossel ou de um hover). */
-let centerCarouselTimer = null;
-let centerResumeTimer = null;
-let centerSwapTimer = null;
-
-function setupCenterPreview() {
-  const center = document.getElementById('bidCenter');
-  const img = document.getElementById('bidCenterImg');
-  const meta = document.getElementById('bidCenterMeta');
-  if (!center || !img) return;
-
-  const root = document.getElementById('blogIdentity');
-  if (!root) return;
-
-  /* Post atualmente exibido — usado pelo handler de clique. */
-  let currentPost = null;
-
-  /* Fade out → swap → fade in. Sem flash. */
-  const setPreview = (post) => {
-    // Mesmo post já exibido: não reinicia o fade (evita piscar ao mover
-    // o mouse entre os filhos do card; o pause já foi renovado no hover).
-    // Cancela swap pendente pra outro post e restaura o estado visível.
-    if (post && currentPost && post.id === currentPost.id) {
-      if (centerSwapTimer) { clearTimeout(centerSwapTimer); centerSwapTimer = null; }
-      img.classList.add('active');
-      if (meta) meta.classList.toggle('is-visible', !!post.title);
-      return;
-    }
-    if (centerSwapTimer) clearTimeout(centerSwapTimer);
-
-    if (!post || !post.cover) {
-      currentPost = null;
-      img.classList.remove('active');
-      center.classList.remove('has-image');
-      center.removeAttribute('data-action');
-      center.removeAttribute('data-id');
-      if (meta) {
-        meta.classList.remove('is-visible');
-        meta.innerHTML = '';
-      }
-      return;
-    }
-
-    const apply = () => {
-      currentPost = post;
-      img.style.backgroundImage = `url("${cssUrl(toWebp(post.cover))}")`;
-      img.classList.add('active');
-      center.classList.add('has-image');
-      // Marca o tile como link clicável pro post atual
-      center.dataset.action = 'open';
-      center.dataset.id = post.id;
-      const openLabel = activeLang() === 'pt' ? 'Abrir post' : 'Open post';
-      center.setAttribute('aria-label', `${openLabel}: ${post.title}`);
-      if (meta) {
-        meta.innerHTML = post.title
-          ? `<span class="bid-center-meta-title">${escapeHtml(post.title)}</span>${post.subtitle ? `<span class="bid-center-meta-sub">${escapeHtml(post.subtitle)}</span>` : ''}`
-          : '';
-        meta.classList.toggle('is-visible', !!post.title);
-      }
-    };
-
-    const isFirstShow = !img.classList.contains('active');
-    if (isFirstShow) {
-      apply();
-    } else {
-      img.classList.remove('active');
-      if (meta) meta.classList.remove('is-visible');
-      centerSwapTimer = setTimeout(apply, 280);
-    }
-  };
-
-  /* Lista de posts elegíveis (publicados + com cover) */
-  const eligiblePosts = () =>
-    state.posts.filter(p => p.status === 'published' && p.cover);
-
-  /* Escolhe UM post aleatório uniforme, evitando repetir o último. */
-  const pickRandomPost = () => {
-    const posts = eligiblePosts();
-    if (!posts.length) return null;
-    const lastId = currentPost?.id || null;
-    const pool = posts.length > 1
-      ? posts.filter(p => p.id !== lastId)
-      : posts;
-    return pool[Math.floor(Math.random() * pool.length)];
-  };
-
-  const showNext = () => {
-    const post = pickRandomPost();
-    if (post) setPreview(post);
-  };
-
-  const startCarousel = () => {
-    stopCarousel();
-    showNext(); // mostra um aleatório imediatamente (sempre diferente do anterior)
-    centerCarouselTimer = setInterval(showNext, 3200);
-  };
-
-  const stopCarousel = () => {
-    if (centerCarouselTimer) {
-      clearInterval(centerCarouselTimer);
-      centerCarouselTimer = null;
-    }
-  };
-
-  /* Pausa o auto-cycle por X ms (após hover). Resume sozinho. */
-  const pauseCarousel = (resumeAfter = 2800) => {
-    stopCarousel();
-    if (centerResumeTimer) clearTimeout(centerResumeTimer);
-    centerResumeTimer = setTimeout(startCarousel, resumeAfter);
-  };
-
-  /* Hover override — mostra o post hovered e pausa o carrossel */
-  const showHovered = (post) => {
-    if (!post || !post.cover) return;
-    pauseCarousel();
-    setPreview(post);
-  };
-
-  // Hover nas tiles do bento de identidade
-  root.querySelectorAll('[data-cover]').forEach(tile => {
-    if (tile === center) return;
-    tile.addEventListener('mouseenter', () => {
-      const post = state.posts.find(p => p.id === tile.dataset.id);
-      if (post) showHovered(post);
-    });
-  });
-
-  // Hover nos cards do bento principal de posts
-  document.addEventListener('mouseover', (e) => {
-    const card = e.target.closest('.blog-post-card');
-    if (!card || !card.dataset.cover) return;
-    const post = state.posts.find(p => p.id === card.dataset.id);
-    if (post) showHovered(post);
-  });
-
-  // Pausa quando passa o mouse no próprio center (deixa o user "ler")
-  center.addEventListener('mouseenter', () => pauseCarousel(4500));
-  center.addEventListener('mouseleave', () => pauseCarousel(800));
-
-  // Acessibilidade: clique no tile já funciona via delegation
-  // (data-action="open" + data-id), mas precisamos suportar teclado.
-  center.setAttribute('role', 'link');
-  center.setAttribute('tabindex', '0');
-  center.style.cursor = 'pointer';
-  center.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      if (currentPost) openPost(currentPost.id);
-    }
-  });
-
-  // Aba oculta: pausa o carrossel (e o resume pendente); retoma ao voltar
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      stopCarousel();
-      if (centerResumeTimer) clearTimeout(centerResumeTimer);
-    } else {
-      startCarousel();
-    }
-  });
-
-  // Inicia o carrossel
-  startCarousel();
-}
-
-/* Count-up animado de 0 → valor final */
-function animateCount(el, target, duration = 1100) {
-  if (!el) return;
-  const start = performance.now();
-  const ease = (t) => 1 - Math.pow(1 - t, 3); // easeOutCubic
-  const tick = (now) => {
-    const elapsed = now - start;
-    const progress = Math.min(elapsed / duration, 1);
-    const value = Math.round(target * ease(progress));
-    el.textContent = value;
-    if (progress < 1) requestAnimationFrame(tick);
-    else el.textContent = target;
-  };
-  requestAnimationFrame(tick);
-}
-
-function renderStats() {
-  const published = state.posts.filter(p => p.status === 'published');
-
-  // readtime: usa o readTimeMin REAL calculado no build (a lista injetada
-  // em blog.html nao traz o content completo, so o readTimeMin/excerpt).
-  const totals = {
-    'stat-posts':      published.length,
-    'stat-categories': new Set(published.map(p => p.category).filter(Boolean)).size,
-    'stat-readtime':   published.reduce((acc, p) => acc + (Number(p.readTimeMin) || estimateReadTime(p.content)), 0),
-  };
-
-  Object.entries(totals).forEach(([id, value]) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    // Fonte de verdade = data-count gravado pelo build (ele leu todos os
-    // .md por completo). So usa o calculo do cliente se o atributo faltar
-    // (ex: dev sem rodar o build). Assim nunca zera com lista stale.
-    const built = el.getAttribute('data-count');
-    const target = (built !== null && built !== '' && !Number.isNaN(Number(built)))
-      ? Number(built)
-      : value;
-    if (el.dataset.countDone) {
-      el.textContent = target;
-    } else {
-      animateCount(el, target);
-      el.dataset.countDone = '1';
-    }
-  });
-}
-
-/* Rotator de tópicos — frase que muda sozinha (efeito tech) */
-let topicRotatorTimer = null;
-function renderTopicsRotator() {
-  const el = document.getElementById('bidTopicRotator');
-  if (!el) return;
-  const current = el.querySelector('.bid-topic-current');
-  if (!current) return;
-
-  // Coleta categorias + tags top
-  const categories = [...new Set(state.posts
-    .filter(p => p.status === 'published')
-    .map(p => p.category)
-    .filter(Boolean))];
-  const tagFreq = {};
-  state.posts.filter(p => p.status === 'published').forEach(p => {
-    (p.tags || []).forEach(t => { tagFreq[t] = (tagFreq[t] || 0) + 1; });
-  });
-  const topTags = Object.entries(tagFreq)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 6)
-    .map(([t]) => '#' + t);
-
-  const items = [...categories, ...topTags];
-  if (!items.length) {
-    // Blog zerado: placeholder neutro no lugar da rotação
-    current.textContent = activeLang() === 'pt' ? 'Em breve' : 'Coming soon';
-    return;
-  }
-
-  // Limpa timer anterior
-  if (topicRotatorTimer) clearInterval(topicRotatorTimer);
-
-  let idx = 0;
-  const swap = () => {
-    if (document.hidden) return; // aba oculta: não gasta DOM à toa
-    current.classList.add('is-leaving');
-    setTimeout(() => {
-      idx = (idx + 1) % items.length;
-      current.textContent = items[idx];
-      current.classList.remove('is-leaving');
-    }, 240);
-  };
-  current.textContent = items[0];
-  topicRotatorTimer = setInterval(swap, 2400);
-}
-
-/* Mini clock no tile de localização (atualiza minuto a minuto) */
-function startClock() {
-  const el = document.getElementById('bidClock');
-  if (!el) return;
-  const tick = () => {
-    if (document.hidden) return; // aba oculta: não gasta DOM à toa
-    const now = new Date();
-    const hh = String(now.getHours()).padStart(2, '0');
-    const mm = String(now.getMinutes()).padStart(2, '0');
-    el.textContent = `${hh}:${mm} GMT-3`;
-  };
-  tick();
-  setInterval(tick, 30 * 1000);
-  // Ao voltar pra aba, atualiza na hora (o tick pode ter sido pulado)
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) tick(); });
-}
-
-function renderFilters() {
-  const wrap = document.getElementById('blogFilters');
-  if (!wrap) return;
-  const lang = (typeof LANG !== 'undefined' && LANG) || 'en';
-  const allLabel = I18N?.[lang]?.blog?.filters?.all || 'All';
-
-  const categories = [...new Set(state.posts
-    .filter(p => p.status === 'published')
-    .map(p => p.category)
-    .filter(Boolean))];
-
-  const chips = [
-    `<button type="button" class="blog-chip ${state.filter === 'all' ? 'blog-chip--active' : ''}" data-filter="all">${escapeHtml(allLabel)}</button>`,
-    ...categories.map(c =>
-      `<button type="button" class="blog-chip ${state.filter === c ? 'blog-chip--active' : ''}" data-filter="${escapeHtml(c)}">${escapeHtml(c)}</button>`
-    )
-  ];
-  wrap.innerHTML = chips.join('');
+  empty.hidden = state.filtered.length > 0;
+  if (html === lastBento) return;      // applyI18n re-renderiza sem mudanca: nao reinicia a entrada
+  lastBento = html;
+  grid.innerHTML = html;
 }
 
 /* ---------- Filter + sort + search ---------- */
@@ -993,28 +530,27 @@ function attachEvents() {
   // Click delegation (cards, tags, chips)
   document.addEventListener('click', (e) => {
     // Não interceptar clique direto em <a> dentro do card (deixa o navegador navegar — preserva ctrl+click etc)
-    if (e.target.closest('a[href]') && !e.target.closest('.blog-chip,.bid-tag')) return;
+    if (e.target.closest('a[href]')) return;
 
-    const openEl = e.target.closest('[data-action="open"]');
-    if (openEl) { openPost(openEl.dataset.id, openEl.dataset.href); return; }
-
-    const chip = e.target.closest('.blog-chip');
-    if (chip) {
-      state.filter = chip.dataset.filter;
+    const search = document.getElementById('blogSearch');
+    const reset = e.target.closest('[data-reset]');
+    const pill = e.target.closest('.bb-pill');
+    if (reset || pill) {
+      const tag = pill && pill.dataset.tag;
+      const cat = pill && pill.dataset.filter;
+      /* clicar na pilula ativa desliga; a flor volta pra tudo */
+      state.filter = cat && state.filter !== cat ? cat : 'all';
+      state.query = tag && state.query !== tag ? tag : '';
+      search.value = state.query ? '#' + state.query : '';
       applyFilters();
       renderBento();
-      renderFilters();
+      const top = document.querySelector('.bb-head').getBoundingClientRect().top + window.scrollY - 90;
+      window.scrollTo({ top, behavior: 'smooth' });
       return;
     }
 
-    const tagEl = e.target.closest('.bid-tag');
-    if (tagEl) {
-      state.query = tagEl.dataset.tag;
-      document.getElementById('blogSearch').value = '#' + tagEl.dataset.tag;
-      applyFilters();
-      renderBento();
-      window.scrollTo({ top: document.querySelector('.blog-toolbar-section').offsetTop - 100, behavior: 'smooth' });
-    }
+    const openEl = e.target.closest('[data-action="open"]');
+    if (openEl) openPost(openEl.dataset.id, openEl.dataset.href);
   });
 
   // Search
@@ -1045,15 +581,8 @@ function attachEvents() {
 }
 
 /* ---------- Re-render quando o idioma muda (chamado por applyI18n) ---------- */
-function renderBlog(lang) {
-  // Re-render dos componentes que dependem de I18N além do data-i18n simples
-  renderIdentityFeatured();
-  renderFilters();
+function renderBlog() {
   renderBento();
-  renderIdentityTags();
-  renderTopicsRotator();
-  // Stats já foram animadas; só atualiza o valor final
-  renderStats();
 }
 // Expor globalmente pra language.js chamar
 window.renderBlog = renderBlog;
@@ -1062,14 +591,7 @@ window.renderBlog = renderBlog;
 function init() {
   state.posts = loadPosts();
   applyFilters();
-  renderStats();
-  renderFilters();
-  renderIdentityFeatured();
-  renderIdentityTags();
-  renderTopicsRotator();
   renderBento();
-  startClock();
-  setupCenterPreview();
   attachEvents();
   document.getElementById('footerYear').textContent = new Date().getFullYear();
 

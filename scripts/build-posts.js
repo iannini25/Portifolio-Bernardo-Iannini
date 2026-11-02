@@ -22,6 +22,7 @@ const matter = require('gray-matter');
 const { Marked } = require('marked');
 const { fetchSupabasePosts, slugify } = require('./lib/supabase-posts');
 const { localizeStatic, tagHeaderLabels } = require('./lib/i18n-static');
+const BlogLayout = require('../js/blog-layout.js');
 /* I18N lido do js/language.js (mesma fonte do navegador) */
 let I18N_POSTS = null;
 try { I18N_POSTS = require('./build-projects.js').loadI18N(); } catch (e) { console.warn('[build-posts] I18N indisponivel:', e.message); }
@@ -1119,111 +1120,6 @@ function planLayout(total) {
   return out;
 }
 
-function buildBentoHtml(posts) {
-  // Ordenar: featured primeiro, depois por data DESC
-  const sorted = posts.slice().sort((a, b) => {
-    if (a.featured && !b.featured) return -1;
-    if (!a.featured && b.featured) return 1;
-    return new Date(b.date) - new Date(a.date);
-  });
-  const plan = planLayout(sorted.length);
-  return sorted.map((p, i) => {
-    const url = `/posts/${p.slug}.html`;
-    const layout = plan[i] || 'blog-post-card--normal';
-    const cover = p.cover || '';
-    const readMin = readTimeMin(p.content);
-    return `<article class="blog-post-card ${layout}${cover ? '' : ' blog-post-card--no-image'}"
-             data-id="${escapeAttr(p.id)}" data-slug="${escapeAttr(p.slug)}"
-             data-action="open" data-href="${url}"
-             data-cover="${escapeAttr(toWebp(cover))}"
-             data-category="${escapeAttr(p.category)}"
-             data-tags="${escapeAttr((p.tags || []).join(','))}"
-             data-date="${escapeAttr(isoDate(p.date))}"
-             data-readtime="${readMin}"
-             data-featured="${p.featured ? '1' : '0'}">
-      ${cover ? `<div class="blog-post-cover"><img src="${escapeAttr(toWebp(cover))}" alt="${escapeAttr(p.coverAlt || p.title)}" loading="lazy" width="800" height="500"/></div>` : '<div class="blog-post-cover"></div>'}
-      ${p.featured ? `<span class="blog-post-featured-badge">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 6.6L21 9.2l-5 4.6L17.4 21 12 17.7 6.6 21 8 13.8 3 9.2l6.6-.6z"/></svg>
-        <span data-i18n="blog.featured.badge">Destaque</span>
-      </span>` : ''}
-      <div class="blog-post-content">
-        <div class="blog-post-meta">
-          <span class="blog-post-category">${escapeHtml(p.category)}</span>
-          <span class="blog-post-date">${formatDatePt(p.date)}</span>
-          <span class="blog-post-readtime">${readMin} min de leitura</span>
-        </div>
-        <h3 class="blog-post-title"><a href="${url}">${escapeHtml(p.title)}</a></h3>
-        ${p.subtitle ? `<p class="blog-post-excerpt">${escapeHtml(p.subtitle)}</p>` : ''}
-        ${p.tags?.length ? `<div class="blog-post-tags">${p.tags.slice(0, 3).map(t => `<span class="blog-post-tag">#${escapeHtml(t)}</span>`).join('')}</div>` : ''}
-      </div>
-    </article>`;
-  }).join('\n      ');
-}
-
-function buildFeaturedHtml(posts) {
-  const featured = posts.find(p => p.featured) || posts.slice().sort((a,b)=>new Date(b.date)-new Date(a.date))[0];
-  if (!featured) {
-    return `<div class="bid-featured-inner bid-featured-inner--empty">
-      <div class="bid-featured-content">
-        <p class="bid-kicker" data-i18n="blog.featured.spotlight">Spotlight</p>
-        <h3 class="bid-featured-title" data-i18n="blog.featured.empty">O primeiro post esta chegando.</h3>
-      </div>
-    </div>`;
-  }
-  const url = `/posts/${featured.slug}.html`;
-  const readMin = readTimeMin(featured.content);
-  const cover = featured.cover || '';
-  return `<a class="bid-featured-inner" href="${url}" data-id="${escapeAttr(featured.id)}" data-cover="${escapeAttr(toWebp(cover))}">
-      ${cover ? `<div class="bid-featured-img"><img src="${escapeAttr(toWebp(cover))}" alt="${escapeAttr(featured.coverAlt || featured.title)}" loading="lazy" width="1200" height="630"/></div>` : '<div class="bid-featured-img bid-featured-img--gradient"></div>'}
-      <div class="bid-featured-noise" aria-hidden="true"></div>
-      <div class="bid-featured-content">
-        <span class="bid-featured-badge">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 6.6L21 9.2l-5 4.6L17.4 21 12 17.7 6.6 21 8 13.8 3 9.2l6.6-.6z"/></svg>
-          <span data-i18n="${featured.featured ? 'blog.featured.spotlight' : 'blog.featured.latest'}">${featured.featured ? 'Spotlight' : 'Latest'}</span>
-        </span>
-        <h3 class="bid-featured-title">${escapeHtml(featured.title)}</h3>
-        <div class="bid-featured-meta">
-          <span>${formatDatePt(featured.date)}</span>
-          <span>&middot;</span>
-          <span>${readMin} min</span>
-          <span>&middot;</span>
-          <span>${escapeHtml(featured.category)}</span>
-        </div>
-      </div>
-    </a>`;
-}
-
-function buildFiltersHtml(posts) {
-  const cats = [...new Set(posts.map(p => p.category).filter(Boolean))];
-  const chips = [
-    `<button type="button" class="blog-chip blog-chip--active" data-filter="all" data-i18n="blog.filters.all">Todos</button>`,
-    ...cats.map(c => `<button type="button" class="blog-chip" data-filter="${escapeAttr(c)}">${escapeHtml(c)}</button>`)
-  ];
-  return chips.join('\n        ');
-}
-
-function buildTagCloudHtml(posts) {
-  const tagFreq = {};
-  posts.forEach(p => (p.tags || []).forEach(t => { tagFreq[t] = (tagFreq[t] || 0) + 1; }));
-  const sorted = Object.entries(tagFreq).sort((a, b) => b[1] - a[1]).slice(0, 12);
-  if (!sorted.length) return '<p style="color:var(--text-hint);font-size:12px;">Nenhuma tag ainda.</p>';
-  const max = sorted[0][1];
-  return sorted.map(([tag, count]) => {
-    const big = count / max > .6 ? 'bid-tag--big' : '';
-    return `<span class="bid-tag ${big}" data-tag="${escapeAttr(tag)}">#${escapeHtml(tag)}</span>`;
-  }).join('\n          ');
-}
-
-function buildStatsHtml(posts) {
-  const totalReadTime = posts.reduce((acc, p) => acc + readTimeMin(p.content), 0);
-  const cats = new Set(posts.map(p => p.category).filter(Boolean));
-  return {
-    posts: posts.length,
-    categories: cats.size,
-    readtime: totalReadTime,
-  };
-}
-
 function buildBlogJsonLd(posts) {
   const items = posts.slice(0, 20).map(p => ({
     '@type': 'BlogPosting',
@@ -1255,6 +1151,41 @@ function buildBlogJsonLd(posts) {
   };
 }
 
+/* Mesmo layout do navegador (js/blog-layout.js): HTML pronto pro crawler. */
+function buildBentoHtml(posts) {
+  const sorted = posts.slice().sort((a, b) => {
+    if (a.featured && !b.featured) return -1;
+    if (!a.featured && b.featured) return 1;
+    return new Date(b.date) - new Date(a.date);
+  });
+  const count = {};
+  posts.forEach(x => (x.tags || []).forEach(t => { count[t] = (count[t] || 0) + 1; }));
+  return BlogLayout.render(sorted.map(x => ({
+    id: x.id,
+    slug: x.slug,
+    title: x.title,
+    excerpt: stripMd(x.content).slice(0, 200),
+    cover: x.cover,
+    coverAlt: x.coverAlt,
+    category: x.category,
+    tags: x.tags,
+    date: x.date,
+    readMin: readTimeMin(x.content),
+    featured: x.featured,
+    url: `/posts/${x.slug}.html`,
+  })), {
+    lang: 'pt',
+    labels: (I18N_POSTS && I18N_POSTS.pt.blog.bento) || {},
+    coverOf: toWebp,
+    facets: {
+      categories: [...new Set(posts.map(x => x.category).filter(Boolean))],
+      tags: Object.keys(count).sort((x, y) => count[y] - count[x]).slice(0, 8),
+    },
+    filter: 'all',
+    query: '',
+  });
+}
+
 function replaceBetween(html, startMarker, endMarker, replacement) {
   const reStart = startMarker.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
   const reEnd   = endMarker.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
@@ -1275,25 +1206,10 @@ function updateBlogHtml(posts) {
     return;
   }
   let html = fs.readFileSync(blogPath, 'utf8');
-  const stats = buildStatsHtml(posts);
   const jsonLd = buildBlogJsonLd(posts);
 
   html = replaceBetween(html, '<!--BUILD:POSTS_BENTO-->', '<!--/BUILD:POSTS_BENTO-->', buildBentoHtml(posts));
-  html = replaceBetween(html, '<!--BUILD:FEATURED-->',    '<!--/BUILD:FEATURED-->',    buildFeaturedHtml(posts));
-  html = replaceBetween(html, '<!--BUILD:FILTERS-->',     '<!--/BUILD:FILTERS-->',     buildFiltersHtml(posts));
-  html = replaceBetween(html, '<!--BUILD:TAG_CLOUD-->',   '<!--/BUILD:TAG_CLOUD-->',   buildTagCloudHtml(posts));
   html = replaceBetween(html, '<!--BUILD:JSONLD-->',      '<!--/BUILD:JSONLD-->', `<script type="application/ld+json">\n${jsonForScript(jsonLd, 2)}\n</script>`);
-
-  // Stats: grava o valor REAL tanto no texto quanto em data-count.
-  // data-count vira a fonte de verdade que o blog.js anima (ele NAO
-  // recalcula mais no cliente — evita zerar quando a lista esta stale).
-  const setStat = (h, id, val) => h.replace(
-    new RegExp(`<span class="bid-stat-value" id="${id}"[^>]*>[^<]*</span>`),
-    `<span class="bid-stat-value" id="${id}" data-count="${val}">${val}</span>`
-  );
-  html = setStat(html, 'stat-posts', stats.posts);
-  html = setStat(html, 'stat-categories', stats.categories);
-  html = setStat(html, 'stat-readtime', stats.readtime);
 
   // window.BI_POSTS injetado pra blog.js usar
   const liteList = posts.map(p => ({

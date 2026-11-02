@@ -15,7 +15,7 @@
     '.ps-frame__view img',                         // home: capas dos projetos
     '.cs-win img', '.cs-mkt__btn img', '.cs-gal__btn img',
     '.cs-other__img img', '.cs-app__screens img',  // paginas de projeto
-    '.blog-post-cover img',                        // blog: capas (vem do Supabase)
+    '.bb-media img',                        // blog: capas (vem do Supabase)
     '.post-body img', '.post-page-hero img', '.post-related-card-cover img' // posts
   ].join(',');
 

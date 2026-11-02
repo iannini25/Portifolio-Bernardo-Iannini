@@ -64,906 +64,26 @@
   opacity: .55;
 }
 
-/* =============================
-   1) HERO
-   ============================= */
-.blog-hero {
-  padding: clamp(32px, 5vw, 64px) 0 clamp(24px, 3.5vw, 40px);
-  text-align: center;
-}
-
-.blog-hero-inner {
-  max-width: 920px;
-  margin: 0 auto;
-}
-
-.blog-hero .kicker { justify-content: center; }
-
-.blog-hero-title {
-  margin: 12px 0 18px;
-  font-weight: 900;
-  font-size: clamp(40px, 6.5vw, 76px);
-  line-height: 1.05;
-  letter-spacing: -.025em;
-}
-
-.blog-hero-title em {
-  font-style: italic;
-  font-family: "Instrument Serif", Georgia, serif;
-  font-weight: 400;
-  background-image: linear-gradient(110deg, var(--green) 0%, var(--lime) 50%, var(--green) 100%);
-  background-size: 200% 100%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  animation: blog-shimmer 6s linear infinite;
-  filter: drop-shadow(0 18px 36px rgba(34, 197, 94, .22));
-}
-
 @keyframes blog-shimmer {
   from { background-position: 0% 0; }
   to   { background-position: 200% 0; }
-}
-
-.blog-hero-sub {
-  margin: 0 auto;
-  max-width: 580px;
-  color: var(--text-soft);
-  font-size: clamp(15px, 1.6vw, 18px);
-  line-height: 1.6;
-}
-
-/* =============================
-   2) BENTO IDENTIDADE — espelha o About.tsx
-   3 colunas · linhas com altura mista
-   ============================= */
-.blog-identity-section {
-  padding: clamp(20px, 3vw, 36px) 0;
-}
-
-.blog-identity-bento {
-  display: grid;
-  /* esquerda (1) | direita (2) — a direita estica na altura da esquerda */
-  grid-template-columns: 1fr 2fr;
-  gap: 14px;
-  max-width: 1180px;
-  margin: 0 auto;
-  align-items: stretch;
-}
-
-/* Coluna esquerda: tamanhos ORIGINAIS — perfil ~9rem, tópicos auto, local ~9rem.
-   Nada de stretch forçado. */
-.bid-col-left {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  min-width: 0;
-}
-
-.bid-col-left .bid-profile {
-  flex: 0 0 auto;
-  min-height: 9rem;
-}
-
-.bid-col-left .bid-topics {
-  flex: 0 0 auto; /* conteudo define a altura — nao cresce */
-}
-
-.bid-col-left .bid-location {
-  flex: 0 0 auto;
-  min-height: 9rem;
-}
-
-/* Coluna direita: 50/50. Como perfil e local tem a mesma altura base,
-   a metade = exatamente o meio dos Tópicos. Featured desce do topo;
-   center+stats sobem do fundo ate esse meio. Zero buraco. */
-.bid-col-right {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  min-width: 0;
-  min-height: 100%;
-}
-
-.bid-col-right .bid-featured {
-  flex: 1 1 0;
-  min-height: 0;
-  padding: 0;
-  cursor: pointer;
-}
-
-.bid-row-bottom {
-  flex: 1 1 0;
-  min-height: 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: minmax(0, 1fr); /* linha nao cresce com o conteudo do stats */
-  gap: 14px;
-  overflow: hidden;
-}
-
-.bid-row-bottom .bid-center,
-.bid-row-bottom .bid-stats {
-  min-height: 0;
-  max-height: 100%;
-  height: auto;
-  align-self: stretch;
-  overflow: hidden;
-}
-
-/* Tile base — mesmo padrão do About: rounded, borda card, hover violet → green */
-.bid-tile {
-  position: relative;
-  border-radius: 22px;
-  border: 1px solid var(--gline-28);
-  background: linear-gradient(135deg, rgba(15, 25, 20, .55), rgba(10, 18, 14, .85));
-  padding: 22px;
-  transition: border-color .25s ease, transform .25s ease, box-shadow .25s ease;
-  overflow: hidden;
-  isolation: isolate;
-}
-
-.bid-tile:hover {
-  border-color: var(--g-50, rgba(34, 197, 94, .5));
-}
-
-/* mesmo contorno-que-segue-o-cursor dos cards de post (padroniza o bento
-   com o resto do site). Fica ACIMA do conteudo do tile mas sem capturar
-   o mouse; --mx/--my vem do js/blog-fx.js.
-   .bid-center fica FORA: o ::after dele ja e o scrim da imagem de preview
-   (e ele nao e alvo de hover, e a superficie que mostra o tile visitado). */
-.bid-tile:not(.bid-center)::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  box-sizing: border-box;
-  border-radius: inherit;
-  padding: 1px;
-  z-index: 4;
-  background: radial-gradient(160% 160% at var(--mx, 50%) var(--my, 50%),
-    color-mix(in oklab, var(--lime) 92%, var(--green)) 0%, transparent 46%);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-          mask-composite: exclude;
-  opacity: 0;
-  transition: opacity .4s ease;
-  pointer-events: none;
-}
-.bid-tile:not(.bid-center):hover::after { opacity: 1; }
-@media (hover: none) {
-  .blog-post-card::before,
-  .bid-tile:not(.bid-center)::after { display: none; }
-}
-/* 1) Perfil — avatar com sweep + nome */
-.bid-profile {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 18px;
-  background:
-    radial-gradient(circle at 0% 0%, rgba(34, 197, 94, .14), transparent 60%),
-    linear-gradient(135deg, rgba(15, 25, 20, .65), rgba(10, 18, 14, .9));
-}
-
-.bid-avatar {
-  position: relative;
-  width: 76px;
-  height: 76px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 2px solid var(--g-35);
-  box-shadow: 0 0 0 4px rgba(34, 197, 94, .12);
-  isolation: isolate;
-}
-
-.bid-avatar-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: opacity .6s ease;
-}
-
-.bid-avatar-img--a { opacity: 1; }
-.bid-avatar-img--b { opacity: 0; }
-
-.bid-profile:hover .bid-avatar-img--a { opacity: 0; }
-.bid-profile:hover .bid-avatar-img--b { opacity: 1; }
-
-/* Sweep diagonal igual ao da hero da landing */
-.bid-avatar-sweep {
-  position: absolute;
-  inset: -20%;
-  background: linear-gradient(
-    115deg,
-    transparent 30%,
-    rgba(163, 230, 53, .55) 50%,
-    transparent 70%
-  );
-  transform: translateX(-120%);
-  transition: transform .9s cubic-bezier(.22, .61, .36, 1);
-  pointer-events: none;
-  z-index: 2;
-}
-
-.bid-profile:hover .bid-avatar-sweep {
-  transform: translateX(120%);
-}
-
-.bid-profile-text {
-  flex: 1;
-  min-width: 0;
-}
-
-.bid-kicker {
-  font-size: 10px;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: var(--lime);
-  font-weight: 800;
-  margin: 0 0 6px;
-}
-
-.bid-name {
-  margin: 0;
-  font-size: clamp(18px, 1.9vw, 22px);
-  font-weight: 900;
-  line-height: .98;
-  letter-spacing: -.02em;
-}
-
-.bid-name span {
-  font-family: "Instrument Serif", Georgia, serif;
-  font-weight: 400;
-  font-style: italic;
-  background-image: linear-gradient(110deg, var(--green) 0%, var(--lime) 50%, var(--green) 100%);
-  background-size: 200% 100%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  animation: blog-shimmer 6s linear infinite;
-}
-
-.bid-role {
-  margin: 8px 0 0;
-  font-size: 10px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--text-hint);
-  font-weight: 700;
-}
-
-/* 2) Featured — metade de cima da coluna direita */
-.bid-featured {
-  padding: 0;
-  cursor: pointer;
-}
-
-.bid-featured-inner {
-  position: relative;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: flex-end;
-  padding: 22px;
-  overflow: hidden;
-  border-radius: inherit;
-}
-
-.bid-featured-img {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-.bid-featured-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform .8s cubic-bezier(.22, .61, .36, 1);
-}
-
-.bid-featured:hover .bid-featured-img img { transform: scale(1.06); }
-
-.bid-featured-img::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg, rgba(6, 8, 7, .15) 0%, rgba(6, 8, 7, .55) 55%, rgba(6, 8, 7, .94) 100%),
-    linear-gradient(90deg, rgba(6, 8, 7, .45) 0%, transparent 60%);
-}
-
-.bid-featured-content {
-  position: relative;
-  z-index: 1;
-  max-width: 92%;
-  padding-bottom: 2px; /* folga pros descendentes do titulo */
-}
-
-.bid-featured-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 4px 9px;
-  background: linear-gradient(135deg, var(--green), var(--lime));
-  color: #04130a;
-  font-size: 9px;
-  font-weight: 900;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  border-radius: 6px;
-  box-shadow: 0 6px 16px rgba(34, 197, 94, .4);
-  margin-bottom: 10px;
-}
-
-.bid-featured-badge svg { width: 11px; height: 11px; }
-
-.bid-featured-title {
-  margin: 0 0 6px;
-  font-size: clamp(18px, 2.2vw, 26px);
-  font-weight: 800;
-  line-height: 1.25;
-  letter-spacing: -.01em;
-  color: #fff;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  /* evita corte no meio da ultima linha (descenders) */
-  padding-bottom: .12em;
-}
-
-.bid-featured-meta {
-  display: flex;
-  gap: 10px;
-  font-size: 11px;
-  color: rgba(255, 255, 255, .75);
-  font-weight: 600;
-}
-
-/* 2) Featured — extras */
-.bid-featured-img--gradient {
-  background: linear-gradient(135deg, rgba(34, 197, 94, .25), rgba(15, 25, 20, .9));
-}
-
-.bid-featured-inner--empty {
-  background: var(--w-03);
-}
-
-/* Noise/grid sutil sobre a featured pra dar textura tech */
-.bid-featured-noise {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background-image:
-    linear-gradient(0deg, rgba(163, 230, 53, .06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(163, 230, 53, .06) 1px, transparent 1px);
-  background-size: 32px 32px;
-  mix-blend-mode: overlay;
-  opacity: .35;
-  pointer-events: none;
-}
-
-/* Cabeçalho compartilhado de tiles (title + sub) */
-.bid-tile-head {
-  margin-bottom: 14px;
-}
-
-.bid-tile-title {
-  margin: 0 0 4px;
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: -.01em;
-}
-
-.bid-tile-sub {
-  margin: 0;
-  font-size: 11px;
-  color: var(--text-hint);
-  letter-spacing: .04em;
-}
-
-/* 3) Stats — metade de baixo, coluna direita (mesma altura do preview) */
-.bid-stats {
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-
-.bid-stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(86px, 1fr));
-  gap: 12px;
-  flex: 1 1 auto;
-  min-height: 0;
-  align-content: center;
-  overflow: hidden;
-}
-
-.bid-stat {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 12px;
-  border-radius: 12px;
-  background: var(--w-03);
-  border: 1px solid var(--w-05);
-  transition: border-color .25s ease, transform .2s ease;
-}
-
-.bid-stat:hover {
-  border-color: var(--g-35);
-  transform: translateY(-2px);
-}
-
-.bid-stat-value {
-  font-size: clamp(22px, 2.4vw, 28px);
-  font-weight: 900;
-  background-image: linear-gradient(135deg, var(--green), var(--lime));
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
-
-.bid-stat-label {
-  font-size: 9px;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--text-hint);
-  font-weight: 700;
-}
-
-/* Sparkline decorativa no rodapé do tile stats */
-.bid-stats-spark {
-  width: 100%;
-  height: 36px;
-  flex: 0 0 36px;
-  margin-top: auto;
-  opacity: .7;
-  transition: opacity .3s ease;
-}
-
-.bid-stats:hover .bid-stats-spark { opacity: 1; }
-
-.bid-stats-spark polyline {
-  stroke-dasharray: 400;
-  stroke-dashoffset: 400;
-  animation: blog-spark-draw 2s cubic-bezier(.22, .61, .36, 1) forwards;
 }
 
 @keyframes blog-spark-draw {
   to { stroke-dashoffset: 0; }
 }
 
-/* 4) Localização — altura original (~9rem), sem stretch */
-.bid-location {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background:
-    radial-gradient(circle at 30% 30%, rgba(34, 197, 94, .22), transparent 65%),
-    linear-gradient(135deg, rgba(15, 25, 20, .85), rgba(10, 18, 14, .95));
-}
-
-.bid-location-glow {
-  position: absolute;
-  inset: -40%;
-  background: radial-gradient(circle at 30% 30%, rgba(34, 197, 94, .14), transparent 50%);
-  animation: blog-rotate 18s linear infinite;
-  z-index: -1;
-}
-
 @keyframes blog-rotate { to { transform: rotate(360deg); } }
-
-.bid-location-head {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 10px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--lime);
-  font-weight: 800;
-}
-
-.bid-location-pulse {
-  position: relative;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--lime);
-  box-shadow: 0 0 10px var(--lime);
-}
-
-.bid-location-pulse::before {
-  content: "";
-  position: absolute;
-  inset: -3px;
-  border-radius: 50%;
-  border: 2px solid var(--lime);
-  animation: blog-pulse 1.8s ease-out infinite;
-}
 
 @keyframes blog-pulse {
   0%   { transform: scale(.8); opacity: 1; }
   100% { transform: scale(2.4); opacity: 0; }
 }
 
-.bid-location-place {
-  margin: 0;
-  font-size: clamp(18px, 2.1vw, 24px);
-  font-weight: 900;
-  line-height: .95;
-  letter-spacing: -.015em;
-}
-
-.bid-location-time {
-  margin: 4px 0 0;
-  font-size: 11px;
-  color: var(--text-hint);
-  font-family: "JetBrains Mono", monospace;
-  font-variant-numeric: tabular-nums;
-}
-
-/* 5) Tópicos — altura pelo conteudo (tamanho original) */
-.bid-topics {
-  display: flex;
-  flex-direction: column;
-}
-
-.bid-topics-rotator {
-  display: flex;
-  align-items: center;
-  height: 36px;
-  margin-bottom: 12px;
-  padding: 0 12px;
-  border-radius: 10px;
-  background: var(--g-10);
-  border: 1px solid var(--g-22);
-  overflow: hidden;
-  position: relative;
-}
-
-.bid-topics-rotator::before {
-  content: ">";
-  margin-right: 8px;
-  color: var(--lime);
-  font-family: "JetBrains Mono", monospace;
-  font-weight: 700;
-}
-
-.bid-topic-current {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--lime);
-  font-family: "JetBrains Mono", monospace;
-  transition: opacity .24s ease, transform .24s ease;
-}
-
-.bid-topic-current.is-leaving {
-  opacity: 0;
-  transform: translateY(-6px);
-}
-
-.bid-tags-cloud {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  align-content: flex-start;
-  flex: 1;
-  /* padding+margin de 2px dá folga pro translateY(-1px) do hover não ser
-     cortado pela borda do tile, sem mexer no layout visual */
-  padding: 2px;
-  margin: -2px;
-}
-
-.bid-tag {
-  padding: 5px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--w-12);
-  background: var(--w-03);
-  color: var(--text-soft);
-  font-size: 11px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: border-color .18s ease, color .18s ease, background .18s ease, transform .18s ease;
-}
-
-.bid-tag:hover {
-  border-color: var(--green);
-  color: var(--lime);
-  background: var(--g-10);
-  transform: translateY(-1px);
-}
-
-.bid-tag--big { font-size: 12px; padding: 6px 12px; }
-
-/* 6) Centro — preview na metade de baixo */
-.bid-center {
-  padding: 0;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  border-radius: 22px;
-  background: linear-gradient(135deg, rgba(15, 25, 20, .85), rgba(8, 18, 12, .95));
-}
-
-/* Grid tech sutil de fundo */
-.bid-center-grid {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background-image:
-    linear-gradient(0deg, rgba(163, 230, 53, .08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(163, 230, 53, .08) 1px, transparent 1px);
-  background-size: 28px 28px;
-  mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
-  -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
-  opacity: .9;
-  transition: opacity .35s ease;
-  pointer-events: none;
-}
-
-.bid-center.has-image .bid-center-grid { opacity: 0; }
-
-.bid-center-img {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background-size: cover;
-  background-position: center;
-  opacity: 0;
-  transition: opacity .35s ease, transform .8s cubic-bezier(.22, .61, .36, 1);
-  transform: scale(1.04);
-}
-
-.bid-center-img.active {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.bid-center::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  background: linear-gradient(180deg, transparent 0%, rgba(6, 8, 7, .6) 100%);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity .3s ease;
-}
-
-.bid-center.has-image::after { opacity: 1; }
-
-.bid-center-fallback {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  color: var(--text-hint);
-  font-size: 11px;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  font-weight: 700;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: center;
-  transition: opacity .3s ease;
-}
-
-.bid-center.has-image .bid-center-fallback { opacity: 0; }
-
-.bid-center-fallback svg {
-  width: 42px;
-  height: 42px;
-  color: var(--green);
-  opacity: .5;
-}
-
-/* Meta do preview: SEMPRE visível quando há imagem — titulo nao depende
-   de hover/subtitulo pra aparecer (antes opacity 0 ate .is-visible). */
-.bid-center-meta {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 3;
-  padding: 20px 16px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity .25s ease, transform .25s ease;
-  pointer-events: none;
-  background: linear-gradient(180deg, transparent 0%, rgba(6, 8, 7, .9) 42%);
-}
-
-.bid-center.has-image .bid-center-meta,
-.bid-center-meta.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.bid-center-meta-title {
-  font-size: 14px;
-  font-weight: 800;
-  color: #fff;
-  line-height: 1.35;
-  letter-spacing: -.01em;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  overflow: hidden;
-  padding-bottom: .1em;
-}
-
-.bid-center-meta-sub {
-  font-size: 11px;
-  color: rgba(255, 255, 255, .75);
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* Responsivo bento identidade */
-@media (max-width: 900px) {
-  .blog-identity-bento {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-  .bid-col-left,
-  .bid-col-right,
-  .bid-row-bottom {
-    display: contents; /* tiles entram no flex pai e respeitam order */
-  }
-  .bid-profile  { order: 1; min-height: 110px; }
-  .bid-featured { order: 2; min-height: 200px; flex: none; }
-  .bid-topics   { order: 3; min-height: 200px; }
-  .bid-location { order: 4; min-height: 160px; }
-  .bid-center   { order: 5; min-height: 220px; }
-  .bid-stats    { order: 6; }
-}
-
-@media (max-width: 540px) {
-  .bid-featured { order: 1; }
-  .bid-profile  { order: 2; }
-  .bid-topics   { order: 3; }
-  .bid-location { order: 4; }
-  .bid-center   { order: 5; }
-  .bid-stats    { order: 6; }
-}
-
 /* Tablet intermediario: toolbar empilha sem estourar */
 @media (max-width: 900px) and (min-width: 541px) {
-  .blog-main { padding-left: 18px; padding-right: 18px; }
-  .blog-toolbar {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-}
 
-/* =============================
-   3) TOOLBAR (busca + filtros + sort)
-   ============================= */
-.blog-toolbar-section {
-  padding: 24px 0;
-  position: sticky;
-  top: 88px;
-  z-index: 5;
-}
-
-.blog-toolbar {
-  display: grid;
-  grid-template-columns: 1fr auto auto;
-  gap: 14px;
-  align-items: center;
-  padding: 12px;
-  background: rgba(10, 18, 14, .72);
-  border: 1px solid var(--gline-28);
-  border-radius: 18px;
-  /* blur mais leve: a toolbar e sticky e refiltra o fundo a cada frame de scroll */
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  box-shadow: 0 14px 40px rgba(0, 0, 0, .25);
-}
-
-.blog-search {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0 14px;
-  height: 44px;
-  background: var(--input-bg);
-  border: 1px solid var(--gline-28);
-  border-radius: 12px;
-  transition: border-color .2s ease, background .2s ease;
-}
-
-.blog-search:focus-within {
-  border-color: var(--lime);
-  background: var(--input-bg-focus);
-  /* --g-10 rendia 1.15:1 contra a barra: indicador de foco invisivel
-     (WCAG 2.2 SC 1.4.11 pede 3:1). --g-70 mede 4.61:1. */
-  box-shadow: 0 0 0 3px var(--g-70);
-}
-
-.blog-search svg { color: var(--text-hint); flex-shrink: 0; }
-
-.blog-search input {
-  flex: 1;
-  background: transparent;
-  border: 0;
-  outline: 0;
-  color: var(--text);
-  font-family: inherit;
-  font-size: 14px;
-}
-
-.blog-search input::placeholder { color: var(--text-hint); }
-
-/* (o badge "⌘ K" saiu da barra de busca; o atalho de teclado continua
-   funcionando em js/blog.js, so nao e mais anunciado visualmente) */
-
-.blog-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  max-width: 480px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.blog-filters::-webkit-scrollbar { display: none; }
-
-.blog-chip {
-  flex-shrink: 0;
-  padding: 8px 14px;
-  border-radius: 999px;
-  border: 1px solid var(--w-10);
-  background: var(--w-03);
-  color: var(--text-soft);
-  font-family: inherit;
-  font-weight: 700;
-  font-size: 12px;
-  letter-spacing: .04em;
-  cursor: pointer;
-  transition: border-color .18s ease, background .18s ease, color .18s ease, box-shadow .18s ease;
-}
-
-.blog-chip:hover {
-  border-color: var(--g-35, rgba(65, 110, 84, .35));
-  background: var(--g-08, rgba(34, 197, 94, .08));
-  color: var(--text);
-}
-
-/* CHIP ATIVO: gradiente OFICIAL da casa (green -> lime), igual ao resto do
-   site. Antes era green -> green-2 (verde escuro, barrento) + um box-shadow
-   verde largo e desfocado (0 6px 18px) que vazava e lia como bug/halo. Agora
-   a profundidade vem de uma sombra NEUTRA curta + um fio de luz interno. */
-.blog-chip--active {
-  background: var(--gradient-lime);
-  border-color: transparent;
-  color: #08120c;
-  box-shadow:
-    0 2px 8px rgba(0, 0, 0, .35),
-    inset 0 1px 0 rgba(255, 255, 255, .25);
-}
-.blog-chip--active:hover {
-  background: var(--gradient-lime);
-  color: #08120c;
-  border-color: transparent;
+.blog-main { padding-left: 18px; padding-right: 18px; }
 }
 
 .blog-sort {
@@ -1038,17 +158,22 @@
   cursor: pointer;
   transition: border-color .2s ease, background .2s ease;
 }
+
 .blog-sort-trigger:hover { border-color: var(--g-35, rgba(65, 110, 84, .35)); }
+
 .blog-sort-trigger:focus-visible {
   outline: 2px solid var(--green);
   outline-offset: 2px;
 }
+
 .blog-sort-value { white-space: nowrap; }
+
 .blog-sort-caret {
   opacity: .7;
   flex: 0 0 auto;
   transition: transform .24s cubic-bezier(.22, 1, .36, 1);
 }
+
 .blog-sort-trigger[aria-expanded="true"] .blog-sort-caret { transform: rotate(180deg); }
 
 .blog-sort-menu {
@@ -1071,6 +196,7 @@
   backdrop-filter: blur(10px);
   display: none;
 }
+
 .blog-sort-menu.open {
   display: block;
   animation: blog-sort-in .2s cubic-bezier(.22, 1, .36, 1) both;
@@ -1094,6 +220,7 @@
   cursor: pointer;
   transition: color .26s cubic-bezier(.4, 0, .2, 1);
 }
+
 .blog-sort-option::before {
   content: "";
   position: absolute;
@@ -1108,401 +235,400 @@
   pointer-events: none;
   transition: transform .42s cubic-bezier(.34, 1.2, .5, 1);
 }
+
 /* .is-active = item sob o cursor OU navegado pelo teclado (mesmo destaque) */
 .blog-sort-option.is-active { color: #08120c; }
+
 .blog-sort-option.is-active::before { transform: translate(-50%, 50%) scale(1); }
+
 .blog-sort-option[aria-selected="true"] { color: var(--lime); }
+
 .blog-sort-option[aria-selected="true"].is-active { color: #08120c; }
 
 @media (max-width: 900px) {
-  .blog-toolbar { grid-template-columns: 1fr; }
-  .blog-filters { max-width: 100%; }
-  .blog-sort { justify-content: flex-end; }
+
+.blog-sort { justify-content: flex-end; }
 }
 
 /* =============================
-   4) BENTO POSTS — distribuição assimétrica como About
+   4) BLOG — bento de cartoes com recortes curvos (js/blog-layout.js)
+   Os recortes sao blocos da cor da pagina (--bg, chapada no blog) com as
+   duas curvas invertidas feitas por radial-gradient: nao ha mascara nem
+   imagem, entao qualquer altura de titulo continua encaixando.
    ============================= */
-.blog-section {
-  padding: clamp(32px, 4vw, 56px) 0;
+.bb-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px 32px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
 }
-
-.blog-section-head {
-  text-align: center;
-  margin-bottom: clamp(24px, 3vw, 36px);
-}
-
-.blog-section-head .kicker { justify-content: center; }
-
-.blog-section-title {
-  margin: 8px 0 0;
-  font-size: clamp(28px, 4vw, 44px);
+.bb-title {
+  margin: 0;
+  font-size: clamp(3.4rem, 7.4vw, 5.8rem);
   font-weight: 900;
-  letter-spacing: -.02em;
-  line-height: 1.05;
+  line-height: .9;
+  letter-spacing: -.04em;
+  text-transform: uppercase;
+  color: var(--text);
 }
-
-.blog-section-title em {
-  font-style: italic;
-  font-family: "Instrument Serif", Georgia, serif;
-  font-weight: 400;
-  color: var(--lime);
+.bb-sub {
+  margin: 12px 0 0;
+  max-width: 46ch;
+  font-size: .95rem;
+  line-height: 1.5;
+  color: var(--text-hint);
 }
-
-.blog-bento {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  /* row alta o bastante pra meta + titulo de 3 linhas + padding */
-  grid-auto-rows: minmax(300px, auto);
-  gap: 16px;
-}
-
-/* Card base (mesmo padrão do About: rounded-2xl + borda card-border) */
-.blog-post-card {
-  position: relative;
-  border-radius: 22px;
-  border: 1px solid var(--gline-28);
-  background: linear-gradient(135deg, rgba(15, 25, 20, .55), rgba(10, 18, 14, .85));
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform .32s cubic-bezier(.22, .61, .36, 1),
-              border-color .32s cubic-bezier(.22, .61, .36, 1),
-              box-shadow .32s cubic-bezier(.22, .61, .36, 1);
-  isolation: isolate;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-
-/* CONTORNO QUE ACENDE NA DIRECAO DO CURSOR — mesmo efeito dos cards de
-   Projetos (.pj-card__frame::before) e de Experiencia (.tl-card::before):
-   js/blog-fx.js escreve --mx/--my (em %) no card e o radial e mascarado no
-   anel de 1px da borda. Padroniza o blog com o resto do site (antes era um
-   gradiente diagonal estatico). */
-.blog-post-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  box-sizing: border-box;
-  border-radius: inherit;
-  padding: 1px;
-  z-index: 3;
-  background: radial-gradient(160% 160% at var(--mx, 50%) var(--my, 50%),
-    color-mix(in oklab, var(--lime) 92%, var(--green)) 0%, transparent 46%);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-          mask-composite: exclude;
-  opacity: 0;
-  transition: opacity .4s ease;
-  pointer-events: none;
-}
-
-.blog-post-card:hover {
-  transform: translateY(-4px);
-  /* a borda ZERA no hover: o unico desenho de borda passa a ser o contorno que
-     segue o cursor (::before). Antes --g-50 acendia o anel INTEIRO de verde no
-     mesmo instante, o que lavava o gradiente direcional por cima. Mesma decisao
-     que .post-related-card:hover ja tomava. */
-  border-color: transparent;
-  box-shadow: 0 22px 60px rgba(0, 0, 0, .45);
-}
-
-.blog-post-card:hover::before { opacity: 1; }
-
-.blog-post-cover {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-.blog-post-cover img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform .8s cubic-bezier(.22, .61, .36, 1);
-}
-
-.blog-post-card:hover .blog-post-cover img { transform: scale(1.06); }
-
-.blog-post-cover::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  /* O bloco de texto do card fica entre ~54% e ~78% da altura. Com o scrim
-     antigo (.60 em 55%) uma capa CLARA derrubava a meta de 11px pra 2.39:1 e o
-     resumo pra 4.13:1. Chegando a .82 ANTES do texto, o pior caso (capa branca)
-     vira 5.51:1 na meta e 9.50:1 no resumo. */
-  background: linear-gradient(180deg,
-    rgba(6, 8, 7, .10) 0%,
-    rgba(6, 8, 7, .55) 34%,
-    rgba(6, 8, 7, .82) 52%,
-    rgba(6, 8, 7, .95) 78%,
-    rgba(6, 8, 7, .97) 100%);
-}
-
-.blog-post-card--no-image .blog-post-cover {
-  background: linear-gradient(135deg, rgba(34, 197, 94, .14), rgba(15, 25, 20, .9));
-}
-
-.blog-post-content {
-  position: relative;
-  z-index: 2;
-  /* NÃO height:100% — isso + overflow:hidden no card cortava o titulo
-     quando o <a> interno brigava com -webkit-box no h3. */
-  margin-top: auto;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 8px;
-  padding: 20px 20px 22px;
-  box-sizing: border-box;
-}
-
-.blog-post-meta {
+.bb-tools { display: flex; align-items: center; gap: 10px; }
+.bb-tools .blog-sort { flex: none; width: auto; margin: 0; }
+.bb-tools .blog-sort-trigger { height: 52px; border-radius: 20px; border-color: transparent; background: rgba(255, 255, 255, .055); }
+.bb-search {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin: 0;
-  flex-wrap: wrap;
-  flex-shrink: 0;
-}
-
-.blog-post-category {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  background: var(--lime);
-  color: #08120c;
-  box-shadow: 0 0 12px rgba(163, 230, 53, .35);
-}
-
-.blog-post-date,
-.blog-post-readtime {
-  font-size: 11px;
+  width: min(340px, 100%);
+  height: 52px;
+  padding: 0 20px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, .055);
   color: var(--text-hint);
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
+  transition: background .25s ease, box-shadow .25s ease;
 }
-
-.blog-post-date::before,
-.blog-post-readtime::before {
-  content: "";
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--text-hint);
+.bb-search:focus-within { background: rgba(255, 255, 255, .08); box-shadow: inset 0 0 0 1.5px var(--lime); }
+.bb-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: .92rem;
 }
+.bb-search input::placeholder { color: var(--text-hint); }
+.bb-search input::-webkit-search-cancel-button { display: none; }
 
-.blog-post-title {
-  margin: 0;
-  font-weight: 800;
-  letter-spacing: -.01em;
-  line-height: 1.3;
-  color: #fff;
-  /* clamp no <a> interno — no h3 o -webkit-box com filho <a> cortava
-     o texto no meio da letra (so aparecia a ponta no rodape do card). */
+.bb-grid {
+  --bb-r: 30px;
+  --bb-c: 26px;
+  --bb-ink: #0b1505;
+  display: grid;
+  grid-template-columns: repeat(24, minmax(0, 1fr));
+  gap: 12px;
+}
+.bb {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: var(--bb-r);
+  background: var(--rail);
+  animation: bb-in .7s cubic-bezier(.22, 1, .36, 1) both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+.bb[data-action="open"] { cursor: pointer; }
+@keyframes bb-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+
+/* composicao principal */
+.bb--a { grid-column: span 10; grid-row: span 2; }
+.bb--b { grid-column: span 9; min-height: 480px; }
+.bb--c { grid-column: span 5; min-height: 480px; }
+.bb--d { grid-column: span 8; min-height: 340px; }
+.bb--e { grid-column: span 6; min-height: 340px; }
+/* linhas seguintes */
+.bb--s14 { grid-column: span 14; min-height: 420px; }
+.bb--s10 { grid-column: span 10; min-height: 420px; }
+.bb--s24 { grid-column: span 24; min-height: 460px; }
+
+.bb-media { position: absolute; inset: 0; overflow: hidden; }
+.bb-media img {
   display: block;
-  overflow: visible;
-  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .8s cubic-bezier(.22, 1, .36, 1);
+}
+@media (hover: hover) {
+  .bb:hover .bb-media img { transform: scale(1.04); }
 }
 
-.blog-post-title a {
+.bb-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  margin: 0 0 10px;
+  font-size: .78rem;
+  font-weight: 500;
+  color: inherit;
+}
+.bb-meta strong { font-weight: 800; }
+.bb-dot { width: 3px; height: 3px; border-radius: 50%; background: currentColor; opacity: .6; }
+.bb-t {
+  margin: 0;
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -.015em;
+  text-transform: uppercase;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.bb-t a { color: inherit; text-decoration: none; }
+
+/* recortes: canto do cartao que "morde" pra dentro */
+.bb-tab, .bb-notch { position: absolute; z-index: 2; background: var(--bg); }
+.bb-tab::before, .bb-tab::after,
+.bb-notch::before, .bb-notch::after {
+  content: "";
+  position: absolute;
+  width: var(--bb-c);
+  height: var(--bb-c);
+  pointer-events: none;
+}
+/* aba do titulo: canto inferior esquerdo */
+.bb-tab {
+  left: 0;
+  bottom: 0;
+  max-width: min(86%, 560px);
+  padding: 20px 30px 12px 10px;
+  border-top-right-radius: var(--bb-c);
+  color: var(--text);
+}
+.bb-tab::before, .bb-tab::after {
+  background: radial-gradient(circle at 100% 0, transparent calc(var(--bb-c) - .5px), var(--bg) var(--bb-c));
+}
+.bb-tab::before { left: 0; top: calc(var(--bb-c) * -1); }
+.bb-tab::after { right: calc(var(--bb-c) * -1); bottom: 0; }
+.bb-tab .bb-meta { color: var(--text-hint); }
+.bb-tab .bb-meta strong { color: var(--text); }
+.bb-tab .bb-t { font-size: clamp(1.25rem, 1.95vw, 1.72rem); -webkit-line-clamp: 3; line-clamp: 3; }
+@media (hover: hover) { .bb-tab .bb-t a:hover { color: var(--lime); } }
+
+/* encaixe do botao: canto superior direito */
+.bb-notch--tr {
+  top: 0;
+  right: 0;
+  padding: 0 0 8px 8px;
+  border-bottom-left-radius: var(--bb-c);
+}
+.bb-notch--tr::before, .bb-notch--tr::after {
+  background: radial-gradient(circle at 0 100%, transparent calc(var(--bb-c) - .5px), var(--bg) var(--bb-c));
+}
+.bb-notch--tr::before { top: 0; left: calc(var(--bb-c) * -1); }
+.bb-notch--tr::after { right: 0; bottom: calc(var(--bb-c) * -1); }
+/* encaixe do botao: canto inferior direito */
+.bb-notch--br {
+  right: 0;
+  bottom: 0;
+  padding: 8px 0 0 8px;
+  border-top-left-radius: var(--bb-c);
+}
+.bb-notch--br::before, .bb-notch--br::after {
+  background: radial-gradient(circle at 0 0, transparent calc(var(--bb-c) - .5px), var(--bg) var(--bb-c));
+}
+.bb-notch--br::before { right: 0; top: calc(var(--bb-c) * -1); }
+.bb-notch--br::after { left: calc(var(--bb-c) * -1); bottom: 0; }
+
+.bb-go {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--w-12);
+  color: var(--text);
+  transition: background .25s ease, color .25s ease, border-color .25s ease, transform .35s cubic-bezier(.22, 1, .36, 1);
+}
+.bb-go svg { width: 20px; height: 20px; }
+@media (hover: hover) {
+  .bb:hover .bb-go { background: var(--lime); border-color: var(--lime); color: var(--bb-ink); transform: rotate(45deg); }
+}
+
+.bb-badge {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(6, 8, 7, .45);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  color: var(--lime);
+}
+.bb-badge svg { width: 19px; height: 19px; }
+
+/* cartao lime, com as curvas topograficas do site no fundo */
+.bb--list {
+  color: var(--bb-ink);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none' stroke='%230b1505' stroke-opacity='.1' stroke-width='.7'%3E%3Cpath d='M100 8C154 5 194 44 192 98C190 154 150 194 98 192C44 190 6 152 8 100C10 48 48 11 100 8Z'/%3E%3Cpath d='M100 22C146 20 180 52 178 98C176 146 142 180 98 178C52 176 20 144 22 100C24 56 56 24 100 22Z'/%3E%3Cpath d='M101 38C138 37 164 62 162 99C160 137 135 162 99 162C62 161 37 136 38 100C39 64 64 39 101 38Z'/%3E%3Cpath d='M99 55C127 53 147 73 145 100C144 128 125 146 100 145C72 145 54 126 55 99C56 74 73 56 99 55Z'/%3E%3Cpath d='M100 70C118 69 131 82 130 100C129 118 117 131 100 130C82 130 69 118 70 100C71 83 83 71 100 70Z'/%3E%3Cpath d='M100 85C109 84 115 91 115 100C114 109 108 115 100 115C91 115 85 109 85 100C86 91 91 86 100 85Z'/%3E%3C/svg%3E") no-repeat 78% 28% / 560px,
+    linear-gradient(145deg, #c8f365, #a3e635);
+}
+.bb-list-main { flex: 1; padding: 26px 28px 20px; min-width: 0; }
+.bb--list .bb-meta, .bb--note .bb-meta { padding-right: 56px; }
+.bb--list .bb-t, .bb--note .bb-t {
+  font-size: clamp(1.45rem, 2.35vw, 2.1rem);
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+}
+.bb-excerpt {
+  margin: 14px 0 0;
+  font-size: .86rem;
+  font-weight: 500;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+.bb-more {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: .82rem;
+  font-weight: 800;
+  color: inherit;
+  text-underline-offset: 3px;
+}
+.bb-rows { margin: 0; padding: 0; list-style: none; }
+.bb-rows li { border-top: 1px solid rgba(11, 21, 5, .55); }
+.bb-rows a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 15px 28px;
   color: inherit;
   text-decoration: none;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  overflow: hidden;
-  line-height: 1.3;
-  /* folga pros descendentes da ultima linha */
-  padding-bottom: .15em;
-}
-
-.blog-post-excerpt {
-  margin: 0;
-  color: var(--text-soft);
-  font-size: 13px;
-  line-height: 1.5;
-  display: none; /* titulo nao depende de subtitulo; excerpt so no featured */
-}
-
-.blog-post-card--featured .blog-post-excerpt,
-.blog-post-card:hover .blog-post-excerpt,
-.blog-post-card:focus-within .blog-post-excerpt {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-  opacity: 1;
-  max-height: none;
-  margin: 0;
-  pointer-events: auto;
-}
-
-.blog-post-card--featured .blog-post-excerpt {
-  -webkit-line-clamp: 3;
-  font-size: 15px;
-}
-
-@media (hover: none) {
-  .blog-post-excerpt {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
-  }
-}
-
-.blog-post-tags {
-  margin: 0;
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  flex-shrink: 0;
-}
-
-.blog-post-tag {
-  padding: 3px 9px;
-  border-radius: 999px;
-  border: 1px solid var(--w-12);
-  background: var(--w-03);
-  font-size: 10px;
-  color: var(--text-hint);
-  font-weight: 600;
-  letter-spacing: .03em;
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
-}
-
-/* Variações de layout — distribuição assimétrica estilo About:
-   - alguns tiles altos (span 2 row)
-   - alguns tiles largos (span 2-3 cols)
-   - misturados pra evitar buracos.
-*/
-.blog-post-card--featured {
-  grid-column: span 4;
-  grid-row: span 2;
-}
-/* POST UNICO: o plano do blog.js manda --featured (4 de 6 colunas) e sobravam
-   2 colunas x 2 linhas de grid vazias ao lado. Com um post so, ocupa a largura
-   toda. E exatamente o layout do dia em que o primeiro post e publicado. */
-.blog-bento > .blog-post-card--featured:only-child { grid-column: span 6; }
-.blog-post-card--featured .blog-post-title,
-.blog-post-card--featured .blog-post-title a { font-size: clamp(22px, 2.8vw, 34px); }
-
-.blog-post-card--tall {
-  grid-column: span 2;
-  grid-row: span 2;
-}
-.blog-post-card--tall .blog-post-title,
-.blog-post-card--tall .blog-post-title a { font-size: 20px; }
-
-.blog-post-card--wide {
-  grid-column: span 3;
-  grid-row: span 1;
-  min-height: 300px;
-}
-.blog-post-card--wide .blog-post-title,
-.blog-post-card--wide .blog-post-title a { font-size: 18px; }
-
-.blog-post-card--normal {
-  grid-column: span 2;
-  grid-row: span 1;
-  min-height: 300px;
-}
-.blog-post-card--normal .blog-post-title,
-.blog-post-card--normal .blog-post-title a { font-size: 17px; }
-
-.blog-post-card--full {
-  grid-column: span 6;
-  grid-row: span 1;
-  min-height: 280px;
-}
-.blog-post-card--full .blog-post-title,
-.blog-post-card--full .blog-post-title a { font-size: 20px; }
-
-.blog-post-featured-badge {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 5px 9px;
-  background: linear-gradient(135deg, var(--green), var(--lime));
-  color: #04130a;
-  font-size: 9px;
-  font-weight: 900;
-  letter-spacing: .12em;
+  font-size: .8rem;
+  font-weight: 800;
+  letter-spacing: .005em;
   text-transform: uppercase;
-  border-radius: 6px;
-  box-shadow: 0 6px 16px rgba(34, 197, 94, .4);
 }
+.bb-rows span { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.bb-rows svg { flex: none; width: 22px; height: 22px; transition: transform .3s cubic-bezier(.22, 1, .36, 1); }
+@media (hover: hover) { .bb-rows a:hover svg { transform: translateX(5px); } }
 
-.blog-post-featured-badge svg { width: 11px; height: 11px; }
+/* cartao de texto (post sem capa) */
+.bb--note { color: var(--text); background: #13271b; }
+.bb--note .bb-t { color: var(--lime); }
 
-.blog-post-views {
+/* cartao verde: foto num arco no canto */
+.bb--arch { color: var(--bb-ink); background: linear-gradient(165deg, #6ee79a, #22c55e); }
+.bb-arch-text { position: relative; z-index: 1; padding: 24px 22px 0; }
+.bb--arch .bb-t { font-size: clamp(1.08rem, 1.45vw, 1.34rem); -webkit-line-clamp: 5; line-clamp: 5; }
+.bb--arch .bb-media {
+  inset: auto 0 0 auto;
+  width: 90%;
+  height: 50%;
+  border-top-left-radius: 96px;
+}
+.bb--s10.bb--arch .bb-media, .bb--s24.bb--arch .bb-media { width: 80%; height: 52%; border-top-left-radius: 130px; }
+
+/* foto com texto por cima e circulo de vidro */
+.bb--glass { color: #fff; }
+.bb--glass::after {
+  content: "";
   position: absolute;
-  top: 16px;
-  left: 16px;
+  inset: 40% 0 0;
+  background: linear-gradient(to top, rgba(6, 8, 7, .88), transparent);
+  pointer-events: none;
+}
+.bb-orb {
+  position: absolute;
+  left: 50%;
+  top: 42%;
   z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 4px 9px;
-  background: rgba(6, 8, 7, .68);
-  border: 1px solid var(--w-10);
+  display: grid;
+  place-items: center;
+  width: 70px;
+  height: 70px;
+  margin: -35px 0 0 -35px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .16);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  transition: background .25s ease, color .25s ease, transform .35s cubic-bezier(.22, 1, .36, 1);
+}
+.bb-orb svg { width: 26px; height: 26px; }
+@media (hover: hover) {
+  .bb--glass:hover .bb-orb { background: var(--lime); color: var(--bb-ink); transform: rotate(45deg); }
+}
+.bb-glass-text { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 0 24px 22px; }
+.bb--glass .bb-t { font-size: clamp(1.02rem, 1.4vw, 1.26rem); -webkit-line-clamp: 2; line-clamp: 2; }
+
+/* cartao de temas */
+.bb--topics { padding: 24px; color: var(--text); background: #13271b; }
+.bb-topics-t { margin: 0 0 18px; font-size: clamp(1.5rem, 2.2vw, 1.9rem); font-weight: 900; line-height: 1; letter-spacing: -.02em; text-transform: uppercase; color: var(--lime); }
+.bb-pills { display: flex; flex-wrap: wrap; align-content: flex-start; gap: 8px; flex: 1; padding-bottom: 14px; }
+.bb-pill {
+  padding: 13px 20px;
+  border: 0;
   border-radius: 999px;
-  font-size: 10px;
-  color: var(--text-soft);
-  font-weight: 600;
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  background: #e4f9b8;
+  color: var(--bb-ink);
+  font: inherit;
+  font-size: .92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .2s ease, transform .2s ease;
+}
+.bb-pill.is-on { background: var(--lime); box-shadow: 0 0 0 2px #13271b, 0 0 0 4px var(--lime); }
+@media (hover: hover) { .bb-pill:hover { background: var(--lime); transform: translateY(-2px); } }
+.bb-all { margin: 0; padding-right: 76px; font-size: 1rem; font-weight: 700; }
+.bb-flower-btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 68px;
+  height: 68px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--bb-ink);
+  cursor: pointer;
+}
+.bb-flower { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--lime); transition: transform .7s cubic-bezier(.22, 1, .36, 1); }
+.bb-flower-btn > svg:last-child { position: relative; width: 24px; height: 24px; }
+@media (hover: hover) { .bb-flower-btn:hover .bb-flower { transform: rotate(90deg) scale(1.06); } }
+
+/* tablet: a foto abre a pagina inteira */
+@media (max-width: 1080px) {
+  .bb--a { grid-column: span 24; grid-row: auto; min-height: 480px; }
+  .bb--b { grid-column: span 15; }
+  .bb--c { grid-column: span 9; }
+  .bb--d, .bb--e, .bb--s14, .bb--s10 { grid-column: span 12; }
+}
+/* celular: coluna unica, so o essencial de cada cartao */
+@media (max-width: 680px) {
+  .bb-grid { --bb-r: 24px; --bb-c: 20px; gap: 10px; }
+  .bb-head { margin-bottom: 18px; }
+  .bb-tools { width: 100%; flex-wrap: wrap; }
+  .bb-search { width: 100%; }
+  .bb-tools .blog-sort-trigger { height: 44px; border-radius: 16px; }
+  .bb-search { height: 48px; }
+  .bb--a, .bb--b, .bb--c, .bb--d, .bb--e, .bb--s14, .bb--s10, .bb--s24 { grid-column: span 24; min-height: 0; }
+  .bb--a, .bb--s14, .bb--s24 { min-height: 400px; }
+  .bb--b { min-height: 0; }
+  .bb--c, .bb--s10.bb--arch { min-height: 380px; }
+  .bb--d { min-height: 280px; }
+  .bb--e { min-height: 230px; }
+  .bb-list-main { padding: 22px 22px 18px; }
+  .bb-excerpt { -webkit-line-clamp: 2; line-clamp: 2; }
+  .bb-rows a { padding: 14px 22px; }
+  .bb-tab { max-width: 92%; padding-right: 22px; }
+  .bb--arch .bb-t { font-size: 1.25rem; -webkit-line-clamp: 4; line-clamp: 4; }
 }
 
-.blog-post-views svg { width: 12px; height: 12px; }
-
-@media (max-width: 1024px) {
-  .blog-bento { grid-template-columns: repeat(4, 1fr); }
-  .blog-post-card--featured { grid-column: span 4; grid-row: span 2; }
-  .blog-post-card--tall { grid-column: span 2; grid-row: span 2; }
-  .blog-post-card--normal { grid-column: span 2; grid-row: span 1; }
-  /* era span 4 (= a linha inteira em 4 colunas): o --tall anterior ocupa
-     r3-4/c1-2 e o wide nao cabia nas 2 colunas restantes, descia de linha e
-     deixava 2col x 2row vazias. Com span 2, dois wides fecham a linha. */
-  .blog-post-card--wide { grid-column: span 2; grid-row: span 1; }
-  .blog-post-card--full { grid-column: span 4; grid-row: span 1; }
-}
-
-@media (max-width: 640px) {
-  .blog-bento {
-    grid-template-columns: 1fr;
-    grid-auto-rows: minmax(260px, auto);
-    gap: 12px;
-  }
-  .blog-post-card--featured,
-  .blog-post-card--tall,
-  .blog-post-card--normal,
-  .blog-post-card--wide,
-  .blog-post-card--full {
-    grid-column: span 1;
-    grid-row: span 1;
-    min-height: 260px;
-  }
-  .blog-post-card--featured { grid-row: span 2; min-height: 340px; }
-  .blog-post-card--featured .blog-post-title,
-  .blog-post-card--featured .blog-post-title a { font-size: clamp(20px, 6vw, 24px); }
-  .blog-post-title a { -webkit-line-clamp: 4; font-size: 16px; }
+.blog-section {
+  padding: clamp(32px, 4vw, 56px) 0;
 }
 
 /* Estado vazio */
@@ -1526,6 +652,7 @@
 }
 
 .blog-empty h3 { margin: 0 0 8px; font-size: 20px; font-weight: 800; }
+
 .blog-empty p { margin: 0; color: var(--text-hint); max-width: 380px; margin-inline: auto; }
 
 /* =============================
@@ -1671,12 +798,15 @@
 }
 
 @media (max-width: 720px) {
-  .blog-author-card {
+
+.blog-author-card {
     grid-template-columns: 1fr;
     text-align: center;
   }
-  .blog-author-photo { width: 140px; height: 140px; }
-  .blog-author-info { align-items: center; }
+
+.blog-author-photo { width: 140px; height: 140px; }
+
+.blog-author-info { align-items: center; }
 }
 
 /* =============================
@@ -1712,8 +842,11 @@
 .blog-footer-links a:hover { color: var(--lime); }
 
 @media (max-width: 540px) {
-  .blog-footer-inner { flex-direction: column; text-align: center; }
+
+.blog-footer-inner { flex-direction: column; text-align: center; }
 }
+
+
 
 /* =============================
    9) LOGIN PAGE
@@ -5053,9 +4186,11 @@ body.post-body {
    pra DENTRO com outline-offset negativo, senao seria cortado.
    ================================================================== */
 .blog-sort-trigger:focus-visible,
-.bid-tag:focus-visible,
+.bb-pill:focus-visible,
+.bb-flower-btn:focus-visible,
 .blog-author-btn:focus-visible,
-.blog-post-title a:focus-visible,
+.bb-t a:focus-visible,
+.bb-rows a:focus-visible,
 .post-page-tag:focus-visible,
 .post-share-btn:focus-visible,
 .post-related-card:focus-visible {
@@ -5063,18 +4198,6 @@ body.post-body {
   outline-offset: 3px;
   border-radius: 8px;
 }
-.blog-chip:focus-visible {
-  outline: 2px solid var(--lime);
-  outline-offset: -3px;   /* .blog-filters tem overflow: anel pra dentro */
-  border-radius: 999px;
-}
-.blog-post-card:focus-within,
-.bid-center:focus-visible {
-  outline: 2px solid var(--lime);
-  outline-offset: -2px;   /* card tem overflow: hidden */
-  border-radius: 22px;
-}
-
 /* ==================================================================
    PREFERS-REDUCED-MOTION — o blog tinha 7 animacoes infinitas sem
    nenhuma guarda (shimmer de texto, dois halos girando, pulse, spark,

@@ -18,7 +18,7 @@
    · so mouse fino; no toque o CSS ja esconde o contorno
    ============================================================ */
 (function blogCursorOutline() {
-  const SEL = '.blog-post-card, .bid-tile:not(.bid-center), .post-related-card';
+  const SEL = '.post-related-card';
 
   let raf = 0;
   let pending = null;   // { el, x, y }
