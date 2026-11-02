@@ -1598,8 +1598,7 @@ body.pc-nav-hidden header {
 }
 
 /* Contorno que ACENDE na direcao do cursor no hover -- mesmo efeito da grade
-   de Projetos (.pj-card__frame::before), mas SO o outline: aqui NAO tem o
-   glow (o ::after do arquivo). scrollfx escreve --mx/--my (em %) no card;
+   de Projetos (.pj-card__frame::before). scrollfx escreve --mx/--my (em %) no card;
    o gradiente radial e mascarado no anel de 1px da borda. */
 .tl-card::before {
   content: "";
@@ -5265,22 +5264,8 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
    nada de re-ponderar colunas (relayout + resize de imagem por frame) */
 .pj-card.is-hot .pj-card__frame { transform: translateY(-6px); border-color: var(--g-22); }
 .pj-card.is-hot .pj-card__img { transform: scale(1.045); }
-/* SPOTLIGHT (GlowCard adaptado): no hover um brilho verde SEGUE o cursor
-   sobre a capa e a borda acende na direção dele. O scrollfx escreve --mx/--my
+/* no hover a borda acende na direção do cursor. O scrollfx escreve --mx/--my
    (em %) no .pj-card__frame; a classe .is-hot (o hover) liga o efeito. */
-.pj-card__frame::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  z-index: 2;
-  pointer-events: none;
-  background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%),
-    color-mix(in oklab, var(--green) 18%, transparent), transparent 60%);
-  opacity: 0;
-  transition: opacity .4s ease;
-}
-.pj-card.is-hot .pj-card__frame::after { opacity: 1; }
 .pj-card__frame::before {
   content: "";
   position: absolute;
@@ -5301,7 +5286,7 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
 }
 .pj-card.is-hot .pj-card__frame::before { opacity: 1; }
 @media (hover: none) {
-  .pj-card__frame::before, .pj-card__frame::after { display: none; }
+  .pj-card__frame::before { display: none; }
 }
 .pj-card__view {
   position: relative;
