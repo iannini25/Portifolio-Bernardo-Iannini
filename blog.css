@@ -4207,3 +4207,66 @@ body.post-body {
    sweep do avatar). Nada aqui carrega informacao, entao tudo pode
    parar; o conteudo continua 100% visivel.
    ================================================================== */
+
+/* ==================================================================
+   POST — mesma linguagem do bento do blog (recortes, lime, moss)
+   ================================================================== */
+.post-main { --bb-c: 26px; --bb-ink: #0b1505; }
+.post-page-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 30px 32px 24px;
+  border-radius: 30px;
+  color: var(--bb-ink);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none' stroke='%230b1505' stroke-opacity='.1' stroke-width='.7'%3E%3Cpath d='M100 8C154 5 194 44 192 98C190 154 150 194 98 192C44 190 6 152 8 100C10 48 48 11 100 8Z'/%3E%3Cpath d='M100 22C146 20 180 52 178 98C176 146 142 180 98 178C52 176 20 144 22 100C24 56 56 24 100 22Z'/%3E%3Cpath d='M101 38C138 37 164 62 162 99C160 137 135 162 99 162C62 161 37 136 38 100C39 64 64 39 101 38Z'/%3E%3Cpath d='M99 55C127 53 147 73 145 100C144 128 125 146 100 145C72 145 54 126 55 99C56 74 73 56 99 55Z'/%3E%3Cpath d='M100 70C118 69 131 82 130 100C129 118 117 131 100 130C82 130 69 118 70 100C71 83 83 71 100 70Z'/%3E%3C/svg%3E") no-repeat 90% 40% / 520px,
+    linear-gradient(145deg, #c8f365, #a3e635);
+}
+.post-page-hero .post-page-eyebrow {
+  padding: 0 56px 0 0; border: 0; background: none; box-shadow: none; color: var(--bb-ink);
+}
+.post-page-hero .post-page-eyebrow *, .post-page-hero .post-page-byline * { color: var(--bb-ink); }
+.post-page-hero .post-page-eyebrow-cat { padding: 0; border: 0; background: none; box-shadow: none; }
+.post-page-hero .post-dot { background: var(--bb-ink); }
+.post-page-hero .post-page-title {
+  font-weight: 900; line-height: 1.04; letter-spacing: -.02em; text-transform: uppercase;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  background: none; -webkit-text-fill-color: currentColor; color: var(--bb-ink);
+}
+.post-page-hero .post-page-subtitle { color: var(--bb-ink); }
+.post-page-hero .post-page-byline { border-color: rgba(11, 21, 5, .55); margin-bottom: 0; }
+.post-page-hero .bb-go { color: var(--text); }
+.post-page-hero .bb-go:hover { background: var(--lime); border-color: var(--lime); color: var(--bb-ink); }
+.post-page .post-media, .post-page-cover { border-radius: 30px; border: 0; box-shadow: none; }
+.post-share-bar, .post-author-card { border: 0; border-radius: 30px; background: #13271b; box-shadow: none; }
+.post-author-card::before { content: none; }
+
+/* relacionados: foto inteira com o titulo em aba concava */
+.post-related-title { text-transform: uppercase; font-weight: 900; letter-spacing: -.02em; }
+.post-related-grid { gap: 12px; }
+.post-related-card { min-height: 340px; border: 0; border-radius: 30px; background: var(--rail); transform: none !important; box-shadow: none !important; }
+.post-related-card::after { content: none; }
+.post-related-card-cover { position: absolute; inset: 0; aspect-ratio: auto; height: auto; }
+.post-related-card-cover img { width: 100%; height: 100%; object-fit: cover; }
+.post-related-card-body {
+  position: absolute; left: 0; bottom: 0; z-index: 2;
+  max-width: 90%; padding: 16px 20px 12px 12px;
+  background: var(--bg); border-top-right-radius: var(--bb-c);
+}
+.post-related-card-body::before, .post-related-card-body::after {
+  content: ""; position: absolute; width: var(--bb-c); height: var(--bb-c); pointer-events: none;
+  background: radial-gradient(circle at 100% 0, transparent calc(var(--bb-c) - .5px), var(--bg) var(--bb-c));
+}
+.post-related-card-body::before { left: 0; top: calc(var(--bb-c) * -1); }
+.post-related-card-body::after { right: calc(var(--bb-c) * -1); bottom: 0; }
+.post-related-card-cat { padding: 0; border: 0; background: none; box-shadow: none; }
+.post-related-card-title {
+  text-transform: uppercase; font-weight: 900; line-height: 1.1;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden;
+}
+@media (max-width: 680px) {
+  .post-main { --bb-c: 20px; }
+  .post-page-hero { padding: 24px 22px 18px; border-radius: 24px; }
+  .post-share-bar, .post-author-card, .post-page .post-media, .post-page-cover, .post-related-card { border-radius: 24px; }
+  .post-related-card { min-height: 300px; }
+}

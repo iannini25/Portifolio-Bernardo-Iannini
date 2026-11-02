@@ -777,6 +777,7 @@ ${jsonForScript(jsonLdCrumbs, 2)}
 
     <article class="post-page" id="postPage" itemscope itemtype="https://schema.org/BlogPosting" itemid="${url}">
       <section class="post-page-hero">
+        <span class="bb-notch bb-notch--tr"><a class="bb-go" href="#postBody" tabindex="-1" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M6 13l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></span>
         <div class="post-page-eyebrow">
           <span class="post-page-eyebrow-cat">${escapeHtml(post.category)}</span>
           <span class="post-dot" aria-hidden="true"></span>
@@ -807,7 +808,7 @@ ${jsonForScript(jsonLdCrumbs, 2)}
 
       ${topMedia}
 
-      <div class="post-page-body" itemprop="articleBody">
+      <div class="post-page-body" id="postBody" itemprop="articleBody">
 ${articleBody}
       </div>
 
