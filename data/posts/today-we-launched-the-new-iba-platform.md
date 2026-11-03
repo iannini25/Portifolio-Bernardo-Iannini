@@ -1,19 +1,23 @@
 ---
-title: "Today, we launched the new IBA platform"
+title: We launched the new IBA platform
 slug: today-we-launched-the-new-iba-platform
-date: 2026-10-08T12:00:00-03:00
-category: Carreira
-tags: [IBA, Fintech, Launch]
+date: '2026-10-01T20:13:09.339Z'
+category: Projetos
+tags:
+  - Fintech
+  - IBA
+  - Lançamento
 cover: /img/posts/iba-launch/iba-launch-poster.jpg
-coverAlt: "Launch of the new IBA platform - Bernardo Iannini"
-linkedinUrl: https://www.linkedin.com/in/bernardo-iannini/recent-activity/all/
+coverAlt: Launch of the new IBA platform - Bernardo Iannini
+linkedinUrl: 'https://www.linkedin.com/feed/update/urn:li:activity:7511518590907535360/'
 images:
   - src: /img/posts/iba-launch/iba-launch.mp4
     type: video
     poster: /img/posts/iba-launch/iba-launch-poster.jpg
-    alt: "IBA platform launch film"
+    alt: IBA platform launch film
     width: 1600
     height: 900
+subtitle: 'The new IBA platform, built from the ground up, connects people, companies and opportunities across fintech ecosystems in Brazil, Ireland and the UK.'
 ---
 Today, we launched the new IBA platform. 🌍
 

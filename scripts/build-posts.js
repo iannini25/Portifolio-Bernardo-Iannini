@@ -1316,13 +1316,17 @@ window.BI_SEED_POSTS = ${JSON.stringify(seed, null, 2)};
    Merge das duas fontes
    ========================================================= */
 
-/* Junta .md local + banco. Em conflito de slug o SUPABASE VENCE: ele e o
-   editor ao vivo, o .md e historico/fallback. Ordena por data desc e
-   mantem o filtro de publicados. */
+/* Junta .md local + banco. Em conflito de slug o .MD VENCE: e o texto
+   revisado e versionado no git. So as views continuam vindo do banco, onde
+   o contador roda. Post que so existe no painel segue valendo normalmente.
+   Ordena por data desc e mantem o filtro de publicados. */
 function mergePosts(localPosts, remotePosts) {
   const bySlug = new Map();
-  for (const p of localPosts)  bySlug.set(p.slug, p);
   for (const p of remotePosts) bySlug.set(p.slug, p);
+  for (const p of localPosts) {
+    const remote = bySlug.get(p.slug);
+    bySlug.set(p.slug, remote ? { ...p, views: remote.views } : p);
+  }
   return [...bySlug.values()]
     .filter(p => p.status === 'published')
     .sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -1357,7 +1361,7 @@ async function main() {
 
   const fromSupabase = posts.filter(p => p.source === 'supabase').length;
   const fromMarkdown = posts.length - fromSupabase;
-  // Quantos .md perderam o dedup para um post do banco com o mesmo slug.
+  // Quantos .md substituem um post do banco com o mesmo slug.
   const overridden = localPosts.filter(p =>
     remote.posts.some(r => r.slug === p.slug)).length;
 
@@ -1418,7 +1422,7 @@ async function main() {
   console.log(`    do supabase:    ${fromSupabase}`);
   console.log(`    dos .md:        ${fromMarkdown}`);
   if (overridden > 0) {
-    console.log(`    .md sobrescritos pelo banco (mesmo slug): ${overridden}`);
+    console.log(`    .md que substituem o banco (mesmo slug): ${overridden}`);
   }
   console.log(`  orfaos removidos: ${degraded ? 'pulado (modo degradado)' : removedOrphans}`);
   console.log(`  imagens .webp:    ${webpCount}`);

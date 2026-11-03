@@ -863,7 +863,7 @@ The EN/PT switch is an i18n engine written from scratch: the entire site changes
       }
     },
     blog: {
-      bento: { topics: "Topics", allTopics: "See all topics", more: "Read more", read: "min read", featured: "Featured", cats: { Carreira: "Career" } },
+      bento: { topics: "Topics", allTopics: "See all topics", more: "Read more", read: "min read", featured: "Featured", cats: { Carreira: "Career", Eventos: "Events", Projetos: "Projects", "Formação": "Education" } },
       kicker: "Blog",
       heroTitle: "More than code, <em>stories.</em>",
       heroSub: "Case studies, technical decisions and behind-the-scenes of the projects I've been building.",
