@@ -804,12 +804,8 @@
               <h3 class="pj-panel__title" data-pj-title-detail></h3>
               <p class="pj-panel__desc" data-pj-desc></p>
               <div class="pj-panel__cta">
-                <a class="ps-repos__btn pj-panel__case" data-pj-case href="#">
-                  <span class="ps-repos__label" data-pj-case-label>View case study</span>
-                  <span class="ps-repos__orb" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8"
-                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </span>
+                <a class="pj-panel__case" data-pj-case href="#">
+                  <span data-pj-case-label>View case study</span>
                 </a>
                 <a class="ps-cta ps-cta--ghost" data-pj-link href="#" target="_blank" rel="noopener noreferrer">
                   <span data-pj-link-label>Visit live site</span>
@@ -818,14 +814,18 @@
             </div>
             <!-- índices 01 02 03 — navegam a pilha (setas do teclado também) -->
             <div class="pj-panel__nav" data-pj-nav role="group" aria-label="Featured projects" data-i18n-attr="aria-label:a11y.featured"></div>
+            <!-- flor do cartao de temas do blog, no recorte do canto: proximo projeto -->
+            <button type="button" class="pj-panel__next" data-pj-next aria-label="Next project" data-i18n-attr="aria-label:a11y.nextProject">
+              <svg class="pj-panel__flower" viewBox="0 0 60 60" fill="currentColor" aria-hidden="true"><circle cx="30" cy="30" r="22"/><circle cx="51" cy="30" r="8"/><circle cx="44.8" cy="44.8" r="8"/><circle cx="30" cy="51" r="8"/><circle cx="15.2" cy="44.8" r="8"/><circle cx="9" cy="30" r="8"/><circle cx="15.2" cy="15.2" r="8"/><circle cx="30" cy="9" r="8"/><circle cx="44.8" cy="15.2" r="8"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
           </div>
         </div>
       </div>
 
-      <!-- ATO 2 · FILTROS — a linha de comando -->
+      <!-- ATO 2 · FILTROS — pílulas como as do blog -->
       <div class="pj-cli" data-pj-cli>
         <div class="pj-cli__row">
-          <span class="pj-cli__prompt" data-pj-prompt aria-hidden="true">$ filter:</span>
           <div class="pj-cli__filters" data-pj-filters role="group" aria-label="Filter projects by category" data-i18n-attr="aria-label:a11y.filter">
             <!-- botões de filtro injetados via js/projects.js -->
           </div>
