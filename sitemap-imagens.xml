@@ -28,7 +28,7 @@
   <url>
     <loc>https://www.bernardoiannini.com/blog.html</loc>
     <image:image>
-      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666907698-fw3s81-1773140460350.jpg</image:loc>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666908375-4rsqpo-1773405123844.jpg</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786545233548-635h3d-1765285948996.jpg</image:loc>
@@ -38,6 +38,15 @@
     </image:image>
     <image:image>
       <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544680006-emj8xk-1755896693045.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/a-book-trailer-made-entirely-with-ai/trailer-frame.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/ficcao-era-dos-aneis-de-sangue/ficcao-1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/google-io-extended-ai-agents/gio-1.webp</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544495390-3z0xr5-1749134292782.jpg</image:loc>
@@ -1094,6 +1103,27 @@
     </image:image>
   </url>
   <url>
+    <loc>https://www.bernardoiannini.com/posts/a-book-trailer-made-entirely-with-ai.html</loc>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/eufoto1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/a-book-trailer-made-entirely-with-ai/trailer-frame.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/iba-launch/iba-launch-poster.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667612187-6dkiqu-1778520996039.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667474437-a274y1-1775674739958.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/a-book-trailer-made-entirely-with-ai/trailer-frame.webp</image:loc>
+    </image:image>
+  </url>
+  <url>
     <loc>https://www.bernardoiannini.com/posts/ai-is-rewriting-the-rules-of-cybersecurity.html</loc>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/eufoto1.webp</image:loc>
@@ -1114,13 +1144,13 @@
       <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544679307-j93lxo-1755896691694.jpg</image:loc>
     </image:image>
     <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/ficcao-era-dos-aneis-de-sangue/ficcao-1.webp</image:loc>
+    </image:image>
+    <image:image>
       <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667474437-a274y1-1775674739958.jpg</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544999616-g09wlf-1757108622393.jpg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666907698-fw3s81-1773140460350.jpg</image:loc>
     </image:image>
   </url>
   <url>
@@ -1153,7 +1183,7 @@
       <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544680006-emj8xk-1755896693045.jpg</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666907698-fw3s81-1773140460350.jpg</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/posts/ficcao-era-dos-aneis-de-sangue/ficcao-1.webp</image:loc>
     </image:image>
   </url>
   <url>
@@ -1174,13 +1204,13 @@
       <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667610185-2z7yqi-1778520999799.jpg</image:loc>
     </image:image>
     <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/a-book-trailer-made-entirely-with-ai/trailer-frame.webp</image:loc>
+    </image:image>
+    <image:image>
       <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667474437-a274y1-1775674739958.jpg</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/posts/iba-launch/iba-launch-poster.webp</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786545233548-635h3d-1765285948996.jpg</image:loc>
     </image:image>
   </url>
   <url>
@@ -1207,7 +1237,10 @@
       <image:loc>https://www.bernardoiannini.com/img/eufoto1.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666907698-fw3s81-1773140460350.jpg</image:loc>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666908375-4rsqpo-1773405123844.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/europe-is-trying-to-build-the-future-of-payments-brazil-has-already-lived-part-o/europe-2.jpg</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666909715-0zfyg9-1773405135651.jpg</image:loc>
@@ -1216,10 +1249,7 @@
       <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666909079-4izt5x-1773405130713.jpg</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666908375-4rsqpo-1773405123844.jpg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666906073-chane6-1773140470568.jpg</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/posts/europe-is-trying-to-build-the-future-of-payments-brazil-has-already-lived-part-o/europe-5.jpg</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544495390-3z0xr5-1749134292782.jpg</image:loc>
@@ -1229,6 +1259,72 @@
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/posts/iba-launch/iba-launch-poster.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/europe-is-trying-to-build-the-future-of-payments-brazil-has-already-lived-part-o/europe-2.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/europe-is-trying-to-build-the-future-of-payments-brazil-has-already-lived-part-o/europe-5.webp</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.bernardoiannini.com/posts/ficcao-era-dos-aneis-de-sangue.html</loc>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/eufoto1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/ficcao-era-dos-aneis-de-sangue/ficcao-1.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/ficcao-era-dos-aneis-de-sangue/ficcao-2.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/ficcao-era-dos-aneis-de-sangue/ficcao-3.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/ficcao-era-dos-aneis-de-sangue/ficcao-4.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544680006-emj8xk-1755896693045.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667474437-a274y1-1775674739958.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544999616-g09wlf-1757108622393.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/ficcao-era-dos-aneis-de-sangue/ficcao-1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/ficcao-era-dos-aneis-de-sangue/ficcao-2.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/ficcao-era-dos-aneis-de-sangue/ficcao-3.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/ficcao-era-dos-aneis-de-sangue/ficcao-4.webp</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.bernardoiannini.com/posts/google-io-extended-ai-agents.html</loc>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/eufoto1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/google-io-extended-ai-agents/gio-1.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667474437-a274y1-1775674739958.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544999616-g09wlf-1757108622393.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544680006-emj8xk-1755896693045.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/google-io-extended-ai-agents/gio-1.webp</image:loc>
     </image:image>
   </url>
   <url>
@@ -1249,7 +1345,7 @@
       <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544494254-86iejw-1749134291001.jpg</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666907698-fw3s81-1773140460350.jpg</image:loc>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666908375-4rsqpo-1773405123844.jpg</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667474437-a274y1-1775674739958.jpg</image:loc>
@@ -1285,7 +1381,7 @@
       <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667472381-8l6vjn-1775674740001.jpg</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666907698-fw3s81-1773140460350.jpg</image:loc>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666908375-4rsqpo-1773405123844.jpg</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786544999616-g09wlf-1757108622393.jpg</image:loc>
@@ -1300,13 +1396,13 @@
       <image:loc>https://www.bernardoiannini.com/img/eufoto1.webp</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666907698-fw3s81-1773140460350.jpg</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/posts/a-book-trailer-made-entirely-with-ai/trailer-frame.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666908375-4rsqpo-1773405123844.jpg</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667612187-6dkiqu-1778520996039.jpg</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786667474437-a274y1-1775674739958.jpg</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/posts/iba-launch/iba-launch-poster.jpg</image:loc>

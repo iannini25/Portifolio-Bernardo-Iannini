@@ -73,8 +73,8 @@
     "slug": "europe-is-trying-to-build-the-future-of-payments-brazil-has-already-lived-part-o",
     "title": "Europe and Brazil's lead in instant payments",
     "subtitle": "At the BPFI conference in Dublin, discussing Pix and why Brazil's experience matters as Europe looks at instant payments and regulation.",
-    "cover": "https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666907698-fw3s81-1773140460350.jpg",
-    "coverAlt": "Photos from the BPFI conference on payments in Dublin, Ireland",
+    "cover": "https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666908375-4rsqpo-1773405123844.jpg",
+    "coverAlt": "Bernardo Iannini in a dark suit standing beside a Banking & Payments Federation Ireland banner at the conference venue",
     "tags": [
       "Fintech",
       "Pagamentos",
@@ -156,6 +156,71 @@
     "views": 17,
     "url": "/posts/ai-is-rewriting-the-rules-of-cybersecurity.html",
     "excerpt": "I had the chance to be at DCC Week at UFMG (Universidade Federal de Minas Gerais) over the last three days, and it was an amazing experience filled with great talks and networking opportunities. But, "
+  },
+  {
+    "id": "a-book-trailer-made-entirely-with-ai",
+    "slug": "a-book-trailer-made-entirely-with-ai",
+    "title": "A book trailer made entirely with AI",
+    "subtitle": "In two days, I made a book launch trailer using only AI tools. Here is the list of tools I used and what the challenge showed me.",
+    "cover": "/img/posts/a-book-trailer-made-entirely-with-ai/trailer-frame.jpg",
+    "coverAlt": "Trailer frame: a woman in a white coat in front of glowing screens and a DNA helix, with the subtitle \"It's a glimpse of a tomorrow\"",
+    "tags": [
+      "IA",
+      "Lançamento"
+    ],
+    "category": "Projetos",
+    "author": "Bernardo Iannini",
+    "status": "published",
+    "featured": false,
+    "createdAt": "2025-08-04T20:35:48.675Z",
+    "updatedAt": "2025-08-04T20:35:48.675Z",
+    "readTimeMin": 2,
+    "views": 0,
+    "url": "/posts/a-book-trailer-made-entirely-with-ai.html",
+    "excerpt": "Here's a cinematic trailer, crafted by AI — like magic. Last weekend, I was given a challenge: create a trailer for a book launch. The twist? The video had to be made 100% using artificial intelligenc"
+  },
+  {
+    "id": "ficcao-era-dos-aneis-de-sangue",
+    "slug": "ficcao-era-dos-aneis-de-sangue",
+    "title": "Ficção? IA e o futuro em A Era dos Anéis de Sangue",
+    "subtitle": "No lançamento do livro de Túlio Iannini, uma ficção sobre IA, cibersegurança e os rumos da tecnologia no futuro da humanidade.",
+    "cover": "/img/posts/ficcao-era-dos-aneis-de-sangue/ficcao-1.jpg",
+    "coverAlt": "Mulher fala ao microfone para uma plateia sentada e em pé em um salão clássico, durante o lançamento do livro",
+    "tags": [
+      "IA",
+      "Cibersegurança"
+    ],
+    "category": "Eventos",
+    "author": "Bernardo Iannini",
+    "status": "published",
+    "featured": false,
+    "createdAt": "2025-07-29T21:23:16.076Z",
+    "updatedAt": "2025-07-29T21:23:16.076Z",
+    "readTimeMin": 3,
+    "views": 0,
+    "url": "/posts/ficcao-era-dos-aneis-de-sangue.html",
+    "excerpt": "Ficção? Talvez nem tanto. Já não é mais novidade que a inteligência artificial está cada vez mais presente em nossas vidas. E qual o impacto disso? Para qual caminho estamos indo? O que nos aguarda no"
+  },
+  {
+    "id": "google-io-extended-ai-agents",
+    "slug": "google-io-extended-ai-agents",
+    "title": "What Google I/O Extended taught me about AI",
+    "subtitle": "At Google I/O Extended, a talk by Ahirton Lopes on AGI and intelligent agents showed me the difference between using AI and communicating with it.",
+    "cover": "/img/posts/google-io-extended-ai-agents/gio-1.jpg",
+    "coverAlt": "Speaker on stage next to a Google I/O Extended projection, seen from behind the seated audience",
+    "tags": [
+      "IA"
+    ],
+    "category": "Eventos",
+    "author": "Bernardo Iannini",
+    "status": "published",
+    "featured": false,
+    "createdAt": "2025-06-17T14:15:04.735Z",
+    "updatedAt": "2025-06-17T14:15:04.735Z",
+    "readTimeMin": 3,
+    "views": 0,
+    "url": "/posts/google-io-extended-ai-agents.html",
+    "excerpt": "Last Saturday, I attended the Google I/O Extended, hosted by Google Developer Groups (GDG) and the highlight was the talk by Ahirton Lopes, Ph.D. — a Google Developer Expert in AI, MBA lecturer at FIA"
   },
   {
     "id": "p_zb0633t8msq6idux",

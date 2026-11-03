@@ -9,26 +9,30 @@ tags:
   - Fintech
   - Pagamentos
   - IBA
-cover: 'https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666907698-fw3s81-1773140460350.jpg'
-coverAlt: 'Photos from the BPFI conference on payments in Dublin, Ireland'
+cover: 'https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666908375-4rsqpo-1773405123844.jpg'
+coverAlt: Bernardo Iannini in a dark suit standing beside a Banking & Payments Federation Ireland banner at the conference venue
 linkedinUrl: 'https://www.linkedin.com/feed/update/urn:li:activity:7438200259652173824/'
 featured: true
 images:
-  - src: 'https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666907698-fw3s81-1773140460350.jpg'
-    alt: 'Photos from the BPFI conference on payments in Dublin, Ireland: IBA Team'
-    caption: IBA Team
+  - src: 'https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666908375-4rsqpo-1773405123844.jpg'
+    alt: Bernardo Iannini in a dark suit standing beside a Banking & Payments Federation Ireland banner at the conference venue
+    caption: BPFI Event
+  - src: /img/posts/europe-is-trying-to-build-the-future-of-payments-brazil-has-already-lived-part-o/europe-2.jpg
+    alt: 'Two speakers on stage under a large slide titled "A purposeful application of AI", with a National Payments Conference 2026 banner in front'
+    caption: ''
+    width: 480
+    height: 853
   - src: 'https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666909715-0zfyg9-1773405135651.jpg'
-    alt: 'Photos from the BPFI conference on payments in Dublin, Ireland'
+    alt: Banking & Payments Federation Ireland conference badge with the name Bernardo Araújo Iannini and Inspire4U, on a wooden table
     caption: ''
   - src: 'https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666909079-4izt5x-1773405130713.jpg'
-    alt: 'Photos from the BPFI conference on payments in Dublin, Ireland: Serhii Makarenko - Privat Bank'
+    alt: Bernardo Iannini wearing a conference badge, smiling beside Serhii Makarenko in a wood-panelled room
     caption: Serhii Makarenko - Privat Bank
-  - src: 'https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666908375-4rsqpo-1773405123844.jpg'
-    alt: 'Photos from the BPFI conference on payments in Dublin, Ireland: BPFI Event'
-    caption: BPFI Event
-  - src: 'https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666906073-chane6-1773140470568.jpg'
-    alt: 'Photos from the BPFI conference on payments in Dublin, Ireland'
+  - src: /img/posts/europe-is-trying-to-build-the-future-of-payments-brazil-has-already-lived-part-o/europe-5.jpg
+    alt: 'Conference slide titled "Financial inclusion and transformation: PIX as a driver of transformation" above an empty stage with leather armchairs'
     caption: ''
+    width: 480
+    height: 853
 ---
 Europe is trying to build the future of payments.
 Brazil has already lived part of it.

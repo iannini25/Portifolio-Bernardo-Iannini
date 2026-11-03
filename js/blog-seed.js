@@ -67,7 +67,7 @@ window.BI_SEED_POSTS = [
     "title": "Europe and Brazil's lead in instant payments",
     "subtitle": "At the BPFI conference in Dublin, discussing Pix and why Brazil's experience matters as Europe looks at instant payments and regulation.",
     "slug": "europe-is-trying-to-build-the-future-of-payments-brazil-has-already-lived-part-o",
-    "cover": "https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666907698-fw3s81-1773140460350.jpg",
+    "cover": "https://rnupfyzpwwvspiwnttsl.supabase.co/storage/v1/object/public/blog-images/gallery/1786666908375-4rsqpo-1773405123844.jpg",
     "tags": [
       "Fintech",
       "Pagamentos",
@@ -138,6 +138,62 @@ window.BI_SEED_POSTS = [
     "updatedAt": "2025-08-22T21:04:55.132Z",
     "views": 17,
     "content": "I had the chance to be at DCC Week at UFMG (Universidade Federal de Minas Gerais) over the last three days, and it was an amazing experience filled with great talks and networking opportunities. But, two caught my attention the most:\n\n✨ Michele Nogueira discussed how AI is transforming cybersecurity, but stressed that the biggest risks still come from the human factor — negligence and insider cooperation remain the weak spots in most companies.\n\n✨ Idilio Drago showed how machine learning and LLMs are changing cyber defense in practice, with real use cases like detecting malicious IP clusters and supporting vulnerability management.\n\nBeyond the lectures, the event also featured a talent fair with amazing companies such as Inter and SYDLE bringing even more value to the whole experience.\n\n---\n\nTive a oportunidade de participar da DCC Week na UFMG (Universidade Federal de Minas Gerais) nos últimos três dias, e foi uma experiência incrível, repleta de palestras inspiradoras e ótimas oportunidades de networking.\n\n✨ Michele Nogueira falou sobre como a IA está transformando a cibersegurança, mas ressaltou que os maiores riscos ainda vêm do fator humano — a negligência e a cooperação de insiders continuam sendo os pontos fracos em muitas empresas.\n\n✨ Idilio Drago mostrou como machine learning e LLMs estão mudando a defesa cibernética na prática, com casos reais como a detecção de clusters de IPs maliciosos e o suporte à gestão de vulnerabilidades.\n\nAlém das palestras, o evento contou também com uma feira de talentos, trazendo empresas incríveis como Inter e SYDLE o que agregou ainda mais valor à experiência."
+  },
+  {
+    "id": "a-book-trailer-made-entirely-with-ai",
+    "title": "A book trailer made entirely with AI",
+    "subtitle": "In two days, I made a book launch trailer using only AI tools. Here is the list of tools I used and what the challenge showed me.",
+    "slug": "a-book-trailer-made-entirely-with-ai",
+    "cover": "/img/posts/a-book-trailer-made-entirely-with-ai/trailer-frame.jpg",
+    "tags": [
+      "IA",
+      "Lançamento"
+    ],
+    "category": "Projetos",
+    "author": "Bernardo Iannini",
+    "status": "published",
+    "featured": false,
+    "createdAt": "2025-08-04T20:35:48.675Z",
+    "updatedAt": "2025-08-04T20:35:48.675Z",
+    "views": 0,
+    "content": "Here's a cinematic trailer, crafted by AI — like magic.\n\nLast weekend, I was given a challenge: create a trailer for a book launch. The twist? The video had to be made 100% using artificial intelligence. And the result… was impressive.\n\nCreating this video with AI blew my mind. In just two days, I managed to produce something with real quality and impact. And the best part? Anyone can do it too.\n\nHere’s the list of tools I used:\n\n- ✅ ChatGPT – for script and ideas\n- ✅ Google Studio – for narration\n- ✅ Veo 3 – for video creation\n- ✅ Luna AI – also for videos\n- ✅ Eleven Labs – for sound effects\n- ✅ Suno AI – for soundtrack\n- ✅ Virbo – for dubbing\n\nMany people still don’t realise the power they have at their fingertips. AI is becoming more efficient, more accessible, and delivering professional-level results in no time.\n\nThe truth is: independent creation has arrived in full force. No more excuses— with the right tools, creativity, and a willingness to learn, you can create amazing things.\n\nAnd this is just the beginning. 🚀\n\n---\n\nNo último fim de semana recebi um desafio: criar um trailer para o lançamento de um livro. O detalhe? O vídeo precisava ser feito 100% com inteligência artificial. E o resultado… foi impressionante.\n\nCriar esse vídeo com IA abriu minha cabeça. Em apenas dois dias consegui produzir algo com qualidade e impacto. E o mais legal? Qualquer pessoa consegue também.\n\nSegue a lista com as ferramentas utilizadas:\n\n- ✅ ChatGPT - pra roteiro e ideias\n- ✅ Google Studio - pra narração\n- ✅ Veo 3 - pra criação dos vídeos\n- ✅ Luna AI - também pra vídeos\n- ✅ Eleven Labs - pra efeitos sonoros\n- ✅ Suno AI - pra trilha sonora\n- ✅ Virbo - pra dublagem\n\nMuita gente ainda não tem ideia do poder que tem nas mãos. A inteligência artificial está cada vez mais eficiente, acessível e entregando resultados profissionais em pouquíssimo tempo.\n\nA real é que a criação independente chegou com tudo. Não tem mais desculpa: com as ferramentas certas, criatividade e vontade de aprender, dá pra fazer coisa grande.\n\nE isso foi só o começo. 🚀"
+  },
+  {
+    "id": "ficcao-era-dos-aneis-de-sangue",
+    "title": "Ficção? IA e o futuro em A Era dos Anéis de Sangue",
+    "subtitle": "No lançamento do livro de Túlio Iannini, uma ficção sobre IA, cibersegurança e os rumos da tecnologia no futuro da humanidade.",
+    "slug": "ficcao-era-dos-aneis-de-sangue",
+    "cover": "/img/posts/ficcao-era-dos-aneis-de-sangue/ficcao-1.jpg",
+    "tags": [
+      "IA",
+      "Cibersegurança"
+    ],
+    "category": "Eventos",
+    "author": "Bernardo Iannini",
+    "status": "published",
+    "featured": false,
+    "createdAt": "2025-07-29T21:23:16.076Z",
+    "updatedAt": "2025-07-29T21:23:16.076Z",
+    "views": 0,
+    "content": "Ficção? Talvez nem tanto.\n\nJá não é mais novidade que a inteligência artificial está cada vez mais presente em nossas vidas. E qual o impacto disso? Para qual caminho estamos indo? O que nos aguarda no futuro?\n\nMuita gente utiliza inteligências artificiais como o chat gpt e nem imaginam o que a IA realmente pode fazer. Semana passada estive presente no lançamento do livro A Era dos Anéis de Sangue, de Túlio Iannini. O livro é uma ficção que trata sobre o futuro da humanidade com o avanço da tecnologia, principalmente da inteligência artificial, e sobre como o uso dela pode mudar completamente o mundo em que vivemos, a forma como fazemos as coisas.\n\nO livro começou a ser escrito há 2 anos e, por mais que se trate de uma ficção, alguns fatos já estão começando a acontecer na atualidade. E o que mais está por vir?\n\nO livro também traz pontos importantes como a cibersegurança, que vem sendo cada vez mais requisitada e valorizada no mercado.\n\nVivemos uma era onde dados valem mais que dinheiro, e a proteção dessas informações se tornou um dos maiores desafios globais. A era digital veio pra ficar, e estamos expostos a constantes ataques cibernéticos. De empresas a governos, ninguém está 100% seguro. É um alerta real sobre como a tecnologia pode ser usada tanto para o bem quanto para o caos.\n\nA trama gira em torno dos intrigantes “Anéis de DNA”, dispositivos que redefinem transações, identidades e até a própria essência do ser humano, mas que também pavimentam o caminho para formas perigosas de controle e manipulação.\n\nSe você também vive nesse mundo onde a tecnologia avança a cada dia, a leitura de A Era dos Anéis de Sangue pode mudar sua forma de pensar sobre o futuro da tecnologia. Você com certeza não vai se arrepender. O livro já está disponível na Amazon e em livrarias físicas.\n\n---\n\nFiction? Perhaps not entirely.\n\nArtificial intelligence is becoming more present in our lives. But what impact does it have? Where are we heading? What awaits us?\n\nMany people use tools like ChatGPT without realising what AI is truly capable of. Last week, I attended the launch of A Era dos Anéis de Sangue, by Túlio Iannini, fiction exploring how advancing technology, especially AI, could change the world and how we live.\n\nStarted two years ago, the book already sees some predictions coming true. It also highlights key issues like cybersecurity, which is increasingly valued in today’s market.\n\nWe live in a time where data is more valuable than money, and protecting it is a global challenge. The digital age is here to stay, and no one—from companies to governments—is fully safe. It’s a real warning: tech can be used for progress or chaos.\n\nThe story follows mysterious “DNA Rings”—devices that redefine transactions, identity, and even human nature, but also enable control and manipulation.\n\nIf you live in this fast-moving tech world, A Era dos Anéis de Sangue may change how you see the future. Available on Amazon and in bookshops."
+  },
+  {
+    "id": "google-io-extended-ai-agents",
+    "title": "What Google I/O Extended taught me about AI",
+    "subtitle": "At Google I/O Extended, a talk by Ahirton Lopes on AGI and intelligent agents showed me the difference between using AI and communicating with it.",
+    "slug": "google-io-extended-ai-agents",
+    "cover": "/img/posts/google-io-extended-ai-agents/gio-1.jpg",
+    "tags": [
+      "IA"
+    ],
+    "category": "Eventos",
+    "author": "Bernardo Iannini",
+    "status": "published",
+    "featured": false,
+    "createdAt": "2025-06-17T14:15:04.735Z",
+    "updatedAt": "2025-06-17T14:15:04.735Z",
+    "views": 0,
+    "content": "Last Saturday, I attended the Google I/O Extended, hosted by Google Developer Groups (GDG) and the highlight was the talk by Ahirton Lopes, Ph.D. — a Google Developer Expert in AI, MBA lecturer at FIAP and specialist in Machine Learning.\n\nHe talked about the progress of Artificial General Intelligence (AGI) and how we can use intelligent agents — systems that can work on their own to complete tasks based on specific instructions. What really stood out for me was learning the difference between just using AI and knowing how to communicate with it properly.\n\nMany people write a basic prompt and hope for great results. But there’s a big difference between regular users and those who really understand how AI works — how it reads information, builds language, and turns it into useful answers. I learned how being clear, intentional, and having some technical knowledge can make a huge difference in the results you get from AI.\n\nAhirton also showed how, nowadays, AI helps us in messages, phone calls and virtual assistants — and we often don’t even notice there isn’t a real person behind it.\n\nIn fact, this post was structured by AI, using the content I learned from the event and written with a carefully created prompt.\n\n---\n\nNo último sábado, participei do Google I/O Extended, promovido pelo Google Developer Groups (GDG) e o grande destaque foi a palestra do Ahirton Lopes, Ph.D. — Google Developer Expert em IA, professor de MBA na FIAP e especialista em Machine Learning.\n\nDurante a palestra, ele abordou o avanço da Inteligência Artificial Geral (AGI) e a utilização de agentes inteligentes — sistemas capazes de agir de forma autônoma para executar tarefas com precisão, a partir de comandos específicos. Mas o que realmente me marcou foi ter entendido a diferença entre simplesmente usar uma IA e saber se comunicar com ela de forma eficiente.\n\nMuita gente escreve um prompt básico e espera mágica. Mas existe um abismo entre o usuário comum e quem realmente entende como a IA processa informações, estrutura linguagem e transforma dados em soluções. Ele me ajudou a entender como a clareza, a intenção e o conhecimento técnico ao formular um prompt podem mudar completamente o resultado obtido.\n\nAhirton também mostrou como, hoje em dia, somos atendidos por IA em mensagens, ligações e assistentes virtuais com tanta naturalidade que nem sempre percebemos que não há um humano do outro lado.\n\nInclusive, este texto foi estruturado por uma IA com base no conteúdo que aprendi no evento e escrevi com um prompt cuidadosamente elaborado."
   },
   {
     "id": "p_zb0633t8msq6idux",
