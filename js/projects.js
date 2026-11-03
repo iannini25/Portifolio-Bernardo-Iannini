@@ -2,7 +2,7 @@
 
 /* =========================================================
    PROJECTS — "A BANCADA VIVA" (catálogo completo)
-   Três atos: pilha de janelas (featured), pílulas
+   Três atos: pilha de janelas (featured), linha de comando
    (filtros) e arquivo (fileiras que respiram no hover).
 
    Este arquivo cuida de DADOS + INTERAÇÃO (render i18n, swap
@@ -330,7 +330,7 @@ function pjSetupFeatured() {
 }
 
 /* =========================================================
-   ATO 2 — PÍLULAS (filtros por categoria)
+   ATO 2 — LINHA DE COMANDO (filtros por categoria)
    ========================================================= */
 
 const PJ_CAT_ORDER = ['all', 'system', 'site', 'automation', 'personal'];
@@ -368,12 +368,30 @@ function pjSetupFilters() {
     </button>
   `).join('');
 
+  /* sublinhado que viaja entre os chips (a transicao CSS faz a viagem) */
+  const ink = document.createElement('span');
+  ink.className = 'pj-cli__ink';
+  ink.setAttribute('aria-hidden', 'true');
+  bar.appendChild(ink);
+  pjMoveInk();
+
   if (countEl) {
     const shown = pjActiveFilter === 'all'
       ? projects.length
       : projects.filter(p => p.category === pjActiveFilter).length;
     countEl.textContent = pjCounterText(shown, projects.length, cat);
   }
+}
+
+/* posiciona o sublinhado sob o chip ativo (chamado no render, no clique
+   e no resize) */
+function pjMoveInk() {
+  const bar = document.querySelector('[data-pj-filters]');
+  const ink = bar && bar.querySelector('.pj-cli__ink');
+  const on = bar && bar.querySelector('.pj-filter.is-on');
+  if (!ink || !on) return;
+  ink.style.transform = `translateX(${on.offsetLeft}px) translateY(${on.offsetTop + on.offsetHeight - ink.offsetHeight}px)`;
+  ink.style.width = `${on.offsetWidth}px`;
 }
 
 /* =========================================================
@@ -482,6 +500,7 @@ function pjApplyFilter(slug) {
       b.classList.toggle('is-on', on);
       b.setAttribute('aria-pressed', on);
     });
+    pjMoveInk();
   }
 
   const filtered = slug === 'all' ? projects : projects.filter(p => p.category === slug);
@@ -625,6 +644,14 @@ function pjBindOnce(arch) {
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) pjScheduleAdvance();
   });
+
+  /* o sublinhado dos filtros re-mede no resize (quebra de linha muda
+     offsetTop dos chips) */
+  let inkRaf = null;
+  window.addEventListener('resize', () => {
+    if (inkRaf) return;
+    inkRaf = requestAnimationFrame(() => { inkRaf = null; pjMoveInk(); });
+  }, { passive: true });
 }
 
 /* =========================================================
@@ -678,6 +705,10 @@ function renderProjects(lang) {
   if (titleEl) titleEl.innerHTML = cat.title || 'Projects';
   const subEl = document.querySelector('[data-ps-sub]');
   if (subEl) subEl.textContent = cat.sub || '';
+
+  /* prompt da linha de filtros */
+  const prompt = document.querySelector('[data-pj-prompt]');
+  if (prompt) prompt.textContent = cat.filterPrefix || '$ filter:';
 
   /* hint do scroll (label do chip que segue o cursor sobre as capas) */
   const hintLbl = document.querySelector('[data-ps-hint-label]');
