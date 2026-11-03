@@ -420,7 +420,12 @@
       })
         .to('.hero .stack', { yPercent: 16, autoAlpha: .3 }, 0)
         .to('.hero .photo', { yPercent: 9 }, 0)
-        .to('.hero .rail', { yPercent: 13, autoAlpha: .25 }, 0);
+        /* fromTo: a rail tambem esta no fade de entrada. Abrindo a pagina ja
+           rolada (#services, reload), um .to() guardaria a opacidade 0 do fade
+           como inicio e os botoes sumiriam ao voltar pro topo */
+        .fromTo('.hero .rail',
+          { yPercent: 0, autoAlpha: 1 },
+          { yPercent: 13, autoAlpha: .25, immediateRender: false }, 0);
     }
 
     const contact = document.querySelector('#contato');
