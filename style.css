@@ -8759,3 +8759,48 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
   .about-cv-btn { background: var(--lime); color: #0e0e0e; }
   .about-cv-btn:hover { background: var(--lime); }
 }
+
+/* ---------- seletor de idioma: bandeira do idioma ativo ----------
+   SVG porque o Windows nao desenha emoji de bandeira. Segue o lang do <html>,
+   sem tocar nas paginas; o menu suspenso continua sem icone. */
+.lang-switch .lang-ico {
+  width: 21px;
+  height: 14px;
+  flex: none;
+  border-radius: 3px;
+  overflow: hidden;
+  font-size: 0;
+  color: transparent;
+  background: center / cover no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 40'%3E%3CclipPath id='b'%3E%3Cpath d='M30 20h30v20zv20H0zH0V0zV0h30z'/%3E%3C/clipPath%3E%3Cpath fill='%23012169' d='M0 0h60v40H0z'/%3E%3Cpath stroke='%23fff' stroke-width='7' d='M0 0l60 40m0-40L0 40'/%3E%3Cpath stroke='%23C8102E' stroke-width='4' clip-path='url(%23b)' d='M0 0l60 40m0-40L0 40'/%3E%3Cpath stroke='%23fff' stroke-width='12' d='M30 0v40M0 20h60'/%3E%3Cpath stroke='%23C8102E' stroke-width='7' d='M30 0v40M0 20h60'/%3E%3C/svg%3E");
+  box-shadow: 0 0 0 1px var(--w-10);
+  will-change: auto;
+}
+html[lang^="pt"] .lang-switch .lang-ico { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 40'%3E%3Cpath fill='%23009739' d='M0 0h60v40H0z'/%3E%3Cpath fill='%23FEDD00' d='M30 5l24 15-24 15L6 20z'/%3E%3Ccircle cx='30' cy='20' r='8.5' fill='%23012169'/%3E%3C/svg%3E"); }
+.lang-switch:hover .lang-ico { animation: none; }
+
+/* ---------- home <-> blog: cortina nativa, sem JS de animacao ----------
+   So transform e clip-path, na GPU. A pagina antiga recua sobre o lime e a
+   nova sobe por cima. Fora desse par segue o fade normal. */
+html:active-view-transition-type(bi-wipe)::view-transition { background: var(--lime); }
+html:active-view-transition-type(bi-wipe)::view-transition-image-pair(root) { isolation: auto; }
+html:active-view-transition-type(bi-wipe)::view-transition-old(root),
+html:active-view-transition-type(bi-wipe)::view-transition-new(root) { mix-blend-mode: normal; opacity: 1; }
+html:active-view-transition-type(bi-wipe)::view-transition-old(root) {
+  animation: bi-wipe-out 620ms cubic-bezier(.6, 0, .2, 1) both;
+}
+html:active-view-transition-type(bi-wipe)::view-transition-new(root) {
+  z-index: 1;
+  animation: bi-wipe-in 620ms cubic-bezier(.7, 0, .15, 1) 60ms both;
+}
+@keyframes bi-wipe-out {
+  from { transform: none; clip-path: inset(0 round 0); }
+  to   { transform: translateY(-5%) scale(.92); clip-path: inset(0 round 32px); }
+}
+@keyframes bi-wipe-in {
+  from { clip-path: inset(100% 0 0 0 round 48px 48px 0 0); }
+  to   { clip-path: inset(0 0 0 0 round 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html:active-view-transition-type(bi-wipe)::view-transition-old(root),
+  html:active-view-transition-type(bi-wipe)::view-transition-new(root) { animation: none; }
+}

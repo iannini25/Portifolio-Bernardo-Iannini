@@ -158,6 +158,14 @@
     window.addEventListener('pageshow', function () {
       document.body && document.body.classList.remove('page-leaving');
     });
+    /* home <-> blog: marca a transicao nativa pra usar a cortina do style.css */
+    window.addEventListener('pagereveal', function (e) {
+      var nav = window.navigation, from = nav && nav.activation && nav.activation.from;
+      if (!e.viewTransition || !from) return;
+      var home = /^\/(index(\.html)?|pt(\/(index(\.html)?)?)?)?$/, blog = /^\/blog(\.html)?$/;
+      var a = new URL(from.url).pathname, b = location.pathname;
+      if ((home.test(a) && blog.test(b)) || (blog.test(a) && home.test(b))) e.viewTransition.types.add('bi-wipe');
+    });
   </script>
 
   <!-- Open Graph / Twitter -->
