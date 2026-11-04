@@ -428,11 +428,12 @@ function buildArchCard(p, data) {
   return card;
 }
 
-/* agrupa em fileiras de 3 — cada fileira é um grid próprio, pro hover
-   só re-ponderar as colunas da própria fileira */
+/* agrupa em fileiras de 3 (2 no celular) — cada fileira é um grid próprio,
+   pro hover só re-ponderar as colunas da própria fileira */
 function pjChunkRows(cards) {
+  const perRow = window.matchMedia('(max-width: 640px)').matches ? 2 : 3;
   const rows = [];
-  for (let i = 0; i < cards.length; i += 3) rows.push(cards.slice(i, i + 3));
+  for (let i = 0; i < cards.length; i += perRow) rows.push(cards.slice(i, i + perRow));
   return rows;
 }
 

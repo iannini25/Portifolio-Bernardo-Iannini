@@ -8804,3 +8804,83 @@ html:active-view-transition-type(bi-wipe)::view-transition-new(root) {
   html:active-view-transition-type(bi-wipe)::view-transition-old(root),
   html:active-view-transition-type(bi-wipe)::view-transition-new(root) { animation: none; }
 }
+
+/* ---------- celular: 2 projetos por linha ---------- */
+@media (max-width: 640px) {
+  .pj-arch { gap: 14px; }
+  .pj-row,
+  .pj-row[data-n="1"],
+  .pj-row[data-n="2"] { grid-template-columns: 1fr 1fr; gap: 14px 10px; }
+  .pj-card__frame { -webkit-mask-size: 42px 42px, auto; mask-size: 42px 42px, auto; }
+  .pj-card__go { width: 26px; height: 26px; }
+  .pj-card__go svg { width: 13px; height: 13px; }
+  .pj-card__cap { gap: 3px; padding: 8px 2px 0; }
+  .pj-card__title { font-size: .8rem; }
+  .pj-card__catlabel { font-size: .7rem; }
+}
+
+/* ---------- experiencia: pilulas iguais as do blog ---------- */
+.btn-skill {
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: #e4f9b8;
+  color: #0e0e0e;
+  font-family: inherit;
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  box-shadow: none;
+  transition: background .2s ease, transform .2s ease;
+}
+@media (hover: hover) {
+  .btn-skill:hover { background: var(--lime); box-shadow: none; transform: translateY(-2px); }
+}
+
+/* ---------- services: toque da linguagem do blog (a pilha nao muda) ---------- */
+.svc-card, .svc-card.is-top {
+  border-color: var(--w-06);
+  border-radius: 24px;
+  background: var(--rail);
+}
+.svc-card::before, .svc-card.is-top::before { display: none; }
+.svc-title {
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -.02em;
+  text-transform: uppercase;
+}
+.svc-icon, .svc-card.is-top .svc-icon {
+  border: 0;
+  border-radius: 50%;
+  background: var(--lime);
+  color: #0e0e0e;
+  box-shadow: none;
+}
+.svc-tag {
+  padding: 0 10px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--w-05);
+  color: var(--lime);
+  font-family: inherit;
+  font-weight: 800;
+  letter-spacing: .02em;
+}
+.svc-features li, .svc-card.is-top .svc-features li {
+  border: 0;
+  background: var(--w-05);
+  color: var(--text);
+  font-family: inherit;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.svc-cta {
+  padding: 12px 20px;
+  background: var(--lime);
+  color: #0e0e0e;
+  font-weight: 800;
+  box-shadow: none;
+}
+.svc-card:is(.is-top, .is-out):is(:hover, .svc-hot) .svc-cta { box-shadow: none; }
