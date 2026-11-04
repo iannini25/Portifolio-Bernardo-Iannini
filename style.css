@@ -8975,3 +8975,12 @@ html:active-view-transition-type(bi-wipe)::view-transition-new(root) {
 /* terminal do Sobre sem contorno: nem borda, nem fio de luz, nem anel no hover */
 .term-wrap, .about-term:hover { border: 0; box-shadow: var(--shadow-45); }
 .about-term::after, .term-wrap .term-ring { display: none; }
+
+/* titulo do bloco de experiencia e rotulos de secao: voltam a ter presenca */
+.tl-mode { font-size: clamp(22px, 3.6vw, 32px); font-weight: 900; letter-spacing: -.01em; text-transform: uppercase; }
+.kicker, .about-head .kicker, .contact-hero__kicker { font-size: .95rem; }
+.skills-tiles .ff-name, .skills-tiles .ff-ext { font-size: 11px; }
+.skills-tiles .folder-detail { font-size: 12px; }
+.ps-frame__url, .ps-soon__prompt { font-size: 11px; }
+@media (max-width: 760px) { .tl-year-mon { font-size: 11px; } }
+.ps-scrollhint { font-size: 11px; }
