@@ -58,9 +58,9 @@
    fixa color:var(--text) com especificidade maior que `.pill > a:hover`, a tinta
    precisa ser reafirmada aqui — senao ficaria texto claro sobre lime (ilegivel).
    O tracinho indicador tambem escurece pra continuar visivel sobre o lime. */
-.blog-body .nav-blog-link.active-link:hover { color: #08120c; }
+.blog-body .nav-blog-link.active-link:hover { color: #0e0e0e; }
 .blog-body .nav-blog-link.active-link:hover::after {
-  background: #08120c;
+  background: #0e0e0e;
   opacity: .55;
 }
 
@@ -237,13 +237,13 @@
 }
 
 /* .is-active = item sob o cursor OU navegado pelo teclado (mesmo destaque) */
-.blog-sort-option.is-active { color: #08120c; }
+.blog-sort-option.is-active { color: #0e0e0e; }
 
 .blog-sort-option.is-active::before { transform: translate(-50%, 50%) scale(1); }
 
 .blog-sort-option[aria-selected="true"] { color: var(--lime); }
 
-.blog-sort-option[aria-selected="true"].is-active { color: #08120c; }
+.blog-sort-option[aria-selected="true"].is-active { color: #0e0e0e; }
 
 @media (max-width: 900px) {
 
@@ -315,7 +315,7 @@
 .bb-grid {
   --bb-r: 30px;
   --bb-c: 26px;
-  --bb-ink: #0b1505;
+  --bb-ink: #0e0e0e;
   display: grid;
   grid-template-columns: repeat(24, minmax(0, 1fr));
   gap: 12px;
@@ -3440,7 +3440,7 @@ body.post-body {
   margin: auto;
   width: 4px;
   height: 8px;
-  border: solid #08120c;
+  border: solid #0e0e0e;
   border-width: 0 2px 2px 0;
   transform: translateY(-1px) rotate(45deg);
 }
@@ -4211,7 +4211,7 @@ body.post-body {
 /* ==================================================================
    POST — mesma linguagem do bento do blog (recortes, lime, moss)
    ================================================================== */
-.post-main { --bb-c: 26px; --bb-ink: #0b1505; }
+.post-main { --bb-c: 26px; --bb-ink: #0e0e0e; }
 .post-page-hero {
   position: relative;
   overflow: hidden;
@@ -4270,3 +4270,15 @@ body.post-body {
   .post-share-bar, .post-author-card, .post-page .post-media, .post-page-cover, .post-related-card { border-radius: 24px; }
   .post-related-card { min-height: 300px; }
 }
+
+/* ---------- padrao do site: etiquetas em Inter, sem espacamento largo ---------- */
+.post-page-eyebrow-cat, .post-page-eyebrow-read, .post-page-eyebrow time,
+.post-share-label, .post-related-card-cat, .post-page-tag {
+  font-family: inherit;
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.post-share-btn { border-radius: 50%; }
+.blog-author-card { border-radius: 24px; }

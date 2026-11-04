@@ -61,8 +61,8 @@ const I18N = {
     about: {
       kicker: "The Journey",
       title: "The Journey",
-      titleA: "Built from curiosity,",
-      titleB: "shaped by code.",
+      titleA: "I started editing video,",
+      titleB: "now I build systems.",
       sub: "A bit about me, what I do and what I love building.",
       statusLabel: "Status",
       statusValue: "Open to new projects",
@@ -978,8 +978,8 @@ The EN/PT switch is an i18n engine written from scratch: the entire site changes
     about: {
       kicker: "A Trajetória",
       title: "A Trajetória",
-      titleA: "Construída por curiosidade,",
-      titleB: "moldada por código.",
+      titleA: "Comecei editando vídeo,",
+      titleB: "hoje construo sistemas.",
       sub: "Um pouco sobre mim, o que eu faço e o que gosto de construir.",
       statusLabel: "Status",
       statusValue: "Aberto a novos projetos",
