@@ -88,6 +88,8 @@ function buildSkillFile(file, index, total) {
   el.style.setProperty('--arch', arch.toFixed(3));
   el.style.setProperty('--fd', delay + 's');            // leque (desktop): stagger centro->fora
   el.style.setProperty('--fdi', (index * 0.04).toFixed(3) + 's'); // grade (mobile): stagger em ordem
+  el.style.setProperty('--fc', ((mid - Math.abs(off)) * 0.045).toFixed(3) + 's'); // fechando: pontas primeiro
+  el.style.setProperty('--row', String(Math.ceil(total / 2) - 1 - Math.floor(index / 2))); // grade: fila contada de baixo
 
   const img = document.createElement('img');
   img.className = 'ff-icon';
@@ -193,10 +195,16 @@ function buildSkillFolder(cat) {
   meta.append(dot, detail);
   bottom.append(label, meta);
   front.append(top, bottom);
-  shape.append(tab, back, front);
+  shape.append(front);
   btn.appendChild(shape);
 
-  wrap.append(filesBox, btn);
+  // aba e fundo ficam ATRAS dos arquivos; a tampa (no botao) fica NA FRENTE
+  const rear = document.createElement('span');
+  rear.className = 'folder-rear';
+  rear.setAttribute('aria-hidden', 'true');
+  rear.append(tab, back);
+
+  wrap.append(rear, filesBox, btn);
   return wrap;
 }
 

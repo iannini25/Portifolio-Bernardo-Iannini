@@ -7924,7 +7924,7 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
      topo da pasta -> painel generoso, sem faixa vazia gigante. left/right
      NEGATIVOS deixam o painel mais largo que as colunas (html/body tem
      overflow-x:clip -> nunca gera scroll horizontal). */
-  --box-top: 68px;      /* reserve desktop 176 - 108 (box um tico mais alta) */
+  --box-top: 88px;      /* reserve desktop 196 - 108 (box um tico mais alta) */
   --box-right: -80px;
   --box-bottom: -72px;
   --box-left: -80px;
@@ -7994,112 +7994,151 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
 /* a celula: a pasta pousa embaixo; os arquivos voam pra cima DENTRO do
    proprio box (min-height segura o leque). --rise-y vem do scrollfx. */
 .skills-tiles .skill-folder {
-  --spread: 64px;      /* distancia horizontal entre arquivos no leque */
-  --lift: 150px;       /* subida base */
+  --folder-w: clamp(196px, 21vw, 224px);
+  --spread: 76px;      /* distancia horizontal entre arquivos no leque */
+  --lift: 166px;       /* subida base: a base do arquivo sai acima da pasta */
   --arch-amt: 32px;    /* arco: centro sobe mais que as pontas */
   --rot-step: 3deg;    /* giro por passo do leque */
   position: relative;
   width: 100%;
-  min-height: 356px;
+  min-height: 376px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   transform: translateY(var(--rise-y, 0px));
 }
 
-/* ---------- ARQUIVOS QUE VOAM ---------- */
+/* ---------- ARQUIVOS QUE ENTRAM E SAEM DA PASTA ----------
+   Ordem das camadas: .folder-rear (aba e fundo) < .folder-files < .folder-btn
+   (tampa). Fechados, os arquivos ficam DENTRO da pasta, tampados pela frente.
+   Nada de fade: abrir sobe em linha reta e depois espalha; fechar recolhe o
+   leque e depois desce pro bolso. As 3 propriedades registradas transitam
+   separadas, entao inverter no meio do caminho nao da salto. */
+@property --ff-x { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@property --ff-y { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@property --ff-r { syntax: "<angle>";  inherits: false; initial-value: 0deg; }
+
 .skills-tiles .folder-files {
   position: absolute;
   left: 50%;
-  bottom: 72px;                 /* ancora DENTRO da pasta -> emergem dela */
+  bottom: 30px;                 /* ancora no bolso, atras da tampa */
   width: 0;
   height: 0;
-  z-index: 1;                   /* atras da pasta quando fechada */
+  z-index: 2;
   pointer-events: none;
 }
-.skills-tiles .skill-folder.open .folder-files { z-index: 5; }  /* acima ao abrir */
 
 .skills-tiles .ff-file {
-  --fx: calc(var(--off) * var(--spread));
-  --fy: calc(-1 * (var(--lift) + var(--arch) * var(--arch-amt)));
-  --fr: calc(var(--off) * var(--rot-step));
+  --ff-base: -50%;
+  --ff-bg: var(--rail);
+  --ff-ink: var(--text);
+  --ff-accent: var(--lime);
   position: absolute;
   left: 0;
   bottom: 0;
-  width: 82px;
+  width: 92px;
+  min-height: 118px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 7px;
-  padding: 11px 8px 9px;
-  border-radius: 12px;
-  /* mesma superficie MATTE do .svc-card */
-  background: linear-gradient(180deg, #0e140f, #0b100d);
-  border: 1px solid var(--gline-35);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, .04),
-    0 14px 30px rgba(0, 0, 0, .4);
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 8px 9px 9px;
+  isolation: isolate;
   transform-origin: 50% 100%;
-  transform: translate(-50%, 0) scale(.8);
-  opacity: 0;
-  /* `scale` e `background-color` entram na lista pro hover-focus animar suave;
-     ficam com delay 0 (o stagger --fd/--fdi so vale pro transform/opacity). */
+  transform: translate(calc(var(--ff-base) + var(--ff-x)), var(--ff-y)) rotate(var(--ff-r));
+  visibility: hidden;
+  filter: drop-shadow(0 12px 16px rgba(0, 0, 0, .38));
+  /* FECHANDO: recolhe o leque (x/giro), depois desce */
   transition:
-    transform .55s cubic-bezier(.22, 1, .36, 1),
-    opacity .38s ease,
-    border-color .22s ease,
-    scale .18s cubic-bezier(.22, 1, .36, 1),
-    background-color .18s ease;
+    --ff-x .32s cubic-bezier(.4, 0, .2, 1) var(--fc, 0s),
+    --ff-r .32s cubic-bezier(.4, 0, .2, 1) var(--fc, 0s),
+    --ff-y .42s cubic-bezier(.5, 0, .75, .4) calc(var(--fc, 0s) + .12s),
+    visibility 0s linear .85s,
+    scale .18s cubic-bezier(.22, 1, .36, 1);
+}
+/* corpo do cartao em camada propria: a mordida do canto (idioma dos cartoes
+   do blog) e transparente de verdade, sem cortar o conteudo */
+.skills-tiles .ff-file::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 16px;
+  background: var(--ff-bg);
+  -webkit-mask: radial-gradient(circle 21px at 100% 0, transparent 97%, #000);
+          mask: radial-gradient(circle 21px at 100% 0, transparent 97%, #000);
+  transition: background-color .18s ease;
+}
+/* ponto que ocupa a mordida, como o botao redondo dos cartoes do blog */
+.skills-tiles .ff-file::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--ff-accent);
 }
 .skills-tiles .skill-folder.open .ff-file {
-  opacity: 1;
-  transform: translate(calc(-50% + var(--fx)), var(--fy)) rotate(var(--fr)) scale(1);
-  transition-delay: var(--fd, 0s), var(--fd, 0s), 0s, 0s, 0s;
-  border-color: var(--gline-42);
+  --ff-x: calc(var(--off) * var(--spread));
+  --ff-y: calc(-1 * (var(--lift) + var(--arch) * var(--arch-amt)));
+  --ff-r: calc(var(--off) * var(--rot-step));
+  visibility: visible;
   pointer-events: auto;   /* aberto -> vira alvo do hover-focus (o pai .folder-files e none) */
+  /* ABRINDO: sobe reto, depois espalha */
+  transition:
+    --ff-y .52s cubic-bezier(.2, .9, .3, 1) var(--fd, 0s),
+    --ff-x .5s cubic-bezier(.22, 1, .36, 1) calc(var(--fd, 0s) + .16s),
+    --ff-r .5s cubic-bezier(.22, 1, .36, 1) calc(var(--fd, 0s) + .16s),
+    visibility 0s,
+    scale .18s cubic-bezier(.22, 1, .36, 1);
 }
 .skills-tiles .ff-icon {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   object-fit: contain;
-  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, .5));
 }
 /* Claude e escuro -> inverte pra branco (igual a grade antiga) */
 .skills-tiles .ff-icon[src*="claude"] { filter: brightness(0) invert(1); }
 .skills-tiles .ff-name {
-  font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  margin-top: auto;
   font-size: 10px;
-  font-weight: 600;
-  line-height: 1.18;
-  color: var(--text-soft);
-  text-align: center;
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -.015em;
+  text-transform: uppercase;
+  color: var(--ff-ink);
   max-width: 100%;
-  /* nomes de UMA palavra (JavaScript/TypeScript/WordPress) nunca quebram;
-     so "After Effects" quebra no espaco -> sem letra escondida atras do vizinho */
   overflow-wrap: break-word;
   word-break: normal;
   hyphens: none;
 }
-/* extensao = chip mono verde, irmao do .svc-tag */
 .skills-tiles .ff-ext {
   font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
-  font-size: 9.5px;
-  font-weight: 700;
-  letter-spacing: .04em;
+  font-size: 10px;
+  font-weight: 600;
   line-height: 1;
-  padding: 3px 6px;
-  border-radius: 5px;
-  color: var(--green);
-  border: 1px solid color-mix(in oklab, var(--green) 32%, var(--w-08));
-  background: color-mix(in oklab, var(--green) 10%, transparent);
+  color: var(--ff-accent);
 }
 
 /* ---------- A PASTA 3D (o botao) ---------- */
+/* aba e fundo: camada propria, atras dos arquivos */
+.skills-tiles .folder-rear {
+  position: absolute;
+  left: 50%;
+  bottom: 6px;
+  z-index: 1;
+  width: var(--folder-w);
+  height: 174px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
 .skills-tiles .folder-btn {
   position: relative;
-  z-index: 2;
-  width: clamp(196px, 21vw, 224px);   /* um pouquinho MENOS larga */
+  z-index: 3;                         /* a tampa cobre os arquivos */
+  width: var(--folder-w);             /* um pouquinho MENOS larga */
   height: 174px;                      /* MAIOR (mais alta/presente) */
   margin-bottom: 6px;
   padding: 0;
@@ -8137,30 +8176,6 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
   border: 1px solid var(--border);
   box-shadow: inset 0 2px 12px rgba(0, 0, 0, .6);
 }
-/* POLISH: quando a tampa abre, a faixa revelada do bolso nao pode ler
-   como card vazio. Um "papel" espia de dentro (com um segundo papel
-   sugerido na sombra) -> le como arquivos ainda guardados, com profundidade. */
-.skills-tiles .folder-back::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 9px;
-  width: 58%;
-  height: 32px;
-  border-radius: 8px 8px 3px 3px;
-  background: linear-gradient(180deg, color-mix(in oklab, var(--green) 15%, #0e140f), #0b100d);
-  border: 1px solid var(--gline-35);
-  border-bottom: 0;
-  box-shadow: 0 -7px 0 -3px color-mix(in oklab, var(--green) 8%, #0c1310);
-  opacity: 0;
-  transform: translate(-50%, 10px);
-  transition: opacity .5s ease, transform .5s cubic-bezier(.22, 1, .36, 1);
-}
-.skills-tiles .skill-folder.open .folder-back::before {
-  opacity: 1;
-  transform: translate(-50%, 0);
-}
-
 /* tampa frontal — inclina no rotateX ao abrir (ref: rotateX(-50deg)) */
 .skills-tiles .folder-front {
   position: absolute;
@@ -8179,8 +8194,8 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
   transform-origin: 50% 100%;
   transform: translateZ(1px) rotateX(0deg);
   transition:
-    transform .5s cubic-bezier(.22, 1, .36, 1),
-    box-shadow .5s ease,
+    transform .42s cubic-bezier(.22, 1, .36, 1) .42s,
+    box-shadow .42s ease .42s,
     border-color .4s ease;
   display: flex;
   flex-direction: column;
@@ -8190,6 +8205,7 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
   overflow: hidden;
 }
 .skills-tiles .skill-folder.open .folder-front {
+  transition-delay: 0s;
   transform: translateZ(1px) rotateX(-48deg);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, .06),
@@ -8297,6 +8313,7 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
 /* realce leve da pasta FECHADA no hover (mouse; nao no toque) */
 @media (hover: hover) {
   .skills-tiles .skill-folder:not(.open) .folder-btn:hover .folder-front {
+    transition-delay: 0s;
     transform: translateZ(1px) translateY(-3px) rotateX(0deg);
     border-color: color-mix(in oklab, var(--green) 40%, var(--border));
     box-shadow:
@@ -8313,11 +8330,13 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
      INDIVIDUAL `scale` (compoe com o transform do leque/grade -> nunca o
      sobrescreve). */
   .skills-tiles .skill-folder.open .ff-file.ff-hot {
-    scale: 1.12;
+    --ff-bg: var(--lime);
+    --ff-ink: #0e0e0e;
+    --ff-accent: #0e0e0e;
+    scale: 1.1;
     z-index: 6;
-    border-color: color-mix(in oklab, var(--green) 62%, var(--border));
-    background: linear-gradient(180deg, #141c16, #0e150f);
   }
+  .skills-tiles .ff-file.ff-hot::after { background: var(--lime); }
 }
 .skills-tiles .folder-btn:focus-visible {
   outline: 2px solid var(--green);
@@ -8357,26 +8376,32 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
     transform: translateX(-50%);   /* centrado; sem -50% por arquivo */
   }
   .skills-tiles .ff-file {
-    position: static;
+    --ff-base: 0%;
+    --ff-y: calc(var(--row) * 50px + 130px);   /* parte de dentro do bolso */
+    position: relative;
     left: auto;
     bottom: auto;
     width: auto;
+    min-height: 0;
     flex-direction: row;
     align-items: center;
     gap: 8px;
     padding: 8px 10px;
-    transform: translateY(12px);   /* desliza de baixo no open */
     transform-origin: center;
   }
+  .skills-tiles .ff-file::before { -webkit-mask: none; mask: none; border-radius: 12px; }
+  .skills-tiles .ff-file::after { display: none; }
   .skills-tiles .skill-folder.open .ff-file {
-    transform: translateY(0);
-    transition-delay: var(--fdi, 0s), var(--fdi, 0s), 0s, 0s, 0s;
+    --ff-x: 0px;
+    --ff-y: 0px;
+    --ff-r: 0deg;
+    transition-delay: var(--fdi, 0s), 0s, 0s, 0s, 0s;
   }
   .skills-tiles .ff-icon { width: 22px; height: 22px; flex: 0 0 auto; }
   .skills-tiles .ff-name {
     flex: 1 1 auto;
     min-width: 0;
-    text-align: left;
+    margin-top: 0;
     font-size: 11px;
     line-height: 1.2;
   }
@@ -8388,6 +8413,16 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
 @media (max-width: 430px) {
   .skills-tiles .skill-folder { min-height: 524px; }
   .skills-tiles .folder-files { grid-template-columns: 1fr; }
+}
+
+/* sem movimento longo: os arquivos so aparecem no lugar */
+@media (prefers-reduced-motion: reduce) {
+  .skills-tiles .ff-file,
+  .skills-tiles .skill-folder.open .ff-file,
+  .skills-tiles .folder-front {
+    transition-duration: .01s !important;
+    transition-delay: 0s !important;
+  }
 }
 
 /* ---------- BOX (backdrop lime): reescala por breakpoint ----------
@@ -8550,3 +8585,156 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
   .skm-cat[open] .skm-chip:nth-child(n+6) { animation-delay: .15s; }
   @keyframes skm-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 }
+
+/* ---------- SOBRE (coluna direita): linguagem dos cartoes do blog ---------- */
+.about-side { gap: 12px; }
+.about-card {
+  padding: 20px 22px;
+  border: 0;
+  border-radius: 22px;
+  background: var(--rail);
+  box-shadow: none;
+}
+.about-card::before { display: none; }
+.about-card-label { font-size: .78rem; font-weight: 800; letter-spacing: 0; text-transform: none; }
+.about-card-value { font-weight: 800; font-size: 15px; }
+.about-card-value--big {
+  margin-top: 2px;
+  font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -.015em;
+  text-transform: uppercase;
+}
+.about-status-dot { background: var(--lime); box-shadow: none; }
+.about-status-dot::after { background: var(--lime); }
+
+/* blog: selo encaixado no recorte do canto */
+.about-card--blog { --bite: 18px; padding: 20px 22px 22px; }
+.about-card--blog::after {
+  inset: 0 0 auto auto;
+  width: 86px;
+  height: 42px;
+  background: var(--bg);
+  border-bottom-left-radius: var(--bite);
+}
+.about-card--blog > .about-blog-head { position: static; }
+.about-blog-head::before, .about-blog-head::after {
+  content: "";
+  position: absolute;
+  width: var(--bite);
+  height: var(--bite);
+  background: radial-gradient(circle at 0 100%, transparent calc(var(--bite) - .5px), var(--bg) var(--bite));
+  pointer-events: none;
+}
+.about-blog-head::before { top: 0; right: 86px; }
+.about-blog-head::after { top: 42px; right: 0; }
+.about-blog-tag {
+  position: absolute;
+  z-index: 2;
+  top: 5px;
+  right: 4px;
+  padding: 6px 12px;
+  letter-spacing: .04em;
+  color: #0e0e0e;
+  background: var(--lime);
+  box-shadow: none;
+}
+.about-blog-btn {
+  align-self: flex-start;
+  padding: 12px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--w-12);
+  background: transparent;
+}
+.about-blog-btn:not([disabled]):hover {
+  background: var(--lime);
+  border-color: var(--lime);
+  color: #0e0e0e;
+  transform: none;
+}
+
+/* curriculo: o cartao de destaque, chapado em lime */
+.about-card--cv { background: var(--lime); color: #0e0e0e; }
+.about-card--cv .about-card-label,
+.about-card--cv .about-card-value { color: #0e0e0e; }
+.about-cv-icon { border: 0; border-radius: 50%; background: #0e0e0e; color: var(--lime); }
+.about-cv-tag { border: 0; border-radius: 999px; background: rgba(14, 14, 14, .12); color: #0e0e0e; }
+.about-cv-btn {
+  align-self: flex-start;
+  padding: 12px 20px;
+  border: 0;
+  border-radius: 999px;
+  background: #0e0e0e;
+  color: var(--lime);
+}
+.about-cv-btn:hover { background: #0e0e0e; transform: translateY(-2px); }
+
+.about-loc-row { font-weight: 800; }
+.about-loc-ico { color: var(--lime); }
+.about-loc-tag {
+  padding: 6px 12px;
+  border: 0;
+  background: var(--lime);
+  color: #0e0e0e;
+  font-family: inherit;
+  letter-spacing: 0;
+  font-weight: 800;
+}
+.about-loc-tag--alt { background: var(--w-05); color: var(--text-hint); }
+
+/* ---------- MODAL DE CONTATO: linguagem dos cartoes do blog ---------- */
+.ctm__shell {
+  padding: 34px clamp(20px, 4vw, 32px) 28px;
+  border: 0;
+  border-radius: 28px;
+  background: var(--bg);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .6), inset 0 0 0 1px var(--w-08);
+  gap: 18px;
+}
+.ctm__shell::after { display: none; }
+.ctm__close { top: 18px; right: 18px; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--w-12); background: transparent; color: var(--text); }
+.ctm__close:hover { background: var(--lime); border-color: var(--lime); color: #0e0e0e; box-shadow: none; }
+.ctm__head { align-items: flex-start; text-align: left; padding-right: 54px; gap: 6px; }
+.ctm__kicker { font-size: .78rem; letter-spacing: 0; text-transform: none; color: var(--text-hint); }
+.ctm__kicker::before { background: var(--lime); box-shadow: none; }
+.ctm__title {
+  font-size: clamp(2rem, 5vw, 2.7rem);
+  line-height: 1;
+  letter-spacing: -.02em;
+  text-transform: uppercase;
+}
+.ctm__channels { gap: 8px; }
+.ctm__channel {
+  padding: 12px 12px 12px 14px;
+  border: 0;
+  border-radius: 20px;
+  background: var(--rail);
+}
+.ctm__channel::before { display: none; }
+.ctm__channel:hover { padding-left: 14px; background: var(--rail); }
+.ctm__ch-ico { border: 0; border-radius: 50%; background: var(--w-05); color: var(--text); }
+.ctm__channel:hover .ctm__ch-ico { border: 0; background: var(--w-05); color: var(--lime); }
+.ctm__ch-label { font-weight: 900; text-transform: uppercase; letter-spacing: -.01em; }
+.ctm__channel::after {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--w-12);
+  color: var(--text);
+  transition: background .25s ease, color .25s ease, border-color .25s ease, transform .35s cubic-bezier(.22, 1, .36, 1);
+}
+.ctm__channel:hover::after { background: var(--lime); border-color: var(--lime); color: #0e0e0e; transform: rotate(-45deg); }
+.ctm__divider { font-size: .78rem; letter-spacing: 0; text-transform: none; }
+.ctm__divider::before, .ctm__divider::after { background: var(--w-08); }
+.ctm__form { gap: 12px; }
+.ctm__field-label { font-size: .78rem; letter-spacing: 0; text-transform: none; }
+.ctm__field input, .ctm__field textarea { border: 0; border-radius: 18px; background: rgba(255, 255, 255, .055); padding: 14px 16px; }
+.ctm__field input:hover, .ctm__field textarea:hover { background: rgba(255, 255, 255, .08); }
+.ctm__field input:focus, .ctm__field textarea:focus { background: rgba(255, 255, 255, .08); box-shadow: inset 0 0 0 1.5px var(--lime); }
+.ctm__submit { height: 52px; border: 0; border-radius: 999px; background: var(--lime); color: #0e0e0e; font-weight: 900; }
+.ctm__submit::before { display: none; }
+.ctm__submit:hover { background: var(--lime); box-shadow: none; filter: brightness(1.06); }
+.ctm .ctm__close:focus-visible { border-radius: 50%; outline: 2px solid var(--lime); outline-offset: 3px; }
