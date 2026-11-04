@@ -8971,3 +8971,7 @@ html:active-view-transition-type(bi-wipe)::view-transition-new(root) {
 
 .tl-card.panel { border-color: var(--w-06); background: var(--rail); box-shadow: none; }
 .about-cv-tag { font-family: inherit; letter-spacing: 0; }
+
+/* terminal do Sobre sem contorno: nem borda, nem fio de luz, nem anel no hover */
+.term-wrap, .about-term:hover { border: 0; box-shadow: var(--shadow-45); }
+.about-term::after, .term-wrap .term-ring { display: none; }
