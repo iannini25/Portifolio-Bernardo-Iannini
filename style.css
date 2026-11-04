@@ -8884,3 +8884,62 @@ html:active-view-transition-type(bi-wipe)::view-transition-new(root) {
   box-shadow: none;
 }
 .svc-card:is(.is-top, .is-out):is(:hover, .svc-hot) .svc-cta { box-shadow: none; }
+
+/* ---------- experiencia: pilulas iguais as dos cards de services ---------- */
+.btn-skill { background: var(--w-05); color: var(--text); }
+@media (hover: hover) {
+  .btn-skill:hover { background: var(--lime); color: #0e0e0e; }
+}
+
+/* ---------- hero: botoes redondos, como o .bb-go dos cartoes do blog ---------- */
+.sbtn {
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--w-12);
+  border-radius: 50%;
+  background: var(--rail);
+  box-shadow: none;
+  transition: background .25s ease, border-color .25s ease, transform .35s cubic-bezier(.22, 1, .36, 1);
+}
+.sbtn:hover { border-color: var(--lime); background: var(--lime); }
+.sbtn:hover svg { fill: #0e0e0e; }
+
+/* ---------- paginas de projeto: linguagem dos cartoes do blog ---------- */
+.cs-title, .cs-h2 { font-weight: 900; line-height: 1.04; letter-spacing: -.02em; text-transform: uppercase; }
+.cs-reg, .cs-author__kicker {
+  font-family: inherit;
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.cs-back, .cs-pill, .cs-visit, .cs-tab, .cs-others__all { border-radius: 999px; }
+.cs-visit, .cs-pill--solid, .cs-tab[aria-selected="true"], .cs-step__num {
+  border-color: transparent;
+  background: var(--lime);
+  color: #0e0e0e;
+  box-shadow: none;
+}
+.cs-win, .cs-gal__btn, .cs-mkt__btn, .cs-other__img { border: 0; border-radius: 22px; }
+.cs-about, .cs-about--problem, .cs-pillar, .cs-feat, .cs-result, .cs-author, .cs-app {
+  border: 0;
+  border-radius: 22px;
+  background: var(--rail);
+  box-shadow: none;
+}
+.cs-fact2 { border: 0; border-radius: 16px; background: var(--w-05); }
+.cs-h2__icon, .cs-pillar__icon, .cs-feat__icon {
+  border: 0;
+  border-radius: 50%;
+  background: var(--lime);
+  color: #0e0e0e;
+}
+.cs-h2__icon--warn { background: var(--lime); color: #0e0e0e; }
+.cs-pillar__name, .cs-feat__title, .cs-step__label, .cs-other__name {
+  font-weight: 900;
+  line-height: 1.12;
+  letter-spacing: -.01em;
+  text-transform: uppercase;
+}
+.cs-gal__arrow, .cs-icon { border-radius: 50%; }
+.cs-author__photo { border-radius: 50%; }
