@@ -8737,3 +8737,25 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
 .ctm__submit::before { display: none; }
 .ctm__submit:hover { background: var(--lime); box-shadow: none; filter: brightness(1.06); }
 .ctm .ctm__close:focus-visible { border-radius: 50%; outline: 2px solid var(--lime); outline-offset: 3px; }
+
+/* celular: a coluna do Sobre vira so as duas acoes, lado a lado */
+@media (max-width: 640px) {
+  .about-side { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .about-card--status, .about-card--loc { display: none; }
+  .about-card--blog, .about-card--cv { display: block; padding: 0; border-radius: 0; background: none; overflow: visible; }
+  .about-card--blog::after,
+  .about-blog-head, .about-blog-desc,
+  .about-cv-head, .about-card--blog .about-card-value, .about-card--cv .about-card-value { display: none; }
+  .about-blog-btn, .about-cv-btn {
+    box-sizing: border-box;
+    display: flex;
+    width: 100%;
+    min-height: 48px;
+    margin: 0;
+    padding: 10px 8px;
+    font-size: 12.5px;
+    letter-spacing: 0;
+  }
+  .about-cv-btn { background: var(--lime); color: #0e0e0e; }
+  .about-cv-btn:hover { background: var(--lime); }
+}
