@@ -9008,3 +9008,162 @@ html:active-view-transition-type(bi-wipe)::view-transition-new(root) {
 /* o CV mantem o hover lime cheio */
 .resume-btn:hover,
 .resume-btn:focus-visible { background: var(--gradient-lime); border-color: transparent; }
+
+/* =========================================================
+   BOTAO DE CURRICULO (.cv-btn — js/UI.js monta as camadas)
+   Hover: o rotulo sobe e sai, a seta de download sobe e entra, e um
+   tooltip "PDF" aparece embaixo. Clique: vira um circulo que enche de
+   lime com um ponto orbitando a borda e reabre com "✓ Baixado".
+   Mesma pilula de vidro e o mesmo lime do botao de antes.
+   ========================================================= */
+.resume-btn.cv-btn {
+  --py: 8px; --px: 16px;
+  box-sizing: border-box;
+  padding: var(--py) var(--px);
+  overflow: visible;
+  animation: none;
+  justify-content: center;
+  transition: width .42s cubic-bezier(.65, 0, .35, 1), background .3s ease, border-color .3s ease, color .3s ease, box-shadow .3s ease;
+}
+@media (min-width: 901px) and (max-width: 1280px) { .resume-btn.cv-btn { --py: 7px; --px: 12px; } }
+@media (min-width: 901px) and (max-width: 1080px) { .resume-btn.cv-btn { --py: 6px; --px: 10px; } }
+.resume-btn.cv-btn::before { display: none; }
+.resume-btn.cv-btn:hover svg { animation: none; }
+
+/* camada que recorta as animacoes na borda da pilula */
+.cv-btn__face {
+  position: relative;
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: calc(-1 * var(--py)) calc(-1 * var(--px));
+  padding: var(--py) var(--px);
+  overflow: hidden;
+  border-radius: inherit;
+}
+.cv-btn__text,
+.cv-btn__icon,
+.cv-btn__done { transition: transform .45s cubic-bezier(.65, 0, .35, 1), opacity .3s ease; }
+.cv-btn__text { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+@media (min-width: 901px) and (max-width: 1080px) { .cv-btn__text { gap: 6px; } }
+.cv-btn__icon,
+.cv-btn__done {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 2;
+}
+.cv-btn__icon { transform: translateY(110%); }
+.cv-btn__icon svg { width: 18px; height: 18px; }
+.cv-btn__done { white-space: nowrap; transform: translateY(110%); opacity: 0; }
+
+/* HOVER */
+.cv-btn:hover .cv-btn__text,
+.cv-btn:focus-visible .cv-btn__text { transform: translateY(-140%); }
+.cv-btn:hover .cv-btn__icon,
+.cv-btn:focus-visible .cv-btn__icon { transform: translateY(0); }
+
+/* tooltip embaixo (a nav fica no topo da tela) */
+.resume-btn.cv-btn::after {
+  content: attr(data-tip);
+  position: absolute;
+  inset: auto;
+  top: calc(100% + 12px);
+  left: 50%;
+  width: auto;
+  height: auto;
+  padding: 6px 11px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--text);
+  background: rgba(14, 20, 16, .88);
+  border: 1px solid var(--w-10);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  box-shadow: 0 10px 24px -8px rgba(0, 0, 0, .5);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, -6px);
+  transition: opacity .3s ease, transform .4s cubic-bezier(.22, 1, .36, 1), visibility 0s linear .3s;
+  animation: none;
+  pointer-events: none;
+}
+.resume-btn.cv-btn:hover::after,
+.resume-btn.cv-btn:focus-visible::after {
+  opacity: 1;
+  visibility: visible;
+  left: 50%;
+  transform: translate(-50%, 0);
+  transition: opacity .3s ease, transform .4s cubic-bezier(.22, 1, .36, 1), visibility 0s;
+}
+
+/* CLIQUE — circulo carregando */
+.cv-btn__fill {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--lime);
+  transform: scaleY(0);
+  transform-origin: 50% 100%;
+}
+.cv-btn__orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  margin: -2.5px 0 0 -2.5px;
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 8px var(--lime);
+  opacity: 0;
+  pointer-events: none;
+}
+.resume-btn.cv-btn.is-loading,
+.resume-btn.cv-btn.is-loading:hover {
+  background: rgba(255, 255, 255, .04);
+  border-color: var(--lime);
+  color: var(--lime);
+  animation: cv-pulse .9s ease-out;
+}
+.resume-btn.cv-btn.is-loading::after,
+.resume-btn.cv-btn.is-done::after { opacity: 0; visibility: hidden; }
+/* no circulo o rotulo sai do fluxo: a largura fica so a do circulo */
+.cv-btn.is-loading .cv-btn__text { transform: translateY(-140%); position: absolute; }
+.resume-btn.cv-btn.is-loading { padding-left: 0; padding-right: 0; }
+.cv-btn.is-loading .cv-btn__face { position: absolute; inset: 0; margin: 0; padding: 0; }
+.cv-btn.is-loading .cv-btn__icon {
+  transform: translateY(0);
+  animation: cv-ink 1.25s cubic-bezier(.65, 0, .35, 1) .3s forwards;
+}
+.cv-btn.is-loading .cv-btn__fill { animation: cv-fill 1.25s cubic-bezier(.65, 0, .35, 1) .3s forwards; }
+.cv-btn.is-loading .cv-btn__orbit { animation: cv-orbit 1.25s cubic-bezier(.45, 0, .55, 1) .3s forwards; }
+@keyframes cv-fill { to { transform: scaleY(1); } }
+@keyframes cv-ink { to { color: #0e0e0e; } }
+@keyframes cv-orbit {
+  0%   { opacity: 1; transform: rotate(-90deg) translateX(var(--r)) rotate(90deg); }
+  92%  { opacity: 1; }
+  100% { opacity: 0; transform: rotate(270deg) translateX(var(--r)) rotate(-270deg); }
+}
+@keyframes cv-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(163, 230, 53, .55); }
+  100% { box-shadow: 0 0 0 14px rgba(163, 230, 53, 0); }
+}
+
+/* CONCLUIDO — reabre com o check */
+.resume-btn.cv-btn.is-done,
+.resume-btn.cv-btn.is-done:hover {
+  background: var(--lime);
+  border-color: var(--lime);
+  color: #0e0e0e;
+}
+.cv-btn.is-done .cv-btn__text { transform: translateY(-140%); }
+.cv-btn.is-done .cv-btn__icon { transform: translateY(-140%); }
+.cv-btn.is-done .cv-btn__done { transform: translateY(0); opacity: 1; transition-delay: .15s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cv-btn__text, .cv-btn__icon, .cv-btn__done, .resume-btn.cv-btn { transition: none; }
+}

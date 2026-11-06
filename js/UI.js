@@ -365,13 +365,63 @@ document.querySelectorAll('a[data-scroll]').forEach(a => {
 })();
 
 /* =========================================================
-   RESUME BUTTON ATTENTION
+   BOTAO DE CURRICULO — monta as camadas do hover/clique (CSS .cv-btn).
+   O <span data-i18n> do rotulo e mantido intacto (a traducao continua
+   trocando o texto). O download acontece normal; a animacao e so visual.
    ========================================================= */
-(function () {
-  const r = document.querySelector('.resume-btn');
-  if (r && window.matchMedia('(min-width: 901px)').matches) {
-    r.classList.add('resume-attn');
-  }
+(function cvButton() {
+  const btn = document.querySelector('.resume-btn');
+  if (!btn || btn.classList.contains('cv-btn')) return;
+
+  const pt = (document.documentElement.lang || '').toLowerCase().startsWith('pt');
+  const ICON = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  const face = document.createElement('span');
+  face.className = 'cv-btn__face';
+  const text = document.createElement('span');
+  text.className = 'cv-btn__text';
+  while (btn.firstChild) text.appendChild(btn.firstChild);
+  face.innerHTML = '<span class="cv-btn__fill" aria-hidden="true"></span>';
+  face.appendChild(text);
+  face.insertAdjacentHTML('beforeend',
+    '<span class="cv-btn__icon" aria-hidden="true">' + ICON + '</span>' +
+    '<span class="cv-btn__done" aria-hidden="true">✓ ' + (pt ? 'Baixado' : 'Downloaded') + '</span>');
+  btn.appendChild(face);
+  btn.insertAdjacentHTML('beforeend', '<span class="cv-btn__orbit" aria-hidden="true"></span>');
+  btn.setAttribute('data-tip', pt ? 'PDF · 1 página' : 'PDF · 1 page');
+  btn.classList.add('cv-btn');
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const done = face.querySelector('.cv-btn__done');
+  let busy = false;
+  btn.addEventListener('click', () => {
+    if (busy) return;
+    busy = true;
+    const w = btn.offsetWidth, h = btn.offsetHeight;
+    btn.style.setProperty('--r', (h / 2 + 4) + 'px');
+    btn.style.width = w + 'px';
+    btn.style.height = h + 'px';               /* altura travada: o rotulo sai do fluxo */
+    void btn.offsetWidth;                       /* fixa a largura de partida */
+    btn.classList.add('is-loading');
+    btn.style.width = h + 'px';                 /* pilula -> circulo */
+
+    setTimeout(() => {
+      /* reabre no tamanho que o "✓ Baixado" precisa */
+      const pad = w - text.offsetWidth;
+      const range = document.createRange();
+      range.selectNodeContents(done);
+      const wDone = Math.max(w, Math.ceil(range.getBoundingClientRect().width) + pad);
+      btn.classList.remove('is-loading');
+      btn.classList.add('is-done');
+      btn.style.width = wDone + 'px';
+      setTimeout(() => {
+        btn.classList.remove('is-done');
+        btn.style.width = w + 'px';
+        setTimeout(() => { btn.style.width = ''; btn.style.height = ''; busy = false; }, 450);
+      }, 2000);
+    }, 1650);
+  });
 })();
 
 /* =========================================================
