@@ -365,51 +365,64 @@ document.querySelectorAll('a[data-scroll]').forEach(a => {
 })();
 
 /* =========================================================
-   PHOTO — troca em PIXELS (CSS .photo__px). Monta uma grade N x N de
-   blocos com pedacos da foto B e, a cada entrada/saida do mouse, da a
-   cada bloco um atraso pela distancia ate o ponto do cursor (+ um pouco
-   de acaso): a onda nasce onde o mouse entra e se desfaz pra onde sai.
+   PHOTO — troca em PERSIANAS (CSS .photo__px). Monta N faixas com
+   pedacos da foto B. Entrada: as faixas sobem em sequencia a partir da
+   coluna do cursor. Saida: seguem subindo e saem pelo topo a partir do
+   ponto de saida; no fim voltam (sem animacao) pra baixo, prontas.
    ========================================================= */
-(function photoPixels() {
+(function photoBlinds() {
   const photo = document.querySelector('.hero .photo');
   const imgB = photo && photo.querySelector('.photo__img--b');
   if (!photo || !imgB) return;
-  const N = 12;
+  const N = 9;
   const grid = document.createElement('div');
   grid.className = 'photo__px';
   grid.setAttribute('aria-hidden', 'true');
   grid.style.setProperty('--n', N);
   grid.style.setProperty('--src', 'url("' + (imgB.currentSrc || imgB.src) + '")');
-  const cells = [];
-  for (let y = 0; y < N; y++) {
-    for (let x = 0; x < N; x++) {
-      const i = document.createElement('i');
-      i.style.setProperty('--x', x);
-      i.style.setProperty('--y', y);
-      grid.appendChild(i);
-      cells.push({ el: i, x: (x + .5) / N, y: (y + .5) / N });
-    }
+  const strips = [];
+  for (let x = 0; x < N; x++) {
+    const i = document.createElement('i');
+    const s = document.createElement('b');
+    s.style.setProperty('--x', x);
+    i.appendChild(s);
+    grid.appendChild(i);
+    strips.push({ el: s, c: (x + .5) / N });
   }
   photo.appendChild(grid);
 
-  /* atraso de cada bloco = distancia ate o cursor (0..~1.4) * span + acaso */
-  const wave = (e, span, jitter) => {
+  /* atraso de cada faixa = distancia ate a coluna do cursor + acaso */
+  const stagger = (e, span, jitter) => {
     const r = photo.getBoundingClientRect();
-    const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
-    for (const c of cells) {
-      const d = Math.hypot(c.x - px, c.y - py) * span + Math.random() * jitter;
-      c.el.style.setProperty('--d', d.toFixed(3) + 's');
+    const px = (e.clientX - r.left) / r.width;
+    for (const s of strips) {
+      const d = Math.abs(s.c - px) * span + Math.random() * jitter;
+      s.el.style.setProperty('--d', d.toFixed(3) + 's');
     }
   };
+  let resetTimer = 0;
   photo.addEventListener('pointerenter', (e) => {
-    wave(e, .38, .08);
-    grid.classList.add('is-armed');
+    clearTimeout(resetTimer);
+    stagger(e, .32, .05);
+    if (photo.classList.contains('is-out')) {
+      /* ainda saindo pelo topo: volta pra baixo sem animar e sobe de novo */
+      photo.classList.add('is-reset');
+      photo.classList.remove('is-out');
+      void photo.offsetWidth;
+      photo.classList.remove('is-reset');
+    }
     requestAnimationFrame(() => photo.classList.add('is-b'));
   });
   photo.addEventListener('pointerleave', (e) => {
-    wave(e, .26, .06);
-    grid.classList.remove('is-armed');
+    stagger(e, .24, .04);
     photo.classList.remove('is-b');
+    photo.classList.add('is-out');
+    resetTimer = setTimeout(() => {
+      photo.classList.add('is-reset');
+      photo.classList.remove('is-out');
+      void photo.offsetWidth;
+      photo.classList.remove('is-reset');
+    }, 1100);
   });
 })();
 

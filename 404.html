@@ -10,7 +10,7 @@
   <link rel="canonical" href="https://www.bernardoiannini.com/" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;600;700&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;600;700&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;600;700&display=swap"></noscript>
   <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="/blog.css">
 
@@ -71,28 +71,6 @@
       overflow: hidden;
     }
     .nf-card { display: flex; flex-direction: column; align-items: center; max-width: 640px; }
-
-    .nf-kicker {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 7px 14px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-hint);
-      background: rgba(255, 255, 255, .04);
-      border: 1px solid var(--w-10);
-    }
-    .nf-kicker::before {
-      content: "";
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--lime);
-      box-shadow: 0 0 10px var(--lime);
-      animation: nf-blink 1.8s ease-in-out infinite;
-    }
 
     /* "4 [i] 4" — o zero e o simbolo da marca num bloco lime */
     .nf-code {
@@ -215,10 +193,9 @@
       header { display: none; }
       .nf-text { display: none; }
     }
-    @media (max-height: 380px) { .nf-kicker { display: none; } }
     @media (prefers-reduced-motion: reduce) {
       .nf-in { animation: none; opacity: 1; }
-      .nf-zero .nf-dot, .nf-zero .nf-tr, .nf-kicker::before { animation: none; }
+      .nf-zero .nf-dot, .nf-zero .nf-tr { animation: none; }
       .nf-code { transition: none; }
     }
   </style>
@@ -250,8 +227,6 @@
 
   <main class="nf-main">
     <div class="nf-card">
-      <p class="nf-kicker nf-in d1" data-pt="Erro 404" data-en="Error 404">Erro 404</p>
-
       <div class="nf-code nf-in d2" aria-hidden="true">
         <span>4</span>
         <span class="nf-zero">

@@ -409,6 +409,27 @@
           { yPercent: 13, autoAlpha: .25, immediateRender: false }, 0);
     }
 
+    /* PARALLAX ESTRATEGICO — so wrappers (o texto/cards dentro mantem as
+       proprias animacoes de entrada). Movimento curto, scrub suave. */
+    const drift = (el, from, to, scrub = .7) => gsap.fromTo(el, { y: from }, {
+      y: to, ease: 'none',
+      scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub },
+    });
+    /* titulos de secao flutuam um pouco mais devagar que a rolagem */
+    gsap.utils.toArray('.section-head').forEach(el => drift(el, 34, -34));
+    /* sobre: terminal e cards em profundidades opostas */
+    const term = document.querySelector('.about-term');
+    const side = document.querySelector('.about-side');
+    if (term) drift(term, 46, -26, .8);
+    if (side) drift(side, -14, 34, .8);
+    /* fundos de curvas derivam atras do conteudo (camada distante) */
+    gsap.utils.toArray('.pj-topo > .pj-topo__layer').forEach(layer => {
+      gsap.fromTo(layer, { yPercent: -3 }, {
+        yPercent: 3, ease: 'none',
+        scrollTrigger: { trigger: layer.parentElement, start: 'top bottom', end: 'bottom top', scrub: 1 },
+      });
+    });
+
     const contact = document.querySelector('#contato');
     if (contact) {
       gsap.timeline({

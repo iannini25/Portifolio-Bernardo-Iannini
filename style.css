@@ -14,6 +14,16 @@ html.lenis [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-stopped { overflow: hidden; }
 html.lenis iframe { pointer-events: none; }
 
+/* Fonte secundaria: Brier (pilha "Brier, Arial, sans-serif").
+   So local(): usa a Brier instalada na maquina; sem ela, cai no Arial.
+   Pra servir pra todo mundo, coloque o arquivo em /fonts/brier.woff2 e
+   acrescente url('/fonts/brier.woff2') format('woff2') no src abaixo. */
+@font-face {
+  font-family: 'Brier';
+  src: local('Brier'), local('Brier Regular'), local('Brier-Regular');
+  font-display: swap;
+}
+
 /* =============================
    0) BASE / TOKENS / GLOBALS
    ============================= */
@@ -472,14 +482,13 @@ body.pc-nav-hidden header {
   padding: 84px 20px 32px;
   position: relative; left: var(--hero-nudge);
 }
-/* ===== Photo — troca em PIXELS no hover (a linguagem do "i" da marca:
-   os quadradinhos do rastro). A foto B se monta em blocos quadrados que
-   estouram em onda a partir do ponto onde o cursor entrou; cada bloco
-   pisca lime e vira foto. Ao sair, os blocos se desfazem em onda a partir
-   do ponto de saida. Delays e um pouco de acaso por bloco vem do JS
-   (--d), entao a onda nunca e igual. So transform/opacity: compositor.
-   A silhueta e um clip-path em poligono (gerado do recorte da foto):
-   nao depende de carregar imagem nenhuma, entao a foto nunca some. ===== */
+/* ===== Photo — troca em PERSIANAS no hover (editorial).
+   A foto B entra em faixas verticais que sobem em sequencia a partir da
+   coluna onde o cursor entrou, cada uma com um fio lime na borda que
+   avanca. Ao sair, as faixas seguem subindo e saem pelo topo (a partir do
+   ponto de saida), revelando a original. Acaso leve por faixa (JS --d).
+   So transform: compositor. A silhueta e um clip-path em poligono
+   (gerado do recorte): nao depende de carregar imagem, nunca some. ===== */
 .photo {
   width: clamp(420px, 37vw, 500px);
   height: auto;
@@ -509,54 +518,54 @@ body.pc-nav-hidden header {
 }
 .photo__img--a {
   position: relative;
-  transition: transform .9s cubic-bezier(.22, 1, .36, 1), filter .6s ease;
+  transition: transform 1s cubic-bezier(.22, 1, .36, 1);
 }
-/* a B so serve de fonte (decodificada antes); quem aparece sao os blocos */
+/* a B so serve de fonte (decodificada antes); quem aparece sao as faixas */
 .photo__img--b { position: absolute; inset: 0; visibility: hidden; }
-.photo.is-b .photo__img--a { transform: scale(1.04); filter: brightness(.7); }
+.photo.is-b .photo__img--a { transform: scale(1.06); }
 .photo__sweep { display: none; }
 
-/* grade de blocos por cima da A */
 .photo__px {
   position: absolute;
   inset: 0;
   z-index: 2;
   display: grid;
   grid-template-columns: repeat(var(--n), 1fr);
-  grid-template-rows: repeat(var(--n), 1fr);
   pointer-events: none;
 }
 .photo__px i {
   position: relative;
   display: block;
-  /* cada bloco mostra o seu pedaco da foto B */
-  background-image: var(--src);
-  background-size: calc(var(--n) * 100%) calc(var(--n) * 100%);
-  background-position: calc(var(--x) * 100% / (var(--n) - 1)) calc(var(--y) * 100% / (var(--n) - 1));
-  /* +1px de sobra: sem fio entre blocos quando todos estao inteiros */
-  margin: 0 -.5px -.5px 0;
-  transform: scale(0);
-  transition: transform .42s cubic-bezier(.5, 0, .75, 0) var(--d, 0s);
+  overflow: hidden;
+  margin-right: -1px;                 /* sem fio entre faixas */
 }
-.photo__px i::after {
-  content: "";
+.photo__px b {
   position: absolute;
   inset: 0;
+  background-image: var(--src);
+  background-size: calc(var(--n) * 100%) 100%;
+  background-position: calc(var(--x) * 100% / (var(--n) - 1)) 0;
+  transform: translateY(101%);
+  transition: transform .72s cubic-bezier(.76, 0, .24, 1) var(--d, 0s);
+}
+/* fio lime na borda que avanca */
+.photo__px b::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
   background: var(--lime);
-  opacity: 1;
-  transition: opacity .4s ease calc(var(--d, 0s) + .2s);
+  box-shadow: 0 0 12px rgba(163, 230, 53, .6);
 }
-.photo.is-b .photo__px i {
-  transform: scale(1);
-  transition: transform .5s cubic-bezier(.22, 1.25, .36, 1) var(--d, 0s);
-}
-.photo.is-b .photo__px i::after { opacity: 0; }
-/* saindo: o lime nao volta (so os blocos encolhem) */
-.photo:not(.is-b) .photo__px i::after { transition: none; opacity: 0; }
-.photo:not(.is-b) .photo__px.is-armed i::after { opacity: 1; }
+.photo.is-b .photo__px b { transform: translateY(0); }
+.photo.is-out .photo__px b { transform: translateY(-101%); }
+.photo.is-out .photo__px b::before { top: auto; bottom: 0; }
+.photo.is-reset .photo__px b { transition: none; transform: translateY(101%); }
 
 @media (prefers-reduced-motion: reduce) {
-  .photo__px i, .photo__px i::after, .photo__img--a { transition: none !important; }
+  .photo__px b, .photo__img--a { transition: none !important; }
 }
 
 .stack { display: flex; flex-direction: column }
@@ -607,7 +616,7 @@ body.pc-nav-hidden header {
   background-position: 100% 0%;
 }
 
-.tagline { margin-top: 16px; font-family: "Instrument Serif", "Playfair Display", Georgia, serif; font-size: clamp(26px, 3.4vw, 36px); font-style: italic; font-weight: 400; letter-spacing: -.005em; color: var(--text-italic); display: inline-block; min-height: 1.2em; transition: color .4s, text-shadow .4s }
+.tagline { margin-top: 16px; font-family: Brier, Arial, sans-serif; font-size: clamp(26px, 3.4vw, 36px); font-style: italic; font-weight: 400; letter-spacing: -.005em; color: var(--text-italic); display: inline-block; min-height: 1.2em; transition: color .4s, text-shadow .4s }
 .tagline.glow { color: var(--green); text-shadow: 0 0 12px var(--g-80), 0 0 24px rgba(163,230,53,.4) }
 /* #taglineText sempre usa background-clip: text com um gradient base
    solid (currentColor → currentColor). Mantém o rendering mode CONSTANTE
@@ -783,7 +792,7 @@ body.pc-nav-hidden header {
 }
 .about-title__line--em,
 .about-title__line--em .chx {
-  font-family: "Instrument Serif", "Playfair Display", Georgia, serif;
+  font-family: Brier, Arial, sans-serif;
   font-style: italic;
   font-weight: 400;
   background: var(--gradient-lime);
@@ -2322,15 +2331,16 @@ body.pc-nav-hidden header {
   width: 100vw;
 }
 .pj-topo--hero > .pj-topo__layer {
-  /* fade vertical (topo sob a nav, base na emenda com "sobre") INTERSECT
+  /* fade vertical: curto no topo (sob a nav) e LONGO e progressivo na
+     base (comeca na metade da hero) — a emenda com "sobre" some. INTERSECT
      um fade eliptico leve: as curvas somem suave nas bordas */
   -webkit-mask:
     radial-gradient(125% 100% at 50% 45%, #000 42%, rgba(0, 0, 0, .45) 74%, transparent 100%),
-    linear-gradient(180deg, transparent 0, #000 var(--tb-fade), #000 calc(100% - var(--tb-fade)), transparent 100%);
+    linear-gradient(180deg, transparent 0, #000 var(--tb-fade), #000 50%, rgba(0, 0, 0, .72) 64%, rgba(0, 0, 0, .4) 78%, rgba(0, 0, 0, .14) 90%, transparent 100%);
   -webkit-mask-composite: source-in;
   mask:
     radial-gradient(125% 100% at 50% 45%, #000 42%, rgba(0, 0, 0, .45) 74%, transparent 100%),
-    linear-gradient(180deg, transparent 0, #000 var(--tb-fade), #000 calc(100% - var(--tb-fade)), transparent 100%);
+    linear-gradient(180deg, transparent 0, #000 var(--tb-fade), #000 50%, rgba(0, 0, 0, .72) 64%, rgba(0, 0, 0, .4) 78%, rgba(0, 0, 0, .14) 90%, transparent 100%);
   mask-composite: intersect;
 }
 
@@ -2936,7 +2946,7 @@ body.pc-nav-hidden header {
 .contact-hero__line { display: block }
 /* só a linha em destaque ganha a fonte com serifa */
 .contact-hero__line--em {
-  font-family: "Instrument Serif", "Playfair Display", Georgia, serif;
+  font-family: Brier, Arial, sans-serif;
   font-style: italic;
   font-weight: 400;
   font-size: 1.08em;
@@ -4572,7 +4582,7 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   color: var(--text-hint);
 }
 .ps-soon__title {
-  font-family: "Instrument Serif", Georgia, serif;
+  font-family: Brier, Arial, sans-serif;
   font-weight: 400;
   font-size: clamp(2.2rem, 5vw, 3.6rem);
   line-height: 1.04;
@@ -4668,7 +4678,7 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
    inline-block — e background-clip:text nao atravessa inline-blocks. */
 .ps-title em,
 .ps-title em .chx {
-  font-family: "Instrument Serif", Georgia, serif;
+  font-family: Brier, Arial, sans-serif;
   font-style: italic;
   font-weight: 400;
   background: var(--gradient-lime);
@@ -6698,7 +6708,7 @@ body.blog-body { min-height: 100vh; }
 }
 .blog-soon-kicker::before { content: "● "; color: var(--green); }
 .blog-soon-title {
-  font-family: "Instrument Serif", Georgia, serif;
+  font-family: Brier, Arial, sans-serif;
   font-size: clamp(3rem, 9vw, 6.2rem);
   font-weight: 400;
   line-height: 1;
@@ -8953,7 +8963,7 @@ html:active-view-transition-type(bi-wipe)::view-transition-new(root) {
 .cs-author__photo { border-radius: 50%; }
 
 /* ---------- PADRAO DO SITE ----------
-   Fontes: Inter em tudo; Instrument Serif so no destaque dos titulos;
+   Fontes: Inter em tudo; Brier (fonte secundaria) so no destaque dos titulos;
    JetBrains Mono so no que imita terminal e codigo.
    Cantos: 999px pilula, 30px destaque, 24px cartao, 16-20px elemento interno. */
 :where(button, input, select, textarea) { font-family: inherit; }
@@ -9009,8 +9019,8 @@ html:active-view-transition-type(bi-wipe)::view-transition-new(root) {
     radial-gradient(120% 90% at 30% -35%, rgba(255, 255, 255, .07), transparent 55%),
     linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .025));
   border: 1px solid rgba(255, 255, 255, .09);
-  -webkit-backdrop-filter: blur(14px) saturate(135%);
-          backdrop-filter: blur(14px) saturate(135%);
+  -webkit-backdrop-filter: blur(24px) saturate(135%);
+          backdrop-filter: blur(24px) saturate(135%);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, .1),
     0 8px 24px -10px rgba(0, 0, 0, .4);
@@ -9076,7 +9086,9 @@ html:active-view-transition-type(bi-wipe)::view-transition-new(root) {
 /* camada que recorta as animacoes na borda da pilula */
 .cv-btn__face {
   position: relative;
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex: 1 1 auto;
   min-width: 0;
   margin: calc(-1 * var(--py)) calc(-1 * var(--px));
@@ -9176,4 +9188,50 @@ html:active-view-transition-type(bi-wipe)::view-transition-new(root) {
 
 @media (prefers-reduced-motion: reduce) {
   .cv-btn, .cv-btn__text, .cv-btn__icon, .cv-btn__done { transition: none; }
+}
+
+/* contador das pastas ("7 ferramentas"): simples e limpo — sem ponto
+   pulsante e sem mono; so o texto discreto sob o nome da pasta */
+.skills-tiles .status-dot { display: none; }
+.skills-tiles .folder-detail {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--text-hint);
+}
+
+/* rotulo do botao de curriculo centrado OTICAMENTE: apara a caixa da
+   linha na altura das maiusculas e na linha de base (sem o espaco de
+   acento/descendente que deixava o texto alto) */
+.cv-btn__text span,
+.cv-btn__done { line-height: 1; }
+@supports (text-box: trim-both cap alphabetic) {
+  .cv-btn__text span,
+  .cv-btn__done { text-box: trim-both cap alphabetic; }
+}
+@supports not (text-box: trim-both cap alphabetic) {
+  .cv-btn__text span { transform: translateY(1px); }
+}
+
+/* PASTAS — espiada no hover: a tampa inclina de leve e os arquivos sobem
+   um pouco, ainda dentro, abrindo um leque discreto. No clique, os mesmos
+   arquivos saem daqui com a animacao de abrir de sempre. */
+.skills-tiles .folder-front__bottom { align-items: flex-start; text-align: left; }
+@media (hover: hover) and (pointer: fine) {
+  .skills-tiles .skill-folder:not(.open):has(.folder-btn:hover) .ff-file {
+    --ff-x: calc(var(--off) * 15px);
+    --ff-y: calc(-50px - var(--arch, 0) * 8px);
+    --ff-r: calc(var(--off) * 2deg);
+    visibility: visible;
+    transition:
+      --ff-y .5s cubic-bezier(.22, 1, .36, 1) calc(var(--fd, 0s) * .5),
+      --ff-x .5s cubic-bezier(.22, 1, .36, 1) calc(var(--fd, 0s) * .5),
+      --ff-r .5s cubic-bezier(.22, 1, .36, 1) calc(var(--fd, 0s) * .5),
+      visibility 0s,
+      scale .18s cubic-bezier(.22, 1, .36, 1);
+  }
+  .skills-tiles .skill-folder:not(.open) .folder-btn:hover .folder-front {
+    transform: translateZ(1px) rotateX(-16deg);
+  }
 }

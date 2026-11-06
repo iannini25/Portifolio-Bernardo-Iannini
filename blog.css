@@ -1085,7 +1085,7 @@
 
 .admin-brand-title em {
   font-style: italic;
-  font-family: "Instrument Serif", Georgia, serif;
+  font-family: Brier, Arial, sans-serif;
   font-weight: 400;
   color: var(--lime);
 }
@@ -1402,7 +1402,7 @@
 
 .admin-title em {
   font-style: italic;
-  font-family: "Instrument Serif", Georgia, serif;
+  font-family: Brier, Arial, sans-serif;
   font-weight: 400;
   color: var(--lime);
 }
@@ -2949,7 +2949,7 @@
      + uma vinheta leve por baixo (clima da contact-hero).
    - Acento OFICIAL: linear-gradient(135deg, #22c55e 0%, #a3e635 100%).
      Verde = primário, --svc-color (lime #a3e635) = secundário.
-   - Tipografia: Inter (display/body) + Instrument Serif (frase em
+   - Tipografia: Inter (display/body) + Brier (frase em
      destaque, igual landing/contact).
    ===================================================================== */
 
@@ -3114,7 +3114,7 @@ body.post-body {
   word-break: normal;
 }
 .post-page-title em {
-  font-family: "Instrument Serif", "Playfair Display", Georgia, serif;
+  font-family: Brier, Arial, sans-serif;
   font-style: italic;
   font-weight: 400;
   font-size: 1.06em;
@@ -3125,7 +3125,7 @@ body.post-body {
 
 .post-page-subtitle {
   margin: 0;
-  font-family: "Instrument Serif", "Playfair Display", Georgia, serif;
+  font-family: Brier, Arial, sans-serif;
   font-style: italic;
   font-size: clamp(17px, 1.9vw, 22px);
   line-height: 1.5;
@@ -3266,7 +3266,7 @@ body.post-body {
 
 .post-page-body strong { color: var(--text); font-weight: 700; }
 .post-page-body em {
-  font-family: "Instrument Serif", Georgia, serif;
+  font-family: Brier, Arial, sans-serif;
   font-style: italic;
   color: var(--green);
 }
@@ -3330,7 +3330,7 @@ body.post-body {
   background: linear-gradient(90deg, var(--g-10), transparent 80%);
   border-radius: 0 14px 14px 0;
   color: var(--text);
-  font-family: "Instrument Serif", Georgia, serif;
+  font-family: Brier, Arial, sans-serif;
   font-style: italic;
   font-size: clamp(17px, 2vw, 20px);
   line-height: 1.55;
