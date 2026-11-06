@@ -365,6 +365,25 @@ document.querySelectorAll('a[data-scroll]').forEach(a => {
 })();
 
 /* =========================================================
+   PHOTO — o liquido nunca e igual: a cada entrada do mouse sorteia a
+   fase das tres ondas, o desnivel entre elas e a correnteza (velocidade
+   e sentido). So escreve variaveis CSS; o resto e o CSS da .photo.
+   ========================================================= */
+(function photoLiquid() {
+  const photo = document.querySelector('.hero .photo');
+  if (!photo) return;
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  photo.addEventListener('pointerenter', () => {
+    photo.style.setProperty('--p1', rnd(0, 100).toFixed(1) + '%');
+    photo.style.setProperty('--p2', rnd(0, 100).toFixed(1) + '%');
+    photo.style.setProperty('--p3', rnd(0, 100).toFixed(1) + '%');
+    photo.style.setProperty('--d2', rnd(-3, 4).toFixed(1) + '%');
+    photo.style.animationDuration = rnd(1.5, 2.6).toFixed(2) + 's';
+    photo.style.animationDirection = Math.random() < .5 ? 'normal' : 'reverse';
+  });
+})();
+
+/* =========================================================
    BOTAO DE CURRICULO — monta as camadas do hover/clique (CSS .cv-btn).
    O <span data-i18n> do rotulo e mantido intacto (a traducao continua
    trocando o texto). O download acontece normal; a animacao e so visual.

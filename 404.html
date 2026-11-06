@@ -31,7 +31,11 @@
 
   <style>
     /* ---------- fundo: brilho lime + grade fina + vinheta ---------- */
-    .nf-body { min-height: 100vh; min-height: 100dvh; overflow-x: hidden; }
+    /* TELA UNICA: a pagina tem exatamente a altura da janela e nunca rola.
+       O conteudo escala por largura E altura (min(vw, vh)), entao cabe
+       inteiro em qualquer tela, do celular deitado ao monitor grande. */
+    html, .nf-body { height: 100%; overflow: hidden; }
+    .nf-body { --hdr: 112px; margin: 0; }
     .nf-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; background: var(--bg); }
     .nf-bg::before {
       content: "";
@@ -55,13 +59,16 @@
     }
 
     /* ---------- conteudo ---------- */
+    /* centro real da tela: a mesma folga em cima (navbar) e embaixo */
     .nf-main {
-      min-height: 100vh;
-      min-height: 100dvh;
+      position: fixed;
+      inset: 0;
       display: grid;
       place-items: center;
-      padding: 140px 20px 64px;
+      padding: var(--hdr) 20px var(--hdr);
+      padding-bottom: max(var(--hdr), env(safe-area-inset-bottom));
       text-align: center;
+      overflow: hidden;
     }
     .nf-card { display: flex; flex-direction: column; align-items: center; max-width: 640px; }
 
@@ -92,9 +99,9 @@
       display: flex;
       align-items: center;
       gap: clamp(8px, 2vw, 18px);
-      margin: 26px 0 8px;
+      margin: clamp(12px, 3vh, 28px) 0 clamp(4px, 1vh, 8px);
       font-weight: 900;
-      font-size: clamp(110px, 24vw, 230px);
+      font-size: clamp(72px, min(24vw, 27vh), 230px);
       line-height: .8;
       letter-spacing: -.06em;
       color: var(--text);
@@ -117,8 +124,8 @@
     .nf-zero .nf-tr.t2 { animation-delay: .3s; }
 
     .nf-title {
-      margin: 22px 0 0;
-      font-size: clamp(26px, 4.4vw, 44px);
+      margin: clamp(12px, 2.6vh, 24px) 0 0;
+      font-size: clamp(22px, min(4.4vw, 5.2vh), 44px);
       font-weight: 900;
       line-height: 1.02;
       letter-spacing: -.02em;
@@ -127,19 +134,19 @@
     }
     .nf-title em { font-style: normal; color: var(--lime); }
     .nf-text {
-      margin: 14px auto 0;
+      margin: clamp(8px, 1.6vh, 14px) auto 0;
       max-width: 440px;
-      font-size: 16px;
+      font-size: clamp(14px, 1.9vh, 16px);
       line-height: 1.6;
       color: var(--text-hint);
     }
 
-    .nf-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 28px; }
+    .nf-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: clamp(16px, 3.2vh, 30px); }
     .nf-btn {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      height: 50px;
+      height: clamp(44px, 6vh, 50px);
       padding: 0 22px;
       border-radius: 999px;
       font-size: 15px;
@@ -169,7 +176,7 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 6px 18px;
-      margin-top: 26px;
+      margin-top: clamp(14px, 2.8vh, 26px);
       font-size: 14px;
       font-weight: 600;
       color: var(--text-hint);
@@ -190,12 +197,25 @@
     @keyframes nf-blink { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
     @keyframes nf-float { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-5px) rotate(-6deg); } }
 
+    /* celular: a navbar some, entao a folga cai; botoes em coluna */
+    @media (max-width: 900px) { .nf-body { --hdr: 28px; } }
     @media (max-width: 600px) {
-      .nf-main { padding: 120px 20px calc(48px + env(safe-area-inset-bottom)); }
+      .nf-card { width: 100%; max-width: 420px; }
       .nf-actions { flex-direction: column; align-items: stretch; width: 100%; }
       .nf-btn { justify-content: center; }
-      .nf-text { font-size: 15px; }
     }
+    /* tela baixa (notebook pequeno, celular deitado): botoes lado a lado e
+       os itens secundarios saem por etapas, nunca cortando o principal */
+    @media (max-height: 640px) {
+      .nf-actions { flex-direction: row; align-items: center; width: auto; }
+      .nf-links { display: none; }
+    }
+    @media (max-height: 520px) {
+      .nf-body { --hdr: 16px; }
+      header { display: none; }
+      .nf-text { display: none; }
+    }
+    @media (max-height: 380px) { .nf-kicker { display: none; } }
     @media (prefers-reduced-motion: reduce) {
       .nf-in { animation: none; opacity: 1; }
       .nf-zero .nf-dot, .nf-zero .nf-tr, .nf-kicker::before { animation: none; }

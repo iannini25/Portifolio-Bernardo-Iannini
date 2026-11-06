@@ -474,16 +474,19 @@ body.pc-nav-hidden header {
 }
 /* ===== Photo — troca LIQUIDA no hover (enchendo de baixo pra cima).
    A silhueta e uma mascara FIXA no formato do recorte: o contorno nunca
-   muda. Ao passar o mouse, a foto B sobe como liquido num copo: uma onda
-   (SVG) com a superficie correndo de lado sobe ate cobrir a imagem
-   inteira, com uma frente lime fina na crista. Mouse em cima = fica a B.
-   Saiu = o liquido escoa e volta a A. So variaveis registradas mudam
-   (--wy sobe/desce; --wx/--wx2 correm a onda, e so durante o hover). ===== */
+   muda. Ao passar o mouse, a foto B sobe como liquido: tres ondas somadas
+   (a principal, uma secundaria de outro comprimento e uma ondulacao fina
+   na superficie) sobem ate cobrir a imagem inteira, com uma crista lime
+   fina. Mouse em cima = fica a B; saiu = o liquido escoa e volta a A.
+   A cada hover o JS sorteia fase das ondas, desnivel, velocidade e sentido
+   da correnteza: nunca e exatamente igual. ===== */
 @property --wy  { syntax: '<percentage>'; inherits: true; initial-value: 0%; }
 @property --wx  { syntax: '<percentage>'; inherits: true; initial-value: 0%; }
 @property --wx2 { syntax: '<percentage>'; inherits: true; initial-value: 0%; }
 .photo {
-  --wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 240' preserveAspectRatio='none'%3E%3Cpath d='M0 120C25 108 25 108 50 120S75 132 100 120 125 108 150 120 175 132 200 120V240H0Z'/%3E%3C/svg%3E");
+  --wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 240' preserveAspectRatio='none'%3E%3Cpath d='M0 120C25 109 25 109 50 120S75 131 100 120C125 109 125 109 150 120S175 131 200 120V240H0Z'/%3E%3C/svg%3E");
+  --ripple: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 240' preserveAspectRatio='none'%3E%3Cpath d='M0 120C8.33333 116 8.33333 116 16.6667 120S25 124 33.3333 120C41.6667 116 41.6667 116 50 120S58.3333 124 66.6667 120C75 116 75 116 83.3333 120S91.6667 124 100 120C108.333 116 108.333 116 116.667 120S125 124 133.333 120C141.667 116 141.667 116 150 120S158.333 124 166.667 120C175 116 175 116 183.333 120S191.667 124 200 120V240H0Z'/%3E%3C/svg%3E");
+  --p1: 0%; --p2: 37%; --p3: 18%; --d2: 2%;
   width: clamp(420px, 37vw, 500px);
   height: auto;
   position: relative;
@@ -492,18 +495,18 @@ body.pc-nav-hidden header {
   cursor: pointer;
   -webkit-mask: url("img/eufoto1.webp") 0 0 / 100% 100% no-repeat;
           mask: url("img/eufoto1.webp") 0 0 / 100% 100% no-repeat;
-  /* escoando: comeca rapido e assenta */
-  transition: --wy .8s cubic-bezier(.5, 0, .25, 1);
-  animation: photo-wave 2.4s linear infinite paused;
+  /* escoando: solta rapido e assenta macio */
+  transition: --wy .6s cubic-bezier(.45, 0, .2, 1);
+  animation: photo-wave 2s linear infinite paused;
 }
 .photo:hover {
   --wy: 100%;
-  /* enchendo: arranca suave, acelera e assenta macio no topo */
-  transition: --wy 1s cubic-bezier(.62, .02, .22, 1);
+  /* enchendo: arranque suave, meio rapido, chegada macia no topo */
+  transition: --wy .75s cubic-bezier(.33, 0, .15, 1);
   animation-play-state: running;
 }
-/* a superficie corre: camada 1 pra esquerda (1 periodo), camada 2 pra
-   direita num periodo diferente — as duas ondas se cruzam = liquido */
+/* a superficie corre (camada 1 e a ondulacao num sentido, camada 2 no
+   outro, num periodo diferente) — as ondas se cruzam = liquido vivo */
 @keyframes photo-wave { to { --wx: 100%; --wx2: -175%; } }
 /* notebook pequeno / tablet deitado (1025-1240px): a coluna é a tela
    inteira, sem margem lateral — foto e espaços menores pra rail caber */
@@ -528,37 +531,38 @@ body.pc-nav-hidden header {
   /* sem eventos diretos no <img> — o hover continua via .photo (pai) */
   pointer-events: none;
   backface-visibility: hidden;
-  transition: transform 1.1s cubic-bezier(.22, 1, .36, 1);
+  transition: transform .9s cubic-bezier(.22, 1, .36, 1);
 }
 .photo:hover .photo__img--a { transform: scale(1.05); }
-/* B: o liquido. Duas ondas somadas (a mais alta manda na borda). */
+/* B: o liquido — uniao das tres ondas (a mais alta manda na borda) */
 .photo__img--b {
-  transform: scale(1.08);
+  transform: scale(1.07);
   -webkit-mask:
-    var(--wave) var(--wx) var(--wy) / 200% 240% repeat-x,
-    var(--wave) var(--wx2) calc(var(--wy) - 2%) / 140% 240% repeat-x;
+    var(--wave)   calc(var(--wx) + var(--p1))  var(--wy) / 200% 240% repeat-x,
+    var(--wave)   calc(var(--wx2) + var(--p2)) calc(var(--wy) - var(--d2)) / 140% 240% repeat-x,
+    var(--ripple) calc(var(--wx) + var(--p3))  calc(var(--wy) + .8%) / 200% 240% repeat-x;
           mask:
-    var(--wave) var(--wx) var(--wy) / 200% 240% repeat-x,
-    var(--wave) var(--wx2) calc(var(--wy) - 2%) / 140% 240% repeat-x;
+    var(--wave)   calc(var(--wx) + var(--p1))  var(--wy) / 200% 240% repeat-x,
+    var(--wave)   calc(var(--wx2) + var(--p2)) calc(var(--wy) - var(--d2)) / 140% 240% repeat-x,
+    var(--ripple) calc(var(--wx) + var(--p3))  calc(var(--wy) + .8%) / 200% 240% repeat-x;
 }
 .photo:hover .photo__img--b { transform: scale(1); }
-/* frente lime: a MESMA onda da foto, 5% a frente, menos a onda da foto =
-   uma faixa de espessura constante na crista */
+/* crista lime fina: a onda principal 2% a frente, menos ela mesma */
 .photo__sweep {
   display: block;
   position: absolute;
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  background: linear-gradient(180deg, var(--lime), #d9f99d);
-  opacity: .9;
+  background: linear-gradient(180deg, #d9f99d, var(--lime));
+  opacity: .75;
   -webkit-mask:
-    var(--wave) var(--wx) calc(var(--wy) + 3.5%) / 200% 240% repeat-x,
-    var(--wave) var(--wx) var(--wy) / 200% 240% repeat-x;
+    var(--wave) calc(var(--wx) + var(--p1)) calc(var(--wy) + 2%) / 200% 240% repeat-x,
+    var(--wave) calc(var(--wx) + var(--p1)) var(--wy) / 200% 240% repeat-x;
   -webkit-mask-composite: source-out;
           mask:
-    var(--wave) var(--wx) calc(var(--wy) + 3.5%) / 200% 240% repeat-x,
-    var(--wave) var(--wx) var(--wy) / 200% 240% repeat-x;
+    var(--wave) calc(var(--wx) + var(--p1)) calc(var(--wy) + 2%) / 200% 240% repeat-x,
+    var(--wave) calc(var(--wx) + var(--p1)) var(--wy) / 200% 240% repeat-x;
           mask-composite: subtract;
 }
 
@@ -681,37 +685,58 @@ body.pc-nav-hidden header {
 .sbtn:hover { transform: translateY(-2px); border-color: color-mix(in oklab, var(--green) 60%, var(--border)); background: linear-gradient(var(--g-15), var(--g-15)), var(--rail) }
 .sbtn svg { width: 18px; height: 18px; fill: var(--text); transition: .2s fill }
 .sbtn:hover svg { fill: var(--lime) }
-/* Scroll cue — circulo fino com uma seta simples. A seta desce e volta
-   (so transform), o circulo acende em lime no hover. */
+/* Scroll cue — indicador de rolagem: rotulo pequeno e espacado em cima e
+   uma linha fina onde um traco lime desce em loop (so transform). No
+   hover o rotulo e o trilho acendem em lime. */
 .scroll-cue {
   grid-column: 1 / -1;
   justify-self: center;
   margin-top: -90px;
-  display: grid;
-  place-items: center;
-  width: 46px;
-  height: 46px;
-  padding: 0;
-  border-radius: 50%;
-  border: 1px solid var(--w-12);
-  background: transparent;
-  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 10px;
+  border: 0;
+  background: none;
+  color: var(--text-hint);
   cursor: pointer;
-  transition: border-color .25s ease, background-color .25s ease, color .25s ease;
 }
-.scroll-cue__chev {
-  width: 18px;
-  height: 18px;
+.scroll-cue__label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  padding-left: .24em;               /* compensa o espaco do tracking */
+  transition: color .25s ease;
+}
+.scroll-cue__line {
+  position: relative;
   display: block;
-  animation: scroll-cue-nudge 2.2s cubic-bezier(.45,0,.25,1) infinite;
+  width: 1px;
+  height: 46px;
+  overflow: hidden;
+  background: var(--w-12);
+  transition: background-color .25s ease;
 }
-.scroll-cue:hover { border-color: var(--lime); background: var(--lime); color: #0e0e0e; }
-.scroll-cue:focus-visible { outline: 2px solid var(--lime); outline-offset: 4px; }
-@keyframes scroll-cue-nudge {
-  0%, 100% { transform: translateY(-2px); }
-  50%      { transform: translateY(3px); }
+.scroll-cue__line::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 45%;
+  background: linear-gradient(180deg, transparent, var(--lime));
+  animation: scroll-cue-drop 2s cubic-bezier(.65, 0, .35, 1) infinite;
 }
-@media (prefers-reduced-motion: reduce) { .scroll-cue__chev { animation: none; } }
+.scroll-cue:hover .scroll-cue__label { color: var(--lime); }
+.scroll-cue:hover .scroll-cue__line { background: color-mix(in oklab, var(--lime) 35%, transparent); }
+.scroll-cue:focus-visible { outline: 2px solid var(--lime); outline-offset: 4px; border-radius: 8px; }
+@keyframes scroll-cue-drop {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(230%); }
+}
+@media (prefers-reduced-motion: reduce) { .scroll-cue__line::after { animation: none; transform: translateY(60%); } }
 
 /* =============================
    3) ABOUT (TERMINAL + SIDE PANEL)
