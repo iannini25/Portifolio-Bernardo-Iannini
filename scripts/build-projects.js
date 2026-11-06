@@ -418,7 +418,7 @@ function page(p, lang, others, I18N, SHELL, PC) {
   let metaDesc = String(p.desc || answerBlock(p)).replace(/\s+/g, ' ').trim();
   if (metaDesc.length > 160) metaDesc = metaDesc.slice(0, 157).replace(/[\s,;:]+$/, '') + '…';
 
-  const title = `${p.title} · Bernardo Iannini`;
+  const title = `${p.title.replace(/ · /g, ' | ')} | Bernardo Iannini`;
 
   return `<!DOCTYPE html>
 <html lang="${t.htmlLang}">

@@ -176,20 +176,28 @@
   function buildWires() {
     if (!hasDraw()) return;
 
-    /* About: fio ondulado que nasce na esquerda e ACABA aqui, no centro
-       inferior da propria section — este e o unico fio glow do site.
-       O draw termina quando a borda inferior de about cruza os 70% do
-       viewport. */
+    /* About: TRILHO DE PROGRESSO (substitui o antigo fio ondulado com glow).
+       Linha fina na lateral esquerda; um traco lime enche com o scroll e
+       acende 4 quadradinhos inclinados (o ponto do "i" da marca) quando
+       passa por eles. So transform/classe: nada repinta pesado. */
     const about = document.querySelector('#sobre');
-    if (about) {
+    if (about && !about.querySelector('.about-rail')) {
       about.classList.add('wire-host');
-      const path = makeWire(about, '0 0 100 1000',
-        'M7,-10 C2,140 15,240 8,400 C3,540 14,640 26,740 C40,830 50,850 50,1012',
-        'glow-wire--about');
-      gsap.fromTo(path, { drawSVG: '0% 0%' }, {
-        drawSVG: '0% 100%',
+      const rail = document.createElement('div');
+      rail.className = 'about-rail';
+      rail.setAttribute('aria-hidden', 'true');
+      rail.innerHTML = '<span class="about-rail__fill"></span>' +
+        [0, 1, 2, 3].map(i => `<i class="about-rail__node" style="--p:${i / 3}"></i>`).join('');
+      about.prepend(rail);
+      const fill = rail.querySelector('.about-rail__fill');
+      const nodes = [...rail.querySelectorAll('.about-rail__node')];
+      gsap.fromTo(fill, { scaleY: 0 }, {
+        scaleY: 1,
         ease: 'none',
-        scrollTrigger: { trigger: about, start: 'top 80%', end: 'bottom 70%', ...SCR(.6) },
+        scrollTrigger: {
+          trigger: about, start: 'top 75%', end: 'bottom 70%', ...SCR(.6),
+          onUpdate: (st) => nodes.forEach((n, i) => n.classList.toggle('is-on', st.progress >= i / 3 - .001)),
+        },
       });
     }
 

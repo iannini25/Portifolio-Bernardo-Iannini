@@ -29,6 +29,15 @@ const { loadI18N, SITE_URL, PERSON } = require('./build-projects.js');
 const { localizeStatic, tagHeaderLabels } = require('./lib/i18n-static');
 
 const ROOT = path.resolve(__dirname, '..');
+
+/* NAVBAR UNICA: o mesmo <header> do project.html (o das paginas internas),
+   pra Sobre ter exatamente a navbar do resto do site. */
+const NAV_HEADER = (() => {
+  const src = fs.readFileSync(path.join(ROOT, 'project.html'), 'utf8');
+  const a = src.indexOf('<header>'), z = src.indexOf('</header>') + '</header>'.length;
+  if (a < 0 || z < a) throw new Error('header nao encontrado em project.html');
+  return src.slice(a, z);
+})();
 const SITE = SITE_URL + '/#site';
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({
@@ -76,7 +85,7 @@ const BIO = {
 const T = {
   pt: {
     file: 'sobre.html', url: '/sobre.html', htmlLang: 'pt-BR', locale: 'pt_BR',
-    title: 'Sobre Bernardo Iannini · Desenvolvedor Full Stack em Belo Horizonte',
+    title: 'Sobre Bernardo Iannini | Desenvolvedor Full Stack em Belo Horizonte',
     h1: 'Sobre Bernardo Iannini',
     navHome: 'Início', navWork: 'Trabalhos', navBlog: 'Blog', navContact: 'Contato',
     sTrajetoria: 'A trajetória', sEsp: 'Especialidades', sExp: 'Experiência',
@@ -87,7 +96,7 @@ const T = {
   },
   en: {
     file: path.join('en', 'about.html'), url: '/en/about.html', htmlLang: 'en', locale: 'en_US',
-    title: 'About Bernardo Iannini · Full Stack Developer in Belo Horizonte',
+    title: 'About Bernardo Iannini | Full Stack Developer in Belo Horizonte',
     h1: 'About Bernardo Iannini',
     navHome: 'Home', navWork: 'Work', navBlog: 'Blog', navContact: 'Contact',
     sTrajetoria: 'The path', sEsp: 'Specialties', sExp: 'Experience',
@@ -296,18 +305,7 @@ ${graph(lang, t, faqs)}
 </head>
 
 <body class="ab-body">
-  <header>
-    <div class="nav">
-      <div class="nav-center">
-        <nav class="pill">
-          <a href="/">${esc(t.navHome)}</a>
-          <a href="/#projects">${esc(t.navWork)}</a>
-          <a href="/blog.html" class="nav-blog-link">${esc(t.navBlog)}</a>
-          <a href="/#contato">${esc(t.navContact)}</a>
-        </nav>
-      </div>
-    </div>
-  </header>
+  ${NAV_HEADER}
 
   <main class="ab-main">
     <article>

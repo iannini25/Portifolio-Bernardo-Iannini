@@ -33,7 +33,7 @@ const ROOT = path.resolve(__dirname, '..');
 const OUT  = path.join(ROOT, 'pt', 'index.html');
 
 const META = {
-  title: 'Bernardo Iannini · Desenvolvedor Full Stack &amp; AI Designer',
+  title: 'Bernardo Iannini | Desenvolvedor Full Stack &amp; AI Designer',
   description: 'Bernardo Iannini é desenvolvedor Full Stack e AI Designer em Belo Horizonte, criando sistemas completos da arquitetura à produção: SaaS, fintech, ERPs e IA.',
   ogDescription: 'Portfólio de Bernardo Iannini, desenvolvedor Full Stack e AI Designer de Belo Horizonte: projetos, serviços, experiência e blog.',
   twDescription: 'Projetos, serviços, experiência e blog de Bernardo Iannini, desenvolvedor Full Stack de Belo Horizonte.',

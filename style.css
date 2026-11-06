@@ -9262,3 +9262,44 @@ html:active-view-transition-type(bi-wipe)::view-transition-new(root) {
 }
 @media (min-width: 901px) and (max-width: 1280px) { :root { --nav-ctl-h: 44px; } }
 @media (min-width: 901px) and (max-width: 1080px) { :root { --nav-ctl-h: 40px; } }
+
+/* SOBRE — trilho de progresso (substitui o fio ondulado com glow).
+   Linha fina na lateral; o traco lime enche com o scroll (scaleY via
+   scrollfx) e os quadradinhos — o ponto do "i" — acendem ao passar. */
+.about-rail {
+  position: absolute;
+  top: 140px;
+  bottom: 140px;
+  left: clamp(-90px, calc((1120px - 100vw) / 2 + 28px), 0px);
+  width: 1px;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent, var(--w-08) 8%, var(--w-08) 92%, transparent);
+}
+.about-rail__fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 0;
+  transform: scaleY(0);
+  background: linear-gradient(180deg, transparent, var(--lime) 12%);
+}
+.about-rail__node {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--p) * 100%);
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  border-radius: 2px;
+  rotate: -21deg;
+  background: var(--bg);
+  border: 1px solid var(--w-12);
+  transition: background-color .4s ease, border-color .4s ease, box-shadow .4s ease, scale .5s cubic-bezier(.34, 1.56, .64, 1);
+}
+.about-rail__node.is-on {
+  background: var(--lime);
+  border-color: var(--lime);
+  box-shadow: 0 0 12px rgba(163, 230, 53, .55);
+  scale: 1.15;
+}
+@media (max-width: 1024px) { .about-rail { display: none; } }
