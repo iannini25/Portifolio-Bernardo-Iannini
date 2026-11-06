@@ -342,21 +342,6 @@ document.querySelectorAll('a[data-scroll]').forEach(a => {
   });
 })();
 
-/* =========================================================
-   PHOTO — a gota liquida (CSS) nasce no ponto onde o cursor entra
-   (e recolhe pro ponto onde ele sai). Escreve so --lx/--ly em %.
-   ========================================================= */
-(function () {
-  const photo = document.querySelector('.hero .photo');
-  if (!photo) return;
-  const origin = (e) => {
-    const r = photo.getBoundingClientRect();
-    photo.style.setProperty('--lx', (((e.clientX - r.left) / r.width) * 100).toFixed(1) + '%');
-    photo.style.setProperty('--ly', (((e.clientY - r.top) / r.height) * 100).toFixed(1) + '%');
-  };
-  photo.addEventListener('pointerenter', origin);
-  photo.addEventListener('pointerleave', origin);
-})();
 
 /* =========================================================
    SCROLL CUE — rola da hero para a próxima section ao clicar
