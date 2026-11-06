@@ -66,74 +66,88 @@
        safe-area respeitada. CSS/JS inline de proposito (pinta no 1o
        frame, zero download). So na 1a visita da sessao. -->
   <style id="bi-intro-css">
-    #bi-intro{--lime-i:#d4ff3a;--ink-i:#0e0e0e;--ih:clamp(130px,21vh,200px);position:fixed;inset:0;z-index:2147483000}
+    #bi-intro{--lime-i:#d4ff3a;--ink-i:#0e0e0e;--ih:clamp(130px,21vh,200px);
+      --out-expo:cubic-bezier(.16,1,.3,1);position:fixed;inset:0;z-index:2147483000}
     html.bi-intro-lock,html.bi-intro-lock body{overflow:hidden}
-    /* origem do zoom = centro da haste do "i" (contas em cima do viewBox) */
-    #bi-intro .bi-panel{position:absolute;inset:0;background:var(--lime-i);color:var(--ink-i);
+    /* camada ja composta desde o 1o frame (will-change): o zoom final so
+       escala uma textura pronta, sem re-rasterizar no meio = sem travar */
+    #bi-intro .bi-panel{position:absolute;inset:0;background:var(--lime-i);color:var(--ink-i);will-change:transform;
       transform-origin:calc(50% - var(--ih) * .0877) calc(50% + var(--ih) * .187);
-      transition:transform 1.15s cubic-bezier(.7,0,.2,1)}
-    /* 1) o furo no formato do "i" entra EXATAMENTE sobre o logo (mesmo
-          tamanho/posicao), entao a troca e invisivel; 2) o painel escala */
-    #bi-intro.is-zoom .bi-panel{will-change:transform;
+      transition:transform 1.25s cubic-bezier(.86,0,.12,1)}
+    /* furo no formato do "i", exatamente sobre o logo: troca invisivel */
+    #bi-intro.is-zoom .bi-panel{
       -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='94' height='154' viewBox='62 16 94 154'%3E%3Cg transform='rotate(-21 95.5 47.5)'%3E%3Crect x='77' y='29' width='37' height='37' rx='2.5'/%3E%3C/g%3E%3Cpath d='M71 97.5 120 79.5V166H71Z'/%3E%3C/svg%3E") 50% calc(50% - var(--ih) * .04)/auto var(--ih) no-repeat,linear-gradient(#000 0 0);
       -webkit-mask-composite:xor;
       mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='94' height='154' viewBox='62 16 94 154'%3E%3Cg transform='rotate(-21 95.5 47.5)'%3E%3Crect x='77' y='29' width='37' height='37' rx='2.5'/%3E%3C/g%3E%3Cpath d='M71 97.5 120 79.5V166H71Z'/%3E%3C/svg%3E") 50% calc(50% - var(--ih) * .04)/auto var(--ih) no-repeat,linear-gradient(#000 0 0);
       mask-composite:exclude}
-    #bi-intro.is-zoom .bi-logo{opacity:0;transition:none}
-    #bi-intro.is-zoom .bi-meta,#bi-intro.is-zoom .bi-count{opacity:0;transition:opacity .25s ease;animation:none}
+    #bi-intro.is-zoom .bi-logo{visibility:hidden}
+    #bi-intro.is-zoom .bi-meta,#bi-intro.is-zoom .bi-count{opacity:0;transform:translateY(6px);
+      transition:opacity .3s ease,transform .3s ease;animation:none}
     #bi-intro.is-out{pointer-events:none}
-    #bi-intro.is-out .bi-panel{transform:scale(70)}
+    #bi-intro.is-out .bi-panel{transform:scale(60)}
 
-    #bi-intro .bi-logo{position:absolute;left:50%;top:50%;height:var(--ih);width:auto;overflow:visible;
-      transform:translate(-50%,-54%)}
-    #bi-intro .bi-stem,#bi-intro .bi-dot,#bi-intro .bi-tr{transform-box:fill-box}
-    #bi-intro .bi-stem{fill:var(--ink-i);transform-origin:50% 100%;transform:scaleY(0);
-      animation:bi-stem .8s cubic-bezier(.7,0,.2,1) .15s forwards}
-    #bi-intro .bi-dot{fill:var(--ink-i);transform-origin:50% 50%;opacity:0;
-      animation:bi-dot .95s cubic-bezier(.3,1.25,.4,1) .7s forwards}
-    #bi-intro .bi-tr{fill:var(--ink-i);opacity:0;transform-origin:50% 50%}
-    #bi-intro .bi-tr.t1{animation:bi-tr-in .4s ease 1.35s forwards,bi-blink 1s ease-in-out 1.75s infinite}
-    #bi-intro .bi-tr.t2{animation:bi-tr-in .4s ease 1.45s forwards,bi-blink 1s ease-in-out 1.95s infinite}
+    #bi-intro .bi-logo{position:absolute;left:50%;top:50%;height:var(--ih);width:auto;overflow:visible;transform:translate(-50%,-54%)}
+    #bi-intro .bi-stem,#bi-intro .bi-dot,#bi-intro .bi-tr{transform-box:fill-box;fill:var(--ink-i)}
+    /* haste cresce de baixo; ponto desce e assenta; rastro acende e respira */
+    #bi-intro .bi-stem{transform-origin:50% 100%;transform:scaleY(0);
+      animation:bi-stem 1s var(--out-expo) .2s forwards}
+    #bi-intro .bi-dot{transform-origin:50% 50%;opacity:0;
+      animation:bi-dot 1s var(--out-expo) .6s forwards}
+    #bi-intro .bi-tr{opacity:0}
+    #bi-intro .bi-tr.t1{animation:bi-tr-in .7s ease-out 1.15s forwards,bi-breathe 1.8s ease-in-out 1.85s infinite}
+    #bi-intro .bi-tr.t2{animation:bi-tr-in .7s ease-out 1.3s forwards,bi-breathe 1.8s ease-in-out 2.15s infinite}
     @keyframes bi-stem{to{transform:scaleY(1)}}
-    @keyframes bi-dot{0%{opacity:0;transform:translate(60px,-90px) rotate(140deg) scale(.35)}
-      35%{opacity:1}100%{opacity:1;transform:none}}
-    @keyframes bi-dot-m{0%{opacity:0;transform:translateY(-140px) rotate(90deg) scale(.5)}
-      30%{opacity:1}100%{opacity:1;transform:none}}
-    @keyframes bi-tr-in{from{opacity:0;transform:translate(-10px,10px) scale(.4)}to{opacity:.6;transform:none}}
-    @keyframes bi-blink{0%,100%{opacity:.6}50%{opacity:.12}}
+    @keyframes bi-dot{from{opacity:0;transform:translateY(-34px) rotate(-18deg)}to{opacity:1;transform:none}}
+    @keyframes bi-tr-in{to{opacity:.55}}
+    @keyframes bi-breathe{0%,100%{opacity:.55}50%{opacity:.18}}
 
-    #bi-intro .bi-meta,#bi-intro .bi-count{position:absolute;bottom:clamp(24px,4.5vh,48px);
-      font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;opacity:0;animation:bi-fade .6s ease .35s forwards}
-    #bi-intro .bi-meta{left:clamp(24px,4vw,56px);display:flex;flex-direction:column;gap:4px;font-size:15px;line-height:1.2}
-    #bi-intro .bi-meta b{font-weight:900;text-transform:uppercase;letter-spacing:-.01em}
-    #bi-intro .bi-meta span{font-weight:500;opacity:.7}
-    #bi-intro .bi-count{right:clamp(24px,4vw,56px);font-size:clamp(72px,9vw,150px);font-weight:900;line-height:.8;
-      letter-spacing:-.06em;font-variant-numeric:tabular-nums}
-    #bi-intro .bi-count small{font-size:.32em;letter-spacing:0;vertical-align:top;margin-left:.08em}
-    @keyframes bi-fade{to{opacity:1}}
+    #bi-intro .bi-meta,#bi-intro .bi-count{position:absolute;bottom:clamp(24px,4.5vh,44px);
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px;line-height:1.25;
+      opacity:0;transform:translateY(8px);animation:bi-fade .9s var(--out-expo) .35s forwards}
+    #bi-intro .bi-meta{left:clamp(24px,4vw,56px);display:flex;flex-direction:column;gap:3px}
+    #bi-intro .bi-meta b{font-weight:800;text-transform:uppercase;letter-spacing:.01em}
+    #bi-intro .bi-meta span{font-weight:500;opacity:.65}
+    #bi-intro .bi-count{right:clamp(24px,4vw,56px);font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+    @keyframes bi-fade{to{opacity:1;transform:none}}
 
-    /* a home assenta com um zoom leve enquanto o "i" abre */
-    html.bi-intro-lock main{transform:scale(1.08);transform-origin:50% 50vh}
-    html.bi-intro-reveal main{transform-origin:50% 50vh;transition:transform 1.3s cubic-bezier(.22,1,.36,1) .15s !important}
-
-    /* celular: ponto cai na vertical, marca um pouco menor, contador
-       compacto alinhado com o nome, folga da barra de gestos */
     @media (max-width:700px){
       #bi-intro{--ih:clamp(110px,19vh,160px)}
-      #bi-intro .bi-dot{animation-name:bi-dot-m}
-      #bi-intro .bi-meta,#bi-intro .bi-count{bottom:calc(22px + env(safe-area-inset-bottom))}
-      #bi-intro .bi-meta{left:20px;font-size:13px}
-      #bi-intro .bi-count{right:20px;font-size:clamp(56px,17vw,80px)}
+      #bi-intro .bi-meta,#bi-intro .bi-count{bottom:calc(22px + env(safe-area-inset-bottom));font-size:13px}
+      #bi-intro .bi-meta{left:20px}
+      #bi-intro .bi-count{right:20px}
     }
     @media (prefers-reduced-motion:reduce){
       #bi-intro *{animation:none!important;transition:none!important}
-      #bi-intro .bi-stem,#bi-intro .bi-dot{transform:none;opacity:1}
-      #bi-intro .bi-tr{opacity:.6}
-      #bi-intro .bi-meta,#bi-intro .bi-count{opacity:1}
+      #bi-intro .bi-stem,#bi-intro .bi-dot,#bi-intro .bi-meta,#bi-intro .bi-count{transform:none;opacity:1}
+      #bi-intro .bi-tr{opacity:.55}
       #bi-intro{transition:opacity .4s ease}
       #bi-intro.is-out{opacity:0}
       #bi-intro.is-out .bi-panel{transform:none}
-      html.bi-intro-lock main{transform:none}
+    }
+
+    /* ENTRADA DA HERO — os elementos surgem em sequencia quando o "i" abre
+       (ou no 1o paint, se nao houver abertura). So opacity + as
+       propriedades individuais translate/scale: nao brigam com o transform
+       que o GSAP usa no parallax da foto/texto. */
+    html.bi-intro-lock .hero :is(.photo,.hello,.name>span,.tagline,.rail,.scroll-cue),
+    html.bi-intro-lock header .nav{opacity:0}
+    .hero .name>.green{display:inline-block}
+    html.hero-go .hero :is(.photo,.hello,.name>span,.tagline,.rail,.scroll-cue),
+    html.hero-go header .nav{animation:hero-up 1.1s cubic-bezier(.16,1,.3,1) both}
+    html.hero-go header .nav{animation-name:hero-down;animation-duration:.9s}
+    html.hero-go .hero .photo{animation-name:hero-photo;animation-duration:1.4s;animation-delay:.05s}
+    html.hero-go .hero .hello{animation-delay:.18s}
+    html.hero-go .hero .name>.green{animation-delay:.26s}
+    html.hero-go .hero .name>.break{animation-delay:.36s}
+    html.hero-go .hero .tagline{animation-delay:.5s}
+    html.hero-go .hero .rail{animation-delay:.6s}
+    html.hero-go .hero .scroll-cue{animation-delay:.75s}
+    @keyframes hero-up{from{opacity:0;translate:0 28px}to{opacity:1;translate:0 0}}
+    @keyframes hero-down{from{opacity:0;translate:0 -14px}to{opacity:1;translate:0 0}}
+    @keyframes hero-photo{from{opacity:0;scale:.92}to{opacity:1;scale:1}}
+    @media (prefers-reduced-motion:reduce){
+      html.hero-go .hero :is(.photo,.hello,.name>span,.tagline,.rail,.scroll-cue),
+      html.hero-go header .nav{animation:none}
     }
   </style>
   <style id="page-fx">
@@ -369,7 +383,7 @@
         <path class="bi-stem" d="M71 97.5 120 79.5V166H71Z"/>
       </svg>
       <div class="bi-meta"><b>Bernardo Iannini</b><span>Full Stack Developer</span></div>
-      <div class="bi-count"><b>0</b><small>%</small></div>
+      <div class="bi-count"><b>0</b>%</div>
     </div>
   </div>
   <script>
@@ -379,8 +393,12 @@
       var seen = false;
       try { seen = sessionStorage.getItem('bi-intro') === '1'; sessionStorage.setItem('bi-intro', '1'); } catch (e) {}
       /* ja viu nesta sessao, voltou pelo historico ou chegou por #ancora: sem abertura */
-      if (seen || (nav && nav.type === 'back_forward') || location.hash.length > 1) { el.parentNode.removeChild(el); return; }
       var root = document.documentElement;
+      if (seen || (nav && nav.type === 'back_forward') || location.hash.length > 1) {
+        el.parentNode.removeChild(el);
+        root.classList.add('hero-go');
+        return;
+      }
       root.classList.add('bi-intro-lock');
       /* a barra do navegador no celular acompanha a tela verde */
       var tc = document.querySelector('meta[name="theme-color"]'), tcOld = tc && tc.content;
@@ -390,18 +408,18 @@
       function out() {
         if (done) return; done = true;
         num.textContent = '100';
-        root.classList.add('bi-intro-reveal');
-        /* 1o frame: aplica o furo do "i" (troca invisivel); 2o: zoom */
+        /* 1o frame: aplica o furo do "i" (troca invisivel); 2o: zoom.
+           A hero comeca a surgir junto com a abertura da letra. */
         el.classList.add('is-zoom');
         requestAnimationFrame(function () { requestAnimationFrame(function () {
           el.classList.add('is-out');
-          root.classList.remove('bi-intro-lock');
+          setTimeout(function () {
+            root.classList.add('hero-go');
+            root.classList.remove('bi-intro-lock');
+          }, 380);
         }); });
         if (tc) tc.content = tcOld;
-        setTimeout(function () {
-          root.classList.remove('bi-intro-reveal');
-          if (el.parentNode) el.parentNode.removeChild(el);
-        }, 1500);
+        setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 1450);
       }
       /* contador: anda com o tempo, segura em 90 ate o load, fecha em 100 */
       function tick() {

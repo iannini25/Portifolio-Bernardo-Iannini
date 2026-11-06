@@ -472,15 +472,14 @@ body.pc-nav-hidden header {
   padding: 84px 20px 32px;
   position: relative; left: var(--hero-nudge);
 }
-/* ===== Photo — revelacao LIQUIDA no hover.
-   A silhueta e uma mascara FIXA no formato do recorte (alpha da foto A):
-   o contorno nunca muda; o zoom das fotos acontece so por dentro dela.
-   A foto B entra por uma gota que nasce onde o cursor entra, cresce com
-   a borda ondulando (3 elipses que orbitam = metaball barato) e segue o
-   mouse; um fio lime acompanha a borda. Ao sair, a gota se recolhe.
-   Custo: so a mascara da figura repinta durante a transicao. ===== */
-@property --lr  { syntax: '<percentage>'; inherits: true; initial-value: 0%; }
-@property --wob { syntax: '<angle>';      inherits: true; initial-value: 0deg; }
+/* ===== Photo — troca LIQUIDA no hover.
+   A silhueta e uma mascara FIXA no formato do recorte: o contorno nunca
+   muda. A foto B entra numa gota so, que nasce onde o cursor entra e cobre
+   a foto inteira em ~.7s. Largura e altura da gota crescem em ritmos
+   diferentes e passam um pouco do ponto (overshoot) — e isso que da o
+   balanco liquido. Ao sair, a gota recolhe mais rapido. ===== */
+@property --rx { syntax: '<percentage>'; inherits: true; initial-value: 0%; }
+@property --ry { syntax: '<percentage>'; inherits: true; initial-value: 0%; }
 .photo {
   --lx: 50%;
   --ly: 50%;
@@ -492,10 +491,17 @@ body.pc-nav-hidden header {
   cursor: pointer;
   -webkit-mask: url("img/eufoto1.webp") 0 0 / 100% 100% no-repeat;
           mask: url("img/eufoto1.webp") 0 0 / 100% 100% no-repeat;
-  transition: --lr 1.3s cubic-bezier(.5, .05, .2, 1);
+  transition:
+    --rx .45s cubic-bezier(.5, 0, .75, 0),
+    --ry .5s cubic-bezier(.5, 0, .75, 0);
 }
-.photo:hover { --lr: 150%; animation: photo-wobble 3.2s linear infinite; }
-@keyframes photo-wobble { to { --wob: 360deg; } }
+.photo:hover {
+  --rx: 300%;
+  --ry: 300%;
+  transition:
+    --rx .62s cubic-bezier(.3, 1.25, .5, 1),
+    --ry .74s cubic-bezier(.25, 1.35, .45, 1);
+}
 /* notebook pequeno / tablet deitado (1025-1240px): a coluna é a tela
    inteira, sem margem lateral — foto e espaços menores pra rail caber */
 @media (min-width: 1025px) and (max-width: 1240px) {
@@ -519,60 +525,19 @@ body.pc-nav-hidden header {
   /* sem eventos diretos no <img> — o hover continua via .photo (pai) */
   pointer-events: none;
   backface-visibility: hidden;
-  transition: transform 1.1s cubic-bezier(.22, 1, .36, 1);
+  transition: transform .8s cubic-bezier(.22, 1, .36, 1);
 }
-.photo__img--a { transform: scale(1); }
-.photo:hover .photo__img--a { transform: scale(1.07); }
-
-/* B: gota liquida. Tres elipses com centros orbitando o cursor em fases
-   diferentes; somadas (mask-composite add) formam uma borda organica. */
-.photo__img--b,
-.photo__sweep {
-  --c1x: calc(var(--lx) + cos(var(--wob)) * 7%);
-  --c1y: calc(var(--ly) + sin(var(--wob)) * 7%);
-  --c2x: calc(var(--lx) + cos(var(--wob) + 120deg) * 9%);
-  --c2y: calc(var(--ly) + sin(var(--wob) + 120deg) * 6%);
-  --c3x: calc(var(--lx) + cos(var(--wob) + 240deg) * 6%);
-  --c3y: calc(var(--ly) + sin(var(--wob) + 240deg) * 9%);
-}
+.photo:hover .photo__img--a { transform: scale(1.06); }
 .photo__img--b {
-  transform: scale(1.12);
-  -webkit-mask:
-    radial-gradient(calc(var(--lr) * .62) calc(var(--lr) * .58) at var(--c1x) var(--c1y), #000 72%, transparent 76%),
-    radial-gradient(calc(var(--lr) * .55) calc(var(--lr) * .6)  at var(--c2x) var(--c2y), #000 72%, transparent 76%),
-    radial-gradient(calc(var(--lr) * .58) calc(var(--lr) * .52) at var(--c3x) var(--c3y), #000 72%, transparent 76%);
-  -webkit-mask-composite: source-over;
-          mask:
-    radial-gradient(calc(var(--lr) * .62) calc(var(--lr) * .58) at var(--c1x) var(--c1y), #000 72%, transparent 76%),
-    radial-gradient(calc(var(--lr) * .55) calc(var(--lr) * .6)  at var(--c2x) var(--c2y), #000 72%, transparent 76%),
-    radial-gradient(calc(var(--lr) * .58) calc(var(--lr) * .52) at var(--c3x) var(--c3y), #000 72%, transparent 76%);
-          mask-composite: add;
+  transform: scale(1.1);
+  -webkit-mask: radial-gradient(var(--rx) var(--ry) at var(--lx) var(--ly), #000 49%, transparent 50%);
+          mask: radial-gradient(var(--rx) var(--ry) at var(--lx) var(--ly), #000 49%, transparent 50%);
 }
 .photo:hover .photo__img--b { transform: scale(1); }
-
-/* fio lime na borda da gota (so na elipse principal: anel fino) */
-.photo__sweep {
-  display: block;
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  background: var(--lime);
-  mix-blend-mode: screen;
-  opacity: .55;
-  -webkit-mask: radial-gradient(calc(var(--lr) * .62) calc(var(--lr) * .58) at var(--c1x) var(--c1y),
-    transparent 70%, #000 73%, #000 75%, transparent 78%);
-          mask: radial-gradient(calc(var(--lr) * .62) calc(var(--lr) * .58) at var(--c1x) var(--c1y),
-    transparent 70%, #000 73%, #000 75%, transparent 78%);
-  transition: opacity .6s ease;
-}
-/* gota ja cobrindo a foto inteira: o fio saiu da silhueta, some */
-.photo:hover .photo__sweep { opacity: .55; }
+.photo__sweep { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  .photo { transition: none; }
-  .photo:hover { animation: none; }
-  .photo__img { transition: none; }
+  .photo, .photo:hover, .photo__img { transition: none; }
 }
 
 .stack { display: flex; flex-direction: column }
@@ -2262,6 +2227,10 @@ body.pc-nav-hidden header {
   z-index: 0;
   pointer-events: none;
   --tb-fade: clamp(90px, 12vh, 190px);
+}
+/* a mascara (fade das bordas) vive nas CAMADAS, nao no wrapper: assim o
+   ::after (vinheta) fica livre pra escurecer as extremidades de verdade */
+.pj-topo > .pj-topo__layer {
   -webkit-mask:
     radial-gradient(112% 96% at 50% 46%, #000 32%, rgba(0, 0, 0, .42) 66%, transparent 92%),
     linear-gradient(180deg, transparent 0, #000 var(--tb-fade), #000 calc(100% - var(--tb-fade)), transparent 100%);
@@ -2311,10 +2280,10 @@ body.pc-nav-hidden header {
      INTEIRA — sem isso fica preso na coluna e "cortado" nas laterais. */
   left: calc(50% - 50vw - var(--hero-nudge, 0px));
   width: 100vw;
-  /* SÓ fade vertical (topo sob a nav, base na emenda com "sobre"); dropa o
-     recorte radial que estreitava/cortava as curvas nos lados. */
+}
+.pj-topo--hero > .pj-topo__layer {
   /* fade vertical (topo sob a nav, base na emenda com "sobre") INTERSECT
-     uma vinheta eliptica leve: as curvas somem suave nas bordas */
+     um fade eliptico leve: as curvas somem suave nas bordas */
   -webkit-mask:
     radial-gradient(125% 100% at 50% 45%, #000 42%, rgba(0, 0, 0, .45) 74%, transparent 100%),
     linear-gradient(180deg, transparent 0, #000 var(--tb-fade), #000 calc(100% - var(--tb-fade)), transparent 100%);
@@ -2323,6 +2292,18 @@ body.pc-nav-hidden header {
     radial-gradient(125% 100% at 50% 45%, #000 42%, rgba(0, 0, 0, .45) 74%, transparent 100%),
     linear-gradient(180deg, transparent 0, #000 var(--tb-fade), #000 calc(100% - var(--tb-fade)), transparent 100%);
   mask-composite: intersect;
+}
+
+/* VINHETA — escurece as extremidades do fundo topografico (hero e
+   projetos). Fica por cima das curvas e da lente acesa, por baixo do
+   conteudo. So um gradiente estatico: zero custo por frame. */
+.pj-topo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 72% 68% at 50% 48%,
+    transparent 38%, rgba(6, 8, 7, .55) 72%, rgba(6, 8, 7, .92) 100%);
 }
 
 /* Garante que o conteúdo da section fique acima do fundo decorativo */
@@ -8534,9 +8515,7 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
 
 /* entrada da hero (foto + nome) em CSS: começa na 1a pintura, sem esperar
    o GSAP. Opacidade minima > 0 pro browser contar o LCP no 1o frame. */
-@keyframes hero-in { from { opacity: .01; } to { opacity: 1; } }
-.hero .photo { animation: hero-in .9s cubic-bezier(.22, 1, .36, 1) both; }
-.hero .name { animation: hero-in .9s cubic-bezier(.22, 1, .36, 1) .12s both; }
+/* entrada da hero: CSS inline no <head> do index (junto da abertura) */
 
 /* celular/tablet: com os botoes sociais em linha embaixo do nome, a seta
    (que no desktop sobe -90px pro canto da hero) caia em cima deles.

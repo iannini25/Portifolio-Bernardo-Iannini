@@ -387,25 +387,6 @@
   }
 
   /* ============================================================
-     HERO — fade-in de chegada: elementos aparecem em sequência
-     quando a página abre (SÓ opacidade, sem deslocamento)
-     ============================================================ */
-  function buildHeroIntro() {
-    const els = gsap.utils.toArray(
-      /* foto e nome (o LCP) entram por CSS desde a 1a pintura: esperar o
-         GSAP baixar pra revelar atrasava o LCP em segundos no celular */
-      ['.hero .hello', '.hero .tagline', '.hero .rail', '.scroll-cue']);
-    if (!els.length) return;
-    gsap.from(els, {
-      autoAlpha: 0,
-      duration: 1.1,
-      ease: 'power2.out',
-      stagger: .14,
-      clearProps: 'opacity,visibility',
-    });
-  }
-
-  /* ============================================================
      PROFUNDIDADE — paralaxe (hero, aurora)
      ============================================================ */
   function buildDepth() {
@@ -879,7 +860,7 @@
       else if (gsap.ticker.wake) gsap.ticker.wake();
     });
 
-    buildHeroIntro();
+    /* entrada da hero agora e CSS (html.hero-go, inline no index) */
     buildWires();
     buildLines();
     buildMarquees();
