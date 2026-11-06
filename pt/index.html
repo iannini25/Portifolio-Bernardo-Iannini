@@ -136,7 +136,10 @@
     html.bi-intro-lock header .nav{opacity:0}
     .hero .name>.green{display:inline-block}
     html.hero-go .hero :is(.photo,.hello,.name>span,.tagline,.rail,.scroll-cue),
-    html.hero-go header .nav{animation:hero-up 1.1s cubic-bezier(.16,1,.3,1) both}
+    html.hero-go header .nav{animation:hero-up 1.1s cubic-bezier(.16,1,.3,1) backwards}
+    /* backwards (nao both): ao terminar a animacao SOLTA o elemento. Preso
+       no fim, o .nav virava camada isolada e o backdrop-filter (vidro) da
+       navbar parava de desfocar o que passa por tras. */
     html.hero-go header .nav{animation-name:hero-down;animation-duration:.9s}
     html.hero-go .hero .photo{animation-name:hero-photo;animation-duration:1.4s;animation-delay:.05s}
     html.hero-go .hero .hello{animation-delay:.18s}

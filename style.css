@@ -9016,7 +9016,8 @@ html:active-view-transition-type(bi-wipe)::view-transition-new(root) {
 /* =========================================================
    LIQUID GLASS (simulado, leve) — navbar e elementos dela.
    Vidro SIMPLES: so o desfoque do que passa por tras + um veu escuro
-   translucido e uma borda quase invisivel. Sem reflexo nem luz branca. So background/box-shadow/backdrop: zero JS, zero filter
+   translucido e uma borda branca singela (separa os elementos). Sem
+   reflexo nem luz branca. So background/box-shadow/backdrop: zero JS, zero filter
    animado. O hover lime dos links continua por cima (::before deles).
    ========================================================= */
 .pill,
@@ -9025,7 +9026,7 @@ html:active-view-transition-type(bi-wipe)::view-transition-new(root) {
 .lang-menu,
 .nav-dd-menu {
   background: rgba(14, 18, 15, .42);
-  border: 1px solid rgba(255, 255, 255, .055);
+  border: 1px solid rgba(255, 255, 255, .13);
   -webkit-backdrop-filter: blur(34px) saturate(130%);
           backdrop-filter: blur(34px) saturate(130%);
   box-shadow: 0 8px 24px -12px rgba(0, 0, 0, .35);
