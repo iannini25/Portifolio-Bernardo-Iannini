@@ -343,6 +343,38 @@ document.querySelectorAll('a[data-scroll]').forEach(a => {
 })();
 
 /* =========================================================
+   PHOTO — a gota liquida (CSS) nasce onde o cursor entra e o segue
+   com atraso leve. Escreve so --lx/--ly (em %) na figura; o loop de
+   rAF roda apenas enquanto a gota ainda nao alcancou o cursor.
+   ========================================================= */
+(function () {
+  const photo = document.querySelector('.hero .photo');
+  if (!photo) return;
+  let tx = 50, ty = 50, x = 50, y = 50, raf = 0;
+  const write = () => {
+    photo.style.setProperty('--lx', x.toFixed(2) + '%');
+    photo.style.setProperty('--ly', y.toFixed(2) + '%');
+  };
+  const frame = () => {
+    x += (tx - x) * 0.14;
+    y += (ty - y) * 0.14;
+    write();
+    raf = (Math.abs(tx - x) > 0.05 || Math.abs(ty - y) > 0.05) ? requestAnimationFrame(frame) : 0;
+  };
+  const target = (e) => {
+    const r = photo.getBoundingClientRect();
+    tx = ((e.clientX - r.left) / r.width) * 100;
+    ty = ((e.clientY - r.top) / r.height) * 100;
+  };
+  /* entrada: a gota nasce exatamente no ponto de entrada */
+  photo.addEventListener('pointerenter', (e) => { target(e); x = tx; y = ty; write(); });
+  photo.addEventListener('pointermove', (e) => {
+    target(e);
+    if (!raf) raf = requestAnimationFrame(frame);
+  }, { passive: true });
+})();
+
+/* =========================================================
    SCROLL CUE — rola da hero para a próxima section ao clicar
    ========================================================= */
 (function () {

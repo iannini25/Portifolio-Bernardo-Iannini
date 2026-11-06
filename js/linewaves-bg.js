@@ -388,8 +388,8 @@ function initLineWaves(container, opts = {}) {
       edgeFadeWidth: 0.0,
       colorCycleSpeed: 1.0,
       brightness: 0.1,
-      color1: '#22c55e',       // verde institucional (--green)
-      color2: '#a3e635',       // lima do tema (--lime)
+      color1: '#a3e635',       // lime (cor principal)
+      color2: '#d9f99d',       // lime claro (brilho da onda)
       color3: '#ffffff',       // realce
       enableMouseInteraction: true,
       mouseInfluence: 0.8,

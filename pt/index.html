@@ -59,27 +59,33 @@
   <!-- ABERTURA: tela verde (o lime do favicon) com o "i" se montando
        enquanto o site carrega: a haste sobe, o ponto cai girando e o
        rastro pisca como indicador de carga; o contador vai a 100 e o
-       painel sobe com a borda curva revelando o site (ref. landonorris.com).
+       painel ganha um furo no formato do "i" e da zoom nele, revelando
+       o site por dentro da letra (ref. landonorris.com).
        Desktop: ponto entra na diagonal, contador grande no canto.
        Celular: ponto cai na vertical, tipografia e margens menores,
        safe-area respeitada. CSS/JS inline de proposito (pinta no 1o
        frame, zero download). So na 1a visita da sessao. -->
   <style id="bi-intro-css">
-    #bi-intro{--lime-i:#d4ff3a;--ink-i:#0e0e0e;position:fixed;inset:0;z-index:2147483000}
+    #bi-intro{--lime-i:#d4ff3a;--ink-i:#0e0e0e;--ih:clamp(130px,21vh,200px);position:fixed;inset:0;z-index:2147483000}
     html.bi-intro-lock,html.bi-intro-lock body{overflow:hidden}
+    /* origem do zoom = centro da haste do "i" (contas em cima do viewBox) */
     #bi-intro .bi-panel{position:absolute;inset:0;background:var(--lime-i);color:var(--ink-i);
-      transition:transform 1s cubic-bezier(.76,0,.24,1) .18s;will-change:transform}
-    /* borda curva que arrasta por baixo do painel na subida */
-    #bi-intro .bi-panel::after{content:"";position:absolute;left:-12%;right:-12%;top:calc(100% - 1px);height:16vh;
-      background:inherit;border-radius:0 0 50% 50%;transform:scaleY(0);transform-origin:50% 0;
-      transition:transform 1s cubic-bezier(.76,0,.24,1) .18s}
+      transform-origin:calc(50% - var(--ih) * .0877) calc(50% + var(--ih) * .187);
+      transition:transform 1.15s cubic-bezier(.7,0,.2,1)}
+    /* 1) o furo no formato do "i" entra EXATAMENTE sobre o logo (mesmo
+          tamanho/posicao), entao a troca e invisivel; 2) o painel escala */
+    #bi-intro.is-zoom .bi-panel{will-change:transform;
+      -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='94' height='154' viewBox='62 16 94 154'%3E%3Cg transform='rotate(-21 95.5 47.5)'%3E%3Crect x='77' y='29' width='37' height='37' rx='2.5'/%3E%3C/g%3E%3Cpath d='M71 97.5 120 79.5V166H71Z'/%3E%3C/svg%3E") 50% calc(50% - var(--ih) * .04)/auto var(--ih) no-repeat,linear-gradient(#000 0 0);
+      -webkit-mask-composite:xor;
+      mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='94' height='154' viewBox='62 16 94 154'%3E%3Cg transform='rotate(-21 95.5 47.5)'%3E%3Crect x='77' y='29' width='37' height='37' rx='2.5'/%3E%3C/g%3E%3Cpath d='M71 97.5 120 79.5V166H71Z'/%3E%3C/svg%3E") 50% calc(50% - var(--ih) * .04)/auto var(--ih) no-repeat,linear-gradient(#000 0 0);
+      mask-composite:exclude}
+    #bi-intro.is-zoom .bi-logo{opacity:0;transition:none}
+    #bi-intro.is-zoom .bi-meta,#bi-intro.is-zoom .bi-count{opacity:0;transition:opacity .25s ease;animation:none}
     #bi-intro.is-out{pointer-events:none}
-    #bi-intro.is-out .bi-panel{transform:translateY(calc(-100% - 16vh))}
-    #bi-intro.is-out .bi-panel::after{transform:scaleY(1)}
+    #bi-intro.is-out .bi-panel{transform:scale(70)}
 
-    #bi-intro .bi-logo{position:absolute;left:50%;top:50%;height:clamp(130px,21vh,200px);width:auto;overflow:visible;
-      transform:translate(-50%,-54%);transition:transform .5s cubic-bezier(.7,0,.3,1),opacity .4s ease}
-    #bi-intro.is-out .bi-logo{transform:translate(-50%,-70%) scale(.86);opacity:0}
+    #bi-intro .bi-logo{position:absolute;left:50%;top:50%;height:var(--ih);width:auto;overflow:visible;
+      transform:translate(-50%,-54%)}
     #bi-intro .bi-stem,#bi-intro .bi-dot,#bi-intro .bi-tr{transform-box:fill-box}
     #bi-intro .bi-stem{fill:var(--ink-i);transform-origin:50% 100%;transform:scaleY(0);
       animation:bi-stem .8s cubic-bezier(.7,0,.2,1) .15s forwards}
@@ -106,24 +112,21 @@
     #bi-intro .bi-count small{font-size:.32em;letter-spacing:0;vertical-align:top;margin-left:.08em}
     @keyframes bi-fade{to{opacity:1}}
 
-    /* a home sobe junto com o painel */
-    html.bi-intro-lock main{transform:translateY(70px)}
-    html.bi-intro-reveal main{transition:transform 1.15s cubic-bezier(.76,0,.24,1) .2s !important}
+    /* a home assenta com um zoom leve enquanto o "i" abre */
+    html.bi-intro-lock main{transform:scale(1.08);transform-origin:50% 50vh}
+    html.bi-intro-reveal main{transform-origin:50% 50vh;transition:transform 1.3s cubic-bezier(.22,1,.36,1) .15s !important}
 
     /* celular: ponto cai na vertical, marca um pouco menor, contador
        compacto alinhado com o nome, folga da barra de gestos */
     @media (max-width:700px){
-      #bi-intro .bi-logo{height:clamp(110px,19vh,160px);transform:translate(-50%,-60%)}
-      #bi-intro.is-out .bi-logo{transform:translate(-50%,-78%) scale(.86)}
+      #bi-intro{--ih:clamp(110px,19vh,160px)}
       #bi-intro .bi-dot{animation-name:bi-dot-m}
       #bi-intro .bi-meta,#bi-intro .bi-count{bottom:calc(22px + env(safe-area-inset-bottom))}
       #bi-intro .bi-meta{left:20px;font-size:13px}
       #bi-intro .bi-count{right:20px;font-size:clamp(56px,17vw,80px)}
-      #bi-intro .bi-panel::after{height:9vh}
-      #bi-intro.is-out .bi-panel{transform:translateY(calc(-100% - 9vh))}
     }
     @media (prefers-reduced-motion:reduce){
-      #bi-intro *,#bi-intro *::after{animation:none!important;transition:none!important}
+      #bi-intro *{animation:none!important;transition:none!important}
       #bi-intro .bi-stem,#bi-intro .bi-dot{transform:none;opacity:1}
       #bi-intro .bi-tr{opacity:.6}
       #bi-intro .bi-meta,#bi-intro .bi-count{opacity:1}
@@ -388,13 +391,17 @@
         if (done) return; done = true;
         num.textContent = '100';
         root.classList.add('bi-intro-reveal');
-        el.classList.add('is-out');
-        root.classList.remove('bi-intro-lock');
+        /* 1o frame: aplica o furo do "i" (troca invisivel); 2o: zoom */
+        el.classList.add('is-zoom');
+        requestAnimationFrame(function () { requestAnimationFrame(function () {
+          el.classList.add('is-out');
+          root.classList.remove('bi-intro-lock');
+        }); });
         if (tc) tc.content = tcOld;
         setTimeout(function () {
           root.classList.remove('bi-intro-reveal');
           if (el.parentNode) el.parentNode.removeChild(el);
-        }, 1400);
+        }, 1500);
       }
       /* contador: anda com o tempo, segura em 90 ate o load, fecha em 100 */
       function tick() {
@@ -545,33 +552,8 @@
       </aside>
 
       <button id="scrollCue" class="scroll-cue" type="button" aria-label="Ir para a próxima seção" data-i18n-attr="aria-label:a11y.scrollNext">
-        <svg class="scroll-cue__chev" viewBox="0 0 42 36" aria-hidden="true" fill="none">
-          <defs>
-            <linearGradient id="scrollCueGrad" x1="50%" y1="0%" x2="50%" y2="100%">
-              <stop offset="0%"  stop-color="#22c55e"/>
-              <stop offset="100%" stop-color="#a3e635"/>
-            </linearGradient>
-          </defs>
-
-          <!-- partículas laterais (decorativas, com animação própria) -->
-          <circle class="scroll-cue__particle scroll-cue__particle--l1"
-            cx="6" cy="14" r="1.3" fill="url(#scrollCueGrad)"/>
-          <circle class="scroll-cue__particle scroll-cue__particle--l2"
-            cx="3" cy="23" r="0.9" fill="url(#scrollCueGrad)"/>
-          <circle class="scroll-cue__particle scroll-cue__particle--r1"
-            cx="36" cy="14" r="1.3" fill="url(#scrollCueGrad)"/>
-          <circle class="scroll-cue__particle scroll-cue__particle--r2"
-            cx="39" cy="23" r="0.9" fill="url(#scrollCueGrad)"/>
-
-          <!-- ponto de origem central -->
-          <circle cx="21" cy="5" r="1.9" fill="url(#scrollCueGrad)"/>
-          <!-- haste vertical -->
-          <line x1="21" y1="9" x2="21" y2="22"
-            stroke="url(#scrollCueGrad)" stroke-width="2" stroke-linecap="round"/>
-          <!-- chevron principal -->
-          <path d="M13.5 21l7.5 7.5 7.5-7.5"
-            stroke="url(#scrollCueGrad)" stroke-width="2.6"
-            stroke-linecap="round" stroke-linejoin="round"/>
+        <svg class="scroll-cue__chev" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 5v14M6 13l6 6 6-6"/>
         </svg>
       </button>
     </section>

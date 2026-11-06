@@ -50,7 +50,10 @@
       inner.style.height = rect.height + 'px';
     };
     measure();
-    window.addEventListener('resize', measure, { passive: true });
+    /* re-mede quando a SECAO muda de tamanho (filtro de projetos etc.),
+       nao so no resize da janela: a copia acesa tem que casar com o fundo */
+    if ('ResizeObserver' in window) new ResizeObserver(measure).observe(topo);
+    else window.addEventListener('resize', measure, { passive: true });
     window.addEventListener('scroll', () => { rect = null; }, { passive: true });
 
     /* posição suavizada (lerp) só enquanto há movimento */

@@ -403,7 +403,7 @@ function initFerrofluid(container, opts = {}) {
   initFerrofluid(layer, {
       // SO as cores mudaram (lima -> verde -> branco, tema do site);
       // o resto e o do exemplo de uso.
-      colors: ['#a3e635', '#22c55e', '#ffffff'],
+      colors: ['#a3e635', '#bef264', '#ffffff'],
       speed: 0.1,
       scale: 1.5,
       turbulence: 0.5,

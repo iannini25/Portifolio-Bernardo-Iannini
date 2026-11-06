@@ -97,8 +97,8 @@ html.lenis iframe { pointer-events: none; }
   --ps-dur: 700ms;
 
   /* terminal */
-  --term-prompt: #66e6a1;
-  --term-path:   #b7ffda;
+  --term-prompt: #a3e635;
+  --term-path:   #d9f99d;
   --term-cmd:    #a4e3ff;
   --term-out:    #e7f5ee;
   --msg-red:     #ffb3ae;
@@ -472,19 +472,30 @@ body.pc-nav-hidden header {
   padding: 84px 20px 32px;
   position: relative; left: var(--hero-nudge);
 }
-/* ===== Photo — crossfade A→B com sweep diagonal lime no hover.
-   clip-path: ellipse() recorta a box retangular da <img> num oval,
-   eliminando os cantos onde a "box" aparecia. ===== */
+/* ===== Photo — revelacao LIQUIDA no hover.
+   A silhueta e uma mascara FIXA no formato do recorte (alpha da foto A):
+   o contorno nunca muda; o zoom das fotos acontece so por dentro dela.
+   A foto B entra por uma gota que nasce onde o cursor entra, cresce com
+   a borda ondulando (3 elipses que orbitam = metaball barato) e segue o
+   mouse; um fio lime acompanha a borda. Ao sair, a gota se recolhe.
+   Custo: so a mascara da figura repinta durante a transicao. ===== */
+@property --lr  { syntax: '<percentage>'; inherits: true; initial-value: 0%; }
+@property --wob { syntax: '<angle>';      inherits: true; initial-value: 0deg; }
 .photo {
+  --lx: 50%;
+  --ly: 50%;
   width: clamp(420px, 37vw, 500px);
   height: auto;
   position: relative;
   overflow: hidden;
   isolation: isolate;
   cursor: pointer;
-  /* Recorta o figure num oval — visualmente não existe mais retângulo. */
-  clip-path: ellipse(50% 50% at center);
+  -webkit-mask: url("img/eufoto1.webp") 0 0 / 100% 100% no-repeat;
+          mask: url("img/eufoto1.webp") 0 0 / 100% 100% no-repeat;
+  transition: --lr 1.3s cubic-bezier(.5, .05, .2, 1);
 }
+.photo:hover { --lr: 150%; animation: photo-wobble 3.2s linear infinite; }
+@keyframes photo-wobble { to { --wob: 360deg; } }
 /* notebook pequeno / tablet deitado (1025-1240px): a coluna é a tela
    inteira, sem margem lateral — foto e espaços menores pra rail caber */
 @media (min-width: 1025px) and (max-width: 1240px) {
@@ -502,75 +513,66 @@ body.pc-nav-hidden header {
   display: block;
   user-select: none;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  /* bloqueia drag em todas as variações de browser */
   -webkit-user-drag: none;
-  -khtml-user-drag: none;
-  -moz-user-drag: none;
-  -o-user-drag: none;
   user-drag: none;
-  /* tap-callout do iOS (segura pra abrir menu de salvar) */
   -webkit-touch-callout: none;
   /* sem eventos diretos no <img> — o hover continua via .photo (pai) */
   pointer-events: none;
-  /* SÓ opacity + transform (compositor): blur animado em imagem grande
-     re-rasteriza a cada frame e era o que travava o efeito */
-  will-change: opacity, transform;
   backface-visibility: hidden;
-  transition:
-    opacity .45s cubic-bezier(.4, 0, .2, 1),
-    transform .45s cubic-bezier(.4, 0, .2, 1);
+  transition: transform 1.1s cubic-bezier(.22, 1, .36, 1);
 }
+.photo__img--a { transform: scale(1); }
+.photo:hover .photo__img--a { transform: scale(1.07); }
 
-/* Default: A visível; B aguardando com leve zoom */
-.photo__img--a {
-  opacity: 1;
-  transform: scale(1);
+/* B: gota liquida. Tres elipses com centros orbitando o cursor em fases
+   diferentes; somadas (mask-composite add) formam uma borda organica. */
+.photo__img--b,
+.photo__sweep {
+  --c1x: calc(var(--lx) + cos(var(--wob)) * 7%);
+  --c1y: calc(var(--ly) + sin(var(--wob)) * 7%);
+  --c2x: calc(var(--lx) + cos(var(--wob) + 120deg) * 9%);
+  --c2y: calc(var(--ly) + sin(var(--wob) + 120deg) * 6%);
+  --c3x: calc(var(--lx) + cos(var(--wob) + 240deg) * 6%);
+  --c3y: calc(var(--ly) + sin(var(--wob) + 240deg) * 9%);
 }
 .photo__img--b {
-  opacity: 0;
-  transform: scale(1.04);
+  transform: scale(1.12);
+  -webkit-mask:
+    radial-gradient(calc(var(--lr) * .62) calc(var(--lr) * .58) at var(--c1x) var(--c1y), #000 72%, transparent 76%),
+    radial-gradient(calc(var(--lr) * .55) calc(var(--lr) * .6)  at var(--c2x) var(--c2y), #000 72%, transparent 76%),
+    radial-gradient(calc(var(--lr) * .58) calc(var(--lr) * .52) at var(--c3x) var(--c3y), #000 72%, transparent 76%);
+  -webkit-mask-composite: source-over;
+          mask:
+    radial-gradient(calc(var(--lr) * .62) calc(var(--lr) * .58) at var(--c1x) var(--c1y), #000 72%, transparent 76%),
+    radial-gradient(calc(var(--lr) * .55) calc(var(--lr) * .6)  at var(--c2x) var(--c2y), #000 72%, transparent 76%),
+    radial-gradient(calc(var(--lr) * .58) calc(var(--lr) * .52) at var(--c3x) var(--c3y), #000 72%, transparent 76%);
+          mask-composite: add;
 }
+.photo:hover .photo__img--b { transform: scale(1); }
 
-/* Hover: crossfade leve — A cede com mini zoom, B assenta no lugar */
-.photo:hover .photo__img--a {
-  opacity: 0;
-  transform: scale(1.03);
-}
-.photo:hover .photo__img--b {
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* Faixa lime/verde varrendo diagonalmente durante o hover */
+/* fio lime na borda da gota (so na elipse principal: anel fino) */
 .photo__sweep {
   display: block;
   position: absolute;
   inset: 0;
-  pointer-events: none;
   z-index: 2;
-  background: linear-gradient(
-    115deg,
-    transparent 35%,
-    color-mix(in oklab, var(--lime) 32%, transparent) 48%,
-    color-mix(in oklab, var(--green) 38%, transparent) 52%,
-    transparent 65%
-  );
-  /* recorta o brilho no MESMO blob da foto (alpha da imagem), pra a
-     varredura não vazar pros cantos do oval e seguir o formato da imagem */
-  -webkit-mask: url("img/eufoto1.webp") 0 0 / 100% 100% no-repeat;
-          mask: url("img/eufoto1.webp") 0 0 / 100% 100% no-repeat;
+  pointer-events: none;
+  background: var(--lime);
   mix-blend-mode: screen;
-  opacity: 0;
-  transform: translateX(-110%);
-  transition:
-    transform .9s cubic-bezier(.22, .61, .36, 1),
-    opacity .4s ease;
+  opacity: .55;
+  -webkit-mask: radial-gradient(calc(var(--lr) * .62) calc(var(--lr) * .58) at var(--c1x) var(--c1y),
+    transparent 70%, #000 73%, #000 75%, transparent 78%);
+          mask: radial-gradient(calc(var(--lr) * .62) calc(var(--lr) * .58) at var(--c1x) var(--c1y),
+    transparent 70%, #000 73%, #000 75%, transparent 78%);
+  transition: opacity .6s ease;
 }
-.photo:hover .photo__sweep {
-  opacity: .85;
-  transform: translateX(110%);
+/* gota ja cobrindo a foto inteira: o fio saiu da silhueta, some */
+.photo:hover .photo__sweep { opacity: .55; }
+
+@media (prefers-reduced-motion: reduce) {
+  .photo { transition: none; }
+  .photo:hover { animation: none; }
+  .photo__img { transition: none; }
 }
 
 .stack { display: flex; flex-direction: column }
@@ -687,63 +689,37 @@ body.pc-nav-hidden header {
 .sbtn:hover { transform: translateY(-2px); border-color: color-mix(in oklab, var(--green) 60%, var(--border)); background: linear-gradient(var(--g-15), var(--g-15)), var(--rail) }
 .sbtn svg { width: 18px; height: 18px; fill: var(--text); transition: .2s fill }
 .sbtn:hover svg { fill: var(--lime) }
-/* Scroll cue — container invisível, foco todo na arrow SVG */
+/* Scroll cue — circulo fino com uma seta simples. A seta desce e volta
+   (so transform), o circulo acende em lime no hover. */
 .scroll-cue {
   grid-column: 1 / -1;
   justify-self: center;
   margin-top: -90px;
   display: grid;
   place-items: center;
-  padding: 8px;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--w-12);
   background: transparent;
-  border: none;
+  color: var(--text);
   cursor: pointer;
-  transition:
-    transform .25s cubic-bezier(.22,1,.32,1),
-    filter .3s ease;
-  animation: scroll-cue-bob 2.4s ease-in-out infinite;
+  transition: border-color .25s ease, background-color .25s ease, color .25s ease;
 }
-
 .scroll-cue__chev {
-  width: 42px;
-  height: 36px;
+  width: 18px;
+  height: 18px;
   display: block;
-  filter: drop-shadow(0 0 8px color-mix(in oklab, var(--lime) 35%, transparent));
-  transition: filter .3s ease;
+  animation: scroll-cue-nudge 2.2s cubic-bezier(.45,0,.25,1) infinite;
 }
-
-/* Partículas decorativas — cintilam em tempos diferentes */
-.scroll-cue__particle {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: scroll-cue-twinkle 2.6s ease-in-out infinite;
+.scroll-cue:hover { border-color: var(--lime); background: var(--lime); color: #0e0e0e; }
+.scroll-cue:focus-visible { outline: 2px solid var(--lime); outline-offset: 4px; }
+@keyframes scroll-cue-nudge {
+  0%, 100% { transform: translateY(-2px); }
+  50%      { transform: translateY(3px); }
 }
-.scroll-cue__particle--l1 { animation-delay: 0s;   }
-.scroll-cue__particle--r1 { animation-delay: .2s;  }
-.scroll-cue__particle--l2 { animation-delay: .55s; }
-.scroll-cue__particle--r2 { animation-delay: .8s;  }
-
-.scroll-cue:hover {
-  transform: translateY(3px);
-}
-.scroll-cue:hover .scroll-cue__chev {
-  filter: drop-shadow(0 0 14px color-mix(in oklab, var(--lime) 65%, transparent));
-}
-
-.scroll-cue:focus-visible {
-  outline: 2px solid var(--lime);
-  outline-offset: 6px;
-  border-radius: 12px;
-}
-
-@keyframes scroll-cue-bob {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(6px); }
-}
-@keyframes scroll-cue-twinkle {
-  0%, 100% { opacity: .25; transform: scale(.85); }
-  50%      { opacity: 1;   transform: scale(1.15); }
-}
+@media (prefers-reduced-motion: reduce) { .scroll-cue__chev { animation: none; } }
 
 /* =============================
    3) ABOUT (TERMINAL + SIDE PANEL)
@@ -1007,15 +983,13 @@ body.pc-nav-hidden header {
 .term-msg.red    { color: var(--msg-red) }
 .term-msg.yellow { color: var(--msg-yellow) }
 .term-msg.green  { color: var(--msg-green) }
-/* Prompt estilo Kali: texto na cor do GRADIENTE OFICIAL (verde->lima),
-   clipado no texto (mesma assinatura dos titulos da pagina). */
-.k-ps1-top, .k-ps1-user, .k-ps1-host, .k-ps1-path, .k-ps1-bottom, .prompt {
-  background: var(--gradient-lime);
-  -webkit-background-clip: text;
-          background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
+/* Prompt estilo Kali: lime (cor principal do site); caminho e
+   moldura num lime mais claro pra separar as partes. */
+.k-ps1-top, .k-ps1-user, .k-ps1-host, .k-ps1-bottom, .prompt {
+  color: var(--lime);
+  -webkit-text-fill-color: var(--lime);
 }
+.k-ps1-path { color: var(--term-path); -webkit-text-fill-color: var(--term-path); }
 
 /* === PAINEL LATERAL === */
 .about-side {
@@ -2289,11 +2263,11 @@ body.pc-nav-hidden header {
   pointer-events: none;
   --tb-fade: clamp(90px, 12vh, 190px);
   -webkit-mask:
-    radial-gradient(118% 100% at 50% 46%, #000 30%, rgba(0, 0, 0, .55) 64%, transparent 94%),
+    radial-gradient(112% 96% at 50% 46%, #000 32%, rgba(0, 0, 0, .42) 66%, transparent 92%),
     linear-gradient(180deg, transparent 0, #000 var(--tb-fade), #000 calc(100% - var(--tb-fade)), transparent 100%);
   -webkit-mask-composite: source-in;
   mask:
-    radial-gradient(118% 100% at 50% 46%, #000 30%, rgba(0, 0, 0, .55) 64%, transparent 94%),
+    radial-gradient(112% 96% at 50% 46%, #000 32%, rgba(0, 0, 0, .42) 66%, transparent 92%),
     linear-gradient(180deg, transparent 0, #000 var(--tb-fade), #000 calc(100% - var(--tb-fade)), transparent 100%);
   mask-composite: intersect;
 }
@@ -2302,8 +2276,8 @@ body.pc-nav-hidden header {
 /* camada base — curvas bem tênues (o relevo de fundo) */
 .pj-topo__base {
   fill: none;
-  stroke: rgb(65, 110, 84);
-  stroke-opacity: .20;
+  stroke: rgb(163, 230, 53);
+  stroke-opacity: .11;
   stroke-width: 1.6;
 }
 /* lente acesa que segue o cursor (js/topo-glow.js): so transforms,
@@ -2339,10 +2313,16 @@ body.pc-nav-hidden header {
   width: 100vw;
   /* SÓ fade vertical (topo sob a nav, base na emenda com "sobre"); dropa o
      recorte radial que estreitava/cortava as curvas nos lados. */
-  -webkit-mask: linear-gradient(180deg, transparent 0, #000 var(--tb-fade), #000 calc(100% - var(--tb-fade)), transparent 100%);
-          mask: linear-gradient(180deg, transparent 0, #000 var(--tb-fade), #000 calc(100% - var(--tb-fade)), transparent 100%);
-  -webkit-mask-composite: source-over;
-          mask-composite: add;
+  /* fade vertical (topo sob a nav, base na emenda com "sobre") INTERSECT
+     uma vinheta eliptica leve: as curvas somem suave nas bordas */
+  -webkit-mask:
+    radial-gradient(125% 100% at 50% 45%, #000 42%, rgba(0, 0, 0, .45) 74%, transparent 100%),
+    linear-gradient(180deg, transparent 0, #000 var(--tb-fade), #000 calc(100% - var(--tb-fade)), transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask:
+    radial-gradient(125% 100% at 50% 45%, #000 42%, rgba(0, 0, 0, .45) 74%, transparent 100%),
+    linear-gradient(180deg, transparent 0, #000 var(--tb-fade), #000 calc(100% - var(--tb-fade)), transparent 100%);
+  mask-composite: intersect;
 }
 
 /* Garante que o conteúdo da section fique acima do fundo decorativo */
@@ -2587,9 +2567,9 @@ body.pc-nav-hidden header {
      Sem rotação — efeito "orbe" colorido suave. */
   background:
     radial-gradient(circle at 30% 25%, var(--green) 0%, transparent 55%),
-    radial-gradient(circle at 75% 30%, #2dd4bf 0%, transparent 55%),
+    radial-gradient(circle at 75% 30%, #d9f99d 0%, transparent 55%),
     radial-gradient(circle at 70% 80%, #a3e635 0%, transparent 60%),
-    radial-gradient(circle at 25% 75%, #10b981 0%, transparent 60%),
+    radial-gradient(circle at 25% 75%, #84cc16 0%, transparent 60%),
     var(--green);
   color: #0e0e0e;
   display: grid;
@@ -2651,9 +2631,9 @@ body.pc-nav-hidden header {
   background: conic-gradient(
     from 135deg,
     var(--green) 0%,
-    #2dd4bf 25%,
+    #d9f99d 25%,
     #a3e635 50%,
-    #10b981 75%,
+    #84cc16 75%,
     var(--green) 100%
   );
   -webkit-mask:
@@ -5311,17 +5291,22 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   .pj-row {
     container-type: inline-size;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
-    transition: grid-template-columns .55s var(--ps-ease);
+    transition: grid-template-columns .5s cubic-bezier(.25,.8,.3,1);
   }
   .pj-row[data-n="2"] { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .pj-row[data-n="3"] .pj-card__view { aspect-ratio: auto; height: calc((100cqw - 24px) / 3 * 9 / 16); }
   .pj-row[data-n="2"] .pj-card__view { aspect-ratio: auto; height: calc((100cqw - 12px) / 2 * 9 / 16); }
+  /* a legenda tem a largura do card ENCOLHIDO, sempre: o titulo nunca
+     muda de quebra de linha no hover, entao a altura da secao fica
+     parada e o fundo topografico (que escala com a secao) nao pula */
+  .pj-row[data-n="3"] .pj-card__cap { width: calc((100cqw - 24px) * .95 / 3); }
+  .pj-row[data-n="2"] .pj-card__cap { width: calc((100cqw - 12px) * .94 / 2); }
 
-  .pj-row[data-n="3"]:has(> .pj-card:nth-child(1).is-hot) { grid-template-columns: minmax(0, 1.3fr) minmax(0, .85fr) minmax(0, .85fr); }
-  .pj-row[data-n="3"]:has(> .pj-card:nth-child(2).is-hot) { grid-template-columns: minmax(0, .85fr) minmax(0, 1.3fr) minmax(0, .85fr); }
-  .pj-row[data-n="3"]:has(> .pj-card:nth-child(3).is-hot) { grid-template-columns: minmax(0, .85fr) minmax(0, .85fr) minmax(0, 1.3fr); }
-  .pj-row[data-n="2"]:has(> .pj-card:nth-child(1).is-hot) { grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); }
-  .pj-row[data-n="2"]:has(> .pj-card:nth-child(2).is-hot) { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); }
+  .pj-row[data-n="3"]:has(> .pj-card:nth-child(1).is-hot) { grid-template-columns: minmax(0, 1.1fr) minmax(0, .95fr) minmax(0, .95fr); }
+  .pj-row[data-n="3"]:has(> .pj-card:nth-child(2).is-hot) { grid-template-columns: minmax(0, .95fr) minmax(0, 1.1fr) minmax(0, .95fr); }
+  .pj-row[data-n="3"]:has(> .pj-card:nth-child(3).is-hot) { grid-template-columns: minmax(0, .95fr) minmax(0, .95fr) minmax(0, 1.1fr); }
+  .pj-row[data-n="2"]:has(> .pj-card:nth-child(1).is-hot) { grid-template-columns: minmax(0, 1.06fr) minmax(0, .94fr); }
+  .pj-row[data-n="2"]:has(> .pj-card:nth-child(2).is-hot) { grid-template-columns: minmax(0, .94fr) minmax(0, 1.06fr); }
 }
 /* o card é só o screenshot num frame limpo (sem chrome de browser), com o
    recorte curvo do bento do blog no canto. E mascara, nao um remendo da cor
@@ -6918,7 +6903,6 @@ body.blog-body { min-height: 100vh; }
 
   /* Scroll cue mais discreto no mobile */
   .scroll-cue { bottom: 16px; }
-  .scroll-cue__chev { width: 32px; height: 28px; }
 
   /* About */
   .about-section { padding: 40px 14px 56px; }
@@ -7651,30 +7635,6 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
   perspective: 1200px;
 }
 
-/* Indice GIGANTE e discreto ocupando o antigo vazio (marca d'agua) */
-/* Marca d'agua = o ICONE do servico, gigante e bem fraco (textura),
-   ocupando o antigo vazio no canto. Herda --svc-color; os SVGs usam
-   currentColor no stroke, entao viram um wireframe tenue. */
-.svc-watermark {
-  position: absolute;
-  top: -8px;
-  right: 8px;
-  z-index: 0;
-  pointer-events: none;
-  width: clamp(130px, 16vw, 210px);
-  height: auto;
-  color: var(--svc-color);
-  opacity: .07;
-  transition: opacity .5s ease, transform .55s cubic-bezier(.22, 1, .36, 1);
-}
-.svc-watermark svg {
-  width: 100%;
-  height: auto;
-  display: block;
-  stroke-width: 1;   /* linhas finas: leitura de textura, nao de icone solido */
-}
-.svc-card.is-top .svc-watermark { opacity: .14; transform: translateX(-6px) scale(1.05); }
-
 /* Bloom verde que floresce atras do conteudo no hover (ref 1) */
 .svc-bloom {
   position: absolute;
@@ -7891,7 +7851,6 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
   .svc-card__head { gap: 13px; margin-bottom: 14px; }
   .svc-icon { width: 48px; height: 48px; }
   .svc-icon svg { width: 25px; height: 25px; }
-  .svc-watermark { width: clamp(88px, 26vw, 150px); right: 10px; opacity: .1; }
   .svc-features li { opacity: 1; transform: none; }
 }
 

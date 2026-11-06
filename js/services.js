@@ -60,7 +60,6 @@ function buildServiceCard(item, ctaLabel, index) {
 
   card.innerHTML = `
     <div class="svc-card__inner">
-      <span class="svc-watermark" aria-hidden="true">${iconSvg}</span>
       <span class="svc-bloom" aria-hidden="true"></span>
 
       <div class="svc-card__depth">
