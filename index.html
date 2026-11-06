@@ -107,7 +107,8 @@
     #bi-intro .bi-meta,#bi-intro .bi-count{position:absolute;bottom:clamp(24px,4.5vh,44px);
       font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px;line-height:1.25;
       opacity:0;transform:translateY(8px);animation:bi-fade .9s var(--out-expo) .35s forwards}
-    #bi-intro .bi-meta{left:clamp(24px,4vw,56px);display:flex;flex-direction:column;gap:3px}
+    /* nome centralizado embaixo; o percentual fica no canto direito */
+    #bi-intro .bi-meta{left:0;right:0;display:flex;flex-direction:column;align-items:center;text-align:center;gap:3px}
     #bi-intro .bi-meta b{font-weight:800;text-transform:uppercase;letter-spacing:.01em}
     #bi-intro .bi-meta span{font-weight:500;opacity:.65}
     #bi-intro .bi-count{right:clamp(24px,4vw,56px);font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.02em}
@@ -116,7 +117,6 @@
     @media (max-width:700px){
       #bi-intro{--ih:clamp(110px,19vh,160px)}
       #bi-intro .bi-meta,#bi-intro .bi-count{bottom:calc(22px + env(safe-area-inset-bottom));font-size:13px}
-      #bi-intro .bi-meta{left:20px}
       #bi-intro .bi-count{right:20px}
     }
     @media (prefers-reduced-motion:reduce){
