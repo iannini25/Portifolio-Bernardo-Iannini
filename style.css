@@ -2336,11 +2336,11 @@ body.pc-nav-hidden header {
      um fade eliptico leve: as curvas somem suave nas bordas */
   -webkit-mask:
     radial-gradient(125% 100% at 50% 45%, #000 42%, rgba(0, 0, 0, .45) 74%, transparent 100%),
-    linear-gradient(180deg, transparent 0, #000 var(--tb-fade), #000 50%, rgba(0, 0, 0, .72) 64%, rgba(0, 0, 0, .4) 78%, rgba(0, 0, 0, .14) 90%, transparent 100%);
+    linear-gradient(180deg, transparent 0, #000 var(--tb-fade), rgba(0, 0, 0, 1.00) 38.0%, rgba(0, 0, 0, 0.98) 44.2%, rgba(0, 0, 0, 0.90) 50.4%, rgba(0, 0, 0, 0.79) 56.6%, rgba(0, 0, 0, 0.65) 62.8%, rgba(0, 0, 0, 0.50) 69.0%, rgba(0, 0, 0, 0.35) 75.2%, rgba(0, 0, 0, 0.21) 81.4%, rgba(0, 0, 0, 0.10) 87.6%, rgba(0, 0, 0, 0.02) 93.8%, rgba(0, 0, 0, 0.00) 100.0%);
   -webkit-mask-composite: source-in;
   mask:
     radial-gradient(125% 100% at 50% 45%, #000 42%, rgba(0, 0, 0, .45) 74%, transparent 100%),
-    linear-gradient(180deg, transparent 0, #000 var(--tb-fade), #000 50%, rgba(0, 0, 0, .72) 64%, rgba(0, 0, 0, .4) 78%, rgba(0, 0, 0, .14) 90%, transparent 100%);
+    linear-gradient(180deg, transparent 0, #000 var(--tb-fade), rgba(0, 0, 0, 1.00) 38.0%, rgba(0, 0, 0, 0.98) 44.2%, rgba(0, 0, 0, 0.90) 50.4%, rgba(0, 0, 0, 0.79) 56.6%, rgba(0, 0, 0, 0.65) 62.8%, rgba(0, 0, 0, 0.50) 69.0%, rgba(0, 0, 0, 0.35) 75.2%, rgba(0, 0, 0, 0.21) 81.4%, rgba(0, 0, 0, 0.10) 87.6%, rgba(0, 0, 0, 0.02) 93.8%, rgba(0, 0, 0, 0.00) 100.0%);
   mask-composite: intersect;
 }
 
@@ -2354,6 +2354,16 @@ body.pc-nav-hidden header {
   pointer-events: none;
   background: radial-gradient(ellipse 72% 68% at 50% 48%,
     transparent 38%, rgba(6, 8, 7, .55) 72%, rgba(6, 8, 7, .92) 100%);
+}
+
+/* na HERO a vinheta escurece so as laterais e se apaga pra baixo: a base
+   fica no tom exato da section Sobre (sem faixa/borda na emenda) */
+.pj-topo--hero::after {
+  background: linear-gradient(90deg,
+    rgba(6, 8, 7, .85) 0%, rgba(6, 8, 7, .35) 14%, transparent 30%,
+    transparent 70%, rgba(6, 8, 7, .35) 86%, rgba(6, 8, 7, .85) 100%);
+  -webkit-mask: linear-gradient(180deg, #000 0%, #000 45%, transparent 85%);
+          mask: linear-gradient(180deg, #000 0%, #000 45%, transparent 85%);
 }
 
 /* Garante que o conteúdo da section fique acima do fundo decorativo */
@@ -9005,9 +9015,8 @@ html:active-view-transition-type(bi-wipe)::view-transition-new(root) {
 
 /* =========================================================
    LIQUID GLASS (simulado, leve) — navbar e elementos dela.
-   Vidro = blur + saturacao do que passa por tras, um reflexo curvo
-   bem tenue no topo e um fio de luz na borda de cima. Discreto de
-   proposito: e vidro, nao destaque. So background/box-shadow/backdrop: zero JS, zero filter
+   Vidro SIMPLES: so o desfoque do que passa por tras + um veu escuro
+   translucido e uma borda quase invisivel. Sem reflexo nem luz branca. So background/box-shadow/backdrop: zero JS, zero filter
    animado. O hover lime dos links continua por cima (::before deles).
    ========================================================= */
 .pill,
@@ -9015,15 +9024,11 @@ html:active-view-transition-type(bi-wipe)::view-transition-new(root) {
 .resume-btn,
 .lang-menu,
 .nav-dd-menu {
-  background:
-    radial-gradient(120% 90% at 30% -35%, rgba(255, 255, 255, .07), transparent 55%),
-    linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .025));
-  border: 1px solid rgba(255, 255, 255, .09);
-  -webkit-backdrop-filter: blur(24px) saturate(135%);
-          backdrop-filter: blur(24px) saturate(135%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, .1),
-    0 8px 24px -10px rgba(0, 0, 0, .4);
+  background: rgba(14, 18, 15, .42);
+  border: 1px solid rgba(255, 255, 255, .055);
+  -webkit-backdrop-filter: blur(34px) saturate(130%);
+          backdrop-filter: blur(34px) saturate(130%);
+  box-shadow: 0 8px 24px -12px rgba(0, 0, 0, .35);
 }
 /* o CV mantem o hover lime cheio */
 .resume-btn:hover,
@@ -9235,3 +9240,25 @@ html:active-view-transition-type(bi-wipe)::view-transition-new(root) {
     transform: translateZ(1px) rotateX(-16deg);
   }
 }
+
+/* NAVBAR PROPORCIONAL — idioma e curriculo com a MESMA altura da pilula do
+   menu (50px; 44px ate 1280; 40px ate 1080). So no desktop: no celular a
+   nav e outra. O botao de curriculo estica a camada interna na altura toda
+   (as animacoes de hover/clique continuam recortadas na pilula). */
+@media (min-width: 901px) {
+  :root { --nav-ctl-h: 50px; }
+  .lang-switch.pill {
+    height: var(--nav-ctl-h);
+    box-sizing: border-box;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .resume-btn.cv-btn {
+    height: var(--nav-ctl-h);
+    --py: 0px;
+    align-items: stretch;
+  }
+  .resume-btn.cv-btn .cv-btn__face { align-self: stretch; }
+}
+@media (min-width: 901px) and (max-width: 1280px) { :root { --nav-ctl-h: 44px; } }
+@media (min-width: 901px) and (max-width: 1080px) { :root { --nav-ctl-h: 40px; } }

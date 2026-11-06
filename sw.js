@@ -21,7 +21,7 @@
    ============================================================ */
 'use strict';
 
-const VERSAO = 'v18';
+const VERSAO = 'v19';
 const CACHE = `bi-${VERSAO}`;
 
 const CASCA = [
