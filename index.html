@@ -56,59 +56,81 @@
   <!-- =================================================================
        ANTI-FLICKER de i18n + transição entre páginas
        ================================================================= -->
-  <!-- ABERTURA: skeleton da propria hero (menu, foto, nome, redes) se
-       montando com um brilho unico passando, e a linha de progresso no topo.
-       Desktop e celular tem o desenho de cada layout. CSS/JS inline de
-       proposito (pinta no 1o frame, zero download). So na 1a visita da
-       sessao; nunca ao voltar pelo historico. Max 4s com o fade. -->
+  <!-- ABERTURA: tela verde (o lime do favicon) com o "i" se montando
+       enquanto o site carrega: a haste sobe, o ponto cai girando e o
+       rastro pisca como indicador de carga; o contador vai a 100 e o
+       painel sobe com a borda curva revelando o site (ref. landonorris.com).
+       Desktop: ponto entra na diagonal, contador grande no canto.
+       Celular: ponto cai na vertical, tipografia e margens menores,
+       safe-area respeitada. CSS/JS inline de proposito (pinta no 1o
+       frame, zero download). So na 1a visita da sessao. -->
   <style id="bi-intro-css">
-    #bi-intro{position:fixed;inset:0;z-index:2147483000;background:#060807;overflow:hidden;
-      transition:opacity .6s cubic-bezier(.22,1,.36,1),visibility 0s linear .6s}
-    #bi-intro.is-out{opacity:0;visibility:hidden}
+    #bi-intro{--lime-i:#d4ff3a;--ink-i:#0e0e0e;position:fixed;inset:0;z-index:2147483000}
     html.bi-intro-lock,html.bi-intro-lock body{overflow:hidden}
-    #bi-intro .bi-bar{position:absolute;left:0;top:0;height:2px;width:100%;background:linear-gradient(90deg,#22c55e,#a3e635);
-      transform-origin:0 50%;transform:scaleX(0);animation:bi-load 3.2s cubic-bezier(.3,.7,.2,1) forwards;box-shadow:0 0 12px rgba(163,230,53,.6)}
-    #bi-intro .bi-sk{position:absolute;inset:0;transition:transform .7s cubic-bezier(.22,1,.36,1),filter .6s ease}
-    #bi-intro.is-out .bi-sk{transform:scale(1.02);filter:blur(6px)}
-    /* blocos: um brilho so atravessa todos juntos (background fixo na tela) */
-    #bi-intro i{position:absolute;display:block;border-radius:14px;opacity:0;
-      background:linear-gradient(100deg,rgba(255,255,255,.045) 40%,rgba(255,255,255,.10) 50%,rgba(255,255,255,.045) 60%) 0 0/200vw 100% fixed;
-      animation:bi-in .7s cubic-bezier(.22,1,.36,1) forwards,bi-shine 1.6s linear .6s infinite}
-    #bi-intro i.g{background:linear-gradient(100deg,rgba(163,230,53,.10) 40%,rgba(163,230,53,.22) 50%,rgba(163,230,53,.10) 60%) 0 0/200vw 100% fixed}
-    @keyframes bi-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-    @keyframes bi-shine{from{background-position:100vw 0}to{background-position:-100vw 0}}
-    @keyframes bi-load{0%{transform:scaleX(0)}60%{transform:scaleX(.72)}100%{transform:scaleX(.96)}}
-    #bi-intro.is-out .bi-bar{transform:scaleX(1);transition:transform .3s ease}
+    #bi-intro .bi-panel{position:absolute;inset:0;background:var(--lime-i);color:var(--ink-i);
+      transition:transform 1s cubic-bezier(.76,0,.24,1) .18s;will-change:transform}
+    /* borda curva que arrasta por baixo do painel na subida */
+    #bi-intro .bi-panel::after{content:"";position:absolute;left:-12%;right:-12%;top:calc(100% - 1px);height:16vh;
+      background:inherit;border-radius:0 0 50% 50%;transform:scaleY(0);transform-origin:50% 0;
+      transition:transform 1s cubic-bezier(.76,0,.24,1) .18s}
+    #bi-intro.is-out{pointer-events:none}
+    #bi-intro.is-out .bi-panel{transform:translateY(calc(-100% - 16vh))}
+    #bi-intro.is-out .bi-panel::after{transform:scaleY(1)}
 
-    /* desktop: menu em pilulas, foto a esquerda, texto a direita, redes na lateral */
-    #bi-intro .lg{left:clamp(24px,11vw,170px);top:42px;width:96px;height:42px;border-radius:99px;animation-delay:.05s,.6s}
-    #bi-intro .nv{left:50%;top:40px;width:min(524px,40vw);height:50px;margin-left:calc(min(524px,40vw) / -2);border-radius:99px;animation-delay:.1s,.6s}
-    #bi-intro .cv{left:calc(50% + min(262px,20vw) + 50px);top:44px;width:80px;height:42px;border-radius:99px;animation-delay:.15s,.6s}
-    #bi-intro .ph{left:clamp(40px,9vw,140px);top:50%;width:min(31vw,440px);aspect-ratio:1/.95;margin-top:min(-15vw,-210px);border-radius:46% 46% 50% 50%/40% 40% 60% 60%;animation-delay:.2s,.6s}
-    #bi-intro .hi{left:52%;top:calc(50% - 128px);width:180px;height:22px;animation-delay:.3s,.6s}
-    #bi-intro .n1{left:52%;top:calc(50% - 88px);width:min(36vw,520px);height:74px;border-radius:18px;animation-delay:.38s,.6s}
-    #bi-intro .n2{left:52%;top:calc(50% + 2px);width:min(28vw,400px);height:74px;border-radius:18px;animation-delay:.46s,.6s}
-    #bi-intro .tg{left:52%;top:calc(50% + 104px);width:min(26vw,380px);height:28px;animation-delay:.56s,.6s}
-    #bi-intro .s1{right:clamp(16px,5.5vw,80px);top:calc(50% - 48px);width:42px;height:42px;border-radius:12px;animation-delay:.62s,.6s}
-    #bi-intro .s2{right:clamp(16px,5.5vw,80px);top:calc(50% + 6px);width:42px;height:42px;border-radius:12px;animation-delay:.68s,.6s}
-    #bi-intro .cu{left:50%;bottom:34px;width:34px;height:20px;margin-left:-17px;border-radius:8px;animation-delay:.74s,.6s}
+    #bi-intro .bi-logo{position:absolute;left:50%;top:50%;height:clamp(130px,21vh,200px);width:auto;overflow:visible;
+      transform:translate(-50%,-54%);transition:transform .5s cubic-bezier(.7,0,.3,1),opacity .4s ease}
+    #bi-intro.is-out .bi-logo{transform:translate(-50%,-70%) scale(.86);opacity:0}
+    #bi-intro .bi-stem,#bi-intro .bi-dot,#bi-intro .bi-tr{transform-box:fill-box}
+    #bi-intro .bi-stem{fill:var(--ink-i);transform-origin:50% 100%;transform:scaleY(0);
+      animation:bi-stem .8s cubic-bezier(.7,0,.2,1) .15s forwards}
+    #bi-intro .bi-dot{fill:var(--ink-i);transform-origin:50% 50%;opacity:0;
+      animation:bi-dot .95s cubic-bezier(.3,1.25,.4,1) .7s forwards}
+    #bi-intro .bi-tr{fill:var(--ink-i);opacity:0;transform-origin:50% 50%}
+    #bi-intro .bi-tr.t1{animation:bi-tr-in .4s ease 1.35s forwards,bi-blink 1s ease-in-out 1.75s infinite}
+    #bi-intro .bi-tr.t2{animation:bi-tr-in .4s ease 1.45s forwards,bi-blink 1s ease-in-out 1.95s infinite}
+    @keyframes bi-stem{to{transform:scaleY(1)}}
+    @keyframes bi-dot{0%{opacity:0;transform:translate(60px,-90px) rotate(140deg) scale(.35)}
+      35%{opacity:1}100%{opacity:1;transform:none}}
+    @keyframes bi-dot-m{0%{opacity:0;transform:translateY(-140px) rotate(90deg) scale(.5)}
+      30%{opacity:1}100%{opacity:1;transform:none}}
+    @keyframes bi-tr-in{from{opacity:0;transform:translate(-10px,10px) scale(.4)}to{opacity:.6;transform:none}}
+    @keyframes bi-blink{0%,100%{opacity:.6}50%{opacity:.12}}
 
-    /* celular/tablet: pilula de idioma e menu, foto em cima, tudo centralizado */
-    @media (max-width:900px){
-      #bi-intro .lg{left:20px;top:30px;width:98px;height:44px}
-      #bi-intro .nv{display:none}
-      #bi-intro .cv{left:auto;right:20px;top:30px;width:44px;height:44px;border-radius:14px}
-      #bi-intro .ph{left:50%;top:16vh;width:min(66vw,330px);margin:0 0 0 max(-33vw,-165px)}
-      #bi-intro .hi,#bi-intro .n1,#bi-intro .n2,#bi-intro .tg{left:50%;transform:translateX(-50%)}
-      #bi-intro .hi{top:calc(16vh + min(63vw,314px) + 34px);width:120px;height:18px;margin-left:-60px;left:50%}
-      #bi-intro .n1{top:calc(16vh + min(63vw,314px) + 70px);width:min(72vw,320px);height:52px;margin-left:max(-36vw,-160px)}
-      #bi-intro .n2{top:calc(16vh + min(63vw,314px) + 132px);width:min(56vw,250px);height:52px;margin-left:max(-28vw,-125px)}
-      #bi-intro .tg{top:calc(16vh + min(63vw,314px) + 204px);width:min(60vw,260px);height:22px;margin-left:max(-30vw,-130px)}
-      #bi-intro .hi,#bi-intro .n1,#bi-intro .n2,#bi-intro .tg{transform:none}
-      #bi-intro .s1,#bi-intro .s2{top:calc(16vh + min(63vw,314px) + 262px);width:46px;height:46px;right:auto}
-      #bi-intro .s1{left:calc(50% - 54px)}
-      #bi-intro .s2{left:calc(50% + 8px)}
-      #bi-intro .cu{bottom:auto;top:calc(16vh + min(63vw,314px) + 340px)}
+    #bi-intro .bi-meta,#bi-intro .bi-count{position:absolute;bottom:clamp(24px,4.5vh,48px);
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;opacity:0;animation:bi-fade .6s ease .35s forwards}
+    #bi-intro .bi-meta{left:clamp(24px,4vw,56px);display:flex;flex-direction:column;gap:4px;font-size:15px;line-height:1.2}
+    #bi-intro .bi-meta b{font-weight:900;text-transform:uppercase;letter-spacing:-.01em}
+    #bi-intro .bi-meta span{font-weight:500;opacity:.7}
+    #bi-intro .bi-count{right:clamp(24px,4vw,56px);font-size:clamp(72px,9vw,150px);font-weight:900;line-height:.8;
+      letter-spacing:-.06em;font-variant-numeric:tabular-nums}
+    #bi-intro .bi-count small{font-size:.32em;letter-spacing:0;vertical-align:top;margin-left:.08em}
+    @keyframes bi-fade{to{opacity:1}}
+
+    /* a home sobe junto com o painel */
+    html.bi-intro-lock main{transform:translateY(70px)}
+    html.bi-intro-reveal main{transition:transform 1.15s cubic-bezier(.76,0,.24,1) .2s !important}
+
+    /* celular: ponto cai na vertical, marca um pouco menor, contador
+       compacto alinhado com o nome, folga da barra de gestos */
+    @media (max-width:700px){
+      #bi-intro .bi-logo{height:clamp(110px,19vh,160px);transform:translate(-50%,-60%)}
+      #bi-intro.is-out .bi-logo{transform:translate(-50%,-78%) scale(.86)}
+      #bi-intro .bi-dot{animation-name:bi-dot-m}
+      #bi-intro .bi-meta,#bi-intro .bi-count{bottom:calc(22px + env(safe-area-inset-bottom))}
+      #bi-intro .bi-meta{left:20px;font-size:13px}
+      #bi-intro .bi-count{right:20px;font-size:clamp(56px,17vw,80px)}
+      #bi-intro .bi-panel::after{height:9vh}
+      #bi-intro.is-out .bi-panel{transform:translateY(calc(-100% - 9vh))}
+    }
+    @media (prefers-reduced-motion:reduce){
+      #bi-intro *,#bi-intro *::after{animation:none!important;transition:none!important}
+      #bi-intro .bi-stem,#bi-intro .bi-dot{transform:none;opacity:1}
+      #bi-intro .bi-tr{opacity:.6}
+      #bi-intro .bi-meta,#bi-intro .bi-count{opacity:1}
+      #bi-intro{transition:opacity .4s ease}
+      #bi-intro.is-out{opacity:0}
+      #bi-intro.is-out .bi-panel{transform:none}
+      html.bi-intro-lock main{transform:none}
     }
   </style>
   <style id="page-fx">
@@ -335,8 +357,17 @@
 
 <body>
   <div id="bi-intro" aria-hidden="true">
-    <span class="bi-bar"></span>
-    <div class="bi-sk"><i class="lg"></i><i class="nv"></i><i class="cv"></i><i class="ph"></i><i class="hi"></i><i class="n1 g"></i><i class="n2"></i><i class="tg"></i><i class="s1"></i><i class="s2"></i><i class="cu g"></i></div>
+    <div class="bi-panel">
+      <!-- o "i" do favicon (coordenadas do favicon de 192px) -->
+      <svg class="bi-logo" viewBox="62 16 94 154" role="presentation">
+        <g transform="rotate(-21 146.5 27.5)"><rect class="bi-tr t2" x="142.5" y="23.5" width="8" height="8" rx="1"/></g>
+        <g transform="rotate(-21 131 32)"><rect class="bi-tr t1" x="124.5" y="25.5" width="13" height="13" rx="1.5"/></g>
+        <g transform="rotate(-21 95.5 47.5)"><rect class="bi-dot" x="77" y="29" width="37" height="37" rx="2.5"/></g>
+        <path class="bi-stem" d="M71 97.5 120 79.5V166H71Z"/>
+      </svg>
+      <div class="bi-meta"><b>Bernardo Iannini</b><span>Full Stack Developer</span></div>
+      <div class="bi-count"><b>0</b><small>%</small></div>
+    </div>
   </div>
   <script>
     (function () {
@@ -346,18 +377,38 @@
       try { seen = sessionStorage.getItem('bi-intro') === '1'; sessionStorage.setItem('bi-intro', '1'); } catch (e) {}
       /* ja viu nesta sessao, voltou pelo historico ou chegou por #ancora: sem abertura */
       if (seen || (nav && nav.type === 'back_forward') || location.hash.length > 1) { el.parentNode.removeChild(el); return; }
-      document.documentElement.classList.add('bi-intro-lock');
-      var t0 = performance.now(), MIN = 2500, MAX = 3400, done = false;
+      var root = document.documentElement;
+      root.classList.add('bi-intro-lock');
+      /* a barra do navegador no celular acompanha a tela verde */
+      var tc = document.querySelector('meta[name="theme-color"]'), tcOld = tc && tc.content;
+      if (tc) tc.content = '#d4ff3a';
+      var num = el.querySelector('.bi-count b');
+      var t0 = performance.now(), MIN = 2300, MAX = 3300, loaded = false, done = false, shown = 0;
       function out() {
         if (done) return; done = true;
+        num.textContent = '100';
+        root.classList.add('bi-intro-reveal');
         el.classList.add('is-out');
-        document.documentElement.classList.remove('bi-intro-lock');
-        setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 650);
+        root.classList.remove('bi-intro-lock');
+        if (tc) tc.content = tcOld;
+        setTimeout(function () {
+          root.classList.remove('bi-intro-reveal');
+          if (el.parentNode) el.parentNode.removeChild(el);
+        }, 1400);
       }
-      function whenReady() { setTimeout(out, Math.max(0, MIN - (performance.now() - t0))); }
-      if (document.readyState === 'complete') whenReady();
-      else window.addEventListener('load', whenReady, { once: true });
-      setTimeout(out, MAX);   /* teto: 3,4s + 0,6s de fade = 4s no maximo */
+      /* contador: anda com o tempo, segura em 90 ate o load, fecha em 100 */
+      function tick() {
+        if (done) return;
+        var t = performance.now() - t0, p = Math.min(t / MIN, 1);
+        var v = Math.round((1 - Math.pow(1 - p, 3)) * (loaded ? 100 : 90));
+        if (v > shown) { shown = v; num.textContent = v; }
+        if ((loaded && p >= 1) || t >= MAX) { setTimeout(out, 120); return; }
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+      if (document.readyState === 'complete') loaded = true;
+      else window.addEventListener('load', function () { loaded = true; }, { once: true });
+      setTimeout(out, MAX + 400);   /* teto mesmo com o rAF pausado (aba em 2o plano) */
     })();
   </script>
   <!-- Skip-link: 1º foco de teclado pula a navegação e vai pro conteúdo -->

@@ -43,5 +43,8 @@ supabase/
 # Capas-mestre (o site serve so img/covers/, gerado pelo build:covers)
 covers-src
 
+# Fonte HTML dos curriculos (o site serve so os PDFs gerados na raiz)
+cv-src
+
 _capas-antigas/
 gallery-src/

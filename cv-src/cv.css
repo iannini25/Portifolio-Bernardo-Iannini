@@ -1,0 +1,54 @@
+@page { size: A4; margin: 10mm 15mm 9mm; }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ink: #141414;
+  --soft: #4a4a4a;
+  --accent: #1d4d33;
+}
+
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+body {
+  font-family: Calibri, Aptos, Carlito, Arial, sans-serif;
+  font-size: 10pt;
+  line-height: 1.24;
+  color: var(--ink);
+  background: #fff;
+  /* ligaduras viram "ﬁ"/"ﬂ" no texto extraído e o ATS não reconhece "fintech" */
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "clig" 0;
+}
+
+a { color: inherit; text-decoration: none; }
+
+header { margin-bottom: 4pt; }
+h1 { font-size: 22pt; font-weight: 700; line-height: 1.05; letter-spacing: -.2pt; }
+.headline { font-size: 11.5pt; font-weight: 700; color: var(--accent); margin-top: 3pt; }
+.contact { color: var(--soft); margin-top: 3pt; }
+
+h2 {
+  font-size: 10.5pt;
+  font-weight: 700;
+  letter-spacing: .8pt;
+  text-transform: uppercase;
+  color: var(--accent);
+  border-bottom: .75pt solid var(--accent);
+  padding-bottom: 1.5pt;
+  margin: 7pt 0 3pt;
+}
+
+.job { margin-bottom: 3pt; break-inside: avoid; }
+.row { display: flex; justify-content: space-between; gap: 12pt; }
+.role { font-weight: 700; }
+.date { white-space: nowrap; color: var(--soft); }
+.meta { color: var(--soft); }
+
+ul { margin: 2pt 0 0 13pt; }
+li { margin-bottom: 1pt; padding-left: 1pt; }
+
+.skills p { margin-bottom: 1pt; }
+.skills b { font-weight: 700; }
+
+.line { margin-bottom: 2pt; }

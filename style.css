@@ -21,8 +21,13 @@ html.lenis iframe { pointer-events: none; }
   --bg: #060807;
   --text: #f3f6f4;
   --muted: #9fb2a6;
-  --green: #22c55e;
-  --green-2: #16a34a;
+  /* primaria = lime (#a3e635). O verde antigo virou detalhe/contraste:
+     --forest (gradientes, segundo tom de aurora, linhas finas) */
+  --green: #a3e635;
+  --green-2: #84cc16;
+  --forest: #22c55e;
+  --f-15: rgba(34,197,94,.15);
+  --f-30: rgba(34,197,94,.30);
   --rail: #0e1511;
   --border: #1c2a20;
   --glass: rgba(10, 18, 14, .55);
@@ -52,25 +57,25 @@ html.lenis iframe { pointer-events: none; }
   --gline-42: rgba(65,110,84,.42);
 
   /* derivados do verde (chips/efeitos/linhas) */
-  --g-08: rgba(34,197,94,.08);
-  --g-10: rgba(34,197,94,.10);
-  --g-14: rgba(34,197,94,.14);
-  --g-15: rgba(34,197,94,.15);
-  --g-16: rgba(34,197,94,.16);
-  --g-18: rgba(34,197,94,.18);
-  --g-22: rgba(34,197,94,.22);
-  --g-28: rgba(34,197,94,.28);
-  --g-30: rgba(34,197,94,.30);
-  --g-35: rgba(34,197,94,.35);
-  --g-45: rgba(34,197,94,.45);
-  --g-50: rgba(34,197,94,.50);
-  --g-55: rgba(34,197,94,.55);
-  --g-70: rgba(34,197,94,.70);
-  --g-80: rgba(34,197,94,.80);
+  --g-08: rgba(163,230,53,.08);
+  --g-10: rgba(163,230,53,.10);
+  --g-14: rgba(163,230,53,.14);
+  --g-15: rgba(163,230,53,.15);
+  --g-16: rgba(163,230,53,.16);
+  --g-18: rgba(163,230,53,.18);
+  --g-22: rgba(163,230,53,.22);
+  --g-28: rgba(163,230,53,.28);
+  --g-30: rgba(163,230,53,.30);
+  --g-35: rgba(163,230,53,.35);
+  --g-45: rgba(163,230,53,.45);
+  --g-50: rgba(163,230,53,.50);
+  --g-55: rgba(163,230,53,.55);
+  --g-70: rgba(163,230,53,.70);
+  --g-80: rgba(163,230,53,.80);
 
   /* preset de gradiente verde → lime — usar em destaques (badge, headline) */
   --lime: #a3e635;
-  --gradient-lime: linear-gradient(135deg, var(--green) 0%, var(--lime) 100%);
+  --gradient-lime: linear-gradient(135deg, var(--forest) 0%, var(--lime) 100%);
 
   /* textos auxiliares */
   --text-soft: #dce4de;
@@ -617,7 +622,7 @@ body.pc-nav-hidden header {
 }
 
 .tagline { margin-top: 16px; font-family: "Instrument Serif", "Playfair Display", Georgia, serif; font-size: clamp(26px, 3.4vw, 36px); font-style: italic; font-weight: 400; letter-spacing: -.005em; color: var(--text-italic); display: inline-block; min-height: 1.2em; transition: color .4s, text-shadow .4s }
-.tagline.glow { color: var(--green); text-shadow: 0 0 12px var(--g-80), 0 0 24px rgba(34,197,94,.4) }
+.tagline.glow { color: var(--green); text-shadow: 0 0 12px var(--g-80), 0 0 24px rgba(163,230,53,.4) }
 /* #taglineText sempre usa background-clip: text com um gradient base
    solid (currentColor → currentColor). Mantém o rendering mode CONSTANTE
    entre todos os estados (scramble, sheen ativa, depois da sheen) —
@@ -914,8 +919,8 @@ body.pc-nav-hidden header {
     180deg,
     transparent 0,
     transparent 2px,
-    rgba(34, 197, 94, .025) 2px,
-    rgba(34, 197, 94, .025) 3px
+    rgba(163,230,53, .025) 2px,
+    rgba(163,230,53, .025) 3px
   );
   opacity: 0;
   transition: opacity .4s ease;
@@ -1054,7 +1059,7 @@ body.pc-nav-hidden header {
   z-index: 4;
   pointer-events: none;
   background: radial-gradient(160% 160% at var(--mx, 50%) var(--my, 50%),
-    color-mix(in oklab, var(--lime) 92%, var(--green)) 0%, transparent 46%);
+    color-mix(in oklab, var(--lime) 92%, var(--forest)) 0%, transparent 46%);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
           mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
@@ -1249,7 +1254,7 @@ body.pc-nav-hidden header {
      em vez do antigo boost de brilho + glow — mais limpo e na cara
      do resto da página (mesmo movimento do nome no hero) */
   background: linear-gradient(120deg,
-    var(--green) 0%, var(--svc-color) 42%, var(--green) 80%, var(--svc-color) 100%);
+    var(--forest) 0%, var(--svc-color) 42%, var(--forest) 80%, var(--svc-color) 100%);
   background-size: 240% 100%;
   background-position: 0% 50%;
   color: #0e0e0e;
@@ -1444,7 +1449,7 @@ body.pc-nav-hidden header {
   box-shadow:
     0 0 24px var(--g-35),
     0 0 16px rgba(163, 230, 53, .18),
-    inset 0 0 10px rgba(34,197,94,.06);
+    inset 0 0 10px rgba(163,230,53,.06);
   animation: tl-end-pulse 3s ease-in-out infinite;
 }
 
@@ -1610,7 +1615,7 @@ body.pc-nav-hidden header {
   z-index: 3;
   pointer-events: none;
   background: radial-gradient(160% 160% at var(--mx, 50%) var(--my, 50%),
-    color-mix(in oklab, var(--lime) 92%, var(--green)) 0%, transparent 46%);
+    color-mix(in oklab, var(--lime) 92%, var(--forest)) 0%, transparent 46%);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
           mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
@@ -1829,8 +1834,8 @@ body.pc-nav-hidden header {
   pointer-events: none;
   background:
     radial-gradient(50% 40% at 22% 30%,
-      var(--g-10), rgba(34, 197, 94, .04) 55%,
-      rgba(34, 197, 94, .015) 78%, transparent 100%),
+      var(--g-10), rgba(163,230,53, .04) 55%,
+      rgba(163,230,53, .015) 78%, transparent 100%),
     radial-gradient(44% 38% at 80% 58%,
       rgba(163, 230, 53, .06), rgba(163, 230, 53, .024) 55%,
       rgba(163, 230, 53, .009) 78%, transparent 100%),
@@ -1839,8 +1844,8 @@ body.pc-nav-hidden header {
       rgba(45, 212, 191, .007) 78%, transparent 100%),
     /* poça extra no FIM da section: verde fechando o trilho */
     radial-gradient(38% 26% at 74% 92%,
-      rgba(34, 197, 94, .05), rgba(34, 197, 94, .02) 55%,
-      rgba(34, 197, 94, .007) 78%, transparent 100%);
+      rgba(163,230,53, .05), rgba(163,230,53, .02) 55%,
+      rgba(163,230,53, .007) 78%, transparent 100%);
   -webkit-mask: linear-gradient(180deg,
     transparent 0%,
     rgba(0, 0, 0, .25) 14%,
@@ -1952,8 +1957,8 @@ body.pc-nav-hidden header {
 .hero::before {
   background:
     radial-gradient(42% 36% at 62% 38%,
-      rgba(34, 197, 94, .055), rgba(34, 197, 94, .022) 55%,
-      rgba(34, 197, 94, .008) 78%, transparent 100%);
+      rgba(163,230,53, .055), rgba(163,230,53, .022) 55%,
+      rgba(163,230,53, .008) 78%, transparent 100%);
 }
 
 /* about: poça verde na esquerda (eco do fio) + lime timida embaixo.
@@ -1967,8 +1972,8 @@ body.pc-nav-hidden header {
   width: 100vw;
   background:
     radial-gradient(34% 30% at 24% 30%,
-      rgba(34, 197, 94, .055), rgba(34, 197, 94, .022) 55%,
-      rgba(34, 197, 94, .008) 78%, transparent 100%),
+      rgba(163,230,53, .055), rgba(163,230,53, .022) 55%,
+      rgba(163,230,53, .008) 78%, transparent 100%),
     radial-gradient(32% 26% at 78% 74%,
       rgba(163, 230, 53, .034), rgba(163, 230, 53, .014) 55%,
       rgba(163, 230, 53, .005) 78%, transparent 100%),
@@ -1982,8 +1987,8 @@ body.pc-nav-hidden header {
 .xp::before {
   background:
     radial-gradient(46% 42% at 50% 58%,
-      rgba(34, 197, 94, .05), rgba(34, 197, 94, .02) 55%,
-      rgba(34, 197, 94, .007) 78%, transparent 100%),
+      rgba(163,230,53, .05), rgba(163,230,53, .02) 55%,
+      rgba(163,230,53, .007) 78%, transparent 100%),
     radial-gradient(30% 26% at 22% 24%,
       rgba(163, 230, 53, .032), rgba(163, 230, 53, .013) 55%,
       rgba(163, 230, 53, .005) 78%, transparent 100%);
@@ -1993,14 +1998,14 @@ body.pc-nav-hidden header {
 .work-timeline::before {
   background:
     radial-gradient(44% 24% at 50% 22%,
-      rgba(34, 197, 94, .045), rgba(34, 197, 94, .018) 55%,
-      rgba(34, 197, 94, .006) 78%, transparent 100%),
+      rgba(163,230,53, .045), rgba(163,230,53, .018) 55%,
+      rgba(163,230,53, .006) 78%, transparent 100%),
     radial-gradient(40% 22% at 50% 74%,
       rgba(45, 212, 191, .03), rgba(45, 212, 191, .012) 55%,
       rgba(45, 212, 191, .004) 78%, transparent 100%),
     radial-gradient(32% 18% at 24% 42%,
-      rgba(34, 197, 94, .038), rgba(34, 197, 94, .015) 55%,
-      rgba(34, 197, 94, .006) 78%, transparent 100%),
+      rgba(163,230,53, .038), rgba(163,230,53, .015) 55%,
+      rgba(163,230,53, .006) 78%, transparent 100%),
     radial-gradient(30% 16% at 78% 58%,
       rgba(163, 230, 53, .03), rgba(163, 230, 53, .012) 55%,
       rgba(163, 230, 53, .004) 78%, transparent 100%);
@@ -2009,8 +2014,8 @@ body.pc-nav-hidden header {
 .skills-tiles::before {
   background:
     radial-gradient(38% 30% at 76% 30%,
-      rgba(34, 197, 94, .055), rgba(34, 197, 94, .022) 55%,
-      rgba(34, 197, 94, .008) 78%, transparent 100%),
+      rgba(163,230,53, .055), rgba(163,230,53, .022) 55%,
+      rgba(163,230,53, .008) 78%, transparent 100%),
     radial-gradient(34% 26% at 22% 80%,
       rgba(45, 212, 191, .032), rgba(45, 212, 191, .013) 55%,
       rgba(45, 212, 191, .005) 78%, transparent 100%);
@@ -2413,7 +2418,7 @@ body.pc-nav-hidden header {
 .proj-cover--placeholder {
   background:
     radial-gradient(circle at 30% 25%, var(--g-30), transparent 55%),
-    radial-gradient(circle at 80% 80%, rgba(34,197,94,.10), transparent 60%),
+    radial-gradient(circle at 80% 80%, rgba(163,230,53,.10), transparent 60%),
     linear-gradient(135deg, var(--rail), #14201a 60%, #0a120e);
 }
 
@@ -2631,7 +2636,7 @@ body.pc-nav-hidden header {
   border-color: transparent;
   box-shadow:
     var(--shadow-38),
-    0 16px 44px rgba(34,197,94,.12);
+    0 16px 44px rgba(163,230,53,.12);
 }
 
 /* Borda do destacado: anel gradient estático (verde → teal → lime → emerald).
@@ -2795,20 +2800,20 @@ body.pc-nav-hidden header {
 .skills-tiles .tile{ --reveal-w: clamp(620px, 58vw, 880px); position: relative; border-radius: 14px; transition: border-color .28s ease, box-shadow .28s ease, background .28s ease; overflow: visible }
 .skills-tiles .tile-square{ --sq: 120px; --shift: 260px; --slideX: 0; --liftY: 0; --liftS: 1; width: var(--sq); height: var(--sq); display: grid; place-items: center; isolation: isolate; cursor: pointer; background: transparent; border: none; box-shadow: none; transform: translateX(var(--slideX)) translateY(var(--liftY)) scale(var(--liftS)); transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease }
 .skills-tiles .tile-ico{ position: relative; width: 100%; height: 100%; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 12px; background: var(--rail); box-shadow: 0 12px 28px rgba(0,0,0,.35); overflow: hidden; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, filter .18s ease }
-.skills-tiles .tile-square::before{ content:""; position:absolute; inset:-6px; border-radius: 16px; background: radial-gradient(40% 40% at 50% 50%, rgba(34,197,94,.28), transparent 60%); opacity: 0; transform: scale(.9); filter: blur(10px); transition: opacity .20s ease, transform .20s ease, filter .20s ease; z-index: -1 }
+.skills-tiles .tile-square::before{ content:""; position:absolute; inset:-6px; border-radius: 16px; background: radial-gradient(40% 40% at 50% 50%, rgba(163,230,53,.28), transparent 60%); opacity: 0; transform: scale(.9); filter: blur(10px); transition: opacity .20s ease, transform .20s ease, filter .20s ease; z-index: -1 }
 .skills-tiles .tile-ico::after{ content:""; position:absolute; inset:0; border-radius: 12px; background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.28) 50%, transparent 65%); mix-blend-mode: screen; transform: translateX(-140%); opacity: 0; transition: transform .55s ease, opacity .25s ease; pointer-events:none }
 .skills-tiles .tile-ico img, .skills-tiles .tile-ico svg{ width: 68%; height: 68%; object-fit: contain; display: block; transition: transform .18s ease, filter .18s ease }
 .skills-tiles .tile-square:hover{ --liftY: -3px; --liftS: 1.03; border-color: color-mix(in oklab, var(--green) 55%, var(--border)); box-shadow: 0 16px 40px rgba(0,0,0,.38), inset 0 0 0 1px rgba(255,255,255,.02) }
 .skills-tiles .tile-square:hover::before{ opacity: 1; transform: scale(1.08); filter: blur(16px) }
 .skills-tiles .tile-square:hover .tile-ico{ border-color: color-mix(in oklab, var(--green) 55%, var(--border)); box-shadow: 0 18px 44px rgba(0,0,0,.42) }
 .skills-tiles .tile-square:hover .tile-ico::after{ transform: translateX(140%); opacity: .9 }
-.skills-tiles .tile-square:hover .tile-ico img{ transform: scale(1.08) rotate(-2deg); filter: drop-shadow(0 0 8px rgba(34,197,94,.35)) }
+.skills-tiles .tile-square:hover .tile-ico img{ transform: scale(1.08) rotate(-2deg); filter: drop-shadow(0 0 8px rgba(163,230,53,.35)) }
 .skills-tiles .tile-square::after{ content: attr(data-label); position: absolute; left: 50%; bottom: -34px; transform: translateX(-50%) translateY(6px); padding: 6px 10px; font-weight: 800; font-size: 12px; letter-spacing: .02em; white-space: nowrap; color: var(--text); background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-radius: 10px; box-shadow: 0 8px 18px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.06); pointer-events: none; opacity: 0; z-index: 10; transition: opacity .18s ease, transform .18s ease }
 .skills-tiles .tile-square:hover::after{ opacity: 1; transform: translateX(-50%) translateY(0) }
 .skills-tiles .tile-reveal{ position: absolute; top: 0; bottom: 0; left: calc(100% + 12px); width: var(--reveal-w); display: grid; align-content: center; justify-items: start; background: linear-gradient(180deg, var(--glass), var(--glass-2)); border: 1px solid rgba(65,110,84,.35); border-radius: 14px; padding: 12px 14px; box-shadow: 0 20px 50px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.02); opacity: 0; transform: translateX(12px); pointer-events: none; transition: opacity .28s ease, transform .28s ease, border-color .28s ease, background .28s ease }
 .skills-tiles .reveal-grid{ display: grid; grid-auto-flow: column; grid-auto-columns: max-content; gap: 12px; align-items: center }
 .skills-tiles .reveal-grid li{ width: 52px; aspect-ratio: 1/1; border-radius: 12px; display: grid; place-items: center; background: var(--rail); border: 1px solid var(--border); box-shadow: 0 12px 28px rgba(0,0,0,.35); transition: transform .2s ease, border-color .2s ease, filter .2s ease; position: relative }
-.skills-tiles .reveal-grid li:hover{ transform: translateY(-3px); border-color: color-mix(in oklab, var(--green) 55%, var(--border)); filter: drop-shadow(0 0 10px rgba(34,197,94,.35)) }
+.skills-tiles .reveal-grid li:hover{ transform: translateY(-3px); border-color: color-mix(in oklab, var(--forest) 55%, var(--border)); filter: drop-shadow(0 0 10px rgba(163,230,53,.35)) }
 .skills-tiles .reveal-grid img{ width: 70%; height: 70%; object-fit: contain }
 .skills-tiles .reveal-grid li::after{ content: attr(data-label); position: absolute; left: 50%; top: -32px; transform: translate(-50%, 6px); padding: 6px 8px; font-weight: 800; font-size: 12px; letter-spacing: .02em; white-space: nowrap; background: var(--w-05); border: 1px solid var(--w-10); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-radius: 8px; box-shadow: 0 8px 18px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.04); color: var(--text); opacity: 0; pointer-events: none; z-index: 20; transition: opacity .18s ease, transform .18s ease }
 .skills-tiles .reveal-grid li:hover::after{ opacity: 1; transform: translate(-50%, 0) }
@@ -3159,7 +3164,7 @@ body.pc-nav-hidden header {
   background:
     /* aurora dual: lime à esquerda, green à direita */
     radial-gradient(ellipse 50% 60% at 30% 30%, rgba(163,230,53,.05), transparent 70%),
-    radial-gradient(ellipse 50% 60% at 70% 30%, rgba(34,197,94,.06), transparent 70%),
+    radial-gradient(ellipse 50% 60% at 70% 30%, rgba(163,230,53,.06), transparent 70%),
     radial-gradient(circle at 50% 60%, rgba(8,18,12,.6) 0%, rgba(0,0,0,.88) 80%);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
@@ -3169,8 +3174,10 @@ body.pc-nav-hidden header {
 
 .ctm__shell {
   position: relative;
+  box-sizing: border-box;
   width: var(--ctm-w);
   max-height: 90vh;
+  max-height: calc(100dvh - 24px);
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-gutter: stable;
@@ -3310,14 +3317,14 @@ body.pc-nav-hidden header {
   left: 0; top: 50%;
   width: 3px;
   height: 0;
-  background: linear-gradient(180deg, var(--svc-color), var(--green));
+  background: linear-gradient(180deg, var(--svc-color), var(--forest));
   border-radius: 0 3px 3px 0;
   transform: translateY(-50%);
   transition: height .25s ease, box-shadow .25s ease;
 }
 .ctm__channel:hover {
   border-color: var(--g-45);
-  background: rgba(34,197,94,.04);
+  background: rgba(163,230,53,.04);
   padding-left: 18px;
 }
 .ctm__channel:hover::before {
@@ -3404,7 +3411,7 @@ body.pc-nav-hidden header {
 }
 .ctm__field input:focus, .ctm__field textarea:focus {
   border-color: var(--g-50);
-  background: rgba(34,197,94,.025);
+  background: rgba(163,230,53,.025);
   box-shadow:
     0 0 0 3px var(--g-15),
     0 0 22px -10px var(--g-50),
@@ -4130,9 +4137,9 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   border-radius: inherit;
   background: conic-gradient(
     from 180deg,
-    rgba(34,197,94,.0),
+    rgba(163,230,53,.0),
     var(--g-30),
-    rgba(34,197,94,.0)
+    rgba(163,230,53,.0)
   );
   opacity: .18;
   mix-blend-mode: screen;
@@ -4309,7 +4316,7 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   background: var(--g-14);
   border-color: var(--g-45);
   color: var(--text-mint);
-  box-shadow: 0 0 14px rgba(34,197,94,.25);
+  box-shadow: 0 0 14px rgba(163,230,53,.25);
   filter: brightness(1.12);
 }
 
@@ -5294,6 +5301,28 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
 }
 
 .pj-card { position: relative; min-width: 0; }
+
+/* HOVER QUE RE-PONDERA A FILEIRA (so desktop com mouse, sem reduced-motion).
+   O card sob o cursor ganha largura e os vizinhos da MESMA fileira cedem.
+   Barato por desenho: a altura da capa vem da largura da FILEIRA (cqw), nao
+   do card, entao a altura nunca muda e nada abaixo da fileira se move; o
+   relayout fica preso a 3 cards. A imagem e object-fit:cover, so recorta. */
+@media (min-width: 901px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .pj-row {
+    container-type: inline-size;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+    transition: grid-template-columns .55s var(--ps-ease);
+  }
+  .pj-row[data-n="2"] { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .pj-row[data-n="3"] .pj-card__view { aspect-ratio: auto; height: calc((100cqw - 24px) / 3 * 9 / 16); }
+  .pj-row[data-n="2"] .pj-card__view { aspect-ratio: auto; height: calc((100cqw - 12px) / 2 * 9 / 16); }
+
+  .pj-row[data-n="3"]:has(> .pj-card:nth-child(1).is-hot) { grid-template-columns: minmax(0, 1.3fr) minmax(0, .85fr) minmax(0, .85fr); }
+  .pj-row[data-n="3"]:has(> .pj-card:nth-child(2).is-hot) { grid-template-columns: minmax(0, .85fr) minmax(0, 1.3fr) minmax(0, .85fr); }
+  .pj-row[data-n="3"]:has(> .pj-card:nth-child(3).is-hot) { grid-template-columns: minmax(0, .85fr) minmax(0, .85fr) minmax(0, 1.3fr); }
+  .pj-row[data-n="2"]:has(> .pj-card:nth-child(1).is-hot) { grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); }
+  .pj-row[data-n="2"]:has(> .pj-card:nth-child(2).is-hot) { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); }
+}
 /* o card é só o screenshot num frame limpo (sem chrome de browser), com o
    recorte curvo do bento do blog no canto. E mascara, nao um remendo da cor
    do fundo: as curvas topograficas da secao continuam passando pelo recorte,
@@ -5349,7 +5378,7 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   z-index: 3;
   pointer-events: none;
   background: radial-gradient(160% 160% at var(--mx, 50%) var(--my, 50%),
-    color-mix(in oklab, var(--lime) 92%, var(--green)) 0%, transparent 46%);
+    color-mix(in oklab, var(--lime) 92%, var(--forest)) 0%, transparent 46%);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
           mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
@@ -6375,7 +6404,7 @@ body:has(.cs) header::before {
   border-radius: 28px;
   border: 1px solid var(--g-15);
   background:
-    radial-gradient(60% 80% at 100% 0%, rgba(34, 197, 94, .1), transparent 65%),
+    radial-gradient(60% 80% at 100% 0%, rgba(163,230,53, .1), transparent 65%),
     linear-gradient(180deg, rgba(255, 255, 255, .025), rgba(255, 255, 255, .008));
   overflow: hidden;
 }
@@ -6400,10 +6429,10 @@ body:has(.cs) header::before {
           mask: radial-gradient(70% 90% at 85% 15%, #000 0%, rgba(0, 0, 0, .45) 45%, transparent 80%);
 }
 .cs-deco__dots { fill: rgba(163, 230, 53, .07); }
-.cs-deco__ring { fill: none; stroke: rgba(34, 197, 94, .13); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.cs-deco__ring { fill: none; stroke: rgba(163,230,53, .13); stroke-width: 1; vector-effect: non-scaling-stroke; }
 .cs-deco__dot { fill: var(--lime); opacity: .55; }
 .cs-deco__line { fill: none; stroke: rgba(163, 230, 53, .1); stroke-width: 1; }
-.cs-deco__sq { fill: none; stroke: rgba(34, 197, 94, .14); stroke-width: 1.2; }
+.cs-deco__sq { fill: none; stroke: rgba(163,230,53, .14); stroke-width: 1.2; }
 .cs-about .cs-h2 { margin-bottom: 20px; }
 .cs-about__lead {
   margin: 0 0 16px;
@@ -6445,7 +6474,7 @@ body:has(.cs) header::before {
   padding: 26px 22px 24px;
   border-radius: 22px;
   border: 1px solid var(--w-05);
-  background: radial-gradient(90% 70% at 0% 0%, rgba(34, 197, 94, .1), transparent 70%), rgba(255, 255, 255, .02);
+  background: radial-gradient(90% 70% at 0% 0%, rgba(163,230,53, .1), transparent 70%), rgba(255, 255, 255, .02);
   overflow: hidden;
   transition: border-color .3s ease, transform .35s var(--ps-ease);
 }
@@ -6722,7 +6751,7 @@ body.blog-body { min-height: 100vh; }
   background: var(--lime);
   border-color: var(--lime);
   transform: translateY(-2px);
-  box-shadow: 0 10px 26px rgba(34,197,94,.30);
+  box-shadow: 0 10px 26px rgba(163,230,53,.30);
 }
 .blog-soon-tags {
   display: flex;
@@ -6861,7 +6890,8 @@ body.blog-body { min-height: 100vh; }
   .contact-hero__sub { font-size: 1rem; }
 
   /* Modal de contato */
-  .ctm__shell { width: 95vw !important; padding: 24px 18px !important; }
+  /* border-box: sem ele o padding somava aos 95vw e a caixa passava da tela */
+  .ctm__shell { width: calc(100vw - 24px) !important; padding: 24px 18px !important; }
   .ctm__channels { grid-template-columns: 1fr !important; }
   .ctm__form { grid-template-columns: 1fr !important; }
 
@@ -7449,7 +7479,7 @@ dialog.modal-fx-open::backdrop {
 .ctm.modal-fx-open::backdrop {
   background:
     radial-gradient(ellipse 50% 60% at 30% 30%, rgba(163,230,53,.05), transparent 70%),
-    radial-gradient(ellipse 50% 60% at 70% 30%, rgba(34,197,94,.06), transparent 70%),
+    radial-gradient(ellipse 50% 60% at 70% 30%, rgba(163,230,53,.06), transparent 70%),
     radial-gradient(circle at 50% 60%, rgba(6,8,7,.72) 0%, rgba(0,0,0,.9) 80%);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
@@ -7801,7 +7831,7 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
   gap: 10px;
   padding: 11px 20px;
   border-radius: 999px;
-  background: var(--gradient-lime, linear-gradient(135deg, var(--green), var(--lime)));
+  background: var(--gradient-lime, linear-gradient(135deg, var(--forest), var(--lime)));
   color: #0e0e0e;
   font-weight: 700;
   font-size: .9rem;
@@ -8284,8 +8314,8 @@ dialog.modal-fx-morph:not(.is-closing) [data-modal-frame] {
 }
 @keyframes folderPulse {
   0%   { box-shadow: 0 0 0 0 var(--g-45); }
-  70%  { box-shadow: 0 0 0 7px rgba(34, 197, 94, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+  70%  { box-shadow: 0 0 0 7px rgba(163,230,53, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(163,230,53, 0); }
 }
 
 .skills-tiles .folder-front__bottom {
