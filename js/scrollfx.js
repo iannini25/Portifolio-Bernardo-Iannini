@@ -512,7 +512,8 @@
   function buildMouse() {
     /* (.scroll-cue fica de fora: a animação CSS de bob é dona do
        transform dele e anularia o magnetismo) */
-    magnetize('.resume-btn, .contact-hero__cta', .32);
+    /* (o botao de curriculo fica parado: sem ima) */
+    magnetize('.contact-hero__cta', .32);
     magnetize('.sbtn', .38);
     magnetize('.ps-cta, .ps-repos__btn', .22);
 

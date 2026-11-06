@@ -472,52 +472,28 @@ body.pc-nav-hidden header {
   padding: 84px 20px 32px;
   position: relative; left: var(--hero-nudge);
 }
-/* ===== Photo — troca LIQUIDA no hover (enchendo de baixo pra cima).
-   A silhueta e uma mascara FIXA no formato do recorte: o contorno nunca
-   muda. Ao passar o mouse, a foto B sobe como liquido: tres ondas somadas
-   (a principal, uma secundaria de outro comprimento e uma ondulacao fina
-   na superficie) sobem ate cobrir a imagem inteira, com uma crista lime
-   fina. Mouse em cima = fica a B; saiu = o liquido escoa e volta a A.
-   A cada hover o JS sorteia fase das ondas, desnivel, velocidade e sentido
-   da correnteza: nunca e exatamente igual. ===== */
-@property --wy  { syntax: '<percentage>'; inherits: true; initial-value: 0%; }
-@property --wx  { syntax: '<percentage>'; inherits: true; initial-value: 0%; }
-@property --wx2 { syntax: '<percentage>'; inherits: true; initial-value: 0%; }
+/* ===== Photo — troca em PIXELS no hover (a linguagem do "i" da marca:
+   os quadradinhos do rastro). A foto B se monta em blocos quadrados que
+   estouram em onda a partir do ponto onde o cursor entrou; cada bloco
+   pisca lime e vira foto. Ao sair, os blocos se desfazem em onda a partir
+   do ponto de saida. Delays e um pouco de acaso por bloco vem do JS
+   (--d), entao a onda nunca e igual. So transform/opacity: compositor.
+   A silhueta e um clip-path em poligono (gerado do recorte da foto):
+   nao depende de carregar imagem nenhuma, entao a foto nunca some. ===== */
 .photo {
-  --wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 240' preserveAspectRatio='none'%3E%3Cpath d='M0 120C25 109 25 109 50 120S75 131 100 120C125 109 125 109 150 120S175 131 200 120V240H0Z'/%3E%3C/svg%3E");
-  --ripple: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 240' preserveAspectRatio='none'%3E%3Cpath d='M0 120C8.33333 116 8.33333 116 16.6667 120S25 124 33.3333 120C41.6667 116 41.6667 116 50 120S58.3333 124 66.6667 120C75 116 75 116 83.3333 120S91.6667 124 100 120C108.333 116 108.333 116 116.667 120S125 124 133.333 120C141.667 116 141.667 116 150 120S158.333 124 166.667 120C175 116 175 116 183.333 120S191.667 124 200 120V240H0Z'/%3E%3C/svg%3E");
-  --p1: 0%; --p2: 37%; --p3: 18%; --d2: 2%;
   width: clamp(420px, 37vw, 500px);
   height: auto;
   position: relative;
-  overflow: hidden;
   isolation: isolate;
   cursor: pointer;
-  -webkit-mask: url("img/eufoto1.webp") 0 0 / 100% 100% no-repeat;
-          mask: url("img/eufoto1.webp") 0 0 / 100% 100% no-repeat;
-  /* escoando: solta rapido e assenta macio */
-  transition: --wy .6s cubic-bezier(.45, 0, .2, 1);
-  animation: photo-wave 2s linear infinite paused;
+  clip-path: polygon(93.2% 53.4%, 92.7% 56.2%, 92.1% 59.0%, 91.1% 61.6%, 90.2% 64.2%, 89.1% 66.7%, 88.1% 69.2%, 86.9% 71.6%, 85.6% 74.0%, 84.2% 76.3%, 82.6% 78.5%, 81.2% 80.8%, 79.5% 83.0%, 77.8% 85.2%, 75.9% 87.2%, 73.8% 89.1%, 71.7% 91.0%, 69.3% 92.7%, 66.9% 94.3%, 64.4% 95.8%, 61.6% 96.8%, 58.8% 97.8%, 55.9% 98.5%, 53.0% 99.1%, 50.0% 99.1%, 47.0% 99.1%, 44.1% 98.5%, 41.1% 98.0%, 38.3% 97.0%, 35.6% 96.0%, 32.9% 94.8%, 30.4% 93.3%, 27.9% 91.8%, 25.7% 89.8%, 23.5% 88.0%, 21.4% 86.1%, 19.5% 84.0%, 17.7% 81.8%, 16.0% 79.5%, 14.3% 77.3%, 12.9% 74.9%, 11.5% 72.5%, 10.0% 70.0%, 8.8% 67.4%, 7.8% 64.8%, 6.8% 62.0%, 5.7% 59.3%, 5.1% 56.4%, 4.3% 53.4%, 3.7% 50.4%, 3.3% 47.3%, 3.0% 44.1%, 2.9% 40.8%, 2.8% 37.4%, 3.2% 34.0%, 3.6% 30.5%, 4.8% 27.3%, 6.4% 24.3%, 9.1% 22.0%, 12.3% 20.3%, 15.4% 18.7%, 18.7% 17.7%, 21.9% 16.7%, 25.1% 16.1%, 28.1% 15.4%, 31.0% 14.8%, 33.8% 14.3%, 36.6% 14.0%, 39.4% 13.7%, 42.0% 13.4%, 44.7% 13.3%, 47.4% 13.2%, 50.0% 13.5%, 52.6% 13.7%, 55.2% 14.0%, 57.8% 14.2%, 60.4% 14.5%, 63.0% 14.9%, 65.7% 15.4%, 68.4% 16.0%, 71.1% 16.7%, 73.9% 17.6%, 76.7% 18.6%, 79.5% 19.8%, 82.2% 21.2%, 84.8% 22.9%, 87.2% 24.8%, 89.4% 27.0%, 91.2% 29.6%, 92.4% 32.5%, 93.2% 35.5%, 93.6% 38.6%, 94.0% 41.6%, 94.0% 44.7%, 94.0% 47.6%, 93.6% 50.6%);
 }
-.photo:hover {
-  --wy: 100%;
-  /* enchendo: arranque suave, meio rapido, chegada macia no topo */
-  transition: --wy .75s cubic-bezier(.33, 0, .15, 1);
-  animation-play-state: running;
-}
-/* a superficie corre (camada 1 e a ondulacao num sentido, camada 2 no
-   outro, num periodo diferente) — as ondas se cruzam = liquido vivo */
-@keyframes photo-wave { to { --wx: 100%; --wx2: -175%; } }
 /* notebook pequeno / tablet deitado (1025-1240px): a coluna é a tela
    inteira, sem margem lateral — foto e espaços menores pra rail caber */
 @media (min-width: 1025px) and (max-width: 1240px) {
   .hero { gap: 40px; }
   .photo { width: 340px; }
 }
-
-/* Layout — primeira img define a altura natural da figure */
-.photo__img--a { position: relative; }
-.photo__img--b { position: absolute; inset: 0; }
 
 .photo__img {
   width: 100%;
@@ -528,47 +504,59 @@ body.pc-nav-hidden header {
   -webkit-user-drag: none;
   user-drag: none;
   -webkit-touch-callout: none;
-  /* sem eventos diretos no <img> — o hover continua via .photo (pai) */
   pointer-events: none;
   backface-visibility: hidden;
-  transition: transform .9s cubic-bezier(.22, 1, .36, 1);
 }
-.photo:hover .photo__img--a { transform: scale(1.05); }
-/* B: o liquido — uniao das tres ondas (a mais alta manda na borda) */
-.photo__img--b {
-  transform: scale(1.07);
-  -webkit-mask:
-    var(--wave)   calc(var(--wx) + var(--p1))  var(--wy) / 200% 240% repeat-x,
-    var(--wave)   calc(var(--wx2) + var(--p2)) calc(var(--wy) - var(--d2)) / 140% 240% repeat-x,
-    var(--ripple) calc(var(--wx) + var(--p3))  calc(var(--wy) + .8%) / 200% 240% repeat-x;
-          mask:
-    var(--wave)   calc(var(--wx) + var(--p1))  var(--wy) / 200% 240% repeat-x,
-    var(--wave)   calc(var(--wx2) + var(--p2)) calc(var(--wy) - var(--d2)) / 140% 240% repeat-x,
-    var(--ripple) calc(var(--wx) + var(--p3))  calc(var(--wy) + .8%) / 200% 240% repeat-x;
+.photo__img--a {
+  position: relative;
+  transition: transform .9s cubic-bezier(.22, 1, .36, 1), filter .6s ease;
 }
-.photo:hover .photo__img--b { transform: scale(1); }
-/* crista lime fina: a onda principal 2% a frente, menos ela mesma */
-.photo__sweep {
-  display: block;
+/* a B so serve de fonte (decodificada antes); quem aparece sao os blocos */
+.photo__img--b { position: absolute; inset: 0; visibility: hidden; }
+.photo.is-b .photo__img--a { transform: scale(1.04); filter: brightness(.7); }
+.photo__sweep { display: none; }
+
+/* grade de blocos por cima da A */
+.photo__px {
   position: absolute;
   inset: 0;
   z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(var(--n), 1fr);
+  grid-template-rows: repeat(var(--n), 1fr);
   pointer-events: none;
-  background: linear-gradient(180deg, #d9f99d, var(--lime));
-  opacity: .75;
-  -webkit-mask:
-    var(--wave) calc(var(--wx) + var(--p1)) calc(var(--wy) + 2%) / 200% 240% repeat-x,
-    var(--wave) calc(var(--wx) + var(--p1)) var(--wy) / 200% 240% repeat-x;
-  -webkit-mask-composite: source-out;
-          mask:
-    var(--wave) calc(var(--wx) + var(--p1)) calc(var(--wy) + 2%) / 200% 240% repeat-x,
-    var(--wave) calc(var(--wx) + var(--p1)) var(--wy) / 200% 240% repeat-x;
-          mask-composite: subtract;
 }
+.photo__px i {
+  position: relative;
+  display: block;
+  /* cada bloco mostra o seu pedaco da foto B */
+  background-image: var(--src);
+  background-size: calc(var(--n) * 100%) calc(var(--n) * 100%);
+  background-position: calc(var(--x) * 100% / (var(--n) - 1)) calc(var(--y) * 100% / (var(--n) - 1));
+  /* +1px de sobra: sem fio entre blocos quando todos estao inteiros */
+  margin: 0 -.5px -.5px 0;
+  transform: scale(0);
+  transition: transform .42s cubic-bezier(.5, 0, .75, 0) var(--d, 0s);
+}
+.photo__px i::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--lime);
+  opacity: 1;
+  transition: opacity .4s ease calc(var(--d, 0s) + .2s);
+}
+.photo.is-b .photo__px i {
+  transform: scale(1);
+  transition: transform .5s cubic-bezier(.22, 1.25, .36, 1) var(--d, 0s);
+}
+.photo.is-b .photo__px i::after { opacity: 0; }
+/* saindo: o lime nao volta (so os blocos encolhem) */
+.photo:not(.is-b) .photo__px i::after { transition: none; opacity: 0; }
+.photo:not(.is-b) .photo__px.is-armed i::after { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
-  .photo, .photo:hover, .photo__img { transition: none; animation: none; }
-  .photo__sweep { display: none; }
+  .photo__px i, .photo__px i::after, .photo__img--a { transition: none !important; }
 }
 
 .stack { display: flex; flex-direction: column }
@@ -9008,8 +8996,8 @@ html:active-view-transition-type(bi-wipe)::view-transition-new(root) {
 /* =========================================================
    LIQUID GLASS (simulado, leve) — navbar e elementos dela.
    Vidro = blur + saturacao do que passa por tras, um reflexo curvo
-   no topo (radial), borda clara em cima/escura embaixo e um brilho
-   interno. So background/box-shadow/backdrop: zero JS, zero filter
+   bem tenue no topo e um fio de luz na borda de cima. Discreto de
+   proposito: e vidro, nao destaque. So background/box-shadow/backdrop: zero JS, zero filter
    animado. O hover lime dos links continua por cima (::before deles).
    ========================================================= */
 .pill,
@@ -9018,42 +9006,72 @@ html:active-view-transition-type(bi-wipe)::view-transition-new(root) {
 .lang-menu,
 .nav-dd-menu {
   background:
-    radial-gradient(120% 90% at 30% -35%, rgba(255, 255, 255, .16), transparent 55%),
-    linear-gradient(180deg, rgba(255, 255, 255, .075), rgba(255, 255, 255, .02) 60%, rgba(255, 255, 255, .045));
-  border: 1px solid rgba(255, 255, 255, .12);
-  border-bottom-color: rgba(255, 255, 255, .05);
-  -webkit-backdrop-filter: blur(16px) saturate(170%);
-          backdrop-filter: blur(16px) saturate(170%);
+    radial-gradient(120% 90% at 30% -35%, rgba(255, 255, 255, .07), transparent 55%),
+    linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .025));
+  border: 1px solid rgba(255, 255, 255, .09);
+  -webkit-backdrop-filter: blur(14px) saturate(135%);
+          backdrop-filter: blur(14px) saturate(135%);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, .22),
-    inset 0 -1px 0 rgba(255, 255, 255, .04),
-    inset 0 0 22px rgba(255, 255, 255, .035),
-    0 10px 30px -8px rgba(0, 0, 0, .45);
+    inset 0 1px 0 rgba(255, 255, 255, .1),
+    0 8px 24px -10px rgba(0, 0, 0, .4);
 }
 /* o CV mantem o hover lime cheio */
 .resume-btn:hover,
 .resume-btn:focus-visible { background: var(--gradient-lime); border-color: transparent; }
 
 /* =========================================================
-   BOTAO DE CURRICULO (.cv-btn — js/UI.js monta as camadas)
-   Hover: o rotulo sobe e sai, a seta de download sobe e entra, e um
-   tooltip "PDF" aparece embaixo. Clique: vira um circulo que enche de
-   lime com um ponto orbitando a borda e reabre com "✓ Baixado".
-   Mesma pilula de vidro e o mesmo lime do botao de antes.
+   BOTOES DE CURRICULO (.cv-btn — js/UI.js monta as camadas)
+   Vale pro botao da navbar (.resume-btn) e pro do card do Sobre
+   (.about-cv-btn); cada um so define as proprias cores e espacos.
+   Hover: o rotulo sobe e some, a seta entra de baixo (suave, sem brilho).
+   Clique: vira um circulo que enche com um ponto orbitando a borda e
+   reabre com "✓ Baixado".
    ========================================================= */
+.cv-btn {
+  position: relative;
+  box-sizing: border-box;
+  justify-content: center;
+  overflow: visible;
+  padding: var(--py) var(--px);
+  animation: none;
+  transition:
+    width .45s cubic-bezier(.65, 0, .35, 1),
+    background-color .45s cubic-bezier(.22, 1, .36, 1),
+    border-color .45s cubic-bezier(.22, 1, .36, 1),
+    color .45s cubic-bezier(.22, 1, .36, 1),
+    box-shadow .45s ease;
+}
+.cv-btn::before,
+.cv-btn::after { display: none; }
+.cv-btn svg { animation: none; }
+
+/* cores e espacos de cada botao */
 .resume-btn.cv-btn {
   --py: 8px; --px: 16px;
-  box-sizing: border-box;
-  padding: var(--py) var(--px);
-  overflow: visible;
-  animation: none;
-  justify-content: center;
-  transition: width .42s cubic-bezier(.65, 0, .35, 1), background .3s ease, border-color .3s ease, color .3s ease, box-shadow .3s ease;
+  --cv-hover-bg: var(--lime); --cv-hover-fg: #0e0e0e;
+  --cv-load-bg: rgba(255, 255, 255, .04); --cv-load-fg: var(--lime); --cv-ring: var(--lime);
+  --cv-fill: var(--lime); --cv-ink: #0e0e0e;
+  --cv-done-bg: var(--lime); --cv-done-fg: #0e0e0e;
 }
 @media (min-width: 901px) and (max-width: 1280px) { .resume-btn.cv-btn { --py: 7px; --px: 12px; } }
 @media (min-width: 901px) and (max-width: 1080px) { .resume-btn.cv-btn { --py: 6px; --px: 10px; } }
-.resume-btn.cv-btn::before { display: none; }
-.resume-btn.cv-btn:hover svg { animation: none; }
+.about-cv-btn.cv-btn {
+  --py: 12px; --px: 20px;
+  --cv-hover-bg: #0e0e0e; --cv-hover-fg: var(--lime);
+  --cv-load-bg: #0e0e0e; --cv-load-fg: var(--lime); --cv-ring: #0e0e0e;
+  --cv-fill: var(--lime); --cv-ink: #0e0e0e;
+  --cv-done-bg: #0e0e0e; --cv-done-fg: var(--lime);
+}
+@media (max-width: 640px) { .about-cv-btn.cv-btn { --py: 10px; --px: 8px; --cv-hover-bg: var(--lime); --cv-hover-fg: #0e0e0e; } }
+
+.cv-btn:hover,
+.cv-btn:focus-visible {
+  background: var(--cv-hover-bg);
+  color: var(--cv-hover-fg);
+  border-color: transparent;
+  box-shadow: none;
+  transform: none;
+}
 
 /* camada que recorta as animacoes na borda da pilula */
 .cv-btn__face {
@@ -9066,71 +9084,40 @@ html:active-view-transition-type(bi-wipe)::view-transition-new(root) {
   overflow: hidden;
   border-radius: inherit;
 }
-.cv-btn__text,
-.cv-btn__icon,
-.cv-btn__done { transition: transform .45s cubic-bezier(.65, 0, .35, 1), opacity .3s ease; }
-.cv-btn__text { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
-@media (min-width: 901px) and (max-width: 1080px) { .cv-btn__text { gap: 6px; } }
+.cv-btn__text { display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; width: 100%; }
+@media (min-width: 901px) and (max-width: 1080px) { .resume-btn .cv-btn__text { gap: 6px; } }
 .cv-btn__icon,
 .cv-btn__done {
   position: absolute;
   inset: 0;
+  z-index: 2;
   display: grid;
   place-items: center;
-  z-index: 2;
 }
-.cv-btn__icon { transform: translateY(110%); }
 .cv-btn__icon svg { width: 18px; height: 18px; }
-.cv-btn__done { white-space: nowrap; transform: translateY(110%); opacity: 0; }
+.cv-btn__done { white-space: nowrap; }
+.cv-btn__text,
+.cv-btn__icon,
+.cv-btn__done {
+  transition:
+    transform .55s cubic-bezier(.22, 1, .36, 1),
+    opacity .35s cubic-bezier(.22, 1, .36, 1);
+}
+.cv-btn__icon,
+.cv-btn__done { transform: translateY(70%); opacity: 0; }
 
-/* HOVER */
+/* HOVER — rotulo sobe e some, seta entra de baixo */
 .cv-btn:hover .cv-btn__text,
-.cv-btn:focus-visible .cv-btn__text { transform: translateY(-140%); }
+.cv-btn:focus-visible .cv-btn__text { transform: translateY(-70%); opacity: 0; }
 .cv-btn:hover .cv-btn__icon,
-.cv-btn:focus-visible .cv-btn__icon { transform: translateY(0); }
+.cv-btn:focus-visible .cv-btn__icon { transform: none; opacity: 1; transition-delay: .05s; }
 
-/* tooltip embaixo (a nav fica no topo da tela) */
-.resume-btn.cv-btn::after {
-  content: attr(data-tip);
-  position: absolute;
-  inset: auto;
-  top: calc(100% + 12px);
-  left: 50%;
-  width: auto;
-  height: auto;
-  padding: 6px 11px;
-  border-radius: 10px;
-  font-size: 12px;
-  font-weight: 700;
-  white-space: nowrap;
-  color: var(--text);
-  background: rgba(14, 20, 16, .88);
-  border: 1px solid var(--w-10);
-  -webkit-backdrop-filter: blur(10px);
-          backdrop-filter: blur(10px);
-  box-shadow: 0 10px 24px -8px rgba(0, 0, 0, .5);
-  opacity: 0;
-  visibility: hidden;
-  transform: translate(-50%, -6px);
-  transition: opacity .3s ease, transform .4s cubic-bezier(.22, 1, .36, 1), visibility 0s linear .3s;
-  animation: none;
-  pointer-events: none;
-}
-.resume-btn.cv-btn:hover::after,
-.resume-btn.cv-btn:focus-visible::after {
-  opacity: 1;
-  visibility: visible;
-  left: 50%;
-  transform: translate(-50%, 0);
-  transition: opacity .3s ease, transform .4s cubic-bezier(.22, 1, .36, 1), visibility 0s;
-}
-
-/* CLIQUE — circulo carregando */
+/* CLIQUE — circulo enchendo */
 .cv-btn__fill {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: var(--lime);
+  background: var(--cv-fill);
   transform: scaleY(0);
   transform-origin: 50% 100%;
 }
@@ -9142,53 +9129,51 @@ html:active-view-transition-type(bi-wipe)::view-transition-new(root) {
   height: 5px;
   margin: -2.5px 0 0 -2.5px;
   border-radius: 50%;
-  background: var(--lime);
-  box-shadow: 0 0 8px var(--lime);
+  background: var(--cv-ring);
   opacity: 0;
   pointer-events: none;
 }
-.resume-btn.cv-btn.is-loading,
-.resume-btn.cv-btn.is-loading:hover {
-  background: rgba(255, 255, 255, .04);
-  border-color: var(--lime);
-  color: var(--lime);
+.cv-btn.is-loading,
+.cv-btn.is-loading:hover {
+  background: var(--cv-load-bg);
+  color: var(--cv-load-fg);
+  border-color: var(--cv-ring);
   animation: cv-pulse .9s ease-out;
 }
-.resume-btn.cv-btn.is-loading::after,
-.resume-btn.cv-btn.is-done::after { opacity: 0; visibility: hidden; }
-/* no circulo o rotulo sai do fluxo: a largura fica so a do circulo */
-.cv-btn.is-loading .cv-btn__text { transform: translateY(-140%); position: absolute; }
-.resume-btn.cv-btn.is-loading { padding-left: 0; padding-right: 0; }
+/* no circulo o rotulo sai do fluxo e a camada ocupa o circulo inteiro */
+.cv-btn.is-loading { padding-left: 0; padding-right: 0; }
 .cv-btn.is-loading .cv-btn__face { position: absolute; inset: 0; margin: 0; padding: 0; }
+.cv-btn.is-loading .cv-btn__text { position: absolute; transform: translateY(-70%); opacity: 0; }
 .cv-btn.is-loading .cv-btn__icon {
-  transform: translateY(0);
-  animation: cv-ink 1.25s cubic-bezier(.65, 0, .35, 1) .3s forwards;
+  transform: none;
+  opacity: 1;
+  animation: cv-ink 1.2s cubic-bezier(.65, 0, .35, 1) .3s forwards;
 }
-.cv-btn.is-loading .cv-btn__fill { animation: cv-fill 1.25s cubic-bezier(.65, 0, .35, 1) .3s forwards; }
-.cv-btn.is-loading .cv-btn__orbit { animation: cv-orbit 1.25s cubic-bezier(.45, 0, .55, 1) .3s forwards; }
+.cv-btn.is-loading .cv-btn__fill { animation: cv-fill 1.2s cubic-bezier(.65, 0, .35, 1) .3s forwards; }
+.cv-btn.is-loading .cv-btn__orbit { animation: cv-orbit 1.2s cubic-bezier(.45, 0, .55, 1) .3s forwards; }
 @keyframes cv-fill { to { transform: scaleY(1); } }
-@keyframes cv-ink { to { color: #0e0e0e; } }
+@keyframes cv-ink { to { color: var(--cv-ink); } }
 @keyframes cv-orbit {
   0%   { opacity: 1; transform: rotate(-90deg) translateX(var(--r)) rotate(90deg); }
   92%  { opacity: 1; }
   100% { opacity: 0; transform: rotate(270deg) translateX(var(--r)) rotate(-270deg); }
 }
 @keyframes cv-pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(163, 230, 53, .55); }
-  100% { box-shadow: 0 0 0 14px rgba(163, 230, 53, 0); }
+  0%   { box-shadow: 0 0 0 0 color-mix(in oklab, var(--cv-ring) 55%, transparent); }
+  100% { box-shadow: 0 0 0 14px transparent; }
 }
 
 /* CONCLUIDO — reabre com o check */
-.resume-btn.cv-btn.is-done,
-.resume-btn.cv-btn.is-done:hover {
-  background: var(--lime);
-  border-color: var(--lime);
-  color: #0e0e0e;
+.cv-btn.is-done,
+.cv-btn.is-done:hover {
+  background: var(--cv-done-bg);
+  border-color: transparent;
+  color: var(--cv-done-fg);
 }
-.cv-btn.is-done .cv-btn__text { transform: translateY(-140%); }
-.cv-btn.is-done .cv-btn__icon { transform: translateY(-140%); }
-.cv-btn.is-done .cv-btn__done { transform: translateY(0); opacity: 1; transition-delay: .15s; }
+.cv-btn.is-done .cv-btn__text,
+.cv-btn.is-done .cv-btn__icon { transform: translateY(-70%); opacity: 0; }
+.cv-btn.is-done .cv-btn__done { transform: none; opacity: 1; transition-delay: .12s; }
 
 @media (prefers-reduced-motion: reduce) {
-  .cv-btn__text, .cv-btn__icon, .cv-btn__done, .resume-btn.cv-btn { transition: none; }
+  .cv-btn, .cv-btn__text, .cv-btn__icon, .cv-btn__done { transition: none; }
 }

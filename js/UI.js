@@ -365,81 +365,112 @@ document.querySelectorAll('a[data-scroll]').forEach(a => {
 })();
 
 /* =========================================================
-   PHOTO — o liquido nunca e igual: a cada entrada do mouse sorteia a
-   fase das tres ondas, o desnivel entre elas e a correnteza (velocidade
-   e sentido). So escreve variaveis CSS; o resto e o CSS da .photo.
+   PHOTO — troca em PIXELS (CSS .photo__px). Monta uma grade N x N de
+   blocos com pedacos da foto B e, a cada entrada/saida do mouse, da a
+   cada bloco um atraso pela distancia ate o ponto do cursor (+ um pouco
+   de acaso): a onda nasce onde o mouse entra e se desfaz pra onde sai.
    ========================================================= */
-(function photoLiquid() {
+(function photoPixels() {
   const photo = document.querySelector('.hero .photo');
-  if (!photo) return;
-  const rnd = (a, b) => a + Math.random() * (b - a);
-  photo.addEventListener('pointerenter', () => {
-    photo.style.setProperty('--p1', rnd(0, 100).toFixed(1) + '%');
-    photo.style.setProperty('--p2', rnd(0, 100).toFixed(1) + '%');
-    photo.style.setProperty('--p3', rnd(0, 100).toFixed(1) + '%');
-    photo.style.setProperty('--d2', rnd(-3, 4).toFixed(1) + '%');
-    photo.style.animationDuration = rnd(1.5, 2.6).toFixed(2) + 's';
-    photo.style.animationDirection = Math.random() < .5 ? 'normal' : 'reverse';
+  const imgB = photo && photo.querySelector('.photo__img--b');
+  if (!photo || !imgB) return;
+  const N = 12;
+  const grid = document.createElement('div');
+  grid.className = 'photo__px';
+  grid.setAttribute('aria-hidden', 'true');
+  grid.style.setProperty('--n', N);
+  grid.style.setProperty('--src', 'url("' + (imgB.currentSrc || imgB.src) + '")');
+  const cells = [];
+  for (let y = 0; y < N; y++) {
+    for (let x = 0; x < N; x++) {
+      const i = document.createElement('i');
+      i.style.setProperty('--x', x);
+      i.style.setProperty('--y', y);
+      grid.appendChild(i);
+      cells.push({ el: i, x: (x + .5) / N, y: (y + .5) / N });
+    }
+  }
+  photo.appendChild(grid);
+
+  /* atraso de cada bloco = distancia ate o cursor (0..~1.4) * span + acaso */
+  const wave = (e, span, jitter) => {
+    const r = photo.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+    for (const c of cells) {
+      const d = Math.hypot(c.x - px, c.y - py) * span + Math.random() * jitter;
+      c.el.style.setProperty('--d', d.toFixed(3) + 's');
+    }
+  };
+  photo.addEventListener('pointerenter', (e) => {
+    wave(e, .38, .08);
+    grid.classList.add('is-armed');
+    requestAnimationFrame(() => photo.classList.add('is-b'));
+  });
+  photo.addEventListener('pointerleave', (e) => {
+    wave(e, .26, .06);
+    grid.classList.remove('is-armed');
+    photo.classList.remove('is-b');
   });
 })();
 
 /* =========================================================
-   BOTAO DE CURRICULO — monta as camadas do hover/clique (CSS .cv-btn).
-   O <span data-i18n> do rotulo e mantido intacto (a traducao continua
-   trocando o texto). O download acontece normal; a animacao e so visual.
+   BOTOES DE CURRICULO (navbar e card do Sobre) — monta as camadas do
+   hover/clique (CSS .cv-btn). O <span data-i18n> do rotulo e mantido
+   intacto (a traducao continua trocando o texto). O download acontece
+   normal; a animacao e so visual.
    ========================================================= */
-(function cvButton() {
-  const btn = document.querySelector('.resume-btn');
-  if (!btn || btn.classList.contains('cv-btn')) return;
-
+(function cvButtons() {
   const pt = (document.documentElement.lang || '').toLowerCase().startsWith('pt');
   const ICON = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const face = document.createElement('span');
-  face.className = 'cv-btn__face';
-  const text = document.createElement('span');
-  text.className = 'cv-btn__text';
-  while (btn.firstChild) text.appendChild(btn.firstChild);
-  face.innerHTML = '<span class="cv-btn__fill" aria-hidden="true"></span>';
-  face.appendChild(text);
-  face.insertAdjacentHTML('beforeend',
-    '<span class="cv-btn__icon" aria-hidden="true">' + ICON + '</span>' +
-    '<span class="cv-btn__done" aria-hidden="true">✓ ' + (pt ? 'Baixado' : 'Downloaded') + '</span>');
-  btn.appendChild(face);
-  btn.insertAdjacentHTML('beforeend', '<span class="cv-btn__orbit" aria-hidden="true"></span>');
-  btn.setAttribute('data-tip', pt ? 'PDF · 1 página' : 'PDF · 1 page');
-  btn.classList.add('cv-btn');
+  document.querySelectorAll('.resume-btn, .about-cv-btn').forEach((btn) => {
+    if (btn.classList.contains('cv-btn')) return;
 
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const face = document.createElement('span');
+    face.className = 'cv-btn__face';
+    const text = document.createElement('span');
+    text.className = 'cv-btn__text';
+    while (btn.firstChild) text.appendChild(btn.firstChild);
+    face.innerHTML = '<span class="cv-btn__fill" aria-hidden="true"></span>';
+    face.appendChild(text);
+    face.insertAdjacentHTML('beforeend',
+      '<span class="cv-btn__icon" aria-hidden="true">' + ICON + '</span>' +
+      '<span class="cv-btn__done" aria-hidden="true">✓ ' + (pt ? 'Baixado' : 'Downloaded') + '</span>');
+    btn.appendChild(face);
+    btn.insertAdjacentHTML('beforeend', '<span class="cv-btn__orbit" aria-hidden="true"></span>');
+    btn.classList.add('cv-btn');
+    if (reduce) return;
 
-  const done = face.querySelector('.cv-btn__done');
-  let busy = false;
-  btn.addEventListener('click', () => {
-    if (busy) return;
-    busy = true;
-    const w = btn.offsetWidth, h = btn.offsetHeight;
-    btn.style.setProperty('--r', (h / 2 + 4) + 'px');
-    btn.style.width = w + 'px';
-    btn.style.height = h + 'px';               /* altura travada: o rotulo sai do fluxo */
-    void btn.offsetWidth;                       /* fixa a largura de partida */
-    btn.classList.add('is-loading');
-    btn.style.width = h + 'px';                 /* pilula -> circulo */
+    const done = face.querySelector('.cv-btn__done');
+    let busy = false;
+    btn.addEventListener('click', () => {
+      if (busy) return;
+      busy = true;
+      const w = btn.offsetWidth, h = btn.offsetHeight;
+      btn.style.setProperty('--r', (h / 2 + 4) + 'px');
+      btn.style.width = w + 'px';
+      btn.style.height = h + 'px';               /* altura travada: o rotulo sai do fluxo */
+      void btn.offsetWidth;                       /* fixa a largura de partida */
+      btn.classList.add('is-loading');
+      btn.style.width = h + 'px';                 /* pilula -> circulo */
 
-    setTimeout(() => {
-      /* reabre no tamanho que o "✓ Baixado" precisa */
-      const pad = w - text.offsetWidth;
-      const range = document.createRange();
-      range.selectNodeContents(done);
-      const wDone = Math.max(w, Math.ceil(range.getBoundingClientRect().width) + pad);
-      btn.classList.remove('is-loading');
-      btn.classList.add('is-done');
-      btn.style.width = wDone + 'px';
       setTimeout(() => {
-        btn.classList.remove('is-done');
-        btn.style.width = w + 'px';
-        setTimeout(() => { btn.style.width = ''; btn.style.height = ''; busy = false; }, 450);
-      }, 2000);
-    }, 1650);
+        /* reabre no tamanho que o "✓ Baixado" precisa */
+        const pad = w - text.offsetWidth;
+        const range = document.createRange();
+        range.selectNodeContents(done);
+        const wDone = Math.max(w, Math.ceil(range.getBoundingClientRect().width) + pad);
+        btn.classList.remove('is-loading');
+        btn.classList.add('is-done');
+        btn.style.width = wDone + 'px';
+        setTimeout(() => {
+          btn.classList.remove('is-done');
+          btn.style.width = w + 'px';
+          setTimeout(() => { btn.style.width = ''; btn.style.height = ''; busy = false; }, 470);
+        }, 2000);
+      }, 1600);
+    });
   });
 })();
 

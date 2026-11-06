@@ -14,17 +14,9 @@
   if (!('serviceWorker' in navigator)) return;
   if (location.protocol !== 'https:' && location.hostname !== 'localhost') return;
 
-  /* quando um SW novo assume (deploy novo), recarrega UMA vez pra pagina
-     ja aberta trocar pra versao nova; sem isso o visitante via a mistura
-     do HTML novo com CSS/JS antigos. So recarrega se ja havia um SW antes
-     (1a visita nao pisca). */
-  var tinhaSW = !!navigator.serviceWorker.controller;
-  var recarregou = false;
-  navigator.serviceWorker.addEventListener('controllerchange', function () {
-    if (!tinhaSW || recarregou) return;
-    recarregou = true;
-    location.reload();
-  });
+  /* SEM reload quando um SW novo assume: HTML/CSS/JS ja sao network-first
+     (a pagina aberta ja veio da versao nova). O reload antigo fazia a
+     abertura rodar DUAS vezes a cada deploy pra quem ja tinha visitado. */
 
   window.addEventListener('load', function () {
     navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' })
