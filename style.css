@@ -14,8 +14,8 @@ html.lenis [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-stopped { overflow: hidden; }
 html.lenis iframe { pointer-events: none; }
 
-/* Fonte secundaria: Brier (pilha "Brier, Arial, sans-serif").
-   So local(): usa a Brier instalada na maquina; sem ela, cai no Arial.
+/* Fonte secundaria: Brier (so "Brier", sem fallback).
+   So local(): usa a Brier instalada na maquina.
    Pra servir pra todo mundo, coloque o arquivo em /fonts/brier.woff2 e
    acrescente url('/fonts/brier.woff2') format('woff2') no src abaixo. */
 @font-face {
@@ -616,7 +616,7 @@ body.pc-nav-hidden header {
   background-position: 100% 0%;
 }
 
-.tagline { margin-top: 16px; font-family: Brier, Arial, sans-serif; font-size: clamp(26px, 3.4vw, 36px); font-style: italic; font-weight: 400; letter-spacing: -.005em; color: var(--text-italic); display: inline-block; min-height: 1.2em; transition: color .4s, text-shadow .4s }
+.tagline { margin-top: 16px; font-family: Brier; font-size: clamp(26px, 3.4vw, 36px); font-style: italic; font-weight: 400; letter-spacing: -.005em; color: var(--text-italic); display: inline-block; min-height: 1.2em; transition: color .4s, text-shadow .4s }
 .tagline.glow { color: var(--green); text-shadow: 0 0 12px var(--g-80), 0 0 24px rgba(163,230,53,.4) }
 /* #taglineText sempre usa background-clip: text com um gradient base
    solid (currentColor → currentColor). Mantém o rendering mode CONSTANTE
@@ -792,7 +792,7 @@ body.pc-nav-hidden header {
 }
 .about-title__line--em,
 .about-title__line--em .chx {
-  font-family: Brier, Arial, sans-serif;
+  font-family: Brier;
   font-style: italic;
   font-weight: 400;
   background: var(--gradient-lime);
@@ -2946,7 +2946,7 @@ body.pc-nav-hidden header {
 .contact-hero__line { display: block }
 /* só a linha em destaque ganha a fonte com serifa */
 .contact-hero__line--em {
-  font-family: Brier, Arial, sans-serif;
+  font-family: Brier;
   font-style: italic;
   font-weight: 400;
   font-size: 1.08em;
@@ -4582,7 +4582,7 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   color: var(--text-hint);
 }
 .ps-soon__title {
-  font-family: Brier, Arial, sans-serif;
+  font-family: Brier;
   font-weight: 400;
   font-size: clamp(2.2rem, 5vw, 3.6rem);
   line-height: 1.04;
@@ -4678,7 +4678,7 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
    inline-block — e background-clip:text nao atravessa inline-blocks. */
 .ps-title em,
 .ps-title em .chx {
-  font-family: Brier, Arial, sans-serif;
+  font-family: Brier;
   font-style: italic;
   font-weight: 400;
   background: var(--gradient-lime);
@@ -6708,7 +6708,7 @@ body.blog-body { min-height: 100vh; }
 }
 .blog-soon-kicker::before { content: "● "; color: var(--green); }
 .blog-soon-title {
-  font-family: Brier, Arial, sans-serif;
+  font-family: Brier;
   font-size: clamp(3rem, 9vw, 6.2rem);
   font-weight: 400;
   line-height: 1;
