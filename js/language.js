@@ -59,11 +59,11 @@ const I18N = {
       "I fix and deploy projects."
     ],
     about: {
-      kicker: "The Journey",
-      title: "The Journey",
-      titleA: "I started editing video,",
-      titleB: "now I build systems.",
-      sub: "A bit about me, what I do and what I love building.",
+      kicker: "About me",
+      title: "About me",
+      titleA: "I build software",
+      titleB: "that ships to production.",
+      sub: "Websites, systems and AI automations, from first draft to deploy.",
       statusLabel: "Status",
       statusValue: "Open to new projects",
       blogLabel: "Blog",
@@ -976,11 +976,11 @@ The EN/PT switch is an i18n engine written from scratch: the entire site changes
       "Corrijo e publico projetos."
     ],
     about: {
-      kicker: "A Trajetória",
-      title: "A Trajetória",
-      titleA: "Comecei editando vídeo,",
-      titleB: "hoje construo sistemas.",
-      sub: "Um pouco sobre mim, o que eu faço e o que gosto de construir.",
+      kicker: "Sobre mim",
+      title: "Sobre mim",
+      titleA: "Eu construo software",
+      titleB: "que vai pra produção.",
+      sub: "Sites, sistemas e automações com IA, do primeiro rascunho ao deploy.",
       statusLabel: "Status",
       statusValue: "Aberto a novos projetos",
       blogLabel: "Blog",
