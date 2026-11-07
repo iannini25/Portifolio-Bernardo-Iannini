@@ -604,6 +604,41 @@ Building the trust this corridor is missing is hard precisely because you can't 
           ]
         },
         {
+          title: "Nest Battersea · Sky Homes Residence Selector",
+          desc: "Interactive residence selector for Nest Battersea, a 34-storey tower of sky homes with gardens on the Thames in London: click a lit window, fly to it, turn the 3D floor plan and step inside.",
+          longDesc: `Nest Battersea is a build to rent tower at 38 Lombard Road, on the Battersea bank of the Thames, with 143 homes stacked like nests and a planted garden for each one. The site turns the official render of the tower into the navigation itself: the two available homes, LOFT 4 and Bungalow 3, are traced exactly over their windows, and a click sets off an AI generated camera flight that ends level with that window. From there the visitor opens a 3D dollhouse plan built from the official floor plans or steps through the glass into the living room and tours every room. Each clip starts and ends on frames of the official image itself, so the building never changes and only the camera moves. It is hand built in HTML, CSS and vanilla JavaScript with no framework, with a Three.js plan loaded only when it opens and around 55 automated end-to-end checks on desktop and phone.`
+          ,
+          stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "Three.js", "SVG", "AI video (Kling 3.0)", "Puppeteer"],
+          link: "",
+          repo: "",
+          local: true,
+          localNote: "Not online yet: it runs on a local server with the flight videos",
+          cover: "img/covers/nest-battersea.webp?v=1066e5e0",
+          id: "nest-battersea",
+          flow: {
+            steps: [
+              { label: "The tower", sub: "official render, windows traced" },
+              { label: "Camera flight", sub: "straight to the chosen window" },
+              { label: "3D floor plan", sub: "turn it, dive into a room" },
+              { label: "Step inside", sub: "tour every room" }
+            ]
+          },
+          category: "site",
+          featured: false,
+          status: "runs locally",
+          year: "2026",
+          topics: [
+            { icon: "sparkles", title: "AI camera flights that keep the building intact",
+              text: "Each flight and each entry is a Kling 3.0 clip pinned to a first and a last frame: the official render on one end and a level shot of the open window on the other. The AI only invents the path in between, so the facade never redraws itself and only the camera moves." },
+            { icon: "layers", title: "3D dollhouse from the official plans",
+              text: "Every wall, window, stair and garden of both homes is modeled in Three.js from the architect's plans at 44.4 px per metre. The LOFT 4 plan switches between its two floors, and a click on any room dives into it and opens its photograph." },
+            { icon: "palette", title: "A card cut around the interface",
+              text: "The first screen is one large card with inverted corners where the logo, the menu, Register interest and the residence mini card sit. Its outline is a single SVG path used as a clip-path, recalculated from the real size of each element so the curves follow any screen." },
+            { icon: "gauge", title: "Light on any device, tested end to end",
+              text: "Clips come in 1080p or 720p by screen size, interiors in AVIF, WebP or JPG, and the 3D plan loads only when it opens. On the phone the first tap highlights a window and the second flies to it, reduced motion cuts straight to the destination, and about 55 Puppeteer checks cover desktop, retina and mobile." }
+          ]
+        },
+        {
           title: "BRASA · Fire Kitchen Restaurant",
           desc: "Landing page for BRASA, an authorial live-fire restaurant in São Paulo serving aged cuts over wood embers, with an à la carte menu, a twelve-seat chef's counter and table reservations.",
           longDesc: `BRASA is a fine-dining fire kitchen in São Paulo: long-aged cuts cooked over live wood embers, a twelve-seat chef's counter and a six-course experience. The site sells that room before you walk in, opening on a cinematic hero where a 241-frame JPEG sequence paints on a canvas driven by the scroll, then flowing through the house story, the à la carte menu, an embedded sommelier and a reservation form. It is a hand-built no-build static site in HTML, CSS and vanilla JavaScript, using GSAP ScrollTrigger and Lenis for the scroll cinematics and a full PT and EN dictionary, with a static poster fallback on mobile and reduced motion.`
@@ -1517,6 +1552,41 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
               text: "O bloco de contato mantém o WhatsApp como canal primário: um formulário curto monta uma mensagem pronta com nome, empresa e segmento e abre conversa direta com um engenheiro, sem depender de servidor." },
             { icon: "gauge", title: "Astro estático, sem CDN",
               text: "Feito como site Astro estático, com fontes e a stack GSAP/Lenis self-hosted e sem CDN em produção, conteúdo editável centralizado em arquivos de fonte tipados, e testes Vitest sobre a lógica de WhatsApp, formulário e build." }
+          ]
+        },
+        {
+          title: "Nest Battersea · Seletor de Residências",
+          desc: "Seletor interativo de residências da Nest Battersea, torre de 34 andares com apartamentos com jardim às margens do Tâmisa, em Londres: você clica numa janela acesa, voa até ela, gira a planta 3D e entra no apartamento.",
+          longDesc: `A Nest Battersea é uma torre de aluguel em 38 Lombard Road, na margem de Battersea do Tâmisa, com 143 apartamentos empilhados como ninhos e um jardim para cada um. O site transforma a imagem oficial da torre na própria navegação: as duas residências disponíveis, LOFT 4 e Bungalow 3, estão desenhadas exatamente sobre as suas janelas, e um clique dispara um voo de câmera gerado por IA que termina de frente para aquela janela. Dali a pessoa abre uma planta 3D montada a partir das plantas oficiais ou atravessa o vidro até a sala e percorre cada cômodo. Cada vídeo começa e termina em quadros da própria imagem oficial, então o prédio nunca muda e só a câmera se move. Foi feito à mão em HTML, CSS e JavaScript puro, sem framework, com a planta em Three.js carregada só quando abre e cerca de 55 verificações automáticas de ponta a ponta no computador e no celular.`
+          ,
+          stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "Three.js", "SVG", "Vídeo com IA (Kling 3.0)", "Puppeteer"],
+          link: "",
+          repo: "",
+          local: true,
+          localNote: "Ainda sem site no ar: roda num servidor local com os vídeos dos voos",
+          cover: "img/covers/nest-battersea.webp?v=1066e5e0",
+          id: "nest-battersea",
+          flow: {
+            steps: [
+              { label: "A torre", sub: "imagem oficial, janelas marcadas" },
+              { label: "Voo de câmera", sub: "direto até a janela escolhida" },
+              { label: "Planta 3D", sub: "gire e mergulhe num cômodo" },
+              { label: "Entrar", sub: "tour por cada cômodo" }
+            ]
+          },
+          category: "site",
+          featured: false,
+          status: "roda localmente",
+          year: "2026",
+          topics: [
+            { icon: "sparkles", title: "Voos de câmera com IA sem mudar o prédio",
+              text: "Cada voo e cada entrada é um clipe do Kling 3.0 preso a um quadro inicial e a um final: a imagem oficial numa ponta e uma foto nivelada da janela aberta na outra. A IA só inventa o caminho do meio, então a fachada nunca se redesenha e só a câmera se move." },
+            { icon: "layers", title: "Planta 3D a partir das plantas oficiais",
+              text: "Cada parede, janela, escada e jardim dos dois apartamentos foi modelado em Three.js a partir das plantas do arquiteto, na escala de 44,4 px por metro. A planta do LOFT 4 alterna entre os dois andares, e um clique em qualquer cômodo mergulha nele e abre a foto." },
+            { icon: "palette", title: "Um cartão recortado em volta da interface",
+              text: "A primeira tela é um cartão grande com cantos invertidos onde ficam o logo, o menu, o Register interest e o mini card da residência. O contorno é um único path SVG usado como clip-path, recalculado a partir do tamanho real de cada elemento, então as curvas acompanham qualquer tela." },
+            { icon: "gauge", title: "Leve em qualquer aparelho e testado de ponta a ponta",
+              text: "Os vídeos vêm em 1080p ou 720p conforme a tela, os interiores em AVIF, WebP ou JPG, e a planta 3D só carrega quando abre. No celular o primeiro toque destaca a janela e o segundo voa até ela, o movimento reduzido corta direto para o destino e cerca de 55 verificações com Puppeteer cobrem computador, retina e celular." }
           ]
         },
         {

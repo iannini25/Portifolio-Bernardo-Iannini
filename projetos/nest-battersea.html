@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Nest Battersea | Seletor de Residências | Bernardo Iannini</title>
+  <meta name="author" content="Bernardo Iannini">
+  <meta name="description" content="Seletor interativo de residências da Nest Battersea, torre de 34 andares com apartamentos com jardim às margens do Tâmisa, em Londres: você clica numa janela…" />
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;600;700&display=swap"></noscript></noscript>
+  <link rel="stylesheet" href="/style.css">
+
+  <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/favicon-48.png" sizes="48x48">
+  <link rel="icon" type="image/png" href="/favicon_192px.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="/favicon_192px.png">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any">
+  <meta name="theme-color" content="#060807">
+
+  <link rel="canonical" href="https://www.bernardoiannini.com/projetos/nest-battersea.html" />
+  <link rel="alternate" hreflang="pt-BR" href="https://www.bernardoiannini.com/projetos/nest-battersea.html" />
+  <link rel="alternate" hreflang="en" href="https://www.bernardoiannini.com/en/projects/nest-battersea.html" />
+  <link rel="alternate" hreflang="x-default" href="https://www.bernardoiannini.com/projetos/nest-battersea.html" />
+  <link rel="alternate" type="application/rss+xml" title="Blog · Bernardo Iannini" href="https://www.bernardoiannini.com/feed.xml" />
+
+  <script>
+    /* Aqui o idioma e a ROTA (/projetos/ = pt, /en/projects/ = en), nao
+       estado de cliente. Sem isto o applyI18n() do UI.js rodaria no idioma
+       salvo no localStorage e deixaria <html lang> e o seletor discordando
+       do conteudo servido. Roda ANTES do bloco anti-flicker, que le esse
+       mesmo valor. */
+    try { localStorage.setItem('lang', 'pt'); } catch (e) {}
+  </script>
+
+  <style id="page-fx">
+    html:not(.i18n-ready) body { opacity: 0; }
+    body {
+      opacity: 1;
+      transition: opacity .35s cubic-bezier(.22,.61,.36,1);
+    }
+    html:not(.i18n-ready) main {
+      transform: scale(1.03);
+      filter: blur(8px);
+    }
+    main {
+      transition:
+        transform .45s cubic-bezier(.22,.61,.36,1),
+        filter .45s cubic-bezier(.22,.61,.36,1);
+    }
+    body.page-leaving { opacity: 0; pointer-events: none; }
+    body.page-leaving main {
+      transform: scale(.97);
+      filter: blur(8px);
+    }
+    </style>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('lang');
+        if (l === 'pt' || l === 'en') {
+          document.documentElement.lang = (l === 'pt') ? 'pt-BR' : 'en';
+        }
+      } catch (e) {}
+      /* PAINT LIBERADO SEMPRE (ver index.html): antes a classe so era
+         adicionada quando havia idioma salvo, entao visitante novo e crawler
+         encaravam tela branca ate executar o language.js. Sem preferencia
+         salva o HTML ja esta no idioma default, logo nao ha texto pra piscar.
+         FORA do try de proposito: se o localStorage lancar (modo privado com
+         storage bloqueado), o catch engoliria o add e a pagina ficaria
+         invisivel justamente no navegador mais restritivo. */
+      document.documentElement.classList.add('i18n-ready');
+    })();
+    window.addEventListener('pageshow', function () {
+      document.body && document.body.classList.remove('page-leaving');
+    });
+  </script>
+  <script>document.documentElement.classList.add('cs-js');</script>
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Bernardo Iannini" />
+  <meta property="og:title" content="Nest Battersea | Seletor de Residências | Bernardo Iannini" />
+  <meta property="og:description" content="Seletor interativo de residências da Nest Battersea, torre de 34 andares com apartamentos com jardim às margens do Tâmisa, em Londres: você clica numa janela…" />
+  <meta property="og:url" content="https://www.bernardoiannini.com/projetos/nest-battersea.html" />
+  <meta property="og:image" content="https://www.bernardoiannini.com/img/covers/nest-battersea.webp?v=1066e5e0" />
+  <meta property="og:image:width" content="1600" />
+  <meta property="og:image:height" content="900" />
+  <meta property="og:image:alt" content="Nest Battersea · Seletor de Residências · Bernardo Iannini" />
+  <meta property="article:author" content="https://www.bernardoiannini.com/sobre.html" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Nest Battersea | Seletor de Residências | Bernardo Iannini" />
+  <meta name="twitter:description" content="Seletor interativo de residências da Nest Battersea, torre de 34 andares com apartamentos com jardim às margens do Tâmisa, em Londres: você clica numa janela…" />
+  <meta name="twitter:image" content="https://www.bernardoiannini.com/img/covers/nest-battersea.webp?v=1066e5e0" />
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CreativeWork",
+      "@id": "https://www.bernardoiannini.com/projetos/nest-battersea.html#projeto",
+      "name": "Nest Battersea · Seletor de Residências",
+      "alternateName": "Nest Battersea",
+      "description": "Seletor interativo de residências da Nest Battersea, torre de 34 andares com apartamentos com jardim às margens do Tâmisa, em Londres: você clica numa janela acesa, voa até ela, gira a planta 3D e entra no apartamento.",
+      "abstract": "A Nest Battersea é uma torre de aluguel em 38 Lombard Road, na margem de Battersea do Tâmisa, com 143 apartamentos empilhados como ninhos e um jardim para cada um. O site transforma a imagem oficial da torre na própria navegação: as duas residências disponíveis, LOFT 4 e Bungalow 3, estão desenhadas exatamente sobre as suas janelas, e um clique…",
+      "url": "https://www.bernardoiannini.com/projetos/nest-battersea.html",
+      "inLanguage": "pt-BR",
+      "author": {
+        "@id": "https://www.bernardoiannini.com/#pessoa"
+      },
+      "creator": {
+        "@id": "https://www.bernardoiannini.com/#pessoa"
+      },
+      "publisher": {
+        "@id": "https://www.bernardoiannini.com/#pessoa"
+      },
+      "isPartOf": {
+        "@id": "https://www.bernardoiannini.com/#site"
+      },
+      "mainEntityOfPage": {
+        "@id": "https://www.bernardoiannini.com/projetos/nest-battersea.html#pagina"
+      },
+      "image": [
+        {
+          "@type": "ImageObject",
+          "contentUrl": "https://www.bernardoiannini.com/img/covers/nest-battersea.webp",
+          "caption": "Nest Battersea · Seletor de Residências",
+          "creator": {
+            "@id": "https://www.bernardoiannini.com/#pessoa"
+          },
+          "creditText": "Bernardo Iannini",
+          "copyrightNotice": "Bernardo Iannini"
+        },
+        {
+          "@type": "ImageObject",
+          "contentUrl": "https://www.bernardoiannini.com/img/projects/nest-battersea/desk-1.webp",
+          "caption": "Nest Battersea · 1",
+          "creator": {
+            "@id": "https://www.bernardoiannini.com/#pessoa"
+          },
+          "creditText": "Bernardo Iannini",
+          "copyrightNotice": "Bernardo Iannini"
+        },
+        {
+          "@type": "ImageObject",
+          "contentUrl": "https://www.bernardoiannini.com/img/projects/nest-battersea/desk-2.webp",
+          "caption": "Nest Battersea · 2",
+          "creator": {
+            "@id": "https://www.bernardoiannini.com/#pessoa"
+          },
+          "creditText": "Bernardo Iannini",
+          "copyrightNotice": "Bernardo Iannini"
+        },
+        {
+          "@type": "ImageObject",
+          "contentUrl": "https://www.bernardoiannini.com/img/projects/nest-battersea/desk-3.webp",
+          "caption": "Nest Battersea · 3",
+          "creator": {
+            "@id": "https://www.bernardoiannini.com/#pessoa"
+          },
+          "creditText": "Bernardo Iannini",
+          "copyrightNotice": "Bernardo Iannini"
+        },
+        {
+          "@type": "ImageObject",
+          "contentUrl": "https://www.bernardoiannini.com/img/projects/nest-battersea/desk-4.webp",
+          "caption": "Nest Battersea · 4",
+          "creator": {
+            "@id": "https://www.bernardoiannini.com/#pessoa"
+          },
+          "creditText": "Bernardo Iannini",
+          "copyrightNotice": "Bernardo Iannini"
+        },
+        {
+          "@type": "ImageObject",
+          "contentUrl": "https://www.bernardoiannini.com/img/projects/nest-battersea/mob-1.webp",
+          "caption": "Nest Battersea · 5",
+          "creator": {
+            "@id": "https://www.bernardoiannini.com/#pessoa"
+          },
+          "creditText": "Bernardo Iannini",
+          "copyrightNotice": "Bernardo Iannini"
+        },
+        {
+          "@type": "ImageObject",
+          "contentUrl": "https://www.bernardoiannini.com/img/projects/nest-battersea/mob-2.webp",
+          "caption": "Nest Battersea · 6",
+          "creator": {
+            "@id": "https://www.bernardoiannini.com/#pessoa"
+          },
+          "creditText": "Bernardo Iannini",
+          "copyrightNotice": "Bernardo Iannini"
+        }
+      ],
+      "dateCreated": "2026",
+      "keywords": "HTML5, CSS3, JavaScript (vanilla), Three.js, SVG, Vídeo com IA (Kling 3.0), Puppeteer"
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://www.bernardoiannini.com/projetos/nest-battersea.html#pagina",
+      "url": "https://www.bernardoiannini.com/projetos/nest-battersea.html",
+      "name": "Nest Battersea · Seletor de Residências · Bernardo Iannini",
+      "inLanguage": "pt-BR",
+      "isPartOf": {
+        "@id": "https://www.bernardoiannini.com/#site"
+      },
+      "about": {
+        "@id": "https://www.bernardoiannini.com/projetos/nest-battersea.html#projeto"
+      },
+      "author": {
+        "@id": "https://www.bernardoiannini.com/#pessoa"
+      },
+      "breadcrumb": {
+        "@id": "https://www.bernardoiannini.com/projetos/nest-battersea.html#breadcrumb"
+      },
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://www.bernardoiannini.com/img/covers/nest-battersea.webp"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://www.bernardoiannini.com/projetos/nest-battersea.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Início",
+          "item": "https://www.bernardoiannini.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Nest Battersea · Seletor de Residências",
+          "item": "https://www.bernardoiannini.com/projetos/nest-battersea.html"
+        }
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://www.bernardoiannini.com/#pessoa",
+      "name": "Bernardo Iannini",
+      "url": "https://www.bernardoiannini.com/",
+      "image": "https://www.bernardoiannini.com/img/eufoto1.png",
+      "jobTitle": "Full Stack Developer & AI Designer",
+      "sameAs": [
+        "https://www.linkedin.com/in/bernardo-iannini",
+        "https://github.com/iannini25"
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+
+<body>
+  <a class="skip-link" href="#pcMain">Pular para o conteúdo</a>
+
+  <header>
+    <div class="nav">
+
+      <!-- MENU MOBILE (drop) -->
+      <nav id="mobileNav" class="mobile-nav" aria-hidden="true">
+        <a href="/#home">Início</a>
+        <a href="/#sobre">Sobre</a>
+        <a href="/#services">Serviços</a>
+
+        <div class="mobile-dd">
+          <button type="button" class="mobile-dd-btn" aria-haspopup="menu" aria-expanded="false">
+            <span>Trabalhos</span>
+            <svg class="mobile-dd-caret" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="mobile-dd-menu" role="menu">
+            <a href="/#xp" role="menuitem">Experiência</a>
+            <a href="/#skills" role="menuitem">Habilidades</a>
+            <a href="/#projects" role="menuitem">Projetos</a>
+          </div>
+        </div>
+
+        <a href="/blog.html" class="nav-blog-link"><span>Blog</span></a>
+        <a href="/#contato">Contato</a>
+      </nav>
+
+      <!-- Language switch (ESQUERDA) -->
+      <div class="lang-slot" aria-label="Trocar idioma" data-i18n-attr="aria-label:a11y.langSwitch">
+        <button id="langBtn" class="lang-switch pill" aria-haspopup="listbox" aria-expanded="false">
+          <span class="lang-ico" aria-hidden="true">🌐</span>
+          <span id="langCode">PT</span>
+          <svg class="caret" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </button>
+        <ul id="langMenu" class="lang-menu" role="listbox" aria-label="Idioma" data-i18n-attr="aria-label:a11y.langMenu">
+          <li data-lang="en" role="option" tabindex="0" aria-selected="false">English</li>
+          <li data-lang="pt" role="option" tabindex="0" aria-selected="true">Português</li>
+        </ul>
+      </div>
+
+      <div class="nav-center">
+        <nav class="pill">
+          <a href="/#home">Início</a>
+          <a href="/#sobre">Sobre</a>
+          <a href="/#services">Serviços</a>
+
+          <div class="nav-dd">
+            <button type="button" id="workBtn" class="nav-dd-btn" aria-haspopup="menu" aria-expanded="false">
+              <span>Trabalhos</span>
+              <svg class="nav-dd-caret" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+            <ul id="workMenu" class="nav-dd-menu" role="menu">
+              <li><a href="/#xp" role="menuitem">Experiência</a></li>
+              <li><a href="/#skills" role="menuitem">Habilidades</a></li>
+              <li><a href="/#projects" role="menuitem">Projetos</a></li>
+            </ul>
+          </div>
+
+          <a href="/blog.html" class="nav-blog-link"><span>Blog</span></a>
+          <a href="/#contato">Contato</a>
+        </nav>
+      </div>
+
+      <!-- BOTÃO HAMBÚRGUER (aparece no mobile) -->
+      <button id="menuBtn" class="menu-btn" aria-label="Abrir menu" data-i18n-attr="aria-label:a11y.menuOpen" aria-expanded="false" aria-controls="mobileNav">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+      </button>
+
+      <!-- NAV RIGHT (desktop) -->
+      <div class="nav-right">
+        <a class="resume-btn" href="/Curriculo_Bernardo_Iannini.pdf" download>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3v11m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          <span>Currículo</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <main id="pcMain" class="cs" data-pc-root>
+
+    <a class="cs-back" href="/#projects" data-cs-back><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Voltar</span></a>
+
+    <section class="cs-hero" aria-labelledby="csTitle">
+      <div class="cs-hero__text">
+        <p class="cs-reg"><i class="cs-reg__dot" aria-hidden="true"></i>roda localmente<span aria-hidden="true">·</span>2026</p>
+        <h1 class="cs-title cs-title--long" id="csTitle">Nest Battersea<span class="cs-title__sub">Seletor de Residências</span></h1>
+        <p class="cs-lead">Seletor interativo de residências da Nest Battersea, torre de 34 andares com apartamentos com jardim às margens do Tâmisa, em Londres: você clica numa janela acesa, voa até ela, gira a planta 3D e entra no apartamento.</p>
+        <div class="cs-actions">
+          
+          <span class="cs-local"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M9 2.5v3M15 2.5v3M9 18.5v3M15 18.5v3M2.5 9h3M2.5 15h3M18.5 9h3M18.5 15h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><rect x="9.5" y="9.5" width="5" height="5" rx="1" fill="currentColor"/></svg><span><b>Roda localmente</b>Ainda sem site no ar: roda num servidor local com os vídeos dos voos</span></span>
+          
+          
+        </div>
+        <p class="cs-by">Projeto desenvolvido por <a href="/sobre.html" rel="author">Bernardo Iannini</a></p>
+      </div>
+      <figure class="cs-hero__media">
+        <div class="cs-win">
+          <div class="cs-win__bar" aria-hidden="true"><i></i><i></i><i></i><span>localhost · nest battersea</span></div>
+          <picture>
+            <source type="image/avif" srcset="/img/covers/nest-battersea-480.avif?v=1066e5e0 480w, /img/covers/nest-battersea-800.avif?v=1066e5e0 800w, /img/covers/nest-battersea-1200.avif?v=1066e5e0 1200w, /img/covers/nest-battersea.avif?v=1066e5e0 1600w" sizes="(max-width: 900px) 92vw, 46vw">
+            <img class="cs-win__img" src="/img/covers/nest-battersea.webp?v=1066e5e0" srcset="/img/covers/nest-battersea-480.webp?v=1066e5e0 480w, /img/covers/nest-battersea-800.webp?v=1066e5e0 800w, /img/covers/nest-battersea-1200.webp?v=1066e5e0 1200w, /img/covers/nest-battersea.webp?v=1066e5e0 1600w" sizes="(max-width: 900px) 92vw, 46vw"
+                 alt="Nest Battersea · Seletor de Residências" width="1600" height="900" fetchpriority="high" decoding="async">
+          </picture>
+          
+        </div>
+      </figure>
+    </section>
+
+    <section class="cs-about" aria-labelledby="csWhat" data-reveal>
+      <svg class="cs-deco" viewBox="0 0 1200 600" preserveAspectRatio="xMaxYMid slice" aria-hidden="true" focusable="false">
+      <defs><pattern id="csDots-nest-battersea" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.3"/></pattern></defs>
+      <rect class="cs-deco__dots" width="1200" height="600" fill="url(#csDots-nest-battersea)"/>
+      <circle class="cs-deco__ring" cx="1010" cy="120" r="260"/><circle class="cs-deco__ring" cx="1010" cy="120" r="180"/>
+      <circle class="cs-deco__ring" cx="1010" cy="120" r="100"/><circle class="cs-deco__dot" cx="1010" cy="120" r="5"/>
+    </svg>
+      <div class="cs-about__main">
+        <h2 class="cs-h2" id="csWhat"><span class="cs-h2__icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1.1 2V17h5v-1.2c.1-.8.5-1.5 1.1-2A6 6 0 0 0 12 3z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>O que é</h2>
+        <p class="cs-about__lead">Seletor de residências da Nest Battersea, torre de aluguel com 34 andares e 143 apartamentos com jardim na margem do Tâmisa, em Londres. A imagem oficial da torre é a navegação: você clica na janela de uma das duas residências disponíveis, a câmera voa até ela, e dali dá para girar a planta 3D ou entrar e percorrer cada cômodo.</p>
+        
+      </div>
+      <aside class="cs-about__facts" aria-label="Ficha do projeto">
+        <div class="cs-fact2"><span class="cs-fact2__k">Tipo</span><span class="cs-fact2__v">Site</span></div><div class="cs-fact2"><span class="cs-fact2__k">Ano</span><span class="cs-fact2__v">2026</span></div><div class="cs-fact2"><span class="cs-fact2__k">Status</span><span class="cs-fact2__v">roda localmente</span></div>
+        
+      </aside>
+    </section>
+
+    <section class="cs-tour" data-cs-tour aria-labelledby="csTour">
+      <div class="cs-tour__sticky">
+        <div class="cs-tour__head">
+          <h2 class="cs-h2" id="csTour">Navegue pelo site</h2>
+          <p class="cs-tour__hint">Role a página: as telas andam junto com você.</p>
+        </div>
+        <div class="cs-tour__stage">
+          <div class="cs-tour__desk cs-win">
+            <div class="cs-win__bar" aria-hidden="true"><i></i><i></i><i></i><span>localhost · nest battersea</span></div>
+            <div class="cs-tour__view"><img data-cs-pan src="/img/projects/nest-battersea/scroll.webp?v=mw6hg7b4" alt="Nest Battersea: tela 1 no computador" width="960" height="3015" loading="lazy" decoding="async"></div>
+          </div>
+          <div class="cs-tour__phone" aria-hidden="true">
+            <div class="cs-tour__notch"></div>
+            <div class="cs-tour__view"><img data-cs-pan src="/img/projects/nest-battersea/mscroll.webp?v=mw6hg7m5" alt="Nest Battersea: tela 1 no celular" width="520" height="6122" loading="lazy" decoding="async"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-how" aria-labelledby="csHow">
+      <h2 class="cs-h2" id="csHow" data-reveal>Como funciona</h2>
+      <ol class="cs-steps" data-cs-steps style="--n:4">
+        <li class="cs-step" style="--i:0">
+          <span class="cs-step__num" aria-hidden="true">01</span>
+          <span class="cs-step__label">A torre</span>
+          <span class="cs-step__sub">imagem oficial, janelas marcadas</span>
+        </li><li class="cs-step" style="--i:1">
+          <span class="cs-step__num" aria-hidden="true">02</span>
+          <span class="cs-step__label">Voo de câmera</span>
+          <span class="cs-step__sub">direto até a janela escolhida</span>
+        </li><li class="cs-step" style="--i:2">
+          <span class="cs-step__num" aria-hidden="true">03</span>
+          <span class="cs-step__label">Planta 3D</span>
+          <span class="cs-step__sub">gire e mergulhe num cômodo</span>
+        </li><li class="cs-step" style="--i:3">
+          <span class="cs-step__num" aria-hidden="true">04</span>
+          <span class="cs-step__label">Entrar</span>
+          <span class="cs-step__sub">tour por cada cômodo</span>
+        </li>
+      </ol>
+    </section>
+
+    <section class="cs-features" aria-labelledby="csFeat">
+      <h2 class="cs-h2" id="csFeat" data-reveal>O que ele faz</h2>
+      <div class="cs-feat-grid">
+        <article class="cs-feat" data-reveal style="--i:0">
+          <span class="cs-feat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" opacity=".8"/></svg></span>
+          <h3 class="cs-feat__title">Voos de câmera com IA sem mudar o prédio</h3>
+          <p class="cs-feat__text">Cada voo e cada entrada é um clipe do Kling 3.0 preso a um quadro inicial e a um final: a imagem oficial numa ponta e uma foto nivelada da janela aberta na outra. A IA só inventa o caminho do meio, então a fachada nunca se redesenha e só a câmera se move.</p>
+          
+        </article><article class="cs-feat" data-reveal style="--i:1">
+          <span class="cs-feat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 3 8l9 5 9-5-9-5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M3 13l9 5 9-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 17.5l9 5 9-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/></svg></span>
+          <h3 class="cs-feat__title">Planta 3D a partir das plantas oficiais</h3>
+          <p class="cs-feat__text">A planta do LOFT 4 alterna entre os dois andares, e um clique em qualquer cômodo mergulha nele e abre a foto.</p>
+          
+        </article><article class="cs-feat" data-reveal style="--i:2">
+          <span class="cs-feat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.4 0 2-1 2-2s-.6-1.6-1-2 .3-2 1.6-2H16a5 5 0 0 0 5-5 8.8 8.8 0 0 0-9-7z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="7.5" cy="10.5" r="1.1" fill="currentColor"/><circle cx="9.5" cy="7" r="1.1" fill="currentColor"/><circle cx="14.5" cy="7" r="1.1" fill="currentColor"/><circle cx="16.5" cy="11" r="1.1" fill="currentColor"/></svg></span>
+          <h3 class="cs-feat__title">Um cartão recortado em volta da interface</h3>
+          <p class="cs-feat__text">A primeira tela é um cartão grande com cantos invertidos onde ficam o logo, o menu, o Register interest e o mini card da residência.</p>
+          
+        </article><article class="cs-feat" data-reveal style="--i:3">
+          <span class="cs-feat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 14a9 9 0 1 1 18 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M12 14 16 9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="14" r="1.5" fill="currentColor"/></svg></span>
+          <h3 class="cs-feat__title">Leve em qualquer aparelho e testado de ponta a ponta</h3>
+          <p class="cs-feat__text">Os vídeos vêm em 1080p ou 720p conforme a tela, os interiores em AVIF, WebP ou JPG, e a planta 3D só carrega quando abre.</p>
+          
+        </article>
+      </div>
+    </section>
+
+    <section class="cs-gallery" aria-labelledby="csGal" data-cs-gallery>
+      <div class="cs-gallery__head" data-reveal>
+        <h2 class="cs-h2" id="csGal">Telas do projeto</h2>
+        <div class="cs-tabs" role="tablist" aria-label="Telas do projeto">
+          <button type="button" role="tab" class="cs-tab" id="csTab-desktop" aria-controls="csPanel-desktop" aria-selected="true" data-cs-tab="desktop">Computador</button><button type="button" role="tab" class="cs-tab" id="csTab-mobile" aria-controls="csPanel-mobile" aria-selected="false" data-cs-tab="mobile">Celular</button>
+        </div>
+      </div>
+      <div class="cs-gal" id="csPanel-desktop" role="tabpanel" aria-labelledby="csTab-desktop" data-cs-panel="desktop">
+        <ul class="cs-gal__track" data-cs-track tabindex="0" aria-label="Telas do projeto: Computador">
+          <li class="cs-gal__item cs-gal__item--desktop">
+            <button type="button" class="cs-gal__btn" data-cs-zoom="/img/projects/nest-battersea/desk-1.webp?v=mw6hg64v" aria-label="Ampliar: Nest Battersea: tela 1 no computador">
+              <img src="/img/projects/nest-battersea/desk-1-800.webp?v=mw6hg66p" srcset="/img/projects/nest-battersea/desk-1-800.webp?v=mw6hg66p 800w, /img/projects/nest-battersea/desk-1.webp?v=mw6hg64v 1280w" sizes="(max-width: 700px) 86vw, 640px" alt="Nest Battersea: tela 1 no computador" width="1280" height="800" loading="lazy" decoding="async">
+              <span class="cs-gal__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </button>
+          </li><li class="cs-gal__item cs-gal__item--desktop">
+            <button type="button" class="cs-gal__btn" data-cs-zoom="/img/projects/nest-battersea/desk-2.webp?v=mw6hg6b2" aria-label="Ampliar: Nest Battersea: tela 2 no computador">
+              <img src="/img/projects/nest-battersea/desk-2-800.webp?v=mw6hg6cz" srcset="/img/projects/nest-battersea/desk-2-800.webp?v=mw6hg6cz 800w, /img/projects/nest-battersea/desk-2.webp?v=mw6hg6b2 1280w" sizes="(max-width: 700px) 86vw, 640px" alt="Nest Battersea: tela 2 no computador" width="1280" height="800" loading="lazy" decoding="async">
+              <span class="cs-gal__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </button>
+          </li><li class="cs-gal__item cs-gal__item--desktop">
+            <button type="button" class="cs-gal__btn" data-cs-zoom="/img/projects/nest-battersea/desk-3.webp?v=mw6hg6gl" aria-label="Ampliar: Nest Battersea: tela 3 no computador">
+              <img src="/img/projects/nest-battersea/desk-3-800.webp?v=mw6hg6id" srcset="/img/projects/nest-battersea/desk-3-800.webp?v=mw6hg6id 800w, /img/projects/nest-battersea/desk-3.webp?v=mw6hg6gl 1280w" sizes="(max-width: 700px) 86vw, 640px" alt="Nest Battersea: tela 3 no computador" width="1280" height="800" loading="lazy" decoding="async">
+              <span class="cs-gal__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </button>
+          </li><li class="cs-gal__item cs-gal__item--desktop">
+            <button type="button" class="cs-gal__btn" data-cs-zoom="/img/projects/nest-battersea/desk-4.webp?v=mw6hg6m5" aria-label="Ampliar: Nest Battersea: tela 4 no computador">
+              <img src="/img/projects/nest-battersea/desk-4-800.webp?v=mw6hg6nz" srcset="/img/projects/nest-battersea/desk-4-800.webp?v=mw6hg6nz 800w, /img/projects/nest-battersea/desk-4.webp?v=mw6hg6m5 1280w" sizes="(max-width: 700px) 86vw, 640px" alt="Nest Battersea: tela 4 no computador" width="1280" height="800" loading="lazy" decoding="async">
+              <span class="cs-gal__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </button>
+          </li>
+        </ul>
+        <div class="cs-gal__nav">
+          <button type="button" class="cs-gal__arrow" data-cs-prev aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m15 18-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button type="button" class="cs-gal__arrow" data-cs-next aria-label="Próxima"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div><div class="cs-gal" id="csPanel-mobile" role="tabpanel" aria-labelledby="csTab-mobile" hidden data-cs-panel="mobile">
+        <ul class="cs-gal__track" data-cs-track tabindex="0" aria-label="Telas do projeto: Celular">
+          <li class="cs-gal__item cs-gal__item--mobile">
+            <button type="button" class="cs-gal__btn" data-cs-zoom="/img/projects/nest-battersea/mob-1.webp?v=mw6hg6si" aria-label="Ampliar: Nest Battersea: tela 1 no celular">
+              <img src="/img/projects/nest-battersea/mob-1.webp?v=mw6hg6si" alt="Nest Battersea: tela 1 no celular" width="780" height="1688" loading="lazy" decoding="async">
+              <span class="cs-gal__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </button>
+          </li><li class="cs-gal__item cs-gal__item--mobile">
+            <button type="button" class="cs-gal__btn" data-cs-zoom="/img/projects/nest-battersea/mob-2.webp?v=mw6hg6xb" aria-label="Ampliar: Nest Battersea: tela 2 no celular">
+              <img src="/img/projects/nest-battersea/mob-2.webp?v=mw6hg6xb" alt="Nest Battersea: tela 2 no celular" width="780" height="1688" loading="lazy" decoding="async">
+              <span class="cs-gal__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </button>
+          </li><li class="cs-gal__item cs-gal__item--mobile">
+            <button type="button" class="cs-gal__btn" data-cs-zoom="/img/projects/nest-battersea/mob-3.webp?v=mw6hg71a" aria-label="Ampliar: Nest Battersea: tela 3 no celular">
+              <img src="/img/projects/nest-battersea/mob-3.webp?v=mw6hg71a" alt="Nest Battersea: tela 3 no celular" width="780" height="1688" loading="lazy" decoding="async">
+              <span class="cs-gal__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </button>
+          </li>
+        </ul>
+        <div class="cs-gal__nav">
+          <button type="button" class="cs-gal__arrow" data-cs-prev aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m15 18-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button type="button" class="cs-gal__arrow" data-cs-next aria-label="Próxima"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+      <dialog class="cs-lightbox" data-cs-lightbox aria-label="Telas do projeto">
+        <button type="button" class="cs-lightbox__close" data-cs-close aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+        <button type="button" class="cs-lightbox__arrow cs-lightbox__arrow--prev" data-cs-lprev aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m15 18-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <img alt="" data-cs-limg>
+        <button type="button" class="cs-lightbox__arrow cs-lightbox__arrow--next" data-cs-lnext aria-label="Próxima"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </dialog>
+    </section>
+
+    <section class="cs-author" data-reveal aria-labelledby="csAuthor">
+      <img class="cs-author__photo" src="/img/eufoto1.webp" alt="Bernardo Iannini, desenvolvedor do projeto Nest Battersea" width="584" height="583" loading="lazy" decoding="async">
+      <div class="cs-author__body">
+        <h2 class="cs-author__kicker" id="csAuthor">Quem construiu</h2>
+        <p class="cs-author__name"><a href="/sobre.html" rel="author">Bernardo Iannini</a></p>
+        <p class="cs-author__role">Full Stack Developer & AI Designer · Belo Horizonte, Brasil</p>
+        <p class="cs-author__bio">Construo sistemas completos, da arquitetura ao deploy em produção: SaaS, fintechs, ERPs e automações. Cada projeto deste portfólio é parte da bagagem que eu levo pro próximo.</p>
+        <div class="cs-author__links">
+          <a class="cs-pill cs-pill--solid" href="/#contato">Quer algo assim? Fale comigo<span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+          <a class="cs-pill" href="/sobre.html">Conheça minha trajetória</a>
+          <a class="cs-icon" href="https://www.linkedin.com/in/bernardo-iannini" target="_blank" rel="me noopener noreferrer" aria-label="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.3-.02-2.95-1.8-2.95-1.8 0-2.07 1.4-2.07 2.86V21H9z"/></svg></a>
+          <a class="cs-icon" href="https://github.com/iannini25" target="_blank" rel="me noopener noreferrer" aria-label="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .5C5.73.5.98 5.24.98 11.5c0 4.85 3.14 8.96 7.49 10.41.55.1.75-.24.75-.53v-1.86c-3.04.66-3.68-1.45-3.68-1.45-.5-1.28-1.22-1.63-1.22-1.63-.99-.67.08-.66.08-.66 1.09.08 1.66 1.13 1.66 1.13.98 1.67 2.57 1.19 3.2.91.1-.71.38-1.19.69-1.46-2.43-.28-4.99-1.22-4.99-5.43 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.41.11-2.94 0 0 .92-.29 3.02 1.13A10.5 10.5 0 0 1 12 6.8c.94 0 1.88.13 2.77.38 2.1-1.42 3.02-1.13 3.02-1.13.6 1.53.22 2.66.11 2.94.7.77 1.13 1.75 1.13 2.95 0 4.22-2.57 5.14-5.01 5.41.39.34.73 1.02.73 2.07v3.07c0 .3.2.64.76.53 4.34-1.45 7.48-5.56 7.48-10.41C23.02 5.24 18.27.5 12 .5z"/></svg></a>
+        </div>
+      </div>
+    </section>
+
+    <nav class="cs-others" aria-labelledby="csOthers">
+      <div class="cs-others__head">
+        <h2 class="cs-h2" id="csOthers">Outros projetos</h2>
+        <a class="cs-others__all" href="/#projects">Ver todos os projetos<span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      </div>
+      <ul class="cs-others__list">
+        <li><a class="cs-other" href="/projetos/brasa.html">
+            <span class="cs-other__img"><img src="/img/covers/brasa.webp?v=f3b139e7" srcset="/img/covers/brasa-480.webp?v=f3b139e7 480w, /img/covers/brasa-800.webp?v=f3b139e7 800w, /img/covers/brasa-1200.webp?v=f3b139e7 1200w, /img/covers/brasa.webp?v=f3b139e7 1600w" sizes="(max-width: 700px) 90vw, 30vw" alt="" width="1600" height="900" loading="lazy" decoding="async"></span>
+            <span class="cs-other__name">BRASA</span>
+            <span class="cs-other__sub">Restaurante de Cozinha de Fogo</span>
+          </a></li><li><a class="cs-other" href="/projetos/sereno.html">
+            <span class="cs-other__img"><img src="/img/covers/sereno.webp?v=7c430872" srcset="/img/covers/sereno-480.webp?v=7c430872 480w, /img/covers/sereno-800.webp?v=7c430872 800w, /img/covers/sereno-1200.webp?v=7c430872 1200w, /img/covers/sereno.webp?v=7c430872 1600w" sizes="(max-width: 700px) 90vw, 30vw" alt="" width="1600" height="900" loading="lazy" decoding="async"></span>
+            <span class="cs-other__name">Sereno</span>
+            <span class="cs-other__sub">Estúdio de Massagem &amp; Repouso</span>
+          </a></li><li><a class="cs-other" href="/projetos/amarofy.html">
+            <span class="cs-other__img"><img src="/img/covers/amarofy.webp?v=399ef1e5" srcset="/img/covers/amarofy-480.webp?v=399ef1e5 480w, /img/covers/amarofy-800.webp?v=399ef1e5 800w, /img/covers/amarofy-1200.webp?v=399ef1e5 1200w, /img/covers/amarofy.webp?v=399ef1e5 1600w" sizes="(max-width: 700px) 90vw, 30vw" alt="" width="1600" height="900" loading="lazy" decoding="async"></span>
+            <span class="cs-other__name">Amaro.fy</span>
+            <span class="cs-other__sub">Crochê sob medida</span>
+          </a></li>
+      </ul>
+    </nav>
+  </main>
+
+  <!-- language.js ANTES do UI.js: o init() do UI.js chama applyI18n() de
+       forma sincrona assim que carrega. project-case.js NAO entra aqui de
+       proposito — o conteudo ja veio pronto do build, carregar de novo so
+       daria double-render e flash. -->
+  <script src="/js/language.js" defer></script>
+  <script src="/js/UI.js" defer></script>
+  <script src="/js/sw-register.js" defer></script>
+  <script src="/js/img-skeleton.js" defer></script>
+
+  <!-- camada de interacao da pagina (vanilla, sem GSAP/Lenis): reveals,
+       tour pelas telas, passos e galeria. Sem ela a pagina fica 100%
+       legivel e funcional. -->
+  <script src="/js/project-fx.js" defer></script>
+
+  <script>
+    /* Seletor de idioma: NAVEGA pro equivalente em vez de so trocar strings
+       (o conteudo desta pagina veio pronto do build, no idioma da rota).
+       Fase de CAPTURA pra rodar antes do handler que o language.js pendura
+       em cada <li>, que chamaria applyI18n() no lugar. */
+    (function () {
+      var menu = document.getElementById('langMenu');
+      if (!menu) return;
+      var alt = { pt: '/projetos/nest-battersea.html', en: '/en/projects/nest-battersea.html' };
+      function go(e) {
+        var li = e.target && e.target.closest && e.target.closest('[data-lang]');
+        if (!li) return;
+        if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+        var url = alt[li.getAttribute('data-lang')];
+        if (!url) return;
+        e.preventDefault();
+        e.stopPropagation();
+        document.cookie = 'lang=' + li.getAttribute('data-lang') + '; path=/; max-age=31536000; samesite=lax';
+        location.href = url;
+      }
+      menu.addEventListener('click', go, true);
+      menu.addEventListener('keydown', go, true);
+    })();
+  </script>
+</body>
+
+</html>

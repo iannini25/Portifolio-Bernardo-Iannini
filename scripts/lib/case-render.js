@@ -284,7 +284,7 @@ function renderCaseMain(o) {
             <span class="cs-visit__arrow" aria-hidden="true">${ICON.arrow}</span>
             <span class="sr-only">(${u.newTab})</span>
           </a>` : ''}
-          ${!p.link && p.local ? `<span class="cs-local">${ICON.chip}<span><b>${u.localTitle}</b>${u.localSub}</span></span>` : ''}
+          ${!p.link && p.local ? `<span class="cs-local">${ICON.chip}<span><b>${u.localTitle}</b>${esc(p.localNote || u.localSub)}</span></span>` : ''}
           ${storeBadges(p, lang, u)}
           ${Array.isArray(cfg.apps) && cfg.apps.length ? `<a class="cs-pill" href="#apps">${ICON.phone}${u.seeApps}</a>` : ''}
         </div>

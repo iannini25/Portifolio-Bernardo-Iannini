@@ -1,5 +1,11 @@
 {
   "_doc": "Configuracao propria de cada pagina de projeto (lida por scripts/lib/case-render.js). embed: o site permite ser exibido ao vivo dentro da pagina. tour/gallery false: esconde o tour de prints / a galeria de prints. illustrations: imagem ao lado de 'O que e' / 'O problema' (arquivos em img/projects/<id>/). apps: aplicativos com icone, cor, texto, lojas e telas. marketing: banners/pecas de marketing. Tudo opcional.",
+  "nest-battersea": {
+    "whatIs": {
+      "pt": "Seletor de residências da Nest Battersea, torre de aluguel com 34 andares e 143 apartamentos com jardim na margem do Tâmisa, em Londres. A imagem oficial da torre é a navegação: você clica na janela de uma das duas residências disponíveis, a câmera voa até ela, e dali dá para girar a planta 3D ou entrar e percorrer cada cômodo.",
+      "en": "Residence selector for Nest Battersea, a 34-storey build to rent tower with 143 homes with gardens on the Thames in London. The official image of the tower is the navigation: you click the window of one of the two available homes, the camera flies to it, and from there you can turn the 3D floor plan or step inside and tour every room."
+    }
+  },
   "brasa": {
     "embed": true,
     "whatIs": {
@@ -75,7 +81,7 @@
           ]
         },
         "ios": "https://apps.apple.com/br/app/moeda-nobre/id6783990350",
-        "android": "",
+        "android": "https://play.google.com/store/apps/details?id=moedanobre.tribex",
         "screens": [
           "app-beneficios-1.webp",
           "app-beneficios-2.webp",
