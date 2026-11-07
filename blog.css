@@ -1085,8 +1085,7 @@
 
 .admin-brand-title em {
   font-style: italic;
-  font-family: Brier;
-  font-weight: 400;
+  font-family: Brier; font-weight: 600;
   color: var(--lime);
 }
 
@@ -1402,8 +1401,7 @@
 
 .admin-title em {
   font-style: italic;
-  font-family: Brier;
-  font-weight: 400;
+  font-family: Brier; font-weight: 600;
   color: var(--lime);
 }
 
@@ -3114,9 +3112,8 @@ body.post-body {
   word-break: normal;
 }
 .post-page-title em {
-  font-family: Brier;
+  font-family: Brier; font-weight: 600;
   font-style: italic;
-  font-weight: 400;
   font-size: 1.06em;
   letter-spacing: -.005em;
   color: var(--green);
@@ -3125,7 +3122,7 @@ body.post-body {
 
 .post-page-subtitle {
   margin: 0;
-  font-family: Brier;
+  font-family: Brier; font-weight: 600;
   font-style: italic;
   font-size: clamp(17px, 1.9vw, 22px);
   line-height: 1.5;
@@ -3266,7 +3263,7 @@ body.post-body {
 
 .post-page-body strong { color: var(--text); font-weight: 700; }
 .post-page-body em {
-  font-family: Brier;
+  font-family: Brier; font-weight: 600;
   font-style: italic;
   color: var(--green);
 }
@@ -3330,7 +3327,7 @@ body.post-body {
   background: linear-gradient(90deg, var(--g-10), transparent 80%);
   border-radius: 0 14px 14px 0;
   color: var(--text);
-  font-family: Brier;
+  font-family: Brier; font-weight: 600;
   font-style: italic;
   font-size: clamp(17px, 2vw, 20px);
   line-height: 1.55;

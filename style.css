@@ -616,7 +616,7 @@ body.pc-nav-hidden header {
   background-position: 100% 0%;
 }
 
-.tagline { margin-top: 16px; font-family: Brier; font-size: clamp(26px, 3.4vw, 36px); font-style: italic; font-weight: 400; letter-spacing: -.005em; color: var(--text-italic); display: inline-block; min-height: 1.2em; transition: color .4s, text-shadow .4s }
+.tagline { margin-top: 16px; font-family: Brier; font-weight: 600; font-size: clamp(26px, 3.4vw, 36px); font-style: italic; letter-spacing: -.005em; color: var(--text-italic); display: inline-block; min-height: 1.2em; transition: color .4s, text-shadow .4s }
 .tagline.glow { color: var(--green); text-shadow: 0 0 12px var(--g-80), 0 0 24px rgba(163,230,53,.4) }
 /* #taglineText sempre usa background-clip: text com um gradient base
    solid (currentColor → currentColor). Mantém o rendering mode CONSTANTE
@@ -792,9 +792,8 @@ body.pc-nav-hidden header {
 }
 .about-title__line--em,
 .about-title__line--em .chx {
-  font-family: Brier;
+  font-family: Brier; font-weight: 600;
   font-style: italic;
-  font-weight: 400;
   background: var(--gradient-lime);
   -webkit-background-clip: text;
           background-clip: text;
@@ -2956,9 +2955,8 @@ body.pc-nav-hidden header {
 .contact-hero__line { display: block }
 /* só a linha em destaque ganha a fonte com serifa */
 .contact-hero__line--em {
-  font-family: Brier;
+  font-family: Brier; font-weight: 600;
   font-style: italic;
-  font-weight: 400;
   font-size: 1.08em;
   letter-spacing: -.005em;
   color: var(--green);
@@ -4592,8 +4590,7 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   color: var(--text-hint);
 }
 .ps-soon__title {
-  font-family: Brier;
-  font-weight: 400;
+  font-family: Brier; font-weight: 600;
   font-size: clamp(2.2rem, 5vw, 3.6rem);
   line-height: 1.04;
   letter-spacing: -.015em;
@@ -4688,9 +4685,8 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
    inline-block — e background-clip:text nao atravessa inline-blocks. */
 .ps-title em,
 .ps-title em .chx {
-  font-family: Brier;
+  font-family: Brier; font-weight: 600;
   font-style: italic;
-  font-weight: 400;
   background: var(--gradient-lime);
   -webkit-background-clip: text;
   background-clip: text;
@@ -6718,9 +6714,8 @@ body.blog-body { min-height: 100vh; }
 }
 .blog-soon-kicker::before { content: "● "; color: var(--green); }
 .blog-soon-title {
-  font-family: Brier;
+  font-family: Brier; font-weight: 600;
   font-size: clamp(3rem, 9vw, 6.2rem);
-  font-weight: 400;
   line-height: 1;
   letter-spacing: -.02em;
   margin: 0 0 20px;
@@ -9304,3 +9299,23 @@ html:active-view-transition-type(bi-wipe)::view-transition-new(root) {
   scale: 1.15;
 }
 @media (max-width: 1024px) { .about-rail { display: none; } }
+
+/* Brier em italico: a inclinacao passa da caixa de cada letra (.chx e
+   inline-block com o gradiente clipado no texto), entao a ponta das letras
+   era cortada. Folga em volta de cada letra + margem negativa igual: o
+   espacamento continua o mesmo e o glifo inteiro fica dentro da pintura. */
+.about-title__line--em .chx,
+.ps-title em .chx,
+.contact-hero__line--em .chx {
+  padding: .06em .16em .14em;
+  margin: -.06em -.16em -.14em;
+}
+.about-title__line--em,
+.ps-soon__title em,
+.blog-soon-title em,
+.ps-title em {
+  padding-inline: .08em .16em;
+  margin-inline: -.08em -.16em;
+  padding-bottom: .1em;
+  margin-bottom: -.1em;
+}
