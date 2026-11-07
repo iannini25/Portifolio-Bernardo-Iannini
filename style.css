@@ -616,7 +616,7 @@ body.pc-nav-hidden header {
   background-position: 100% 0%;
 }
 
-.tagline { margin-top: 16px; font-family: Brier; font-weight: 600; font-size: clamp(26px, 3.4vw, 36px); font-style: italic; letter-spacing: -.005em; color: var(--text-italic); display: inline-block; min-height: 1.2em; transition: color .4s, text-shadow .4s }
+.tagline { margin-top: 16px; font-family: Brier; font-weight: 400; white-space: nowrap; max-width: 100%; font-size: clamp(26px, 3.4vw, 36px); font-style: italic; letter-spacing: -.005em; color: var(--text-italic); display: inline-block; min-height: 1.2em; transition: color .4s, text-shadow .4s }
 .tagline.glow { color: var(--green); text-shadow: 0 0 12px var(--g-80), 0 0 24px rgba(163,230,53,.4) }
 /* #taglineText sempre usa background-clip: text com um gradient base
    solid (currentColor → currentColor). Mantém o rendering mode CONSTANTE
@@ -9318,4 +9318,18 @@ html:active-view-transition-type(bi-wipe)::view-transition-new(root) {
   margin-inline: -.08em -.16em;
   padding-bottom: .1em;
   margin-bottom: -.1em;
+}
+
+/* Tagline da hero: a frase que troca NUNCA quebra linha. nowrap aqui e
+   no em; o home.js reduz a
+   fonte quando a frase mais longa nao cabe (fitTagline). Folga a direita
+   pro italico nao ter a ponta da ultima letra cortada pelo clip do texto. */
+.hero .stack { justify-self: stretch; }
+/* a tagline ocupa a largura da coluna mas nao conta pra largura dela
+   (width 0 + min-width 100%): quem dita a coluna continua sendo o nome */
+.hero .tagline { width: 0; min-width: 100%; }
+#taglineText {
+  white-space: nowrap;
+  padding: 0 .16em .12em .04em;
+  margin: 0 -.16em -.12em -.04em;
 }

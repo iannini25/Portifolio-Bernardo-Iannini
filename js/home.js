@@ -204,9 +204,48 @@ async function cycleTaglines() {
   }
 }
 
+/* =========================================================
+   FIT — a tagline nunca quebra linha: mede a frase MAIS LONGA do idioma
+   na fonte atual e, se ela nao couber na coluna do texto, reduz a fonte
+   da tagline so o necessario (a fonte do CSS e o teto).
+   ========================================================= */
+const taglineBox = taglineEl && taglineEl.closest('.tagline');
+function fitTagline() {
+  if (!taglineBox) return;
+  const col = taglineBox.parentElement;
+  taglineBox.style.fontSize = '';
+  const base = parseFloat(getComputedStyle(taglineBox).fontSize);
+  const probe = document.createElement('span');
+  probe.setAttribute('aria-hidden', 'true');
+  probe.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;left:0;top:0;font:inherit;letter-spacing:inherit';
+  taglineBox.appendChild(probe);
+  let widest = 0;
+  for (const p of phrases) {
+    probe.textContent = p;
+    widest = Math.max(widest, probe.getBoundingClientRect().width);
+  }
+  probe.remove();
+  /* + cursor piscando e a folga do italico; 4% de margem pro embaralhar */
+  const need = (widest + base * .45) * 1.04;
+  const avail = col.clientWidth;
+  if (need > avail && avail > 0) {
+    taglineBox.style.fontSize = Math.max(12, base * avail / need).toFixed(2) + 'px';
+  }
+}
+if (taglineBox) {
+  let fitRaf = 0;
+  const refit = () => { cancelAnimationFrame(fitRaf); fitRaf = requestAnimationFrame(fitTagline); };
+  fitTagline();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(refit);
+  window.addEventListener('load', refit);
+  if ('ResizeObserver' in window) new ResizeObserver(refit).observe(taglineBox.parentElement);
+  else window.addEventListener('resize', refit);
+}
+
 function renderHero(lang) {
   const h = I18N[lang].hero;
   const hello = document.querySelector('.hero .hello');
   if (hello) hello.textContent = h.hello;
   phrases = I18N[lang].taglines;
+  fitTagline();
 }
