@@ -9330,3 +9330,20 @@ html:active-view-transition-type(bi-wipe)::view-transition-new(root) {
   padding: 0 .16em .12em .04em;
   margin: 0 -.16em -.12em -.04em;
 }
+
+/* Assinatura do autor */
+.bi-sign{--bi-size:13px;display:inline-flex;align-items:center;gap:.6em;font-size:var(--bi-size);line-height:1;color:inherit;white-space:nowrap}
+.bi-sign__by{opacity:.62}
+.bi-sign__link{display:inline-flex;align-items:center;gap:.5em;color:inherit;text-decoration:none;font-weight:600}
+.bi-sign__mark{flex:none;width:1.85em;height:1.85em;border-radius:.45em;background:#a3e635;display:grid;place-items:center;transition:transform .35s cubic-bezier(.22,1,.36,1)}
+.bi-sign__mark svg{display:block;height:68%;width:auto;fill:#0b0f0c}
+.bi-sign__mark .bi-sign__dot{transform-box:fill-box;transform-origin:center;transition:transform .35s cubic-bezier(.22,1,.36,1)}
+.bi-sign__name{background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;padding-bottom:.18em;transition:background-size .35s cubic-bezier(.22,1,.36,1)}
+.bi-sign__link:hover .bi-sign__mark{transform:rotate(-6deg) scale(1.08)}
+.bi-sign__link:hover .bi-sign__dot{transform:translate(4px,-6px)}
+.bi-sign__link:hover .bi-sign__name{background-size:100% 1px}
+.bi-sign__link:focus-visible{outline:2px solid #a3e635;outline-offset:4px;border-radius:.3em}
+@media (prefers-reduced-motion:reduce){.bi-sign *{transition:none!important}}
+.bi-sign-row{position:relative;z-index:2;display:flex;justify-content:center;padding:clamp(20px,3vw,28px) 16px clamp(16px,2vw,22px)}
+.contact-hero>.bi-sign-row{position:absolute;left:0;right:0;bottom:6px;z-index:30}
+main .bi-sign a.bi-sign__link{color:#fff;text-decoration:none;border:0}

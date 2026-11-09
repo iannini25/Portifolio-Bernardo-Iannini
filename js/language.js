@@ -950,7 +950,7 @@ The EN/PT switch is an i18n engine written from scratch: the entire site changes
         empty: "The first post is coming soon.",
         badge: "Featured"
       },
-      footer: { rights: "All rights reserved" }
+      footer: { rights: "All rights reserved", madeBy: "Made by" }
     },
     post: {
       back: "Back to blog",
@@ -1905,7 +1905,7 @@ A troca EN/PT é um motor de i18n escrito do zero: o site inteiro muda de idioma
         empty: "O primeiro post está chegando.",
         badge: "Destaque"
       },
-      footer: { rights: "Todos os direitos reservados" }
+      footer: { rights: "Todos os direitos reservados", madeBy: "Feito por" }
     },
     post: {
       back: "Voltar ao blog",
