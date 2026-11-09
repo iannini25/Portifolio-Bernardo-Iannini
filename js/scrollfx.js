@@ -176,28 +176,27 @@
   function buildWires() {
     if (!hasDraw()) return;
 
-    /* About: TRILHO DE PROGRESSO (substitui o antigo fio ondulado com glow).
-       Linha fina na lateral esquerda; um traco lime enche com o scroll e
-       acende 4 quadradinhos inclinados (o ponto do "i" da marca) quando
-       passa por eles. So transform/classe: nada repinta pesado. */
+    /* About: o "i" da marca enche de lime com a leitura e mostra a
+       porcentagem (.about-mark no CSS). Fica sticky no meio da tela. */
     const about = document.querySelector('#sobre');
     if (about && !about.querySelector('.about-rail')) {
       about.classList.add('wire-host');
+      const shape = '<svg viewBox="62 16 94 154"><g transform="rotate(-21 146.5 27.5)"><rect x="142.5" y="23.5" width="8" height="8" rx="1"/></g>' +
+        '<g transform="rotate(-21 131 32)"><rect x="124.5" y="25.5" width="13" height="13" rx="1.5"/></g>' +
+        '<g transform="rotate(-21 95.5 47.5)"><rect x="77" y="29" width="37" height="37" rx="2.5"/></g>' +
+        '<path d="M71 97.5 120 79.5V166H71Z"/></svg>';
       const rail = document.createElement('div');
       rail.className = 'about-rail';
       rail.setAttribute('aria-hidden', 'true');
-      rail.innerHTML = '<span class="about-rail__fill"></span>' +
-        [0, 1, 2, 3].map(i => `<i class="about-rail__node" style="--p:${i / 3}"></i>`).join('');
+      rail.innerHTML = `<div class="about-mark"><span class="about-mark__i">${shape}${shape}</span><span class="about-mark__pct">0%</span></div>`;
       about.prepend(rail);
-      const fill = rail.querySelector('.about-rail__fill');
-      const nodes = [...rail.querySelectorAll('.about-rail__node')];
-      gsap.fromTo(fill, { scaleY: 0 }, {
-        scaleY: 1,
+      const mark = rail.firstElementChild;
+      const pct = mark.lastElementChild;
+      gsap.fromTo(mark, { '--p': 0 }, {
+        '--p': 1,
         ease: 'none',
-        scrollTrigger: {
-          trigger: about, start: 'top 75%', end: 'bottom 70%', ...SCR(.6),
-          onUpdate: (st) => nodes.forEach((n, i) => n.classList.toggle('is-on', st.progress >= i / 3 - .001)),
-        },
+        scrollTrigger: { trigger: about, start: 'top 65%', end: 'bottom 75%', ...SCR(.6) },
+        onUpdate() { pct.textContent = Math.round(this.progress() * 100) + '%'; },
       });
     }
 

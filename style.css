@@ -682,58 +682,46 @@ body.pc-nav-hidden header {
 .sbtn:hover { transform: translateY(-2px); border-color: color-mix(in oklab, var(--green) 60%, var(--border)); background: linear-gradient(var(--g-15), var(--g-15)), var(--rail) }
 .sbtn svg { width: 18px; height: 18px; fill: var(--text); transition: .2s fill }
 .sbtn:hover svg { fill: var(--lime) }
-/* Scroll cue — indicador de rolagem: rotulo pequeno e espacado em cima e
-   uma linha fina onde um traco lime desce em loop (so transform). No
-   hover o rotulo e o trilho acendem em lime. */
+/* Seta de rolagem — so a setinha lime, sem texto e sem circulo. Ela desce e
+   sai por baixo da propria janelinha, volta por cima e descansa (so transform). */
 .scroll-cue {
   grid-column: 1 / -1;
   justify-self: center;
-  margin-top: -90px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  padding: 6px 10px;
+  margin-top: -104px;
+  display: block;
+  padding: 8px 12px;
   border: 0;
   background: none;
-  color: var(--text-hint);
+  color: var(--lime);
   cursor: pointer;
+  transition: translate .35s cubic-bezier(.22, 1, .36, 1);
 }
-.scroll-cue__label {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .24em;
-  text-transform: uppercase;
-  padding-left: .24em;               /* compensa o espaco do tracking */
-  transition: color .25s ease;
-}
-.scroll-cue__line {
-  position: relative;
+.scroll-cue__arrow {
   display: block;
-  width: 1px;
-  height: 46px;
+  width: 24px;
+  height: 40px;
   overflow: hidden;
-  background: var(--w-12);
-  transition: background-color .25s ease;
 }
-.scroll-cue__line::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 45%;
-  background: linear-gradient(180deg, transparent, var(--lime));
-  animation: scroll-cue-drop 2s cubic-bezier(.65, 0, .35, 1) infinite;
+.scroll-cue__arrow svg {
+  display: block;
+  width: 24px;
+  height: 40px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  animation: scroll-cue-loop 2.4s infinite;
 }
-.scroll-cue:hover .scroll-cue__label { color: var(--lime); }
-.scroll-cue:hover .scroll-cue__line { background: color-mix(in oklab, var(--lime) 35%, transparent); }
+.scroll-cue:hover { translate: 0 3px; }
 .scroll-cue:focus-visible { outline: 2px solid var(--lime); outline-offset: 4px; border-radius: 8px; }
-@keyframes scroll-cue-drop {
-  0%   { transform: translateY(-100%); }
-  100% { transform: translateY(230%); }
+@keyframes scroll-cue-loop {
+  0%, 45% { transform: translateY(0); animation-timing-function: cubic-bezier(.7, 0, .84, 0); }
+  70%     { transform: translateY(105%); animation-timing-function: step-end; }
+  70.01%  { transform: translateY(-105%); animation-timing-function: cubic-bezier(.16, 1, .3, 1); }
+  100%    { transform: translateY(0); }
 }
-@media (prefers-reduced-motion: reduce) { .scroll-cue__line::after { animation: none; transform: translateY(60%); } }
+@media (prefers-reduced-motion: reduce) { .scroll-cue__arrow svg { animation: none; } }
 
 /* =============================
    3) ABOUT (TERMINAL + SIDE PANEL)
@@ -9259,44 +9247,53 @@ html:active-view-transition-type(bi-wipe)::view-transition-new(root) {
 @media (min-width: 901px) and (max-width: 1280px) { :root { --nav-ctl-h: 44px; } }
 @media (min-width: 901px) and (max-width: 1080px) { :root { --nav-ctl-h: 40px; } }
 
-/* SOBRE — trilho de progresso (substitui o fio ondulado com glow).
-   Linha fina na lateral; o traco lime enche com o scroll (scaleY via
-   scrollfx) e os quadradinhos — o ponto do "i" — acendem ao passar. */
+/* SOBRE — o "i" da marca que enche de lime conforme a leitura avanca, com a
+   porcentagem embaixo (a mesma linguagem da tela de carregamento). O trilho
+   invisivel ocupa a altura da secao e o conjunto fica sticky no meio da tela.
+   --p vem do scrollfx (0 a 1). */
 .about-rail {
   position: absolute;
-  top: 140px;
-  bottom: 140px;
+  top: 120px;
+  bottom: 120px;
   left: clamp(-90px, calc((1120px - 100vw) / 2 + 28px), 0px);
-  width: 1px;
+  width: 0;
   z-index: 0;
   pointer-events: none;
-  background: linear-gradient(180deg, transparent, var(--w-08) 8%, var(--w-08) 92%, transparent);
 }
-.about-rail__fill {
+.about-mark {
+  position: sticky;
+  top: calc(50vh - 50px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 44px;
+  margin-left: -22px;
+  --p: 0;
+}
+.about-mark__i {
+  position: relative;
+  display: block;
+  width: 39px;
+  height: 64px;
+}
+.about-mark__i svg {
   position: absolute;
   inset: 0;
-  transform-origin: 50% 0;
-  transform: scaleY(0);
-  background: linear-gradient(180deg, transparent, var(--lime) 12%);
+  width: 100%;
+  height: 100%;
+  fill: rgba(255, 255, 255, .07);
 }
-.about-rail__node {
-  position: absolute;
-  left: 50%;
-  top: calc(var(--p) * 100%);
-  width: 9px;
-  height: 9px;
-  margin: -4.5px 0 0 -4.5px;
-  border-radius: 2px;
-  rotate: -21deg;
-  background: var(--bg);
-  border: 1px solid var(--w-12);
-  transition: background-color .4s ease, border-color .4s ease, box-shadow .4s ease, scale .5s cubic-bezier(.34, 1.56, .64, 1);
+.about-mark__i svg + svg {
+  fill: var(--lime);
+  clip-path: inset(calc((1 - var(--p)) * 100%) 0 0 0);
 }
-.about-rail__node.is-on {
-  background: var(--lime);
-  border-color: var(--lime);
-  box-shadow: 0 0 12px rgba(163, 230, 53, .55);
-  scale: 1.15;
+.about-mark__pct {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .04em;
+  color: var(--text-hint);
 }
 @media (max-width: 1024px) { .about-rail { display: none; } }
 

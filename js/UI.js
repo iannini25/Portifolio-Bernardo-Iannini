@@ -8,6 +8,24 @@
 const header = document.querySelector('header');
 const offset = () => (header?.getBoundingClientRect().height || 0) + 10;
 
+/* Destino de uma ancora: o inicio do CONTEUDO da section logo abaixo da
+   navbar. Usa a posicao de layout (offsetTop), porque titulos e cards podem
+   estar deslocados por parallax/entrada nessa hora e enganariam a medida. */
+function anchorTop(el) {
+  if (el.id === 'home') return 0;
+  let y = 0;
+  for (let n = el; n; n = n.offsetParent) y += n.offsetTop;
+  if (el.id === 'projects') return y;   /* o titulo ja tem respiro proprio */
+  const pad = parseFloat(getComputedStyle(el).paddingTop) || 0;
+  const navBottom = header?.querySelector('.nav')?.getBoundingClientRect().bottom || offset();
+  return Math.max(0, y + pad - navBottom - 28);
+}
+function scrollToAnchor(el) {
+  const top = anchorTop(el);
+  if (window.lenis) window.lenis.scrollTo(top, { force: true });
+  else window.scrollTo({ top, behavior: 'smooth' });
+}
+
 document.querySelectorAll('a[data-scroll]').forEach(a => {
   a.addEventListener('click', e => {
     const href = a.getAttribute('href');
@@ -15,9 +33,9 @@ document.querySelectorAll('a[data-scroll]').forEach(a => {
       e.preventDefault();
       const el = document.querySelector(href);
       if (el) {
-        const top = el.getBoundingClientRect().top + window.pageYOffset - offset();
-        if (window.lenis) window.lenis.scrollTo(top);
-        else window.scrollTo({ top, behavior: 'smooth' });
+        scrollToAnchor(el);
+        /* Contato: abre o modal na hora e o fundo rola ate a section atras dele */
+        if (href === '#contato' && typeof openContactModal === 'function') openContactModal();
       } else {
         // a âncora não existe NESTA página (ex.: project.html não tem
         // #home/#sobre/...) — navega pra home já na section certa, em
@@ -358,9 +376,7 @@ document.querySelectorAll('a[data-scroll]').forEach(a => {
       : document.querySelector('main section + section');
     if (!next) return;
 
-    const top = next.getBoundingClientRect().top + window.pageYOffset - offset();
-    if (window.lenis) window.lenis.scrollTo(top);
-    else window.scrollTo({ top, behavior: 'smooth' });
+    scrollToAnchor(next);
   });
 })();
 

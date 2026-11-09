@@ -76,6 +76,12 @@ function closeContactModal() {
   }, 260);
 }
 
+/* veio de outra pagina pelo link Contato (/#contato): chega com o modal aberto */
+if (location.hash === '#contato' && dialog) {
+  const nav = performance.getEntriesByType('navigation')[0];
+  if (!nav || nav.type !== 'back_forward') setTimeout(openContactModal, 500);
+}
+
 openBtn?.addEventListener('click', openContactModal);
 closeBtn?.addEventListener('click', closeContactModal);
 
