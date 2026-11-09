@@ -419,7 +419,7 @@ document.querySelectorAll('a[data-scroll]').forEach(a => {
   let resetTimer = 0;
   photo.addEventListener('pointerenter', (e) => {
     clearTimeout(resetTimer);
-    stagger(e, .32, .05);
+    stagger(e, .1, .02);
     if (photo.classList.contains('is-out')) {
       /* ainda saindo pelo topo: volta pra baixo sem animar e sobe de novo */
       photo.classList.add('is-reset');
@@ -427,10 +427,10 @@ document.querySelectorAll('a[data-scroll]').forEach(a => {
       void photo.offsetWidth;
       photo.classList.remove('is-reset');
     }
-    requestAnimationFrame(() => photo.classList.add('is-b'));
+    photo.classList.add('is-b');
   });
   photo.addEventListener('pointerleave', (e) => {
-    stagger(e, .24, .04);
+    stagger(e, .08, .02);
     photo.classList.remove('is-b');
     photo.classList.add('is-out');
     resetTimer = setTimeout(() => {
@@ -438,7 +438,7 @@ document.querySelectorAll('a[data-scroll]').forEach(a => {
       photo.classList.remove('is-out');
       void photo.offsetWidth;
       photo.classList.remove('is-reset');
-    }, 1100);
+    }, 560);
   });
 })();
 
