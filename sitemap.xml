@@ -3,7 +3,7 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://www.bernardoiannini.com/</loc>
-    <lastmod>2026-11-06T18:37:55-03:00</lastmod>
+    <lastmod>2026-11-08T22:21:40-03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -18,7 +18,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/pt</loc>
-    <lastmod>2026-11-06T18:37:55-03:00</lastmod>
+    <lastmod>2026-11-08T22:21:40-03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -33,7 +33,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/blog.html</loc>
-    <lastmod>2026-11-06T18:30:25-03:00</lastmod>
+    <lastmod>2026-11-08T22:24:12-03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -69,7 +69,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/en/about.html</loc>
-    <lastmod>2026-11-06T18:30:25-03:00</lastmod>
+    <lastmod>2026-11-07T11:17:06-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -558,7 +558,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/en/projects/iba.html</loc>
-    <lastmod>2026-11-06T18:30:25-03:00</lastmod>
+    <lastmod>2026-11-07T11:17:06-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -732,7 +732,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/en/projects/modulo-engenharia.html</loc>
-    <lastmod>2026-11-06T18:30:25-03:00</lastmod>
+    <lastmod>2026-11-07T11:17:06-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -828,7 +828,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/en/projects/moedanobre.html</loc>
-    <lastmod>2026-11-06T18:30:25-03:00</lastmod>
+    <lastmod>2026-11-07T11:17:06-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -951,7 +951,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/en/projects/nest-battersea.html</loc>
-    <lastmod>2026-11-07T14:15:37.873Z</lastmod>
+    <lastmod>2026-11-07T11:17:06-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -967,43 +967,37 @@
       <image:loc>https://www.bernardoiannini.com/img/covers/nest-battersea-1200.webp?v=1066e5e0</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/scroll.webp?v=mw6hg7b4</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-1-800.webp?v=mw9l2t0i</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/mscroll.webp?v=mw6hg7m5</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-1.webp?v=mw9l2sy7</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-1-800.webp?v=mw6hg66p</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-2-800.webp?v=mw9l2t9r</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-1.webp?v=mw6hg64v</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-2.webp?v=mw9l2t6h</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-2-800.webp?v=mw6hg6cz</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-3-800.webp?v=mw9l2thk</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-2.webp?v=mw6hg6b2</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-3.webp?v=mw9l2tf3</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-3-800.webp?v=mw6hg6id</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-4-800.webp?v=mw9l2tq4</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-3.webp?v=mw6hg6gl</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-4.webp?v=mw9l2tne</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-4-800.webp?v=mw6hg6nz</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/mob-1.webp?v=mw9l2tvy</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-4.webp?v=mw6hg6m5</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/mob-2.webp?v=mw9l2u2r</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/mob-1.webp?v=mw6hg6si</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/mob-2.webp?v=mw6hg6xb</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/mob-3.webp?v=mw6hg71a</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/mob-3.webp?v=mw9l2u93</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/eufoto1.webp</image:loc>
@@ -2073,7 +2067,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/projetos/iba.html</loc>
-    <lastmod>2026-11-06T18:30:25-03:00</lastmod>
+    <lastmod>2026-11-07T11:17:06-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -2247,7 +2241,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/projetos/modulo-engenharia.html</loc>
-    <lastmod>2026-11-06T18:30:25-03:00</lastmod>
+    <lastmod>2026-11-07T11:17:06-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -2343,7 +2337,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/projetos/moedanobre.html</loc>
-    <lastmod>2026-11-06T18:30:25-03:00</lastmod>
+    <lastmod>2026-11-07T11:17:06-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -2466,7 +2460,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/projetos/nest-battersea.html</loc>
-    <lastmod>2026-11-07T14:15:37.825Z</lastmod>
+    <lastmod>2026-11-07T11:17:06-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -2482,43 +2476,37 @@
       <image:loc>https://www.bernardoiannini.com/img/covers/nest-battersea-1200.webp?v=1066e5e0</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/scroll.webp?v=mw6hg7b4</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-1-800.webp?v=mw9l2t0i</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/mscroll.webp?v=mw6hg7m5</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-1.webp?v=mw9l2sy7</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-1-800.webp?v=mw6hg66p</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-2-800.webp?v=mw9l2t9r</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-1.webp?v=mw6hg64v</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-2.webp?v=mw9l2t6h</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-2-800.webp?v=mw6hg6cz</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-3-800.webp?v=mw9l2thk</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-2.webp?v=mw6hg6b2</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-3.webp?v=mw9l2tf3</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-3-800.webp?v=mw6hg6id</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-4-800.webp?v=mw9l2tq4</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-3.webp?v=mw6hg6gl</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-4.webp?v=mw9l2tne</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-4-800.webp?v=mw6hg6nz</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/mob-1.webp?v=mw9l2tvy</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/desk-4.webp?v=mw6hg6m5</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/mob-2.webp?v=mw9l2u2r</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/mob-1.webp?v=mw6hg6si</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/mob-2.webp?v=mw6hg6xb</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/mob-3.webp?v=mw6hg71a</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/projects/nest-battersea/mob-3.webp?v=mw9l2u93</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/eufoto1.webp</image:loc>
@@ -2772,7 +2760,7 @@
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/sobre.html</loc>
-    <lastmod>2026-11-06T18:30:25-03:00</lastmod>
+    <lastmod>2026-11-07T11:17:06-03:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>

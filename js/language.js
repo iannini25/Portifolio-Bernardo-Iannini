@@ -606,13 +606,11 @@ Building the trust this corridor is missing is hard precisely because you can't 
         {
           title: "Nest Battersea · Sky Homes Residence Selector",
           desc: "Interactive residence selector for Nest Battersea, a 34-storey tower of sky homes with gardens on the Thames in London: click a lit window, fly to it, turn the 3D floor plan and step inside.",
-          longDesc: `Nest Battersea is a build to rent tower at 38 Lombard Road, on the Battersea bank of the Thames, with 143 homes stacked like nests and a planted garden for each one. The site turns the official render of the tower into the navigation itself: the two available homes, LOFT 4 and Bungalow 3, are traced exactly over their windows, and a click sets off an AI generated camera flight that ends level with that window. From there the visitor opens a 3D dollhouse plan built from the official floor plans or steps through the glass into the living room and tours every room. Each clip starts and ends on frames of the official image itself, so the building never changes and only the camera moves. It is hand built in HTML, CSS and vanilla JavaScript with no framework, with a Three.js plan loaded only when it opens and around 55 automated end-to-end checks on desktop and phone.`
+          longDesc: `Nest Battersea is a build to rent tower at 38 Lombard Road, on the Battersea bank of the Thames, with 143 homes stacked like nests and a planted garden for each one. The site turns the official render of the tower into the navigation itself: the two available homes, LOFT 4 and Bungalow 3, are traced exactly over their windows, and a click sets off an AI generated camera flight that ends level with that window. From there the visitor opens a 3D dollhouse plan built from the official floor plans or steps through the glass into the living room and tours every room. Each clip starts and ends on frames of the official image itself, so the building never changes and only the camera moves. It is hand built in HTML, CSS and vanilla JavaScript with no framework, and the page goes on as the full launch site: the verified exterior views, the twelve home types with their official plans, sustainability, a live map of the neighbourhood with walking and driving routes, and the contact with the team. The Three.js plan, GSAP and the map load only when needed, and around 80 automated end-to-end checks cover desktop, phone, reduced motion and no JavaScript.`
           ,
-          stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "Three.js", "SVG", "AI video (Kling 3.0)", "Puppeteer"],
-          link: "",
-          repo: "",
-          local: true,
-          localNote: "Not online yet: it runs on a local server with the flight videos",
+          stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "Three.js", "GSAP", "ScrollTrigger", "MapLibre GL", "AI video (Kling 3.0)", "Puppeteer"],
+          link: "https://nestbattersea.vercel.app",
+          repo: "https://github.com/iannini25/NestBatterSea",
           cover: "img/covers/nest-battersea.webp?v=1066e5e0",
           id: "nest-battersea",
           flow: {
@@ -620,12 +618,13 @@ Building the trust this corridor is missing is hard precisely because you can't 
               { label: "The tower", sub: "official render, windows traced" },
               { label: "Camera flight", sub: "straight to the chosen window" },
               { label: "3D floor plan", sub: "turn it, dive into a room" },
-              { label: "Step inside", sub: "tour every room" }
+              { label: "Step inside", sub: "tour every room" },
+              { label: "The neighbourhood", sub: "live map with real routes" }
             ]
           },
           category: "site",
           featured: false,
-          status: "runs locally",
+          status: "in production",
           year: "2026",
           topics: [
             { icon: "sparkles", title: "AI camera flights that keep the building intact",
@@ -635,7 +634,11 @@ Building the trust this corridor is missing is hard precisely because you can't 
             { icon: "palette", title: "A card cut around the interface",
               text: "The first screen is one large card with inverted corners where the logo, the menu, Register interest and the residence mini card sit. Its outline is a single SVG path used as a clip-path, recalculated from the real size of each element so the curves follow any screen." },
             { icon: "gauge", title: "Light on any device, tested end to end",
-              text: "Clips come in 1080p or 720p by screen size, interiors in AVIF, WebP or JPG, and the 3D plan loads only when it opens. On the phone the first tap highlights a window and the second flies to it, reduced motion cuts straight to the destination, and about 55 Puppeteer checks cover desktop, retina and mobile." }
+              text: "Clips come in 1080p or 720p by screen size, interiors in AVIF, WebP or JPG, and the 3D plan loads only when it opens. On the phone the first tap highlights a window and the second flies to it, reduced motion cuts straight to the destination, and about 80 Puppeteer checks cover desktop, retina, mobile and no JavaScript." },
+            { icon: "globe", title: "A live map of the neighbourhood",
+              text: "The location is a MapLibre GL map styled for the brand, with low 3D buildings and the tower marked as a column of light. A dedicated page lists 33 places with photos, category filters, satellite view and precomputed walking and driving routes that only cross the Thames by real bridges." },
+            { icon: "search", title: "Every number from the official sources",
+              text: "Twelve home types with areas and plans, 51 affordable homes, wheelchair layouts and the sustainability figures all come from the published planning documents, with sources logged. No price or rent appears, and everything illustrative is marked as such." }
           ]
         },
         {
@@ -1557,13 +1560,11 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
         {
           title: "Nest Battersea · Seletor de Residências",
           desc: "Seletor interativo de residências da Nest Battersea, torre de 34 andares com apartamentos com jardim às margens do Tâmisa, em Londres: você clica numa janela acesa, voa até ela, gira a planta 3D e entra no apartamento.",
-          longDesc: `A Nest Battersea é uma torre de aluguel em 38 Lombard Road, na margem de Battersea do Tâmisa, com 143 apartamentos empilhados como ninhos e um jardim para cada um. O site transforma a imagem oficial da torre na própria navegação: as duas residências disponíveis, LOFT 4 e Bungalow 3, estão desenhadas exatamente sobre as suas janelas, e um clique dispara um voo de câmera gerado por IA que termina de frente para aquela janela. Dali a pessoa abre uma planta 3D montada a partir das plantas oficiais ou atravessa o vidro até a sala e percorre cada cômodo. Cada vídeo começa e termina em quadros da própria imagem oficial, então o prédio nunca muda e só a câmera se move. Foi feito à mão em HTML, CSS e JavaScript puro, sem framework, com a planta em Three.js carregada só quando abre e cerca de 55 verificações automáticas de ponta a ponta no computador e no celular.`
+          longDesc: `A Nest Battersea é uma torre de aluguel em 38 Lombard Road, na margem de Battersea do Tâmisa, com 143 apartamentos empilhados como ninhos e um jardim para cada um. O site transforma a imagem oficial da torre na própria navegação: as duas residências disponíveis, LOFT 4 e Bungalow 3, estão desenhadas exatamente sobre as suas janelas, e um clique dispara um voo de câmera gerado por IA que termina de frente para aquela janela. Dali a pessoa abre uma planta 3D montada a partir das plantas oficiais ou atravessa o vidro até a sala e percorre cada cômodo. Cada vídeo começa e termina em quadros da própria imagem oficial, então o prédio nunca muda e só a câmera se move. Foi feito à mão em HTML, CSS e JavaScript puro, sem framework, e a página segue como o site completo do lançamento: as vistas externas verificadas, as doze tipologias com as plantas oficiais, sustentabilidade, um mapa ao vivo do bairro com rotas a pé e de carro e o contato com a equipe. A planta em Three.js, o GSAP e o mapa só carregam quando necessário, e cerca de 80 verificações automáticas de ponta a ponta cobrem computador, celular, movimento reduzido e navegação sem JavaScript.`
           ,
-          stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "Three.js", "SVG", "Vídeo com IA (Kling 3.0)", "Puppeteer"],
-          link: "",
-          repo: "",
-          local: true,
-          localNote: "Ainda sem site no ar: roda num servidor local com os vídeos dos voos",
+          stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "Three.js", "GSAP", "ScrollTrigger", "MapLibre GL", "Vídeo com IA (Kling 3.0)", "Puppeteer"],
+          link: "https://nestbattersea.vercel.app",
+          repo: "https://github.com/iannini25/NestBatterSea",
           cover: "img/covers/nest-battersea.webp?v=1066e5e0",
           id: "nest-battersea",
           flow: {
@@ -1571,12 +1572,13 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
               { label: "A torre", sub: "imagem oficial, janelas marcadas" },
               { label: "Voo de câmera", sub: "direto até a janela escolhida" },
               { label: "Planta 3D", sub: "gire e mergulhe num cômodo" },
-              { label: "Entrar", sub: "tour por cada cômodo" }
+              { label: "Entrar", sub: "tour por cada cômodo" },
+              { label: "O bairro", sub: "mapa ao vivo com rotas reais" }
             ]
           },
           category: "site",
           featured: false,
-          status: "roda localmente",
+          status: "em produção",
           year: "2026",
           topics: [
             { icon: "sparkles", title: "Voos de câmera com IA sem mudar o prédio",
@@ -1586,7 +1588,11 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
             { icon: "palette", title: "Um cartão recortado em volta da interface",
               text: "A primeira tela é um cartão grande com cantos invertidos onde ficam o logo, o menu, o Register interest e o mini card da residência. O contorno é um único path SVG usado como clip-path, recalculado a partir do tamanho real de cada elemento, então as curvas acompanham qualquer tela." },
             { icon: "gauge", title: "Leve em qualquer aparelho e testado de ponta a ponta",
-              text: "Os vídeos vêm em 1080p ou 720p conforme a tela, os interiores em AVIF, WebP ou JPG, e a planta 3D só carrega quando abre. No celular o primeiro toque destaca a janela e o segundo voa até ela, o movimento reduzido corta direto para o destino e cerca de 55 verificações com Puppeteer cobrem computador, retina e celular." }
+              text: "Os vídeos vêm em 1080p ou 720p conforme a tela, os interiores em AVIF, WebP ou JPG, e a planta 3D só carrega quando abre. No celular o primeiro toque destaca a janela e o segundo voa até ela, o movimento reduzido corta direto para o destino e cerca de 80 verificações com Puppeteer cobrem computador, retina, celular e navegação sem JavaScript." },
+            { icon: "globe", title: "Um mapa ao vivo do bairro",
+              text: "A localização é um mapa MapLibre GL com estilo próprio da marca, prédios 3D baixos e a torre marcada como uma coluna de luz. Uma página dedicada traz 33 lugares com foto, filtros por categoria, visão de satélite e rotas a pé e de carro pré-calculadas, que só atravessam o Tâmisa por pontes de verdade." },
+            { icon: "search", title: "Cada número vem das fontes oficiais",
+              text: "As doze tipologias com áreas e plantas, as 51 casas affordable, os layouts para cadeira de rodas e os dados de sustentabilidade saem dos documentos públicos de licenciamento, com as fontes registradas. Nenhum preço ou aluguel aparece, e tudo que é ilustrativo está marcado." }
           ]
         },
         {

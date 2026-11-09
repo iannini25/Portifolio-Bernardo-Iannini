@@ -454,14 +454,14 @@ function renderCaseMain(o) {
           <div class="cs-live__vp" data-cs-vp="1440">
             <img class="cs-live__poster" src="${coverSrc}" alt="" width="1600" height="900" loading="lazy" decoding="async">
             <span class="cs-live__load">${u.liveLoad}</span>
-            <iframe data-src="${esc(p.link)}" title="${esc(name)} · ${u.desktop}" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" tabindex="0"></iframe>
+            <iframe${cfg.embedBg ? ` style="background:${esc(cfg.embedBg)}"` : ''} data-src="${esc(p.link)}" title="${esc(name)} · ${u.desktop}" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" tabindex="0"></iframe>
           </div>
         </div>
         <div class="cs-live__phone">
           <div class="cs-tour__notch" aria-hidden="true"></div>
           <div class="cs-live__vp" data-cs-vp="390">
             <span class="cs-live__load">${u.liveLoad}</span>
-            <iframe data-src="${esc(p.link)}" title="${esc(name)} · ${u.mobile}" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" tabindex="0"></iframe>
+            <iframe${cfg.embedBg ? ` style="background:${esc(cfg.embedBg)}"` : ''} data-src="${esc(p.link)}" title="${esc(name)} · ${u.mobile}" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" tabindex="0"></iframe>
           </div>
         </div>
       </div>
