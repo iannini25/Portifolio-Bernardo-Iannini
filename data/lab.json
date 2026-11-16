@@ -1,0 +1,1269 @@
+{
+ "sites": [
+  {
+   "id": "maresia-barcos",
+   "brand": "Maresia Barcos",
+   "path": "sites/01-barcos/",
+   "accent": "#2558A8",
+   "fonts": [
+    "Archivo",
+    "Inter",
+    "Instrument Serif"
+   ],
+   "libs": [],
+   "sections": 6,
+   "pt": {
+    "kind": "Landing page de estaleiro de lanchas e catamarãs",
+    "desc": "Landing page de estaleiro de lanchas e catamarãs: Maresia Barcos abre com \"DESEMPENHO SEM IGUAL EM MAR ABERTO, ESTABILIDADE E VERSATILIDADE\" e leva o visitante por 6 seções até a ação.",
+    "long": "Maresia Barcos é landing page de estaleiro de lanchas e catamarãs, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"DESEMPENHO SEM IGUAL EM MAR ABERTO, ESTABILIDADE E VERSATILIDADE\" e segue por \"Encontre o barco ideal\", \"FEITO PARA A POTÊNCIA. PENSADO PARA VOCÊ\", \"Parceiros que equipam cada casco\", \"O que nossos clientes dizem\", \"Pronto para começar sua jornada?\". A identidade usa Archivo e Inter e Instrument Serif com o destaque #2558A8.",
+    "pitch": "A primeira dobra resume a proposta: \"DESEMPENHO SEM IGUAL EM MAR ABERTO, ESTABILIDADE E VERSATILIDADE\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Motor catamaran shipyard landing page",
+    "desc": "Motor catamaran shipyard landing page: Maresia Barcos opens on \"DESEMPENHO SEM IGUAL EM MAR ABERTO, ESTABILIDADE E VERSATILIDADE\" and walks the visitor through 6 sections to the call to action.",
+    "long": "Maresia Barcos is a motor catamaran shipyard landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"DESEMPENHO SEM IGUAL EM MAR ABERTO, ESTABILIDADE E VERSATILIDADE\" and runs through 6 sections. The identity pairs Archivo and Inter and Instrument Serif with a #2558A8 accent.",
+    "pitch": "The first fold sums up the offer: \"DESEMPENHO SEM IGUAL EM MAR ABERTO, ESTABILIDADE E VERSATILIDADE\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "demao-pinturas",
+   "brand": "Demão Pinturas",
+   "path": "sites/02-pintura/",
+   "accent": "#01419A",
+   "fonts": [
+    "Inter Tight"
+   ],
+   "libs": [],
+   "sections": 8,
+   "pt": {
+    "kind": "Landing page de serviço de pintura residencial",
+    "desc": "Landing page de serviço de pintura residencial: Demão Pinturas abre com \"Transforme sua casa com a Demão.\" e leva o visitante por 8 seções até a ação.",
+    "long": "Demão Pinturas é landing page de serviço de pintura residencial, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Transforme sua casa com a Demão.\" e segue por \"Uma demão nova. Uma experiência melhor\", \"Pintura caprichada, do preparo à última demão\", \"Do orçamento à entrega, sem surpresa no caminho\", \"Veja o que uma pintura nova pode fazer\", \"Perguntas que todo cliente faz antes\". A identidade usa Inter Tight com o destaque #01419A.",
+    "pitch": "A primeira dobra resume a proposta: \"Transforme sua casa com a Demão.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Home painting service landing page",
+    "desc": "Home painting service landing page: Demão Pinturas opens on \"Transforme sua casa com a Demão.\" and walks the visitor through 8 sections to the call to action.",
+    "long": "Demão Pinturas is a home painting service landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Transforme sua casa com a Demão.\" and runs through 8 sections. The identity pairs Inter Tight with a #01419A accent.",
+    "pitch": "The first fold sums up the offer: \"Transforme sua casa com a Demão.\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "linha-nobre",
+   "brand": "Linha Nobre",
+   "path": "sites/03-moda-luxo/",
+   "accent": "#0B2A55",
+   "fonts": [
+    "Anton",
+    "Inter"
+   ],
+   "libs": [],
+   "sections": 3,
+   "pt": {
+    "kind": "E-commerce de moda (home de loja)",
+    "desc": "E-commerce de moda (home de loja): Linha Nobre abre com \"ESTILO SEM PRAZO\" e leva o visitante por 3 seções até a ação.",
+    "long": "Linha Nobre é e-commerce de moda (home de loja), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"ESTILO SEM PRAZO\" e segue por \"DESCUBRA SEU ESTILO\", \"ESSENCIAIS DA NOVA ESTAÇÃO\", \"MAIS VENDIDOS\". A identidade usa Anton e Inter com o destaque #0B2A55.",
+    "pitch": "A primeira dobra resume a proposta: \"ESTILO SEM PRAZO\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Fashion store home page",
+    "desc": "Fashion store home page: Linha Nobre opens on \"ESTILO SEM PRAZO\" and walks the visitor through 3 sections to the call to action.",
+    "long": "Linha Nobre is a fashion store home page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"ESTILO SEM PRAZO\" and runs through 3 sections. The identity pairs Anton and Inter with a #0B2A55 accent.",
+    "pitch": "The first fold sums up the offer: \"ESTILO SEM PRAZO\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "terrana-arquitetura",
+   "brand": "Terrana Arquitetura",
+   "path": "sites/04-arquitetura/",
+   "accent": "#A8937A",
+   "fonts": [
+    "Manrope"
+   ],
+   "libs": [],
+   "sections": 4,
+   "pt": {
+    "kind": "Site de estúdio de arquitetura, interiores e paisagismo",
+    "desc": "Site de estúdio de arquitetura, interiores e paisagismo: Terrana Arquitetura abre com \"Espaços com escala humana.\" e leva o visitante por 4 seções até a ação.",
+    "long": "Terrana Arquitetura é site de estúdio de arquitetura, interiores e paisagismo, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Espaços com escala humana.\" e segue por \"Do croqui à chave na mão\", \"Espaços reais. Histórias reais\", \"Desenhando um cotidiano melhor\", \"Vamos desenhar o seu lugar\". A identidade usa Manrope com o destaque #A8937A.",
+    "pitch": "A primeira dobra resume a proposta: \"Espaços com escala humana.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Architecture, interiors and landscaping studio site",
+    "desc": "Architecture, interiors and landscaping studio site: Terrana Arquitetura opens on \"Espaços com escala humana.\" and walks the visitor through 4 sections to the call to action.",
+    "long": "Terrana Arquitetura is a architecture, interiors and landscaping studio site, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Espaços com escala humana.\" and runs through 4 sections. The identity pairs Manrope with a #A8937A accent.",
+    "pitch": "The first fold sums up the offer: \"Espaços com escala humana.\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "folego",
+   "brand": "Fôlego",
+   "path": "sites/05-fitness/",
+   "accent": "#FF4A2A",
+   "fonts": [
+    "Inter"
+   ],
+   "libs": [],
+   "sections": 7,
+   "pt": {
+    "kind": "Landing page de academia e comunidade fitness",
+    "desc": "Landing page de academia e comunidade fitness: Fôlego abre com \"Destrave seu potencial, hub de treino e saúde\" e leva o visitante por 7 seções até a ação.",
+    "long": "Fôlego é landing page de academia e comunidade fitness, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Destrave seu potencial, hub de treino e saúde\" e segue por \"Hub de vida ativa: eleve seu estilo de vida pelo movimento\", \"Mexa-se para manter a saúde em dia\", \"Tudo para você treinar com constância\", \"Treino acessível para todos\", \"Acompanhe sua evolução de saúde\". A identidade usa Inter com o destaque #FF4A2A.",
+    "pitch": "A primeira dobra resume a proposta: \"Destrave seu potencial, hub de treino e saúde\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Gym and fitness community landing page",
+    "desc": "Gym and fitness community landing page: Fôlego opens on \"Destrave seu potencial, hub de treino e saúde\" and walks the visitor through 7 sections to the call to action.",
+    "long": "Fôlego is a gym and fitness community landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Destrave seu potencial, hub de treino e saúde\" and runs through 7 sections. The identity pairs Inter with a #FF4A2A accent.",
+    "pitch": "The first fold sums up the offer: \"Destrave seu potencial, hub de treino e saúde\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "garfo-verde",
+   "brand": "Garfo Verde",
+   "path": "sites/06-delivery/",
+   "accent": "#8BC34A",
+   "fonts": [
+    "Anton",
+    "Caveat",
+    "Plus Jakarta Sans"
+   ],
+   "libs": [],
+   "sections": 3,
+   "pt": {
+    "kind": "Delivery de comida (marketplace de restaurantes)",
+    "desc": "Delivery de comida (marketplace de restaurantes): Garfo Verde abre com \"Entregue na sua porta\" e leva o visitante por 3 seções até a ação.",
+    "long": "Garfo Verde é delivery de comida (marketplace de restaurantes), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Entregue na sua porta\" e segue por \"Categorias\", \"0% OFF no seu primeiro pedido\", \"Pratos mais pedidos\". A identidade usa Anton e Caveat e Plus Jakarta Sans com o destaque #8BC34A.",
+    "pitch": "A primeira dobra resume a proposta: \"Entregue na sua porta\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Restaurant delivery marketplace",
+    "desc": "Restaurant delivery marketplace: Garfo Verde opens on \"Entregue na sua porta\" and walks the visitor through 3 sections to the call to action.",
+    "long": "Garfo Verde is a restaurant delivery marketplace, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Entregue na sua porta\" and runs through 3 sections. The identity pairs Anton and Caveat and Plus Jakarta Sans with a #8BC34A accent.",
+    "pitch": "The first fold sums up the offer: \"Entregue na sua porta\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "alpendre-imoveis",
+   "brand": "Alpendre Imóveis",
+   "path": "sites/07-imobiliaria/",
+   "accent": "#FFA829",
+   "fonts": [
+    "League Spartan"
+   ],
+   "libs": [],
+   "sections": 4,
+   "pt": {
+    "kind": "Landing page de portal imobiliário (comprar, alugar, vender)",
+    "desc": "Landing page de portal imobiliário (comprar, alugar, vender): Alpendre Imóveis abre com \"Conectando você ao lar que você ama\" e leva o visitante por 4 seções até a ação.",
+    "long": "Alpendre Imóveis é landing page de portal imobiliário (comprar, alugar, vender), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Conectando você ao lar que você ama\" e segue por \"Casa Ipê\", \"Escolhida por 80 mil famílias\", \"Encontre a casa dos seus sonhos\", \"O que dizem nossos clientes\", \"Diga olá a dias mais leves, juntos\". A identidade usa League Spartan com o destaque #FFA829.",
+    "pitch": "A primeira dobra resume a proposta: \"Conectando você ao lar que você ama\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Real estate portal landing page",
+    "desc": "Real estate portal landing page: Alpendre Imóveis opens on \"Conectando você ao lar que você ama\" and walks the visitor through 4 sections to the call to action.",
+    "long": "Alpendre Imóveis is a real estate portal landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Conectando você ao lar que você ama\" and runs through 4 sections. The identity pairs League Spartan with a #FFA829 accent.",
+    "pitch": "The first fold sums up the offer: \"Conectando você ao lar que você ama\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "musgo-casa",
+   "brand": "Musgo Casa",
+   "path": "sites/08-moveis/",
+   "accent": "#679936",
+   "fonts": [
+    "Inter"
+   ],
+   "libs": [],
+   "sections": 4,
+   "pt": {
+    "kind": "Landing page de loja de móveis",
+    "desc": "Landing page de loja de móveis: Musgo Casa abre com \"Monte a casa dos seus sonhos com os nossos móveis!\" e leva o visitante por 4 seções até a ação.",
+    "long": "Musgo Casa é landing page de loja de móveis, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Monte a casa dos seus sonhos com os nossos móveis!\" e segue por \"Categorias\", \"Design moderno para qualquer orçamento\", \"O que nos torna diferentes dos outros\", \"Transforme sua casa com móveis cheios de estilo!\". A identidade usa Inter com o destaque #679936.",
+    "pitch": "A primeira dobra resume a proposta: \"Monte a casa dos seus sonhos com os nossos móveis!\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Furniture store landing page",
+    "desc": "Furniture store landing page: Musgo Casa opens on \"Monte a casa dos seus sonhos com os nossos móveis!\" and walks the visitor through 4 sections to the call to action.",
+    "long": "Musgo Casa is a furniture store landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Monte a casa dos seus sonhos com os nossos móveis!\" and runs through 4 sections. The identity pairs Inter with a #679936 accent.",
+    "pitch": "The first fold sums up the offer: \"Monte a casa dos seus sonhos com os nossos móveis!\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "arco-estudio",
+   "brand": "Arco Estúdio",
+   "path": "sites/09-agencia/",
+   "accent": "#4F4AD7",
+   "fonts": [
+    "Karla"
+   ],
+   "libs": [],
+   "sections": 5,
+   "pt": {
+    "kind": "Landing page de agência criativa de branding e digital",
+    "desc": "Landing page de agência criativa de branding e digital: Arco Estúdio abre com \"ESTÚDIO ✦ ✦ CRIATIVO BRANDING & DIGITAL\" e leva o visitante por 5 seções até a ação.",
+    "long": "Arco Estúdio é landing page de agência criativa de branding e digital, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"ESTÚDIO ✦ ✦ CRIATIVO BRANDING & DIGITAL\" e segue por \"Projetando o sucesso de amanhã, hoje\", \"Soluções inovadoras de branding\", \"Nossos projetos mais recentes\", \"O que nossos clientes dizem\", \"Tem um projeto? Vamos conversar\". A identidade usa Karla com o destaque #4F4AD7.",
+    "pitch": "A primeira dobra resume a proposta: \"ESTÚDIO ✦ ✦ CRIATIVO BRANDING & DIGITAL\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Branding and digital agency landing page",
+    "desc": "Branding and digital agency landing page: Arco Estúdio opens on \"ESTÚDIO ✦ ✦ CRIATIVO BRANDING & DIGITAL\" and walks the visitor through 5 sections to the call to action.",
+    "long": "Arco Estúdio is a branding and digital agency landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"ESTÚDIO ✦ ✦ CRIATIVO BRANDING & DIGITAL\" and runs through 5 sections. The identity pairs Karla with a #4F4AD7 accent.",
+    "pitch": "The first fold sums up the offer: \"ESTÚDIO ✦ ✦ CRIATIVO BRANDING & DIGITAL\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "andala-viagens",
+   "brand": "Andalá Viagens",
+   "path": "sites/10-viagens/",
+   "accent": "#639CCC",
+   "fonts": [
+    "Bricolage Grotesque"
+   ],
+   "libs": [],
+   "sections": 7,
+   "pt": {
+    "kind": "Landing page de agência de viagens em família",
+    "desc": "Landing page de agência de viagens em família: Andalá Viagens abre com \"Mais tempo em família. Menos tempo planejando.\" e leva o visitante por 7 seções até a ação.",
+    "long": "Andalá Viagens é landing page de agência de viagens em família, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Mais tempo em família. Menos tempo planejando.\" e segue por \"Não sabe para onde ir?\", \"Sua viagem em 4 passos\", \"Por que viajar com a Andalá\", \"Destinos favoritos das famílias\", \"As próximas férias já podem começar hoje\". A identidade usa Bricolage Grotesque com o destaque #639CCC.",
+    "pitch": "A primeira dobra resume a proposta: \"Mais tempo em família. Menos tempo planejando.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Family travel agency landing page",
+    "desc": "Family travel agency landing page: Andalá Viagens opens on \"Mais tempo em família. Menos tempo planejando.\" and walks the visitor through 7 sections to the call to action.",
+    "long": "Andalá Viagens is a family travel agency landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Mais tempo em família. Menos tempo planejando.\" and runs through 7 sections. The identity pairs Bricolage Grotesque with a #639CCC accent.",
+    "pitch": "The first fold sums up the offer: \"Mais tempo em família. Menos tempo planejando.\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "liana-nutri",
+   "brand": "Liana Nutri",
+   "path": "sites/11-suplementos/",
+   "accent": "#1F3B2A",
+   "fonts": [
+    "Instrument Sans"
+   ],
+   "libs": [],
+   "sections": 7,
+   "pt": {
+    "kind": "E-commerce de suplementos de imunidade",
+    "desc": "E-commerce de suplementos de imunidade: Liana Nutri abre com \"Cuide da sua defesa natural, todo dia\" e leva o visitante por 7 seções até a ação.",
+    "long": "Liana Nutri é e-commerce de suplementos de imunidade, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Cuide da sua defesa natural, todo dia\" e segue por \"Seu sistema imune está exposto o tempo todo\", \"Formas biodisponíveis ajudam os nutrientes a chegar às células com mais eficiência\", \"Suplementos /iana\", \"Escolhido por quem cuida da própria saúde\". A identidade usa Instrument Sans com o destaque #1F3B2A.",
+    "pitch": "A primeira dobra resume a proposta: \"Cuide da sua defesa natural, todo dia\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Immunity supplements store",
+    "desc": "Immunity supplements store: Liana Nutri opens on \"Cuide da sua defesa natural, todo dia\" and walks the visitor through 7 sections to the call to action.",
+    "long": "Liana Nutri is a immunity supplements store, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Cuide da sua defesa natural, todo dia\" and runs through 7 sections. The identity pairs Instrument Sans with a #1F3B2A accent.",
+    "pitch": "The first fold sums up the offer: \"Cuide da sua defesa natural, todo dia\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "alento",
+   "brand": "Alento",
+   "path": "sites/12-wellness/",
+   "accent": "#1FBF7A",
+   "fonts": [
+    "Inter"
+   ],
+   "libs": [],
+   "sections": 4,
+   "pt": {
+    "kind": "Landing page de plataforma de bem-estar (wellness)",
+    "desc": "Landing page de plataforma de bem-estar (wellness): Alento abre com \"Equilíbrio possível\" e leva o visitante por 4 seções até a ação.",
+    "long": "Alento é landing page de plataforma de bem-estar (wellness), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Equilíbrio possível\" e segue por \"A maioria das pessoas não falha no autocuidado. Falha em decidir o que fazer hoje\", \"Como ajudamos você a ficar bem, com realismo\", \"Equilíbrio que cabe em vidas reais, não em rotinas perfeitas\". A identidade usa Inter com o destaque #1FBF7A.",
+    "pitch": "A primeira dobra resume a proposta: \"Equilíbrio possível\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Wellness platform landing page",
+    "desc": "Wellness platform landing page: Alento opens on \"Equilíbrio possível\" and walks the visitor through 4 sections to the call to action.",
+    "long": "Alento is a wellness platform landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Equilíbrio possível\" and runs through 4 sections. The identity pairs Inter with a #1FBF7A accent.",
+    "pitch": "The first fold sums up the offer: \"Equilíbrio possível\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "mente-calma",
+   "brand": "Mente Calma",
+   "path": "sites/13-mente-calma/",
+   "accent": "#5E9473",
+   "fonts": [
+    "Inter"
+   ],
+   "libs": [],
+   "sections": 6,
+   "pt": {
+    "kind": "Landing page de app de saúde mental e bem-estar",
+    "desc": "Landing page de app de saúde mental e bem-estar: Mente Calma abre com \"Uma mente calma. Um você mais leve.\" e leva o visitante por 6 seções até a ação.",
+    "long": "Mente Calma é landing page de app de saúde mental e bem-estar, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Uma mente calma. Um você mais leve.\" e segue por \"Uma mente calma. Um você mais leve\", \"Pausas guiadas para qualquer hora do dia\", \"Cultive uma mente mais saudável nos ambientes do dia a dia\", \"Escolha o ritmo que cabe na sua rotina\", \"Perguntas frequentes\". A identidade usa Inter com o destaque #5E9473.",
+    "pitch": "A primeira dobra resume a proposta: \"Uma mente calma. Um você mais leve.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Mental health app landing page",
+    "desc": "Mental health app landing page: Mente Calma opens on \"Uma mente calma. Um você mais leve.\" and walks the visitor through 6 sections to the call to action.",
+    "long": "Mente Calma is a mental health app landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Uma mente calma. Um você mais leve.\" and runs through 6 sections. The identity pairs Inter with a #5E9473 accent.",
+    "pitch": "The first fold sums up the offer: \"Uma mente calma. Um você mais leve.\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "lastro",
+   "brand": "Lastro",
+   "path": "sites/14-saas-financas/",
+   "accent": "#5E7D2A",
+   "fonts": [
+    "Outfit"
+   ],
+   "libs": [],
+   "sections": 10,
+   "pt": {
+    "kind": "Landing page de SaaS de gestão financeira com IA",
+    "desc": "Landing page de SaaS de gestão financeira com IA: Lastro abre com \"Sua gestão financeira no próximo nível\" e leva o visitante por 10 seções até a ação.",
+    "long": "Lastro é landing page de SaaS de gestão financeira com IA, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Sua gestão financeira no próximo nível\" e segue por \"Visão geral\", \"Tudo o que o financeiro precisa, sem planilha paralela\", \"Conecte tudo sem esforço ao seu ecossistema financeiro\", \"Planos que crescem junto com a sua operação\", \"Fique à frente nas finanças\". A identidade usa Outfit com o destaque #5E7D2A.",
+    "pitch": "A primeira dobra resume a proposta: \"Sua gestão financeira no próximo nível\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "AI finance management SaaS landing page",
+    "desc": "AI finance management SaaS landing page: Lastro opens on \"Sua gestão financeira no próximo nível\" and walks the visitor through 10 sections to the call to action.",
+    "long": "Lastro is a aI finance management SaaS landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Sua gestão financeira no próximo nível\" and runs through 10 sections. The identity pairs Outfit with a #5E7D2A accent.",
+    "pitch": "The first fold sums up the offer: \"Sua gestão financeira no próximo nível\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "assenta",
+   "brand": "Assenta",
+   "path": "sites/15-cadeiras/",
+   "accent": "#B5D97A",
+   "fonts": [
+    "Anton",
+    "Inter Tight"
+   ],
+   "libs": [],
+   "sections": 3,
+   "pt": {
+    "kind": "E-commerce de cadeiras e poltronas de design",
+    "desc": "E-commerce de cadeiras e poltronas de design: Assenta abre com \"Poltronas e cadeiras de design, feitas para durar décadas.\" e leva o visitante por 3 seções até a ação.",
+    "long": "Assenta é e-commerce de cadeiras e poltronas de design, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Poltronas e cadeiras de design, feitas para durar décadas.\" e segue por \"VALORES\", \"COLEÇÃO DE CADEIRAS\", \"CATEGORIAS\". A identidade usa Anton e Inter Tight com o destaque #B5D97A.",
+    "pitch": "A primeira dobra resume a proposta: \"Poltronas e cadeiras de design, feitas para durar décadas.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Design chairs and armchairs store",
+    "desc": "Design chairs and armchairs store: Assenta opens on \"Poltronas e cadeiras de design, feitas para durar décadas.\" and walks the visitor through 3 sections to the call to action.",
+    "long": "Assenta is a design chairs and armchairs store, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Poltronas e cadeiras de design, feitas para durar décadas.\" and runs through 3 sections. The identity pairs Anton and Inter Tight with a #B5D97A accent.",
+    "pitch": "The first fold sums up the offer: \"Poltronas e cadeiras de design, feitas para durar décadas.\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "breu-cold-brew",
+   "brand": "Breu Cold Brew",
+   "path": "sites/16-cold-brew/",
+   "accent": "#FF6B00",
+   "fonts": [
+    "DM Serif Display",
+    "Plus Jakarta Sans",
+    "Quicksand"
+   ],
+   "libs": [],
+   "sections": 7,
+   "pt": {
+    "kind": "E-commerce de cold brew engarrafado",
+    "desc": "E-commerce de cold brew engarrafado: Breu Cold Brew abre com \"Cold Brew\" e leva o visitante por 7 seções até a ação.",
+    "long": "Breu Cold Brew é e-commerce de cold brew engarrafado, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Cold Brew\" e segue por \"Fazendo sucesso, um gole de cada vez\", \"Encontre o seu cold brew\", \"Energia para o seu dia com a Breu\", \"O que dizem nossos clientes\", \"Nossa newsletter\". A identidade usa DM Serif Display e Plus Jakarta Sans e Quicksand com o destaque #FF6B00.",
+    "pitch": "A primeira dobra resume a proposta: \"Cold Brew\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Bottled cold brew store",
+    "desc": "Bottled cold brew store: Breu Cold Brew opens on \"Cold Brew\" and walks the visitor through 7 sections to the call to action.",
+    "long": "Breu Cold Brew is a bottled cold brew store, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Cold Brew\" and runs through 7 sections. The identity pairs DM Serif Display and Plus Jakarta Sans and Quicksand with a #FF6B00 accent.",
+    "pitch": "The first fold sums up the offer: \"Cold Brew\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "colo",
+   "brand": "Colo",
+   "path": "sites/17-bebe/",
+   "accent": "#0055FF",
+   "fonts": [
+    "Bricolage Grotesque"
+   ],
+   "libs": [],
+   "sections": 7,
+   "pt": {
+    "kind": "Landing page de cuidados com recém-nascidos",
+    "desc": "Landing page de cuidados com recém-nascidos: Colo abre com \"Cuidado atento para o começo mais precioso.\" e leva o visitante por 7 seções até a ação.",
+    "long": "Colo é landing page de cuidados com recém-nascidos, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Cuidado atento para o começo mais precioso.\" e segue por \"Porque cuidar de um bebê vai além do essencial\", \"O cuidado diário de que eles precisam\", \"Feito pensando nos bebês\", \"Mais preparo para os momentos que não dá para planejar\", \"O que as famílias contam\". A identidade usa Bricolage Grotesque com o destaque #0055FF.",
+    "pitch": "A primeira dobra resume a proposta: \"Cuidado atento para o começo mais precioso.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Newborn care landing page",
+    "desc": "Newborn care landing page: Colo opens on \"Cuidado atento para o começo mais precioso.\" and walks the visitor through 7 sections to the call to action.",
+    "long": "Colo is a newborn care landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Cuidado atento para o começo mais precioso.\" and runs through 7 sections. The identity pairs Bricolage Grotesque with a #0055FF accent.",
+    "pitch": "The first fold sums up the offer: \"Cuidado atento para o começo mais precioso.\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "lume-casa",
+   "brand": "Lume Casa",
+   "path": "sites/18-smart-device/",
+   "accent": "#E8F65A",
+   "fonts": [
+    "Inter"
+   ],
+   "libs": [],
+   "sections": 5,
+   "pt": {
+    "kind": "Landing page de dispositivos de casa inteligente com IA",
+    "desc": "Landing page de dispositivos de casa inteligente com IA: Lume Casa abre com \"Sua casa inteligente Segura · Fluida e Protegida\" e leva o visitante por 5 seções até a ação.",
+    "long": "Lume Casa é landing page de dispositivos de casa inteligente com IA, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Sua casa inteligente Segura · Fluida e Protegida\" e segue por \"Conheça um jeito mais inteligente de viver\", \"Descubra os dispositivos mais recentes para casa\", \"O que as pessoas dizem\", \"Uma vida mais inteligente começa com um clique\". A identidade usa Inter com o destaque #E8F65A.",
+    "pitch": "A primeira dobra resume a proposta: \"Sua casa inteligente Segura · Fluida e Protegida\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "AI smart home devices landing page",
+    "desc": "AI smart home devices landing page: Lume Casa opens on \"Sua casa inteligente Segura · Fluida e Protegida\" and walks the visitor through 5 sections to the call to action.",
+    "long": "Lume Casa is a aI smart home devices landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Sua casa inteligente Segura · Fluida e Protegida\" and runs through 5 sections. The identity pairs Inter with a #E8F65A accent.",
+    "pitch": "The first fold sums up the offer: \"Sua casa inteligente Segura · Fluida e Protegida\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "brisa",
+   "brand": "Brisa",
+   "path": "sites/19-terapia-app/",
+   "accent": "#5E8A5A",
+   "fonts": [
+    "Manrope"
+   ],
+   "libs": [],
+   "sections": 6,
+   "pt": {
+    "kind": "Landing page de app de saúde mental (B2C)",
+    "desc": "Landing page de app de saúde mental (B2C): Brisa abre com \"Um canto calmo para cuidar da sua mente\" e leva o visitante por 6 seções até a ação.",
+    "long": "Brisa é landing page de app de saúde mental (B2C), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Um canto calmo para cuidar da sua mente\" e segue por \"SELOS E COMPROMISSOS\", \"CONECTA COM\", \"Ferramentas que acompanham o seu ritmo, não o contrário\", \"Seu apoio, onde você estiver\". A identidade usa Manrope com o destaque #5E8A5A.",
+    "pitch": "A primeira dobra resume a proposta: \"Um canto calmo para cuidar da sua mente\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Therapy app landing page",
+    "desc": "Therapy app landing page: Brisa opens on \"Um canto calmo para cuidar da sua mente\" and walks the visitor through 6 sections to the call to action.",
+    "long": "Brisa is a therapy app landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Um canto calmo para cuidar da sua mente\" and runs through 6 sections. The identity pairs Manrope with a #5E8A5A accent.",
+    "pitch": "The first fold sums up the offer: \"Um canto calmo para cuidar da sua mente\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "ventara",
+   "brand": "Ventara",
+   "path": "sites/20-carros/",
+   "accent": "#5B8BAA",
+   "fonts": [
+    "Anton",
+    "Sora"
+   ],
+   "libs": [],
+   "sections": 4,
+   "pt": {
+    "kind": "Landing page de coleção de carros esportivos premium",
+    "desc": "Landing page de coleção de carros esportivos premium: Ventara abre com \"FEITO PARA DESAFIAR LIMITES\" e leva o visitante por 4 seções até a ação.",
+    "long": "Ventara é landing page de coleção de carros esportivos premium, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"FEITO PARA DESAFIAR LIMITES\" e segue por \"Éter GT\", \"Encontre seu próximo carro\", \"Mais do que só dirigir\", \"FEITO PARA PERFORMAR\". A identidade usa Anton e Sora com o destaque #5B8BAA.",
+    "pitch": "A primeira dobra resume a proposta: \"FEITO PARA DESAFIAR LIMITES\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Premium sports car collection landing page",
+    "desc": "Premium sports car collection landing page: Ventara opens on \"FEITO PARA DESAFIAR LIMITES\" and walks the visitor through 4 sections to the call to action.",
+    "long": "Ventara is a premium sports car collection landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"FEITO PARA DESAFIAR LIMITES\" and runs through 4 sections. The identity pairs Anton and Sora with a #5B8BAA accent.",
+    "pitch": "The first fold sums up the offer: \"FEITO PARA DESAFIAR LIMITES\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "lumiar-odontologia",
+   "brand": "Lumiar Odontologia",
+   "path": "sites/21-clinica-dental/",
+   "accent": "#2BB0C9",
+   "fonts": [
+    "Inter"
+   ],
+   "libs": [],
+   "sections": 6,
+   "pt": {
+    "kind": "Site de clínica odontológica familiar",
+    "desc": "Site de clínica odontológica familiar: Lumiar Odontologia abre com \"Odontologia para toda a família\" e leva o visitante por 6 seções até a ação.",
+    "long": "Lumiar Odontologia é site de clínica odontológica familiar, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Odontologia para toda a família\" e segue por \"Odontologia avançada para um sorriso mais saudável\", \"Por que escolher a Lumiar Odontologia?\", \"Dicas simples para cuidar do sorriso da família inteira, entre uma consulta e outra\", \"Seu sorriso importa. Fale com a gente hoje\". A identidade usa Inter com o destaque #2BB0C9.",
+    "pitch": "A primeira dobra resume a proposta: \"Odontologia para toda a família\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Family dental clinic site",
+    "desc": "Family dental clinic site: Lumiar Odontologia opens on \"Odontologia para toda a família\" and walks the visitor through 6 sections to the call to action.",
+    "long": "Lumiar Odontologia is a family dental clinic site, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Odontologia para toda a família\" and runs through 6 sections. The identity pairs Inter with a #2BB0C9 accent.",
+    "pitch": "The first fold sums up the offer: \"Odontologia para toda a família\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "morada",
+   "brand": "Morada",
+   "path": "sites/22-decoracao/",
+   "accent": "#5A6B2A",
+   "fonts": [
+    "Plus Jakarta Sans"
+   ],
+   "libs": [],
+   "sections": 8,
+   "pt": {
+    "kind": "E-commerce de decoração e móveis",
+    "desc": "E-commerce de decoração e móveis: Morada abre com \"Decoração atemporal para morar bem\" e leva o visitante por 8 seções até a ação.",
+    "long": "Morada é e-commerce de decoração e móveis, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Decoração atemporal para morar bem\" e segue por \"Melhores escolhas para a sua casa\", \"Novidades\", \"Poltrona Alba em linho oliva\", \"Compre por categoria\", \"Grandes ofertas\". A identidade usa Plus Jakarta Sans com o destaque #5A6B2A.",
+    "pitch": "A primeira dobra resume a proposta: \"Decoração atemporal para morar bem\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Home decor and furniture store",
+    "desc": "Home decor and furniture store: Morada opens on \"Decoração atemporal para morar bem\" and walks the visitor through 8 sections to the call to action.",
+    "long": "Morada is a home decor and furniture store, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Decoração atemporal para morar bem\" and runs through 8 sections. The identity pairs Plus Jakarta Sans with a #5A6B2A accent.",
+    "pitch": "The first fold sums up the offer: \"Decoração atemporal para morar bem\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "mordida-chocolates",
+   "brand": "Mordida Chocolates",
+   "path": "sites/23-chocolate/",
+   "accent": "#F5C76A",
+   "fonts": [
+    "League Gothic",
+    "Outfit"
+   ],
+   "libs": [],
+   "sections": 6,
+   "pt": {
+    "kind": "E-commerce de chocolate artesanal",
+    "desc": "E-commerce de chocolate artesanal: Mordida Chocolates abre com \"CHOCOLATE FEITO À MÃO PARA QUEM NÃO DIVIDE.\" e leva o visitante por 6 seções até a ação.",
+    "long": "Mordida Chocolates é e-commerce de chocolate artesanal, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"CHOCOLATE FEITO À MÃO PARA QUEM NÃO DIVIDE.\" e segue por \"CONHEÇA SEUS NOVOS FAVORITOS\", \"O QUE TEM DE BOM\", \"NÃO ACREDITE SÓ NA NOSSA PALAVRA\", \"COMPRE CHOCOLATES ARTESANAIS\". A identidade usa League Gothic e Outfit com o destaque #F5C76A.",
+    "pitch": "A primeira dobra resume a proposta: \"CHOCOLATE FEITO À MÃO PARA QUEM NÃO DIVIDE.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Artisan chocolate store",
+    "desc": "Artisan chocolate store: Mordida Chocolates opens on \"CHOCOLATE FEITO À MÃO PARA QUEM NÃO DIVIDE.\" and walks the visitor through 6 sections to the call to action.",
+    "long": "Mordida Chocolates is a artisan chocolate store, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"CHOCOLATE FEITO À MÃO PARA QUEM NÃO DIVIDE.\" and runs through 6 sections. The identity pairs League Gothic and Outfit with a #F5C76A accent.",
+    "pitch": "The first fold sums up the offer: \"CHOCOLATE FEITO À MÃO PARA QUEM NÃO DIVIDE.\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "cardume",
+   "brand": "Cardume",
+   "path": "sites/24-saas-times/",
+   "accent": "#A6F06A",
+   "fonts": [
+    "Anton",
+    "Caveat",
+    "Inter"
+   ],
+   "libs": [],
+   "sections": 6,
+   "pt": {
+    "kind": "Landing page de SaaS de gestão de projetos para times",
+    "desc": "Landing page de SaaS de gestão de projetos para times: Cardume abre com \"GESTÃO TUDO EM UM DE PROJETOS PARA TIMES MODERNOS\" e leva o visitante por 6 seções até a ação.",
+    "long": "Cardume é landing page de SaaS de gestão de projetos para times, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"GESTÃO TUDO EM UM DE PROJETOS PARA TIMES MODERNOS\" e segue por \"POR QUE TIMES ESCOLHEM A CARDUME PARA CRESCER JUNTOS\", \"Tudo o que o seu time precisa, reunido em uma só plataforma\", \"Comece pequeno, cresça sem trocar de ferramenta\", \"TIRE AS IDEIAS DO PAPEL COM O TIME INTEIRO\". A identidade usa Anton e Caveat e Inter com o destaque #A6F06A.",
+    "pitch": "A primeira dobra resume a proposta: \"GESTÃO TUDO EM UM DE PROJETOS PARA TIMES MODERNOS\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Team project management SaaS landing page",
+    "desc": "Team project management SaaS landing page: Cardume opens on \"GESTÃO TUDO EM UM DE PROJETOS PARA TIMES MODERNOS\" and walks the visitor through 6 sections to the call to action.",
+    "long": "Cardume is a team project management SaaS landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"GESTÃO TUDO EM UM DE PROJETOS PARA TIMES MODERNOS\" and runs through 6 sections. The identity pairs Anton and Caveat and Inter with a #A6F06A accent.",
+    "pitch": "The first fold sums up the offer: \"GESTÃO TUDO EM UM DE PROJETOS PARA TIMES MODERNOS\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "patalar",
+   "brand": "Patalar",
+   "path": "sites/25-pet/",
+   "accent": "#F26A1B",
+   "fonts": [
+    "DM Sans",
+    "Fraunces"
+   ],
+   "libs": [],
+   "sections": 7,
+   "pt": {
+    "kind": "E-commerce pet: loja e serviços para cães e gatos",
+    "desc": "E-commerce pet: loja e serviços para cães e gatos: Patalar abre com \"Tudo o que seu pet precisa para uma vida mais feliz e saudável.\" e leva o visitante por 7 seções até a ação.",
+    "long": "Patalar é e-commerce pet: loja e serviços para cães e gatos, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Tudo o que seu pet precisa para uma vida mais feliz e saudável.\" e segue por \"Começou com um cão sem raça e virou um lar para milhares de pets\", \"Conheça nossa coleção premium\", \"Pets saudáveis, lares mais felizes\", \"Banho, saúde e hospedagem no mesmo lugar\", \"Ganhe 10% na primeira compra e lembrete de reposição\". A identidade usa DM Sans e Fraunces com o destaque #F26A1B.",
+    "pitch": "A primeira dobra resume a proposta: \"Tudo o que seu pet precisa para uma vida mais feliz e saudável.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Pet store and services",
+    "desc": "Pet store and services: Patalar opens on \"Tudo o que seu pet precisa para uma vida mais feliz e saudável.\" and walks the visitor through 7 sections to the call to action.",
+    "long": "Patalar is a pet store and services, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Tudo o que seu pet precisa para uma vida mais feliz e saudável.\" and runs through 7 sections. The identity pairs DM Sans and Fraunces with a #F26A1B accent.",
+    "pitch": "The first fold sums up the offer: \"Tudo o que seu pet precisa para uma vida mais feliz e saudável.\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "lapidaria-joias",
+   "brand": "Lapidária Joias",
+   "path": "sites/26-joias/",
+   "accent": "#3A2A20",
+   "fonts": [
+    "Bodoni Moda"
+   ],
+   "libs": [],
+   "sections": 5,
+   "pt": {
+    "kind": "Site de joalheria fina (e-commerce de luxo)",
+    "desc": "Site de joalheria fina (e-commerce de luxo): Lapidária Joias abre com \"Lapidária Joias.\" e leva o visitante por 5 seções até a ação.",
+    "long": "Lapidária Joias é site de joalheria fina (e-commerce de luxo), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Lapidária Joias.\" e segue por \"uma seleção de JOIAS EXTRAORDINÁRIAS\", \"desenhadas COM INTENÇÃO\", \"nascidas do EXTRAORDINÁRIO\", \"descubra no INSTAGRAM\", \"Fique perto do extraordinário\". A identidade usa Bodoni Moda com o destaque #3A2A20.",
+    "pitch": "A primeira dobra resume a proposta: \"Lapidária Joias.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Fine jewelry store",
+    "desc": "Fine jewelry store: Lapidária Joias opens on \"Lapidária Joias.\" and walks the visitor through 5 sections to the call to action.",
+    "long": "Lapidária Joias is a fine jewelry store, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Lapidária Joias.\" and runs through 5 sections. The identity pairs Bodoni Moda with a #3A2A20 accent.",
+    "pitch": "The first fold sums up the offer: \"Lapidária Joias.\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "orla-odontologia",
+   "brand": "Orla Odontologia",
+   "path": "sites/27-sorriso/",
+   "accent": "#3B6FA8",
+   "fonts": [
+    "Plus Jakarta Sans"
+   ],
+   "libs": [],
+   "sections": 8,
+   "pt": {
+    "kind": "Landing page de clínica odontológica (hero azul tudo-em-um)",
+    "desc": "Landing page de clínica odontológica (hero azul tudo-em-um): Orla Odontologia abre com \"Seu sorriso bem cuidado começa aqui\" e leva o visitante por 8 seções até a ação.",
+    "long": "Orla Odontologia é landing page de clínica odontológica (hero azul tudo-em-um), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Seu sorriso bem cuidado começa aqui\" e segue por \"Clareamento dental\", \"Tratamentos para cada fase do seu sorriso\", \"Do primeiro contato ao retorno, sem surpresa no caminho\", \"Tudo o que você precisa antes, durante e depois da consulta\", \"Quem passa pela Orla conta como foi o atendimento\". A identidade usa Plus Jakarta Sans com o destaque #3B6FA8.",
+    "pitch": "A primeira dobra resume a proposta: \"Seu sorriso bem cuidado começa aqui\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Dental clinic landing page",
+    "desc": "Dental clinic landing page: Orla Odontologia opens on \"Seu sorriso bem cuidado começa aqui\" and walks the visitor through 8 sections to the call to action.",
+    "long": "Orla Odontologia is a dental clinic landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Seu sorriso bem cuidado começa aqui\" and runs through 8 sections. The identity pairs Plus Jakarta Sans with a #3B6FA8 accent.",
+    "pitch": "The first fold sums up the offer: \"Seu sorriso bem cuidado começa aqui\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "forja-fit-club",
+   "brand": "Forja Fit Club",
+   "path": "sites/28-academia/",
+   "accent": "#7A0E14",
+   "fonts": [
+    "Archivo"
+   ],
+   "libs": [],
+   "sections": 8,
+   "pt": {
+    "kind": "Landing page de academia / fitness club",
+    "desc": "Landing page de academia / fitness club: Forja Fit Club abre com \"Supere seus limites, treine com propósito\" e leva o visitante por 8 seções até a ação.",
+    "long": "Forja Fit Club é landing page de academia / fitness club, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Supere seus limites, treine com propósito\" e segue por \"Polo de vida ativa: eleve o seu dia a dia pelo treino\", \"Tudo o que você precisa para treinar com constância\", \"Fitness acessível para todo mundo\", \"Acompanhe a sua evolução\", \"TREINO QUE SE ADAPTA A VOCÊ\". A identidade usa Archivo com o destaque #7A0E14.",
+    "pitch": "A primeira dobra resume a proposta: \"Supere seus limites, treine com propósito\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Fitness club landing page",
+    "desc": "Fitness club landing page: Forja Fit Club opens on \"Supere seus limites, treine com propósito\" and walks the visitor through 8 sections to the call to action.",
+    "long": "Forja Fit Club is a fitness club landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Supere seus limites, treine com propósito\" and runs through 8 sections. The identity pairs Archivo with a #7A0E14 accent.",
+    "pitch": "The first fold sums up the offer: \"Supere seus limites, treine com propósito\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "anil",
+   "brand": "ANIL",
+   "path": "sites/29-moda-street/",
+   "accent": "#1A6BFF",
+   "fonts": [
+    "Plus Jakarta Sans"
+   ],
+   "libs": [],
+   "sections": 8,
+   "pt": {
+    "kind": "E-commerce de moda feminina street/casual",
+    "desc": "E-commerce de moda feminina street/casual: ANIL abre com \"Vista a sua própria história.\" e leva o visitante por 8 seções até a ação.",
+    "long": "ANIL é e-commerce de moda feminina street/casual, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Vista a sua própria história.\" e segue por \"Coleções em alta\", \"Seu estilo, sem complicação!\", \"Moda de rua com cara de céu aberto\", \"O que dizem nossas clientes\", \"Eleve seu estilo de todo dia!\". A identidade usa Plus Jakarta Sans com o destaque #1A6BFF.",
+    "pitch": "A primeira dobra resume a proposta: \"Vista a sua própria história.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Women's streetwear store",
+    "desc": "Women's streetwear store: ANIL opens on \"Vista a sua própria história.\" and walks the visitor through 8 sections to the call to action.",
+    "long": "ANIL is a women's streetwear store, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Vista a sua própria história.\" and runs through 8 sections. The identity pairs Plus Jakarta Sans with a #1A6BFF accent.",
+    "pitch": "The first fold sums up the offer: \"Vista a sua própria história.\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "cadencia",
+   "brand": "Cadência",
+   "path": "sites/30-ciclismo/",
+   "accent": "#2D6BE4",
+   "fonts": [
+    "Anton",
+    "Manrope"
+   ],
+   "libs": [],
+   "sections": 4,
+   "pt": {
+    "kind": "Landing page de clube de ciclismo de estrada",
+    "desc": "Landing page de clube de ciclismo de estrada: Cadência abre com \"DOMINE A ESTRADA\" e leva o visitante por 4 seções até a ação.",
+    "long": "Cadência é landing page de clube de ciclismo de estrada, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"DOMINE A ESTRADA\" e segue por \"Treine com método. Pedale mais forte\", \"Escolha seu pedal. Monte seu plano. Treine do seu jeito\", \"Seu primeiro pedal com a gente é por nossa conta\". A identidade usa Anton e Manrope com o destaque #2D6BE4.",
+    "pitch": "A primeira dobra resume a proposta: \"DOMINE A ESTRADA\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Road cycling club landing page",
+    "desc": "Road cycling club landing page: Cadência opens on \"DOMINE A ESTRADA\" and walks the visitor through 4 sections to the call to action.",
+    "long": "Cadência is a road cycling club landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"DOMINE A ESTRADA\" and runs through 4 sections. The identity pairs Anton and Manrope with a #2D6BE4 accent.",
+    "pitch": "The first fold sums up the offer: \"DOMINE A ESTRADA\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "saibro-tenis-clube",
+   "brand": "Saibro Tênis Clube",
+   "path": "sites/31-tenis/",
+   "accent": "#C6F432",
+   "fonts": [
+    "Barlow Condensed",
+    "Outfit"
+   ],
+   "libs": [],
+   "sections": 8,
+   "pt": {
+    "kind": "Landing page de clube de tênis",
+    "desc": "Landing page de clube de tênis: Saibro Tênis Clube abre com \"TÊNIS CLUBE\" e leva o visitante por 8 seções até a ação.",
+    "long": "Saibro Tênis Clube é landing page de clube de tênis, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"TÊNIS CLUBE\" e segue por \"RESERVA DE QUADRA\", \"AULAS DE TÊNIS\", \"MAIS QUE UM JOGO UMA COMUNIDADE FORTE\", \"Três planos pensados para elevar o seu jogo\", \"Uma plataforma que une design elegante a uma navegação intuitiva\". A identidade usa Barlow Condensed e Outfit com o destaque #C6F432.",
+    "pitch": "A primeira dobra resume a proposta: \"TÊNIS CLUBE\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Tennis club landing page",
+    "desc": "Tennis club landing page: Saibro Tênis Clube opens on \"TÊNIS CLUBE\" and walks the visitor through 8 sections to the call to action.",
+    "long": "Saibro Tênis Clube is a tennis club landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"TÊNIS CLUBE\" and runs through 8 sections. The identity pairs Barlow Condensed and Outfit with a #C6F432 accent.",
+    "pitch": "The first fold sums up the offer: \"TÊNIS CLUBE\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "solario",
+   "brand": "Solário",
+   "path": "sites/32-dashboard-casa/",
+   "accent": "#B8E09A",
+   "fonts": [
+    "Outfit"
+   ],
+   "libs": [],
+   "sections": 4,
+   "pt": {
+    "kind": "Dashboard de casa inteligente com IA",
+    "desc": "Dashboard de casa inteligente com IA: Solário abre com \"Boa tarde, Helena\" e leva o visitante por 4 seções até a ação.",
+    "long": "Solário é dashboard de casa inteligente com IA, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Boa tarde, Helena\" e segue por \"Clima e conforto\", \"Dispositivos inteligentes\", \"Consumo de energia\", \"Sala principal\". A identidade usa Outfit com o destaque #B8E09A.",
+    "pitch": "A primeira dobra resume a proposta: \"Boa tarde, Helena\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "AI smart home dashboard",
+    "desc": "AI smart home dashboard: Solário opens on \"Boa tarde, Helena\" and walks the visitor through 4 sections to the call to action.",
+    "long": "Solário is a aI smart home dashboard, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Boa tarde, Helena\" and runs through 4 sections. The identity pairs Outfit with a #B8E09A accent.",
+    "pitch": "The first fold sums up the offer: \"Boa tarde, Helena\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "broto",
+   "brand": "broto.",
+   "path": "sites/33-suco-detox/",
+   "accent": "#B9C98A",
+   "fonts": [
+    "Archivo"
+   ],
+   "libs": [],
+   "sections": 5,
+   "pt": {
+    "kind": "Landing page de suco verde prensado a frio",
+    "desc": "Landing page de suco verde prensado a frio: broto. abre com \"UMA ESCOLHA MAIS VERDE PARA O SEU DIA A DIA\" e leva o visitante por 5 seções até a ação.",
+    "long": "broto. é landing page de suco verde prensado a frio, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"UMA ESCOLHA MAIS VERDE PARA O SEU DIA A DIA\" e segue por \"MANTENHA VERDE. MANTENHA SIMPLES\", \"SIMPLES POR NATUREZA. FEITO COM INTENÇÃO\", \"ESCOLHA O SEU VERDE\", \"SINTA A DIFERENÇA EM CADA GOLE\". A identidade usa Archivo com o destaque #B9C98A.",
+    "pitch": "A primeira dobra resume a proposta: \"UMA ESCOLHA MAIS VERDE PARA O SEU DIA A DIA\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Cold-pressed green juice landing page",
+    "desc": "Cold-pressed green juice landing page: broto. opens on \"UMA ESCOLHA MAIS VERDE PARA O SEU DIA A DIA\" and walks the visitor through 5 sections to the call to action.",
+    "long": "broto. is a cold-pressed green juice landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"UMA ESCOLHA MAIS VERDE PARA O SEU DIA A DIA\" and runs through 5 sections. The identity pairs Archivo with a #B9C98A accent.",
+    "pitch": "The first fold sums up the offer: \"UMA ESCOLHA MAIS VERDE PARA O SEU DIA A DIA\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "fominha",
+   "brand": "Fominha",
+   "path": "sites/34-hamburgueria/",
+   "accent": "#8B1A1A",
+   "fonts": [
+    "Anton",
+    "Archivo",
+    "Caveat"
+   ],
+   "libs": [],
+   "sections": 3,
+   "pt": {
+    "kind": "Landing page de hamburgueria (delivery e retirada)",
+    "desc": "Landing page de hamburgueria (delivery e retirada): Fominha abre com \"BURGERS FEITOS PRA DAR VONTADE\" e leva o visitante por 3 seções até a ação.",
+    "long": "Fominha é landing page de hamburgueria (delivery e retirada), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"BURGERS FEITOS PRA DAR VONTADE\" e segue por \"SMASH CLÁSSICO\", \"SABOR GRANDE. INGREDIENTE FRESCO. NADA DE MORDIDA SEM GRAÇA. ZERO CONGELADO!\", \"OS MAIS PEDIDOS DA CHAPA\", \"PEDIU, CHEGOU QUENTE\". A identidade usa Anton e Archivo e Caveat com o destaque #8B1A1A.",
+    "pitch": "A primeira dobra resume a proposta: \"BURGERS FEITOS PRA DAR VONTADE\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Burger joint landing page (delivery and pickup)",
+    "desc": "Burger joint landing page (delivery and pickup): Fominha opens on \"BURGERS FEITOS PRA DAR VONTADE\" and walks the visitor through 3 sections to the call to action.",
+    "long": "Fominha is a burger joint landing page (delivery and pickup), hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"BURGERS FEITOS PRA DAR VONTADE\" and runs through 3 sections. The identity pairs Anton and Archivo and Caveat with a #8B1A1A accent.",
+    "pitch": "The first fold sums up the offer: \"BURGERS FEITOS PRA DAR VONTADE\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "alcova",
+   "brand": "Alcova",
+   "path": "sites/35-paineis-casa/",
+   "accent": "#A9C5C1",
+   "fonts": [
+    "Urbanist"
+   ],
+   "libs": [],
+   "sections": 3,
+   "pt": {
+    "kind": "App de casa inteligente (3 painéis em vidro fosco)",
+    "desc": "App de casa inteligente (3 painéis em vidro fosco): Alcova abre com \"Alcova · três painéis da casa inteligente\" e leva o visitante por 3 seções até a ação.",
+    "long": "Alcova é app de casa inteligente (3 painéis em vidro fosco), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Alcova · três painéis da casa inteligente\" e segue por \"Sala de estar\", \"Cômodos\", \"Quarto\", \"Sala de estar\", \"Caixas de som\". A identidade usa Urbanist com o destaque #A9C5C1.",
+    "pitch": "A primeira dobra resume a proposta: \"Alcova · três painéis da casa inteligente\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Smart home app with three frosted-glass panels",
+    "desc": "Smart home app with three frosted-glass panels: Alcova opens on \"Alcova · três painéis da casa inteligente\" and walks the visitor through 3 sections to the call to action.",
+    "long": "Alcova is a smart home app with three frosted-glass panels, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Alcova · três painéis da casa inteligente\" and runs through 3 sections. The identity pairs Urbanist with a #A9C5C1 accent.",
+    "pitch": "The first fold sums up the offer: \"Alcova · três painéis da casa inteligente\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "penumbra",
+   "brand": "Penumbra",
+   "path": "sites/36-lumora-casa/",
+   "accent": "#F2B045",
+   "fonts": [
+    "Archivo"
+   ],
+   "libs": [],
+   "sections": 7,
+   "pt": {
+    "kind": "Landing page de automação residencial (casa inteligente, tema escuro)",
+    "desc": "Landing page de automação residencial (casa inteligente, tema escuro): Penumbra abre com \"SUA CASA INTELIGENTE, DO SEU JEITO.\" e leva o visitante por 7 seções até a ação.",
+    "long": "Penumbra é landing page de automação residencial (casa inteligente, tema escuro), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"SUA CASA INTELIGENTE, DO SEU JEITO.\" e segue por \"Fechadura inteligente que guarda suas senhas de segurança\", \"TUDO CONECTADO, NADA À VISTA\", \"UM TOQUE, A CASA INTEIRA\", \"ANTES DA VISITA, O QUE TODO MUNDO PERGUNTA\", \"COMECE PELO CÔMODO QUE VOCÊ MAIS USA\". A identidade usa Archivo com o destaque #F2B045.",
+    "pitch": "A primeira dobra resume a proposta: \"SUA CASA INTELIGENTE, DO SEU JEITO.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Home automation landing page (dark theme)",
+    "desc": "Home automation landing page (dark theme): Penumbra opens on \"SUA CASA INTELIGENTE, DO SEU JEITO.\" and walks the visitor through 7 sections to the call to action.",
+    "long": "Penumbra is a home automation landing page (dark theme), hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"SUA CASA INTELIGENTE, DO SEU JEITO.\" and runs through 7 sections. The identity pairs Archivo with a #F2B045 accent.",
+    "pitch": "The first fold sums up the offer: \"SUA CASA INTELIGENTE, DO SEU JEITO.\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "ondina",
+   "brand": "Ondina",
+   "path": "sites/37-player-musica/",
+   "accent": "#F2B640",
+   "fonts": [
+    "Urbanist"
+   ],
+   "libs": [],
+   "sections": 8,
+   "pt": {
+    "kind": "App web de música (player com fila e playlists)",
+    "desc": "App web de música (player com fila e playlists): Ondina abre com \"Artistas em alta\" e leva o visitante por 8 seções até a ação.",
+    "long": "Ondina é app web de música (player com fila e playlists), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Artistas em alta\" e segue por \"Na sequência\", \"Playlists populares\", \"Âmbar às Duas\". A identidade usa Urbanist com o destaque #F2B640.",
+    "pitch": "A primeira dobra resume a proposta: \"Artistas em alta\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Music player web app with queue and playlists",
+    "desc": "Music player web app with queue and playlists: Ondina opens on \"Artistas em alta\" and walks the visitor through 8 sections to the call to action.",
+    "long": "Ondina is a music player web app with queue and playlists, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Artistas em alta\" and runs through 8 sections. The identity pairs Urbanist with a #F2B640 accent.",
+    "pitch": "The first fold sums up the offer: \"Artistas em alta\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "ressoa",
+   "brand": "Ressoa",
+   "path": "sites/38-fones/",
+   "accent": "#1F5BD8",
+   "fonts": [
+    "Anton",
+    "Plus Jakarta Sans"
+   ],
+   "libs": [],
+   "sections": 4,
+   "pt": {
+    "kind": "E-commerce de fones de ouvido",
+    "desc": "E-commerce de fones de ouvido: Ressoa abre com \"SOM MAIS INTELIGENTE PARA O SEU DIA\" e leva o visitante por 4 seções até a ação.",
+    "long": "Ressoa é e-commerce de fones de ouvido, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"SOM MAIS INTELIGENTE PARA O SEU DIA\" e segue por \"COMPRE POR CATEGORIA\", \"SOM DE OUTRO NÍVEL\", \"Marcas parceiras\". A identidade usa Anton e Plus Jakarta Sans com o destaque #1F5BD8.",
+    "pitch": "A primeira dobra resume a proposta: \"SOM MAIS INTELIGENTE PARA O SEU DIA\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Headphones store",
+    "desc": "Headphones store: Ressoa opens on \"SOM MAIS INTELIGENTE PARA O SEU DIA\" and walks the visitor through 4 sections to the call to action.",
+    "long": "Ressoa is a headphones store, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"SOM MAIS INTELIGENTE PARA O SEU DIA\" and runs through 4 sections. The identity pairs Anton and Plus Jakarta Sans with a #1F5BD8 accent.",
+    "pitch": "The first fold sums up the offer: \"SOM MAIS INTELIGENTE PARA O SEU DIA\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "candeia",
+   "brand": "Candeia",
+   "path": "sites/39-luminarias/",
+   "accent": "#E2761F",
+   "fonts": [
+    "Urbanist"
+   ],
+   "libs": [],
+   "sections": 4,
+   "pt": {
+    "kind": "Landing page de ateliê de luminárias de design",
+    "desc": "Landing page de ateliê de luminárias de design: Candeia abre com \"DESIGN MODERNO. CONFORTO SEM ESFORÇO. QUALIDADE QUE FICA.\" e leva o visitante por 4 seções até a ação.",
+    "long": "Candeia é landing page de ateliê de luminárias de design, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"DESIGN MODERNO. CONFORTO SEM ESFORÇO. QUALIDADE QUE FICA.\" e segue por \"A SELEÇÃO\", \"Quatro formas de acender o fim do dia\", \"Mande uma foto do ambiente. A gente indica a peça e a altura certas\". A identidade usa Urbanist com o destaque #E2761F.",
+    "pitch": "A primeira dobra resume a proposta: \"DESIGN MODERNO. CONFORTO SEM ESFORÇO. QUALIDADE QUE FICA.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Design lighting studio landing page",
+    "desc": "Design lighting studio landing page: Candeia opens on \"DESIGN MODERNO. CONFORTO SEM ESFORÇO. QUALIDADE QUE FICA.\" and walks the visitor through 4 sections to the call to action.",
+    "long": "Candeia is a design lighting studio landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"DESIGN MODERNO. CONFORTO SEM ESFORÇO. QUALIDADE QUE FICA.\" and runs through 4 sections. The identity pairs Urbanist with a #E2761F accent.",
+    "pitch": "The first fold sums up the offer: \"DESIGN MODERNO. CONFORTO SEM ESFORÇO. QUALIDADE QUE FICA.\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "mirante-residencias",
+   "brand": "Mirante Residências",
+   "path": "sites/40-imovel-luxo/",
+   "accent": "#0C2340",
+   "fonts": [
+    "Instrument Serif",
+    "Inter Tight"
+   ],
+   "libs": [],
+   "sections": 6,
+   "pt": {
+    "kind": "Landing page de imobiliária de alto padrão",
+    "desc": "Landing page de imobiliária de alto padrão: Mirante Residências abre com \"Onde A VIDA MORA\" e leva o visitante por 6 seções até a ação.",
+    "long": "Mirante Residências é landing page de imobiliária de alto padrão, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Onde A VIDA MORA\" e segue por \"Todo lar começa com a visão de viver melhor\", \"Feito com propósito\", \"Antes da visita, as respostas\", \"Sua próxima casa começa numa conversa\". A identidade usa Instrument Serif e Inter Tight com o destaque #0C2340.",
+    "pitch": "A primeira dobra resume a proposta: \"Onde A VIDA MORA\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Luxury real estate landing page",
+    "desc": "Luxury real estate landing page: Mirante Residências opens on \"Onde A VIDA MORA\" and walks the visitor through 6 sections to the call to action.",
+    "long": "Mirante Residências is a luxury real estate landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Onde A VIDA MORA\" and runs through 6 sections. The identity pairs Instrument Serif and Inter Tight with a #0C2340 accent.",
+    "pitch": "The first fold sums up the offer: \"Onde A VIDA MORA\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "bruma",
+   "brand": "Bruma",
+   "path": "sites/41-luminaria-objeto/",
+   "accent": "#5E6B3A",
+   "fonts": [
+    "Archivo"
+   ],
+   "libs": [],
+   "sections": 6,
+   "pt": {
+    "kind": "Landing page de luminária-objeto (peça de design numerada)",
+    "desc": "Landing page de luminária-objeto (peça de design numerada): Bruma abre com \"BRUMA, LUMINÁRIA-OBJETO BRUMA\" e leva o visitante por 6 seções até a ação.",
+    "long": "Bruma é landing page de luminária-objeto (peça de design numerada), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"BRUMA, LUMINÁRIA-OBJETO BRUMA\" e segue por \"NÃO É SÓ LUZ. É UM SENTIMENTO\", \"LUZ QUE SE ADAPTA A VOCÊ\", \"CADA PARTE FEITA À MÃO\", \"TRÊS MATERIAIS. NENHUM ATALHO\", \"RESERVE A SUA BRUMA 01\". A identidade usa Archivo com o destaque #5E6B3A.",
+    "pitch": "A primeira dobra resume a proposta: \"BRUMA, LUMINÁRIA-OBJETO BRUMA\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Numbered design lamp landing page",
+    "desc": "Numbered design lamp landing page: Bruma opens on \"BRUMA, LUMINÁRIA-OBJETO BRUMA\" and walks the visitor through 6 sections to the call to action.",
+    "long": "Bruma is a numbered design lamp landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"BRUMA, LUMINÁRIA-OBJETO BRUMA\" and runs through 6 sections. The identity pairs Archivo with a #5E6B3A accent.",
+    "pitch": "The first fold sums up the offer: \"BRUMA, LUMINÁRIA-OBJETO BRUMA\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "argila",
+   "brand": "argila",
+   "path": "sites/42-skincare/",
+   "accent": "#7A1E12",
+   "fonts": [
+    "Bodoni Moda",
+    "Jost"
+   ],
+   "libs": [],
+   "sections": 7,
+   "pt": {
+    "kind": "Landing page de skincare mineral",
+    "desc": "Landing page de skincare mineral: argila abre com \"argila: creme restaurador com argila vermelha e minerais vulcânicos\" e leva o visitante por 7 seções até a ação.",
+    "long": "argila é landing page de skincare mineral, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"argila: creme restaurador com argila vermelha e minerais vulcânicos\" e segue por \"PELE, EM REPOUSO\", \"SKINCARE QUE FAZ MAIS, COM MENOS\", \"O QUE VAI NO POTE\", \"TRÊS PASSOS, MANHÃ E NOITE\", \"NA PELE DE QUEM USA\". A identidade usa Bodoni Moda e Jost com o destaque #7A1E12.",
+    "pitch": "A primeira dobra resume a proposta: \"argila: creme restaurador com argila vermelha e minerais vulcânicos\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Mineral skincare landing page",
+    "desc": "Mineral skincare landing page: argila opens on \"argila: creme restaurador com argila vermelha e minerais vulcânicos\" and walks the visitor through 7 sections to the call to action.",
+    "long": "argila is a mineral skincare landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"argila: creme restaurador com argila vermelha e minerais vulcânicos\" and runs through 7 sections. The identity pairs Bodoni Moda and Jost with a #7A1E12 accent.",
+    "pitch": "The first fold sums up the offer: \"argila: creme restaurador com argila vermelha e minerais vulcânicos\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "quasar",
+   "brand": "QUASAR",
+   "path": "sites/43-colecionaveis/",
+   "accent": "#E10600",
+   "fonts": [
+    "Archivo",
+    "Silkscreen"
+   ],
+   "libs": [],
+   "sections": 5,
+   "pt": {
+    "kind": "Landing page de galeria de arte digital colecionável",
+    "desc": "Landing page de galeria de arte digital colecionável: QUASAR abre com \"QUASAR, arte digital colecionável QUASAR\" e leva o visitante por 5 seções até a ação.",
+    "long": "QUASAR é landing page de galeria de arte digital colecionável, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"QUASAR, arte digital colecionável QUASAR\" e segue por \"UM MUNDO FEITO PARA SER SEU\", \"PEÇAS DO DROP 01\", \"DA GALERIA PARA A SUA TELA\", \"QUEM FAZ AS PEÇAS\", \"ENTRE NA LISTA DO PRÓXIMO DROP\". A identidade usa Archivo e Silkscreen com o destaque #E10600.",
+    "pitch": "A primeira dobra resume a proposta: \"QUASAR, arte digital colecionável QUASAR\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Collectible digital art gallery",
+    "desc": "Collectible digital art gallery: QUASAR opens on \"QUASAR, arte digital colecionável QUASAR\" and walks the visitor through 5 sections to the call to action.",
+    "long": "QUASAR is a collectible digital art gallery, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"QUASAR, arte digital colecionável QUASAR\" and runs through 5 sections. The identity pairs Archivo and Silkscreen with a #E10600 accent.",
+    "pitch": "The first fold sums up the offer: \"QUASAR, arte digital colecionável QUASAR\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "sereno-perfume",
+   "brand": "Sereno",
+   "path": "sites/44-perfume/",
+   "accent": "#B30000",
+   "fonts": [
+    "Bodoni Moda",
+    "Italiana",
+    "Manrope"
+   ],
+   "libs": [
+    "GSAP"
+   ],
+   "sections": 5,
+   "pt": {
+    "kind": "Landing page de perfume (eau de parfum)",
+    "desc": "Landing page de perfume (eau de parfum): Sereno abre com \"FLOR NOTURNA\" e leva o visitante por 5 seções até a ação.",
+    "long": "Sereno é landing page de perfume (eau de parfum), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"FLOR NOTURNA\" e segue por \"A ARTE DO FLORESCER\", \"A ARTE DO FLORESCER\", \"TRÊS TEMPOS, UMA SÓ NOITE\", \"ESCOLHA A SUA NOITE\", \"O RITUAL EM QUATRO GESTOS\". A identidade usa Bodoni Moda e Italiana e Manrope com o destaque #B30000, e o movimento roda em GSAP.",
+    "pitch": "A primeira dobra resume a proposta: \"FLOR NOTURNA\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Eau de parfum landing page",
+    "desc": "Eau de parfum landing page: Sereno opens on \"FLOR NOTURNA\" and walks the visitor through 5 sections to the call to action.",
+    "long": "Sereno is a eau de parfum landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"FLOR NOTURNA\" and runs through 5 sections. The identity pairs Bodoni Moda and Italiana and Manrope with a #B30000 accent, and motion runs on GSAP.",
+    "pitch": "The first fold sums up the offer: \"FLOR NOTURNA\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "filigrana",
+   "brand": "Filigrana",
+   "path": "sites/45-joalheria/",
+   "accent": "#B4561C",
+   "fonts": [
+    "Archivo",
+    "Cormorant Garamond"
+   ],
+   "libs": [
+    "GSAP"
+   ],
+   "sections": 6,
+   "pt": {
+    "kind": "Landing page de joalheria de ouro feita à mão (noivas e alta joalheria)",
+    "desc": "Landing page de joalheria de ouro feita à mão (noivas e alta joalheria): Filigrana abre com \"feitas para ADORAÇÃO ATEMPORAL\" e leva o visitante por 6 seções até a ação.",
+    "long": "Filigrana é landing page de joalheria de ouro feita à mão (noivas e alta joalheria), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"feitas para ADORAÇÃO ATEMPORAL\" e segue por \"nossas COLEÇÕES\", \"a peça da ESTAÇÃO\", \"feitas à mão no NOSSO ATELIÊ\", \"antes da SUA PROVA\", \"marque sua PROVA PRIVADA\". A identidade usa Archivo e Cormorant Garamond com o destaque #B4561C, e o movimento roda em GSAP.",
+    "pitch": "A primeira dobra resume a proposta: \"feitas para ADORAÇÃO ATEMPORAL\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Handmade gold jewelry landing page",
+    "desc": "Handmade gold jewelry landing page: Filigrana opens on \"feitas para ADORAÇÃO ATEMPORAL\" and walks the visitor through 6 sections to the call to action.",
+    "long": "Filigrana is a handmade gold jewelry landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"feitas para ADORAÇÃO ATEMPORAL\" and runs through 6 sections. The identity pairs Archivo and Cormorant Garamond with a #B4561C accent, and motion runs on GSAP.",
+    "pitch": "The first fold sums up the offer: \"feitas para ADORAÇÃO ATEMPORAL\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "matiz",
+   "brand": "Matiz",
+   "path": "sites/46-paletas/",
+   "accent": "#E3261B",
+   "fonts": [
+    "Archivo",
+    "Inter Tight",
+    "JetBrains Mono",
+    "Permanent Marker"
+   ],
+   "libs": [
+    "GSAP"
+   ],
+   "sections": 10,
+   "pt": {
+    "kind": "Página interativa de 6 paletas de gradiente (estúdio de cor)",
+    "desc": "Página interativa de 6 paletas de gradiente (estúdio de cor): Matiz abre com \"CHEGA DE GRADIENTES sem sal.\" e leva o visitante por 10 seções até a ação.",
+    "long": "Matiz é página interativa de 6 paletas de gradiente (estúdio de cor), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"CHEGA DE GRADIENTES sem sal.\" e segue por \"Gradiente bom é um matiz só, indo do quase preto ao quase branco\", \"Acid Lime\", \"Tangerine\", \"Lagoon\", \"Cherry Cola\". A identidade usa Archivo e Inter Tight e JetBrains Mono e Permanent Marker com o destaque #E3261B, e o movimento roda em GSAP.",
+    "pitch": "A primeira dobra resume a proposta: \"CHEGA DE GRADIENTES sem sal.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Interactive gradient palette page",
+    "desc": "Interactive gradient palette page: Matiz opens on \"CHEGA DE GRADIENTES sem sal.\" and walks the visitor through 10 sections to the call to action.",
+    "long": "Matiz is a interactive gradient palette page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"CHEGA DE GRADIENTES sem sal.\" and runs through 10 sections. The identity pairs Archivo and Inter Tight and JetBrains Mono and Permanent Marker with a #E3261B accent, and motion runs on GSAP.",
+    "pitch": "The first fold sums up the offer: \"CHEGA DE GRADIENTES sem sal.\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "calmaria",
+   "brand": "Calmaria",
+   "path": "sites/47-skincare-glow/",
+   "accent": "#2E4A33",
+   "fonts": [
+    "Anton",
+    "Plus Jakarta Sans"
+   ],
+   "libs": [
+    "GSAP"
+   ],
+   "sections": 9,
+   "pt": {
+    "kind": "E-commerce de skincare natural",
+    "desc": "E-commerce de skincare natural: Calmaria abre com \"NOVO SKINCARE\" e leva o visitante por 9 seções até a ação.",
+    "long": "Calmaria é e-commerce de skincare natural, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"NOVO SKINCARE\" e segue por \"ESCOLHA POR ONDE COMEÇAR\", \"MAIS AMADOS\", \"CINCO MINUTOS SÓ SEUS\", \"INGREDIENTES\", \"SUA ROTINA EM 3 PASSOS\". A identidade usa Anton e Plus Jakarta Sans com o destaque #2E4A33, e o movimento roda em GSAP.",
+    "pitch": "A primeira dobra resume a proposta: \"NOVO SKINCARE\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Natural skincare store",
+    "desc": "Natural skincare store: Calmaria opens on \"NOVO SKINCARE\" and walks the visitor through 9 sections to the call to action.",
+    "long": "Calmaria is a natural skincare store, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"NOVO SKINCARE\" and runs through 9 sections. The identity pairs Anton and Plus Jakarta Sans with a #2E4A33 accent, and motion runs on GSAP.",
+    "pitch": "The first fold sums up the offer: \"NOVO SKINCARE\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "altamar",
+   "brand": "Altamar",
+   "path": "sites/48-carro-luxo/",
+   "accent": "#A8967F",
+   "fonts": [
+    "Mrs Saint Delafield"
+   ],
+   "libs": [
+    "GSAP"
+   ],
+   "sections": 8,
+   "pt": {
+    "kind": "Landing page de GT elétrico de luxo (concessionária / marca automotiva) com seção de design system",
+    "desc": "Landing page de GT elétrico de luxo (concessionária / marca automotiva) com seção de design system: Altamar abre com \"O movimento fica mais bonito aqui.\" e leva o visitante por 8 seções até a ação.",
+    "long": "Altamar é landing page de GT elétrico de luxo (concessionária / marca automotiva) com seção de design system, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"O movimento fica mais bonito aqui.\" e segue por \"Altamar Maré GT\", \"Três maneiras de chegar ao mar\", \"Potência que não precisa levantar a voz\", \"Uma cabine feita para a viagem longa\", \"Noventa minutos na estrada valem mais que um catálogo\". A identidade usa Mrs Saint Delafield com o destaque #A8967F, e o movimento roda em GSAP.",
+    "pitch": "A primeira dobra resume a proposta: \"O movimento fica mais bonito aqui.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Luxury electric GT landing page",
+    "desc": "Luxury electric GT landing page: Altamar opens on \"O movimento fica mais bonito aqui.\" and walks the visitor through 8 sections to the call to action.",
+    "long": "Altamar is a luxury electric GT landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"O movimento fica mais bonito aqui.\" and runs through 8 sections. The identity pairs Mrs Saint Delafield with a #A8967F accent, and motion runs on GSAP.",
+    "pitch": "The first fold sums up the offer: \"O movimento fica mais bonito aqui.\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "lamina-diagnosticos",
+   "brand": "Lâmina Diagnósticos",
+   "path": "sites/49-laboratorio/",
+   "accent": "#1EA7E1",
+   "fonts": [
+    "Barlow Condensed",
+    "Barlow"
+   ],
+   "libs": [
+    "GSAP"
+   ],
+   "sections": 10,
+   "pt": {
+    "kind": "Site institucional de laboratório de análises clínicas",
+    "desc": "Site institucional de laboratório de análises clínicas: Lâmina Diagnósticos abre com \"ANÁLISES CLÍNICAS COM RIGOR TÉCNICO E CONFIANÇA\" e leva o visitante por 10 seções até a ação.",
+    "long": "Lâmina Diagnósticos é site institucional de laboratório de análises clínicas, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"ANÁLISES CLÍNICAS COM RIGOR TÉCNICO E CONFIANÇA\" e segue por \"EXAMES MAIS PROCURADOS\", \"POR DENTRO DO LABORATÓRIO\", \"Sobre a Lâmina Diagnósticos\", \"QUEM COLETOU CONTA\", \"SERVIÇOS DO LABORATÓRIO\". A identidade usa Barlow Condensed e Barlow com o destaque #1EA7E1, e o movimento roda em GSAP.",
+    "pitch": "A primeira dobra resume a proposta: \"ANÁLISES CLÍNICAS COM RIGOR TÉCNICO E CONFIANÇA\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Clinical laboratory site",
+    "desc": "Clinical laboratory site: Lâmina Diagnósticos opens on \"ANÁLISES CLÍNICAS COM RIGOR TÉCNICO E CONFIANÇA\" and walks the visitor through 10 sections to the call to action.",
+    "long": "Lâmina Diagnósticos is a clinical laboratory site, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"ANÁLISES CLÍNICAS COM RIGOR TÉCNICO E CONFIANÇA\" and runs through 10 sections. The identity pairs Barlow Condensed and Barlow with a #1EA7E1 accent, and motion runs on GSAP.",
+    "pitch": "The first fold sums up the offer: \"ANÁLISES CLÍNICAS COM RIGOR TÉCNICO E CONFIANÇA\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "avora",
+   "brand": "Ávora",
+   "path": "sites/50-aluguel-carros/",
+   "accent": "#A8875A",
+   "fonts": [],
+   "libs": [
+    "GSAP"
+   ],
+   "sections": 9,
+   "pt": {
+    "kind": "Locadora de carros premium",
+    "desc": "Locadora de carros premium: Ávora abre com \"Dirija o carro que a viagem pede.\" e leva o visitante por 9 seções até a ação.",
+    "long": "Ávora é locadora de carros premium, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Dirija o carro que a viagem pede.\" e segue por \"Escolha o carro antes de escolher a rota\", \"Quatro degraus entre a reserva e a estrada\", \"Rotas que valem cada quilômetro\", \"A reserva inteira cabe numa tela\", \"Quem dirigiu, conta\". A identidade usa fontes do sistema com o destaque #A8875A, e o movimento roda em GSAP.",
+    "pitch": "A primeira dobra resume a proposta: \"Dirija o carro que a viagem pede.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Premium car rental",
+    "desc": "Premium car rental: Ávora opens on \"Dirija o carro que a viagem pede.\" and walks the visitor through 9 sections to the call to action.",
+    "long": "Ávora is a premium car rental, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Dirija o carro que a viagem pede.\" and runs through 9 sections. The identity pairs system fonts with a #A8875A accent, and motion runs on GSAP.",
+    "pitch": "The first fold sums up the offer: \"Dirija o carro que a viagem pede.\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "orvalho",
+   "brand": "Orvalho",
+   "path": "sites/51-skincare-vidro/",
+   "accent": "#2E7D32",
+   "fonts": [
+    "Plus Jakarta Sans"
+   ],
+   "libs": [
+    "GSAP"
+   ],
+   "sections": 10,
+   "pt": {
+    "kind": "Landing page de skincare (gel de limpeza facial com vitamina C)",
+    "desc": "Landing page de skincare (gel de limpeza facial com vitamina C): Orvalho abre com \"Pele limpa, rotina leve, frescor cítrico.\" e leva o visitante por 10 seções até a ação.",
+    "long": "Orvalho é landing page de skincare (gel de limpeza facial com vitamina C), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Pele limpa, rotina leve, frescor cítrico.\" e segue por \"Quatro ativos, cada um com uma função\", \"Sessenta segundos, manhã e noite\", \"O que 42 pessoas sentiram em 21 dias\", \"A rotina completa, do mesmo limão\", \"Na rotina de quem já testou\". A identidade usa Plus Jakarta Sans com o destaque #2E7D32, e o movimento roda em GSAP.",
+    "pitch": "A primeira dobra resume a proposta: \"Pele limpa, rotina leve, frescor cítrico.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Vitamin C face cleanser landing page",
+    "desc": "Vitamin C face cleanser landing page: Orvalho opens on \"Pele limpa, rotina leve, frescor cítrico.\" and walks the visitor through 10 sections to the call to action.",
+    "long": "Orvalho is a vitamin C face cleanser landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Pele limpa, rotina leve, frescor cítrico.\" and runs through 10 sections. The identity pairs Plus Jakarta Sans with a #2E7D32 accent, and motion runs on GSAP.",
+    "pitch": "The first fold sums up the offer: \"Pele limpa, rotina leve, frescor cítrico.\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "partida",
+   "brand": "Partida",
+   "path": "sites/52-drive-locadora/",
+   "accent": "#0E0E0E",
+   "fonts": [],
+   "libs": [
+    "GSAP"
+   ],
+   "sections": 9,
+   "pt": {
+    "kind": "Plataforma de aluguel de carros (diária, semanal e assinatura)",
+    "desc": "Plataforma de aluguel de carros (diária, semanal e assinatura): Partida abre com \"Seu próximo destino começa ao volante.\" e leva o visitante por 9 seções até a ação.",
+    "long": "Partida é plataforma de aluguel de carros (diária, semanal e assinatura), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Seu próximo destino começa ao volante.\" e segue por \"Nada de locadora do jeito de sempre\", \"Escolha seu carro\", \"Para onde a estrada leva você nesta temporada\", \"Pague pelo tempo que você usa\", \"Quem já pegou a estrada com a gente\". A identidade usa fontes do sistema com o destaque #0E0E0E, e o movimento roda em GSAP.",
+    "pitch": "A primeira dobra resume a proposta: \"Seu próximo destino começa ao volante.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Car rental platform (daily, weekly and subscription)",
+    "desc": "Car rental platform (daily, weekly and subscription): Partida opens on \"Seu próximo destino começa ao volante.\" and walks the visitor through 9 sections to the call to action.",
+    "long": "Partida is a car rental platform (daily, weekly and subscription), hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Seu próximo destino começa ao volante.\" and runs through 9 sections. The identity pairs system fonts with a #0E0E0E accent, and motion runs on GSAP.",
+    "pitch": "The first fold sums up the offer: \"Seu próximo destino começa ao volante.\". Every section after it answers a question a buyer has before deciding."
+   }
+  },
+  {
+   "id": "prensa-smash-burger",
+   "brand": "PRENSA Smash Burger",
+   "path": "sites/55-burger-smash/",
+   "accent": "#E3171A",
+   "fonts": [
+    "Big Shoulders Display",
+    "Bricolage Grotesque"
+   ],
+   "libs": [
+    "GSAP"
+   ],
+   "sections": 8,
+   "pt": {
+    "kind": "Hamburgueria artesanal de rua (smash burger), cardápio interativo e pedido",
+    "desc": "Hamburgueria artesanal de rua (smash burger), cardápio interativo e pedido: PRENSA Smash Burger abre com \"SMASH DE RUA, PRENSADO NA HORA.\" e leva o visitante por 8 seções até a ação.",
+    "long": "PRENSA Smash Burger é hamburgueria artesanal de rua (smash burger), cardápio interativo e pedido, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"SMASH DE RUA, PRENSADO NA HORA.\" e segue por \"Manifesto da casa\", \"ESCOLHE O ESTRAGO\", \"TRÊS PASSOS, ZERO ATALHO\", \"FUMAÇA, FILA E GENTE BOA\", \"PEDE QUE A CHAPA TÁ QUENTE\". A identidade usa Big Shoulders Display e Bricolage Grotesque com o destaque #E3171A, e o movimento roda em GSAP.",
+    "pitch": "A primeira dobra resume a proposta: \"SMASH DE RUA, PRENSADO NA HORA.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+   },
+   "en": {
+    "kind": "Smash burger joint with interactive menu and ordering",
+    "desc": "Smash burger joint with interactive menu and ordering: PRENSA Smash Burger opens on \"SMASH DE RUA, PRENSADO NA HORA.\" and walks the visitor through 8 sections to the call to action.",
+    "long": "PRENSA Smash Burger is a smash burger joint with interactive menu and ordering, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"SMASH DE RUA, PRENSADO NA HORA.\" and runs through 8 sections. The identity pairs Big Shoulders Display and Bricolage Grotesque with a #E3171A accent, and motion runs on GSAP.",
+    "pitch": "The first fold sums up the offer: \"SMASH DE RUA, PRENSADO NA HORA.\". Every section after it answers a question a buyer has before deciding."
+   }
+  }
+ ]
+}

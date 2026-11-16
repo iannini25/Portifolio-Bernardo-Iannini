@@ -52,6 +52,59 @@ Sou desenvolvedor Full Stack e construo sistemas completos, da arquitetura ao de
 - [BeSafe](https://www.bernardoiannini.com/projetos/besafe.html): plataforma de segurança do fator humano em que empresas disparam phishing simulado por e-mail, Teams, Slack e WhatsApp, e quem clica aprende na hora com vídeo. Site: https://besafebr.com
 - [JARVIS](https://www.bernardoiannini.com/projetos/jarvis.html): assistente de voz para carro que roda localmente num Raspberry Pi, lê o motor ao vivo pela porta OBD2, controla música e navegação e avisa antes de problemas.
 - [bernardoiannini.com](https://www.bernardoiannini.com/projetos/portfolio.html): este site, 100% HTML, CSS e JS puros, sem frameworks, com design system próprio.
+- [Maresia Barcos](https://www.bernardoiannini.com/projetos/maresia-barcos.html): landing page de estaleiro de lanchas e catamarãs.
+- [Demão Pinturas](https://www.bernardoiannini.com/projetos/demao-pinturas.html): landing page de serviço de pintura residencial.
+- [Linha Nobre](https://www.bernardoiannini.com/projetos/linha-nobre.html): e-commerce de moda (home de loja).
+- [Terrana Arquitetura](https://www.bernardoiannini.com/projetos/terrana-arquitetura.html): site de estúdio de arquitetura, interiores e paisagismo.
+- [Fôlego](https://www.bernardoiannini.com/projetos/folego.html): landing page de academia e comunidade fitness.
+- [Garfo Verde](https://www.bernardoiannini.com/projetos/garfo-verde.html): delivery de comida (marketplace de restaurantes).
+- [Alpendre Imóveis](https://www.bernardoiannini.com/projetos/alpendre-imoveis.html): landing page de portal imobiliário (comprar, alugar, vender).
+- [Musgo Casa](https://www.bernardoiannini.com/projetos/musgo-casa.html): landing page de loja de móveis.
+- [Arco Estúdio](https://www.bernardoiannini.com/projetos/arco-estudio.html): landing page de agência criativa de branding e digital.
+- [Andalá Viagens](https://www.bernardoiannini.com/projetos/andala-viagens.html): landing page de agência de viagens em família.
+- [Liana Nutri](https://www.bernardoiannini.com/projetos/liana-nutri.html): e-commerce de suplementos de imunidade.
+- [Alento](https://www.bernardoiannini.com/projetos/alento.html): landing page de plataforma de bem-estar (wellness).
+- [Mente Calma](https://www.bernardoiannini.com/projetos/mente-calma.html): landing page de app de saúde mental e bem-estar.
+- [Lastro](https://www.bernardoiannini.com/projetos/lastro.html): landing page de SaaS de gestão financeira com IA.
+- [Assenta](https://www.bernardoiannini.com/projetos/assenta.html): e-commerce de cadeiras e poltronas de design.
+- [Breu Cold Brew](https://www.bernardoiannini.com/projetos/breu-cold-brew.html): e-commerce de cold brew engarrafado.
+- [Colo](https://www.bernardoiannini.com/projetos/colo.html): landing page de cuidados com recém-nascidos.
+- [Lume Casa](https://www.bernardoiannini.com/projetos/lume-casa.html): landing page de dispositivos de casa inteligente com IA.
+- [Brisa](https://www.bernardoiannini.com/projetos/brisa.html): landing page de app de saúde mental (B2C).
+- [Ventara](https://www.bernardoiannini.com/projetos/ventara.html): landing page de coleção de carros esportivos premium.
+- [Lumiar Odontologia](https://www.bernardoiannini.com/projetos/lumiar-odontologia.html): site de clínica odontológica familiar.
+- [Morada](https://www.bernardoiannini.com/projetos/morada.html): e-commerce de decoração e móveis.
+- [Mordida Chocolates](https://www.bernardoiannini.com/projetos/mordida-chocolates.html): e-commerce de chocolate artesanal.
+- [Cardume](https://www.bernardoiannini.com/projetos/cardume.html): landing page de SaaS de gestão de projetos para times.
+- [Patalar](https://www.bernardoiannini.com/projetos/patalar.html): e-commerce pet: loja e serviços para cães e gatos.
+- [Lapidária Joias](https://www.bernardoiannini.com/projetos/lapidaria-joias.html): site de joalheria fina (e-commerce de luxo).
+- [Orla Odontologia](https://www.bernardoiannini.com/projetos/orla-odontologia.html): landing page de clínica odontológica (hero azul tudo-em-um).
+- [Forja Fit Club](https://www.bernardoiannini.com/projetos/forja-fit-club.html): landing page de academia / fitness club.
+- [ANIL](https://www.bernardoiannini.com/projetos/anil.html): e-commerce de moda feminina street/casual.
+- [Cadência](https://www.bernardoiannini.com/projetos/cadencia.html): landing page de clube de ciclismo de estrada.
+- [Saibro Tênis Clube](https://www.bernardoiannini.com/projetos/saibro-tenis-clube.html): landing page de clube de tênis.
+- [Solário](https://www.bernardoiannini.com/projetos/solario.html): dashboard de casa inteligente com IA.
+- [broto.](https://www.bernardoiannini.com/projetos/broto.html): landing page de suco verde prensado a frio.
+- [Fominha](https://www.bernardoiannini.com/projetos/fominha.html): landing page de hamburgueria (delivery e retirada).
+- [Alcova](https://www.bernardoiannini.com/projetos/alcova.html): app de casa inteligente (3 painéis em vidro fosco).
+- [Penumbra](https://www.bernardoiannini.com/projetos/penumbra.html): landing page de automação residencial (casa inteligente, tema escuro).
+- [Ondina](https://www.bernardoiannini.com/projetos/ondina.html): app web de música (player com fila e playlists).
+- [Ressoa](https://www.bernardoiannini.com/projetos/ressoa.html): e-commerce de fones de ouvido.
+- [Candeia](https://www.bernardoiannini.com/projetos/candeia.html): landing page de ateliê de luminárias de design.
+- [Mirante Residências](https://www.bernardoiannini.com/projetos/mirante-residencias.html): landing page de imobiliária de alto padrão.
+- [Bruma](https://www.bernardoiannini.com/projetos/bruma.html): landing page de luminária-objeto (peça de design numerada).
+- [argila](https://www.bernardoiannini.com/projetos/argila.html): landing page de skincare mineral.
+- [QUASAR](https://www.bernardoiannini.com/projetos/quasar.html): landing page de galeria de arte digital colecionável.
+- [Sereno](https://www.bernardoiannini.com/projetos/sereno-perfume.html): landing page de perfume (eau de parfum).
+- [Filigrana](https://www.bernardoiannini.com/projetos/filigrana.html): landing page de joalheria de ouro feita à mão (noivas e alta joalheria).
+- [Matiz](https://www.bernardoiannini.com/projetos/matiz.html): página interativa de 6 paletas de gradiente (estúdio de cor).
+- [Calmaria](https://www.bernardoiannini.com/projetos/calmaria.html): e-commerce de skincare natural.
+- [Altamar](https://www.bernardoiannini.com/projetos/altamar.html): landing page de GT elétrico de luxo (concessionária / marca automotiva) com seção de design system.
+- [Lâmina Diagnósticos](https://www.bernardoiannini.com/projetos/lamina-diagnosticos.html): site institucional de laboratório de análises clínicas.
+- [Ávora](https://www.bernardoiannini.com/projetos/avora.html): locadora de carros premium.
+- [Orvalho](https://www.bernardoiannini.com/projetos/orvalho.html): landing page de skincare (gel de limpeza facial com vitamina C).
+- [Partida](https://www.bernardoiannini.com/projetos/partida.html): plataforma de aluguel de carros (diária, semanal e assinatura).
+- [PRENSA Smash Burger](https://www.bernardoiannini.com/projetos/prensa-smash-burger.html): hamburgueria artesanal de rua (smash burger), cardápio interativo e pedido.
 
 ## Contato
 

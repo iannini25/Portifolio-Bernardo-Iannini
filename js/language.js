@@ -875,7 +875,2086 @@ The EN/PT switch is an i18n engine written from scratch: the entire site changes
             { icon: "gauge", title: "Fully working with motion off",
               text: "Disable GSAP and every page keeps working: motion is an extra layer, never a dependency. Reduced-motion respected, on a fully static Vercel deploy." }
           ]
+        },
+        /* LAB:START */
+        {
+          "title": "Maresia Barcos · Motor catamaran shipyard landing page",
+          "desc": "Motor catamaran shipyard landing page: Maresia Barcos opens on \"DESEMPENHO SEM IGUAL EM MAR ABERTO, ESTABILIDADE E VERSATILIDADE\" and walks the visitor through 6 sections to the call to action.",
+          "longDesc": "Maresia Barcos is a motor catamaran shipyard landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"DESEMPENHO SEM IGUAL EM MAR ABERTO, ESTABILIDADE E VERSATILIDADE\" and runs through 6 sections. The identity pairs Archivo and Inter and Instrument Serif with a #2558A8 accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/01-barcos/",
+          "cover": "img/covers/maresia-barcos.webp",
+          "id": "maresia-barcos",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"DESEMPENHO SEM IGUAL EM MAR ABERTO, ESTABILIDADE E VERSATILIDADE\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Archivo + Inter + Instrument Serif, with the #2558A8 accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 6 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Demão Pinturas · Home painting service landing page",
+          "desc": "Home painting service landing page: Demão Pinturas opens on \"Transforme sua casa com a Demão.\" and walks the visitor through 8 sections to the call to action.",
+          "longDesc": "Demão Pinturas is a home painting service landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Transforme sua casa com a Demão.\" and runs through 8 sections. The identity pairs Inter Tight with a #01419A accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/02-pintura/",
+          "cover": "img/covers/demao-pinturas.webp",
+          "id": "demao-pinturas",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Transforme sua casa com a Demão.\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Inter Tight, with the #01419A accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 8 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Linha Nobre · Fashion store home page",
+          "desc": "Fashion store home page: Linha Nobre opens on \"ESTILO SEM PRAZO\" and walks the visitor through 3 sections to the call to action.",
+          "longDesc": "Linha Nobre is a fashion store home page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"ESTILO SEM PRAZO\" and runs through 3 sections. The identity pairs Anton and Inter with a #0B2A55 accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/03-moda-luxo/",
+          "cover": "img/covers/linha-nobre.webp",
+          "id": "linha-nobre",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"ESTILO SEM PRAZO\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Anton + Inter, with the #0B2A55 accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 3 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Terrana Arquitetura · Architecture, interiors and landscaping studio site",
+          "desc": "Architecture, interiors and landscaping studio site: Terrana Arquitetura opens on \"Espaços com escala humana.\" and walks the visitor through 4 sections to the call to action.",
+          "longDesc": "Terrana Arquitetura is a architecture, interiors and landscaping studio site, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Espaços com escala humana.\" and runs through 4 sections. The identity pairs Manrope with a #A8937A accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/04-arquitetura/",
+          "cover": "img/covers/terrana-arquitetura.webp",
+          "id": "terrana-arquitetura",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Espaços com escala humana.\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Manrope, with the #A8937A accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 4 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Fôlego · Gym and fitness community landing page",
+          "desc": "Gym and fitness community landing page: Fôlego opens on \"Destrave seu potencial, hub de treino e saúde\" and walks the visitor through 7 sections to the call to action.",
+          "longDesc": "Fôlego is a gym and fitness community landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Destrave seu potencial, hub de treino e saúde\" and runs through 7 sections. The identity pairs Inter with a #FF4A2A accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/05-fitness/",
+          "cover": "img/covers/folego.webp",
+          "id": "folego",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Destrave seu potencial, hub de treino e saúde\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Inter, with the #FF4A2A accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 7 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Garfo Verde · Restaurant delivery marketplace",
+          "desc": "Restaurant delivery marketplace: Garfo Verde opens on \"Entregue na sua porta\" and walks the visitor through 3 sections to the call to action.",
+          "longDesc": "Garfo Verde is a restaurant delivery marketplace, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Entregue na sua porta\" and runs through 3 sections. The identity pairs Anton and Caveat and Plus Jakarta Sans with a #8BC34A accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/06-delivery/",
+          "cover": "img/covers/garfo-verde.webp",
+          "id": "garfo-verde",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Entregue na sua porta\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Anton + Caveat + Plus Jakarta Sans, with the #8BC34A accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 3 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Alpendre Imóveis · Real estate portal landing page",
+          "desc": "Real estate portal landing page: Alpendre Imóveis opens on \"Conectando você ao lar que você ama\" and walks the visitor through 4 sections to the call to action.",
+          "longDesc": "Alpendre Imóveis is a real estate portal landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Conectando você ao lar que você ama\" and runs through 4 sections. The identity pairs League Spartan with a #FFA829 accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/07-imobiliaria/",
+          "cover": "img/covers/alpendre-imoveis.webp",
+          "id": "alpendre-imoveis",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Conectando você ao lar que você ama\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in League Spartan, with the #FFA829 accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 4 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Musgo Casa · Furniture store landing page",
+          "desc": "Furniture store landing page: Musgo Casa opens on \"Monte a casa dos seus sonhos com os nossos móveis!\" and walks the visitor through 4 sections to the call to action.",
+          "longDesc": "Musgo Casa is a furniture store landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Monte a casa dos seus sonhos com os nossos móveis!\" and runs through 4 sections. The identity pairs Inter with a #679936 accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/08-moveis/",
+          "cover": "img/covers/musgo-casa.webp",
+          "id": "musgo-casa",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Monte a casa dos seus sonhos com os nossos móveis!\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Inter, with the #679936 accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 4 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Arco Estúdio · Branding and digital agency landing page",
+          "desc": "Branding and digital agency landing page: Arco Estúdio opens on \"ESTÚDIO ✦ ✦ CRIATIVO BRANDING & DIGITAL\" and walks the visitor through 5 sections to the call to action.",
+          "longDesc": "Arco Estúdio is a branding and digital agency landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"ESTÚDIO ✦ ✦ CRIATIVO BRANDING & DIGITAL\" and runs through 5 sections. The identity pairs Karla with a #4F4AD7 accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/09-agencia/",
+          "cover": "img/covers/arco-estudio.webp",
+          "id": "arco-estudio",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"ESTÚDIO ✦ ✦ CRIATIVO BRANDING & DIGITAL\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Karla, with the #4F4AD7 accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 5 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Andalá Viagens · Family travel agency landing page",
+          "desc": "Family travel agency landing page: Andalá Viagens opens on \"Mais tempo em família. Menos tempo planejando.\" and walks the visitor through 7 sections to the call to action.",
+          "longDesc": "Andalá Viagens is a family travel agency landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Mais tempo em família. Menos tempo planejando.\" and runs through 7 sections. The identity pairs Bricolage Grotesque with a #639CCC accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/10-viagens/",
+          "cover": "img/covers/andala-viagens.webp",
+          "id": "andala-viagens",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Mais tempo em família. Menos tempo planejando.\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Bricolage Grotesque, with the #639CCC accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 7 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Liana Nutri · Immunity supplements store",
+          "desc": "Immunity supplements store: Liana Nutri opens on \"Cuide da sua defesa natural, todo dia\" and walks the visitor through 7 sections to the call to action.",
+          "longDesc": "Liana Nutri is a immunity supplements store, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Cuide da sua defesa natural, todo dia\" and runs through 7 sections. The identity pairs Instrument Sans with a #1F3B2A accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/11-suplementos/",
+          "cover": "img/covers/liana-nutri.webp",
+          "id": "liana-nutri",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Cuide da sua defesa natural, todo dia\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Instrument Sans, with the #1F3B2A accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 7 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Alento · Wellness platform landing page",
+          "desc": "Wellness platform landing page: Alento opens on \"Equilíbrio possível\" and walks the visitor through 4 sections to the call to action.",
+          "longDesc": "Alento is a wellness platform landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Equilíbrio possível\" and runs through 4 sections. The identity pairs Inter with a #1FBF7A accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/12-wellness/",
+          "cover": "img/covers/alento.webp",
+          "id": "alento",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Equilíbrio possível\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Inter, with the #1FBF7A accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 4 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Mente Calma · Mental health app landing page",
+          "desc": "Mental health app landing page: Mente Calma opens on \"Uma mente calma. Um você mais leve.\" and walks the visitor through 6 sections to the call to action.",
+          "longDesc": "Mente Calma is a mental health app landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Uma mente calma. Um você mais leve.\" and runs through 6 sections. The identity pairs Inter with a #5E9473 accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/13-mente-calma/",
+          "cover": "img/covers/mente-calma.webp",
+          "id": "mente-calma",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Uma mente calma. Um você mais leve.\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Inter, with the #5E9473 accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 6 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Lastro · AI finance management SaaS landing page",
+          "desc": "AI finance management SaaS landing page: Lastro opens on \"Sua gestão financeira no próximo nível\" and walks the visitor through 10 sections to the call to action.",
+          "longDesc": "Lastro is a aI finance management SaaS landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Sua gestão financeira no próximo nível\" and runs through 10 sections. The identity pairs Outfit with a #5E7D2A accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/14-saas-financas/",
+          "cover": "img/covers/lastro.webp",
+          "id": "lastro",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Sua gestão financeira no próximo nível\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Outfit, with the #5E7D2A accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 10 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Assenta · Design chairs and armchairs store",
+          "desc": "Design chairs and armchairs store: Assenta opens on \"Poltronas e cadeiras de design, feitas para durar décadas.\" and walks the visitor through 3 sections to the call to action.",
+          "longDesc": "Assenta is a design chairs and armchairs store, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Poltronas e cadeiras de design, feitas para durar décadas.\" and runs through 3 sections. The identity pairs Anton and Inter Tight with a #B5D97A accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/15-cadeiras/",
+          "cover": "img/covers/assenta.webp",
+          "id": "assenta",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Poltronas e cadeiras de design, feitas para durar décadas.\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Anton + Inter Tight, with the #B5D97A accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 3 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Breu Cold Brew · Bottled cold brew store",
+          "desc": "Bottled cold brew store: Breu Cold Brew opens on \"Cold Brew\" and walks the visitor through 7 sections to the call to action.",
+          "longDesc": "Breu Cold Brew is a bottled cold brew store, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Cold Brew\" and runs through 7 sections. The identity pairs DM Serif Display and Plus Jakarta Sans and Quicksand with a #FF6B00 accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/16-cold-brew/",
+          "cover": "img/covers/breu-cold-brew.webp",
+          "id": "breu-cold-brew",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Cold Brew\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in DM Serif Display + Plus Jakarta Sans + Quicksand, with the #FF6B00 accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 7 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Colo · Newborn care landing page",
+          "desc": "Newborn care landing page: Colo opens on \"Cuidado atento para o começo mais precioso.\" and walks the visitor through 7 sections to the call to action.",
+          "longDesc": "Colo is a newborn care landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Cuidado atento para o começo mais precioso.\" and runs through 7 sections. The identity pairs Bricolage Grotesque with a #0055FF accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/17-bebe/",
+          "cover": "img/covers/colo.webp",
+          "id": "colo",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Cuidado atento para o começo mais precioso.\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Bricolage Grotesque, with the #0055FF accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 7 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Lume Casa · AI smart home devices landing page",
+          "desc": "AI smart home devices landing page: Lume Casa opens on \"Sua casa inteligente Segura · Fluida e Protegida\" and walks the visitor through 5 sections to the call to action.",
+          "longDesc": "Lume Casa is a aI smart home devices landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Sua casa inteligente Segura · Fluida e Protegida\" and runs through 5 sections. The identity pairs Inter with a #E8F65A accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/18-smart-device/",
+          "cover": "img/covers/lume-casa.webp",
+          "id": "lume-casa",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Sua casa inteligente Segura · Fluida e Protegida\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Inter, with the #E8F65A accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 5 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Brisa · Therapy app landing page",
+          "desc": "Therapy app landing page: Brisa opens on \"Um canto calmo para cuidar da sua mente\" and walks the visitor through 6 sections to the call to action.",
+          "longDesc": "Brisa is a therapy app landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Um canto calmo para cuidar da sua mente\" and runs through 6 sections. The identity pairs Manrope with a #5E8A5A accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/19-terapia-app/",
+          "cover": "img/covers/brisa.webp",
+          "id": "brisa",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Um canto calmo para cuidar da sua mente\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Manrope, with the #5E8A5A accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 6 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Ventara · Premium sports car collection landing page",
+          "desc": "Premium sports car collection landing page: Ventara opens on \"FEITO PARA DESAFIAR LIMITES\" and walks the visitor through 4 sections to the call to action.",
+          "longDesc": "Ventara is a premium sports car collection landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"FEITO PARA DESAFIAR LIMITES\" and runs through 4 sections. The identity pairs Anton and Sora with a #5B8BAA accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/20-carros/",
+          "cover": "img/covers/ventara.webp",
+          "id": "ventara",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"FEITO PARA DESAFIAR LIMITES\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Anton + Sora, with the #5B8BAA accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 4 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Lumiar Odontologia · Family dental clinic site",
+          "desc": "Family dental clinic site: Lumiar Odontologia opens on \"Odontologia para toda a família\" and walks the visitor through 6 sections to the call to action.",
+          "longDesc": "Lumiar Odontologia is a family dental clinic site, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Odontologia para toda a família\" and runs through 6 sections. The identity pairs Inter with a #2BB0C9 accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/21-clinica-dental/",
+          "cover": "img/covers/lumiar-odontologia.webp",
+          "id": "lumiar-odontologia",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Odontologia para toda a família\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Inter, with the #2BB0C9 accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 6 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Morada · Home decor and furniture store",
+          "desc": "Home decor and furniture store: Morada opens on \"Decoração atemporal para morar bem\" and walks the visitor through 8 sections to the call to action.",
+          "longDesc": "Morada is a home decor and furniture store, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Decoração atemporal para morar bem\" and runs through 8 sections. The identity pairs Plus Jakarta Sans with a #5A6B2A accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/22-decoracao/",
+          "cover": "img/covers/morada.webp",
+          "id": "morada",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Decoração atemporal para morar bem\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Plus Jakarta Sans, with the #5A6B2A accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 8 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Mordida Chocolates · Artisan chocolate store",
+          "desc": "Artisan chocolate store: Mordida Chocolates opens on \"CHOCOLATE FEITO À MÃO PARA QUEM NÃO DIVIDE.\" and walks the visitor through 6 sections to the call to action.",
+          "longDesc": "Mordida Chocolates is a artisan chocolate store, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"CHOCOLATE FEITO À MÃO PARA QUEM NÃO DIVIDE.\" and runs through 6 sections. The identity pairs League Gothic and Outfit with a #F5C76A accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/23-chocolate/",
+          "cover": "img/covers/mordida-chocolates.webp",
+          "id": "mordida-chocolates",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"CHOCOLATE FEITO À MÃO PARA QUEM NÃO DIVIDE.\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in League Gothic + Outfit, with the #F5C76A accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 6 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Cardume · Team project management SaaS landing page",
+          "desc": "Team project management SaaS landing page: Cardume opens on \"GESTÃO TUDO EM UM DE PROJETOS PARA TIMES MODERNOS\" and walks the visitor through 6 sections to the call to action.",
+          "longDesc": "Cardume is a team project management SaaS landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"GESTÃO TUDO EM UM DE PROJETOS PARA TIMES MODERNOS\" and runs through 6 sections. The identity pairs Anton and Caveat and Inter with a #A6F06A accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/24-saas-times/",
+          "cover": "img/covers/cardume.webp",
+          "id": "cardume",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"GESTÃO TUDO EM UM DE PROJETOS PARA TIMES MODERNOS\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Anton + Caveat + Inter, with the #A6F06A accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 6 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Patalar · Pet store and services",
+          "desc": "Pet store and services: Patalar opens on \"Tudo o que seu pet precisa para uma vida mais feliz e saudável.\" and walks the visitor through 7 sections to the call to action.",
+          "longDesc": "Patalar is a pet store and services, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Tudo o que seu pet precisa para uma vida mais feliz e saudável.\" and runs through 7 sections. The identity pairs DM Sans and Fraunces with a #F26A1B accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/25-pet/",
+          "cover": "img/covers/patalar.webp",
+          "id": "patalar",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Tudo o que seu pet precisa para uma vida mais feliz e saudável.\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in DM Sans + Fraunces, with the #F26A1B accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 7 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Lapidária Joias · Fine jewelry store",
+          "desc": "Fine jewelry store: Lapidária Joias opens on \"Lapidária Joias.\" and walks the visitor through 5 sections to the call to action.",
+          "longDesc": "Lapidária Joias is a fine jewelry store, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Lapidária Joias.\" and runs through 5 sections. The identity pairs Bodoni Moda with a #3A2A20 accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/26-joias/",
+          "cover": "img/covers/lapidaria-joias.webp",
+          "id": "lapidaria-joias",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Lapidária Joias.\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Bodoni Moda, with the #3A2A20 accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 5 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Orla Odontologia · Dental clinic landing page",
+          "desc": "Dental clinic landing page: Orla Odontologia opens on \"Seu sorriso bem cuidado começa aqui\" and walks the visitor through 8 sections to the call to action.",
+          "longDesc": "Orla Odontologia is a dental clinic landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Seu sorriso bem cuidado começa aqui\" and runs through 8 sections. The identity pairs Plus Jakarta Sans with a #3B6FA8 accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/27-sorriso/",
+          "cover": "img/covers/orla-odontologia.webp",
+          "id": "orla-odontologia",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Seu sorriso bem cuidado começa aqui\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Plus Jakarta Sans, with the #3B6FA8 accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 8 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Forja Fit Club · Fitness club landing page",
+          "desc": "Fitness club landing page: Forja Fit Club opens on \"Supere seus limites, treine com propósito\" and walks the visitor through 8 sections to the call to action.",
+          "longDesc": "Forja Fit Club is a fitness club landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Supere seus limites, treine com propósito\" and runs through 8 sections. The identity pairs Archivo with a #7A0E14 accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/28-academia/",
+          "cover": "img/covers/forja-fit-club.webp",
+          "id": "forja-fit-club",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Supere seus limites, treine com propósito\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Archivo, with the #7A0E14 accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 8 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "ANIL · Women's streetwear store",
+          "desc": "Women's streetwear store: ANIL opens on \"Vista a sua própria história.\" and walks the visitor through 8 sections to the call to action.",
+          "longDesc": "ANIL is a women's streetwear store, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Vista a sua própria história.\" and runs through 8 sections. The identity pairs Plus Jakarta Sans with a #1A6BFF accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/29-moda-street/",
+          "cover": "img/covers/anil.webp",
+          "id": "anil",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Vista a sua própria história.\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Plus Jakarta Sans, with the #1A6BFF accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 8 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Cadência · Road cycling club landing page",
+          "desc": "Road cycling club landing page: Cadência opens on \"DOMINE A ESTRADA\" and walks the visitor through 4 sections to the call to action.",
+          "longDesc": "Cadência is a road cycling club landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"DOMINE A ESTRADA\" and runs through 4 sections. The identity pairs Anton and Manrope with a #2D6BE4 accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/30-ciclismo/",
+          "cover": "img/covers/cadencia.webp",
+          "id": "cadencia",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"DOMINE A ESTRADA\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Anton + Manrope, with the #2D6BE4 accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 4 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Saibro Tênis Clube · Tennis club landing page",
+          "desc": "Tennis club landing page: Saibro Tênis Clube opens on \"TÊNIS CLUBE\" and walks the visitor through 8 sections to the call to action.",
+          "longDesc": "Saibro Tênis Clube is a tennis club landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"TÊNIS CLUBE\" and runs through 8 sections. The identity pairs Barlow Condensed and Outfit with a #C6F432 accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/31-tenis/",
+          "cover": "img/covers/saibro-tenis-clube.webp",
+          "id": "saibro-tenis-clube",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"TÊNIS CLUBE\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Barlow Condensed + Outfit, with the #C6F432 accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 8 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Solário · AI smart home dashboard",
+          "desc": "AI smart home dashboard: Solário opens on \"Boa tarde, Helena\" and walks the visitor through 4 sections to the call to action.",
+          "longDesc": "Solário is a aI smart home dashboard, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Boa tarde, Helena\" and runs through 4 sections. The identity pairs Outfit with a #B8E09A accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/32-dashboard-casa/",
+          "cover": "img/covers/solario.webp",
+          "id": "solario",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Boa tarde, Helena\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Outfit, with the #B8E09A accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 4 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "broto. · Cold-pressed green juice landing page",
+          "desc": "Cold-pressed green juice landing page: broto. opens on \"UMA ESCOLHA MAIS VERDE PARA O SEU DIA A DIA\" and walks the visitor through 5 sections to the call to action.",
+          "longDesc": "broto. is a cold-pressed green juice landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"UMA ESCOLHA MAIS VERDE PARA O SEU DIA A DIA\" and runs through 5 sections. The identity pairs Archivo with a #B9C98A accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/33-suco-detox/",
+          "cover": "img/covers/broto.webp",
+          "id": "broto",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"UMA ESCOLHA MAIS VERDE PARA O SEU DIA A DIA\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Archivo, with the #B9C98A accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 5 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Fominha · Burger joint landing page (delivery and pickup)",
+          "desc": "Burger joint landing page (delivery and pickup): Fominha opens on \"BURGERS FEITOS PRA DAR VONTADE\" and walks the visitor through 3 sections to the call to action.",
+          "longDesc": "Fominha is a burger joint landing page (delivery and pickup), hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"BURGERS FEITOS PRA DAR VONTADE\" and runs through 3 sections. The identity pairs Anton and Archivo and Caveat with a #8B1A1A accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/34-hamburgueria/",
+          "cover": "img/covers/fominha.webp",
+          "id": "fominha",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"BURGERS FEITOS PRA DAR VONTADE\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Anton + Archivo + Caveat, with the #8B1A1A accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 3 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Alcova · Smart home app with three frosted-glass panels",
+          "desc": "Smart home app with three frosted-glass panels: Alcova opens on \"Alcova · três painéis da casa inteligente\" and walks the visitor through 3 sections to the call to action.",
+          "longDesc": "Alcova is a smart home app with three frosted-glass panels, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Alcova · três painéis da casa inteligente\" and runs through 3 sections. The identity pairs Urbanist with a #A9C5C1 accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/35-paineis-casa/",
+          "cover": "img/covers/alcova.webp",
+          "id": "alcova",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Alcova · três painéis da casa inteligente\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Urbanist, with the #A9C5C1 accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 3 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Penumbra · Home automation landing page (dark theme)",
+          "desc": "Home automation landing page (dark theme): Penumbra opens on \"SUA CASA INTELIGENTE, DO SEU JEITO.\" and walks the visitor through 7 sections to the call to action.",
+          "longDesc": "Penumbra is a home automation landing page (dark theme), hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"SUA CASA INTELIGENTE, DO SEU JEITO.\" and runs through 7 sections. The identity pairs Archivo with a #F2B045 accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/36-lumora-casa/",
+          "cover": "img/covers/penumbra.webp",
+          "id": "penumbra",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"SUA CASA INTELIGENTE, DO SEU JEITO.\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Archivo, with the #F2B045 accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 7 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Ondina · Music player web app with queue and playlists",
+          "desc": "Music player web app with queue and playlists: Ondina opens on \"Artistas em alta\" and walks the visitor through 8 sections to the call to action.",
+          "longDesc": "Ondina is a music player web app with queue and playlists, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Artistas em alta\" and runs through 8 sections. The identity pairs Urbanist with a #F2B640 accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/37-player-musica/",
+          "cover": "img/covers/ondina.webp",
+          "id": "ondina",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Artistas em alta\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Urbanist, with the #F2B640 accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 8 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Ressoa · Headphones store",
+          "desc": "Headphones store: Ressoa opens on \"SOM MAIS INTELIGENTE PARA O SEU DIA\" and walks the visitor through 4 sections to the call to action.",
+          "longDesc": "Ressoa is a headphones store, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"SOM MAIS INTELIGENTE PARA O SEU DIA\" and runs through 4 sections. The identity pairs Anton and Plus Jakarta Sans with a #1F5BD8 accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/38-fones/",
+          "cover": "img/covers/ressoa.webp",
+          "id": "ressoa",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"SOM MAIS INTELIGENTE PARA O SEU DIA\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Anton + Plus Jakarta Sans, with the #1F5BD8 accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 4 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Candeia · Design lighting studio landing page",
+          "desc": "Design lighting studio landing page: Candeia opens on \"DESIGN MODERNO. CONFORTO SEM ESFORÇO. QUALIDADE QUE FICA.\" and walks the visitor through 4 sections to the call to action.",
+          "longDesc": "Candeia is a design lighting studio landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"DESIGN MODERNO. CONFORTO SEM ESFORÇO. QUALIDADE QUE FICA.\" and runs through 4 sections. The identity pairs Urbanist with a #E2761F accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/39-luminarias/",
+          "cover": "img/covers/candeia.webp",
+          "id": "candeia",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"DESIGN MODERNO. CONFORTO SEM ESFORÇO. QUALIDADE QUE FICA.\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Urbanist, with the #E2761F accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 4 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Mirante Residências · Luxury real estate landing page",
+          "desc": "Luxury real estate landing page: Mirante Residências opens on \"Onde A VIDA MORA\" and walks the visitor through 6 sections to the call to action.",
+          "longDesc": "Mirante Residências is a luxury real estate landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Onde A VIDA MORA\" and runs through 6 sections. The identity pairs Instrument Serif and Inter Tight with a #0C2340 accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/40-imovel-luxo/",
+          "cover": "img/covers/mirante-residencias.webp",
+          "id": "mirante-residencias",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Onde A VIDA MORA\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Instrument Serif + Inter Tight, with the #0C2340 accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 6 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Bruma · Numbered design lamp landing page",
+          "desc": "Numbered design lamp landing page: Bruma opens on \"BRUMA, LUMINÁRIA-OBJETO BRUMA\" and walks the visitor through 6 sections to the call to action.",
+          "longDesc": "Bruma is a numbered design lamp landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"BRUMA, LUMINÁRIA-OBJETO BRUMA\" and runs through 6 sections. The identity pairs Archivo with a #5E6B3A accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/41-luminaria-objeto/",
+          "cover": "img/covers/bruma.webp",
+          "id": "bruma",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"BRUMA, LUMINÁRIA-OBJETO BRUMA\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Archivo, with the #5E6B3A accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 6 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "argila · Mineral skincare landing page",
+          "desc": "Mineral skincare landing page: argila opens on \"argila: creme restaurador com argila vermelha e minerais vulcânicos\" and walks the visitor through 7 sections to the call to action.",
+          "longDesc": "argila is a mineral skincare landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"argila: creme restaurador com argila vermelha e minerais vulcânicos\" and runs through 7 sections. The identity pairs Bodoni Moda and Jost with a #7A1E12 accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/42-skincare/",
+          "cover": "img/covers/argila.webp",
+          "id": "argila",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"argila: creme restaurador com argila vermelha e minerais vulcânicos\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Bodoni Moda + Jost, with the #7A1E12 accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 7 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "QUASAR · Collectible digital art gallery",
+          "desc": "Collectible digital art gallery: QUASAR opens on \"QUASAR, arte digital colecionável QUASAR\" and walks the visitor through 5 sections to the call to action.",
+          "longDesc": "QUASAR is a collectible digital art gallery, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"QUASAR, arte digital colecionável QUASAR\" and runs through 5 sections. The identity pairs Archivo and Silkscreen with a #E10600 accent.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/43-colecionaveis/",
+          "cover": "img/covers/quasar.webp",
+          "id": "quasar",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"QUASAR, arte digital colecionável QUASAR\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Archivo + Silkscreen, with the #E10600 accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 5 hand-written sections."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Sereno · Eau de parfum landing page",
+          "desc": "Eau de parfum landing page: Sereno opens on \"FLOR NOTURNA\" and walks the visitor through 5 sections to the call to action.",
+          "longDesc": "Sereno is a eau de parfum landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"FLOR NOTURNA\" and runs through 5 sections. The identity pairs Bodoni Moda and Italiana and Manrope with a #B30000 accent, and motion runs on GSAP.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)",
+            "GSAP"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/44-perfume/",
+          "cover": "img/covers/sereno-perfume.webp",
+          "id": "sereno-perfume",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"FLOR NOTURNA\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Bodoni Moda + Italiana + Manrope, with the #B30000 accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 5 hand-written sections, with GSAP for motion."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Filigrana · Handmade gold jewelry landing page",
+          "desc": "Handmade gold jewelry landing page: Filigrana opens on \"feitas para ADORAÇÃO ATEMPORAL\" and walks the visitor through 6 sections to the call to action.",
+          "longDesc": "Filigrana is a handmade gold jewelry landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"feitas para ADORAÇÃO ATEMPORAL\" and runs through 6 sections. The identity pairs Archivo and Cormorant Garamond with a #B4561C accent, and motion runs on GSAP.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)",
+            "GSAP"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/45-joalheria/",
+          "cover": "img/covers/filigrana.webp",
+          "id": "filigrana",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"feitas para ADORAÇÃO ATEMPORAL\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Archivo + Cormorant Garamond, with the #B4561C accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 6 hand-written sections, with GSAP for motion."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Matiz · Interactive gradient palette page",
+          "desc": "Interactive gradient palette page: Matiz opens on \"CHEGA DE GRADIENTES sem sal.\" and walks the visitor through 10 sections to the call to action.",
+          "longDesc": "Matiz is a interactive gradient palette page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"CHEGA DE GRADIENTES sem sal.\" and runs through 10 sections. The identity pairs Archivo and Inter Tight and JetBrains Mono and Permanent Marker with a #E3261B accent, and motion runs on GSAP.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)",
+            "GSAP"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/46-paletas/",
+          "cover": "img/covers/matiz.webp",
+          "id": "matiz",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"CHEGA DE GRADIENTES sem sal.\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Archivo + Inter Tight + JetBrains Mono + Permanent Marker, with the #E3261B accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 10 hand-written sections, with GSAP for motion."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Calmaria · Natural skincare store",
+          "desc": "Natural skincare store: Calmaria opens on \"NOVO SKINCARE\" and walks the visitor through 9 sections to the call to action.",
+          "longDesc": "Calmaria is a natural skincare store, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"NOVO SKINCARE\" and runs through 9 sections. The identity pairs Anton and Plus Jakarta Sans with a #2E4A33 accent, and motion runs on GSAP.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)",
+            "GSAP"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/47-skincare-glow/",
+          "cover": "img/covers/calmaria.webp",
+          "id": "calmaria",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"NOVO SKINCARE\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Anton + Plus Jakarta Sans, with the #2E4A33 accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 9 hand-written sections, with GSAP for motion."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Altamar · Luxury electric GT landing page",
+          "desc": "Luxury electric GT landing page: Altamar opens on \"O movimento fica mais bonito aqui.\" and walks the visitor through 8 sections to the call to action.",
+          "longDesc": "Altamar is a luxury electric GT landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"O movimento fica mais bonito aqui.\" and runs through 8 sections. The identity pairs Mrs Saint Delafield with a #A8967F accent, and motion runs on GSAP.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)",
+            "GSAP"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/48-carro-luxo/",
+          "cover": "img/covers/altamar.webp",
+          "id": "altamar",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"O movimento fica mais bonito aqui.\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Mrs Saint Delafield, with the #A8967F accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 8 hand-written sections, with GSAP for motion."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Lâmina Diagnósticos · Clinical laboratory site",
+          "desc": "Clinical laboratory site: Lâmina Diagnósticos opens on \"ANÁLISES CLÍNICAS COM RIGOR TÉCNICO E CONFIANÇA\" and walks the visitor through 10 sections to the call to action.",
+          "longDesc": "Lâmina Diagnósticos is a clinical laboratory site, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"ANÁLISES CLÍNICAS COM RIGOR TÉCNICO E CONFIANÇA\" and runs through 10 sections. The identity pairs Barlow Condensed and Barlow with a #1EA7E1 accent, and motion runs on GSAP.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)",
+            "GSAP"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/49-laboratorio/",
+          "cover": "img/covers/lamina-diagnosticos.webp",
+          "id": "lamina-diagnosticos",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"ANÁLISES CLÍNICAS COM RIGOR TÉCNICO E CONFIANÇA\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Barlow Condensed + Barlow, with the #1EA7E1 accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 10 hand-written sections, with GSAP for motion."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Ávora · Premium car rental",
+          "desc": "Premium car rental: Ávora opens on \"Dirija o carro que a viagem pede.\" and walks the visitor through 9 sections to the call to action.",
+          "longDesc": "Ávora is a premium car rental, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Dirija o carro que a viagem pede.\" and runs through 9 sections. The identity pairs system fonts with a #A8875A accent, and motion runs on GSAP.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)",
+            "GSAP"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/50-aluguel-carros/",
+          "cover": "img/covers/avora.webp",
+          "id": "avora",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Dirija o carro que a viagem pede.\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in system fonts, with the #A8875A accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 9 hand-written sections, with GSAP for motion."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Orvalho · Vitamin C face cleanser landing page",
+          "desc": "Vitamin C face cleanser landing page: Orvalho opens on \"Pele limpa, rotina leve, frescor cítrico.\" and walks the visitor through 10 sections to the call to action.",
+          "longDesc": "Orvalho is a vitamin C face cleanser landing page, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Pele limpa, rotina leve, frescor cítrico.\" and runs through 10 sections. The identity pairs Plus Jakarta Sans with a #2E7D32 accent, and motion runs on GSAP.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)",
+            "GSAP"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/51-skincare-vidro/",
+          "cover": "img/covers/orvalho.webp",
+          "id": "orvalho",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Pele limpa, rotina leve, frescor cítrico.\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Plus Jakarta Sans, with the #2E7D32 accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 10 hand-written sections, with GSAP for motion."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "Partida · Car rental platform (daily, weekly and subscription)",
+          "desc": "Car rental platform (daily, weekly and subscription): Partida opens on \"Seu próximo destino começa ao volante.\" and walks the visitor through 9 sections to the call to action.",
+          "longDesc": "Partida is a car rental platform (daily, weekly and subscription), hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"Seu próximo destino começa ao volante.\" and runs through 9 sections. The identity pairs system fonts with a #0E0E0E accent, and motion runs on GSAP.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)",
+            "GSAP"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/52-drive-locadora/",
+          "cover": "img/covers/partida.webp",
+          "id": "partida",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"Seu próximo destino começa ao volante.\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in system fonts, with the #0E0E0E accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 9 hand-written sections, with GSAP for motion."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
+        },
+        {
+          "title": "PRENSA Smash Burger · Smash burger joint with interactive menu and ordering",
+          "desc": "Smash burger joint with interactive menu and ordering: PRENSA Smash Burger opens on \"SMASH DE RUA, PRENSADO NA HORA.\" and walks the visitor through 8 sections to the call to action.",
+          "longDesc": "PRENSA Smash Burger is a smash burger joint with interactive menu and ordering, hand-written in plain HTML, CSS and JavaScript with no framework and no build step.\n\nThe page opens on the Portuguese headline \"SMASH DE RUA, PRENSADO NA HORA.\" and runs through 8 sections. The identity pairs Big Shoulders Display and Bricolage Grotesque with a #E3171A accent, and motion runs on GSAP.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)",
+            "GSAP"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/55-burger-smash/",
+          "cover": "img/covers/prensa-smash-burger.webp",
+          "id": "prensa-smash-burger",
+          "category": "site",
+          "featured": false,
+          "status": "live",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "The pitch",
+              "text": "The first fold sums up the offer: \"SMASH DE RUA, PRENSADO NA HORA.\". Every section after it answers a question a buyer has before deciding."
+            },
+            {
+              "icon": "palette",
+              "title": "Type and color",
+              "text": "Set in Big Shoulders Display + Bricolage Grotesque, with the #E3171A accent driving buttons, badges and details."
+            },
+            {
+              "icon": "gauge",
+              "title": "Plain HTML, CSS and JS",
+              "text": "No framework and no build step: 8 hand-written sections, with GSAP for motion."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsive",
+              "text": "The layout reflows for phones instead of just shrinking, with comfortable touch targets."
+            }
+          ]
         }
+        /* LAB:END */
       ]
     },
     contact: {
@@ -1829,7 +3908,2086 @@ A troca EN/PT é um motor de i18n escrito do zero: o site inteiro muda de idioma
             { icon: "gauge", title: "Funciona inteiro sem o motion",
               text: "Desligue o GSAP e todas as páginas continuam funcionando: o movimento é camada extra, nunca dependência. Reduced-motion respeitado, num deploy 100% estático na Vercel." }
           ]
+        },
+        /* LAB:START */
+        {
+          "title": "Maresia Barcos · Landing page de estaleiro de lanchas e catamarãs",
+          "desc": "Landing page de estaleiro de lanchas e catamarãs: Maresia Barcos abre com \"DESEMPENHO SEM IGUAL EM MAR ABERTO, ESTABILIDADE E VERSATILIDADE\" e leva o visitante por 6 seções até a ação.",
+          "longDesc": "Maresia Barcos é landing page de estaleiro de lanchas e catamarãs, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"DESEMPENHO SEM IGUAL EM MAR ABERTO, ESTABILIDADE E VERSATILIDADE\" e segue por \"Encontre o barco ideal\", \"FEITO PARA A POTÊNCIA. PENSADO PARA VOCÊ\", \"Parceiros que equipam cada casco\", \"O que nossos clientes dizem\", \"Pronto para começar sua jornada?\". A identidade usa Archivo e Inter e Instrument Serif com o destaque #2558A8.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/01-barcos/",
+          "cover": "img/covers/maresia-barcos.webp",
+          "id": "maresia-barcos",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"DESEMPENHO SEM IGUAL EM MAR ABERTO, ESTABILIDADE E VERSATILIDADE\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Archivo + Inter + Instrument Serif, com a cor de destaque #2558A8 guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 6 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Demão Pinturas · Landing page de serviço de pintura residencial",
+          "desc": "Landing page de serviço de pintura residencial: Demão Pinturas abre com \"Transforme sua casa com a Demão.\" e leva o visitante por 8 seções até a ação.",
+          "longDesc": "Demão Pinturas é landing page de serviço de pintura residencial, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Transforme sua casa com a Demão.\" e segue por \"Uma demão nova. Uma experiência melhor\", \"Pintura caprichada, do preparo à última demão\", \"Do orçamento à entrega, sem surpresa no caminho\", \"Veja o que uma pintura nova pode fazer\", \"Perguntas que todo cliente faz antes\". A identidade usa Inter Tight com o destaque #01419A.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/02-pintura/",
+          "cover": "img/covers/demao-pinturas.webp",
+          "id": "demao-pinturas",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Transforme sua casa com a Demão.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Inter Tight, com a cor de destaque #01419A guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 8 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Linha Nobre · E-commerce de moda (home de loja)",
+          "desc": "E-commerce de moda (home de loja): Linha Nobre abre com \"ESTILO SEM PRAZO\" e leva o visitante por 3 seções até a ação.",
+          "longDesc": "Linha Nobre é e-commerce de moda (home de loja), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"ESTILO SEM PRAZO\" e segue por \"DESCUBRA SEU ESTILO\", \"ESSENCIAIS DA NOVA ESTAÇÃO\", \"MAIS VENDIDOS\". A identidade usa Anton e Inter com o destaque #0B2A55.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/03-moda-luxo/",
+          "cover": "img/covers/linha-nobre.webp",
+          "id": "linha-nobre",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"ESTILO SEM PRAZO\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Anton + Inter, com a cor de destaque #0B2A55 guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 3 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Terrana Arquitetura · Site de estúdio de arquitetura, interiores e paisagismo",
+          "desc": "Site de estúdio de arquitetura, interiores e paisagismo: Terrana Arquitetura abre com \"Espaços com escala humana.\" e leva o visitante por 4 seções até a ação.",
+          "longDesc": "Terrana Arquitetura é site de estúdio de arquitetura, interiores e paisagismo, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Espaços com escala humana.\" e segue por \"Do croqui à chave na mão\", \"Espaços reais. Histórias reais\", \"Desenhando um cotidiano melhor\", \"Vamos desenhar o seu lugar\". A identidade usa Manrope com o destaque #A8937A.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/04-arquitetura/",
+          "cover": "img/covers/terrana-arquitetura.webp",
+          "id": "terrana-arquitetura",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Espaços com escala humana.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Manrope, com a cor de destaque #A8937A guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 4 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Fôlego · Landing page de academia e comunidade fitness",
+          "desc": "Landing page de academia e comunidade fitness: Fôlego abre com \"Destrave seu potencial, hub de treino e saúde\" e leva o visitante por 7 seções até a ação.",
+          "longDesc": "Fôlego é landing page de academia e comunidade fitness, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Destrave seu potencial, hub de treino e saúde\" e segue por \"Hub de vida ativa: eleve seu estilo de vida pelo movimento\", \"Mexa-se para manter a saúde em dia\", \"Tudo para você treinar com constância\", \"Treino acessível para todos\", \"Acompanhe sua evolução de saúde\". A identidade usa Inter com o destaque #FF4A2A.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/05-fitness/",
+          "cover": "img/covers/folego.webp",
+          "id": "folego",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Destrave seu potencial, hub de treino e saúde\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Inter, com a cor de destaque #FF4A2A guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 7 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Garfo Verde · Delivery de comida (marketplace de restaurantes)",
+          "desc": "Delivery de comida (marketplace de restaurantes): Garfo Verde abre com \"Entregue na sua porta\" e leva o visitante por 3 seções até a ação.",
+          "longDesc": "Garfo Verde é delivery de comida (marketplace de restaurantes), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Entregue na sua porta\" e segue por \"Categorias\", \"0% OFF no seu primeiro pedido\", \"Pratos mais pedidos\". A identidade usa Anton e Caveat e Plus Jakarta Sans com o destaque #8BC34A.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/06-delivery/",
+          "cover": "img/covers/garfo-verde.webp",
+          "id": "garfo-verde",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Entregue na sua porta\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Anton + Caveat + Plus Jakarta Sans, com a cor de destaque #8BC34A guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 3 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Alpendre Imóveis · Landing page de portal imobiliário (comprar, alugar, vender)",
+          "desc": "Landing page de portal imobiliário (comprar, alugar, vender): Alpendre Imóveis abre com \"Conectando você ao lar que você ama\" e leva o visitante por 4 seções até a ação.",
+          "longDesc": "Alpendre Imóveis é landing page de portal imobiliário (comprar, alugar, vender), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Conectando você ao lar que você ama\" e segue por \"Casa Ipê\", \"Escolhida por 80 mil famílias\", \"Encontre a casa dos seus sonhos\", \"O que dizem nossos clientes\", \"Diga olá a dias mais leves, juntos\". A identidade usa League Spartan com o destaque #FFA829.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/07-imobiliaria/",
+          "cover": "img/covers/alpendre-imoveis.webp",
+          "id": "alpendre-imoveis",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Conectando você ao lar que você ama\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em League Spartan, com a cor de destaque #FFA829 guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 4 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Musgo Casa · Landing page de loja de móveis",
+          "desc": "Landing page de loja de móveis: Musgo Casa abre com \"Monte a casa dos seus sonhos com os nossos móveis!\" e leva o visitante por 4 seções até a ação.",
+          "longDesc": "Musgo Casa é landing page de loja de móveis, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Monte a casa dos seus sonhos com os nossos móveis!\" e segue por \"Categorias\", \"Design moderno para qualquer orçamento\", \"O que nos torna diferentes dos outros\", \"Transforme sua casa com móveis cheios de estilo!\". A identidade usa Inter com o destaque #679936.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/08-moveis/",
+          "cover": "img/covers/musgo-casa.webp",
+          "id": "musgo-casa",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Monte a casa dos seus sonhos com os nossos móveis!\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Inter, com a cor de destaque #679936 guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 4 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Arco Estúdio · Landing page de agência criativa de branding e digital",
+          "desc": "Landing page de agência criativa de branding e digital: Arco Estúdio abre com \"ESTÚDIO ✦ ✦ CRIATIVO BRANDING & DIGITAL\" e leva o visitante por 5 seções até a ação.",
+          "longDesc": "Arco Estúdio é landing page de agência criativa de branding e digital, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"ESTÚDIO ✦ ✦ CRIATIVO BRANDING & DIGITAL\" e segue por \"Projetando o sucesso de amanhã, hoje\", \"Soluções inovadoras de branding\", \"Nossos projetos mais recentes\", \"O que nossos clientes dizem\", \"Tem um projeto? Vamos conversar\". A identidade usa Karla com o destaque #4F4AD7.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/09-agencia/",
+          "cover": "img/covers/arco-estudio.webp",
+          "id": "arco-estudio",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"ESTÚDIO ✦ ✦ CRIATIVO BRANDING & DIGITAL\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Karla, com a cor de destaque #4F4AD7 guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 5 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Andalá Viagens · Landing page de agência de viagens em família",
+          "desc": "Landing page de agência de viagens em família: Andalá Viagens abre com \"Mais tempo em família. Menos tempo planejando.\" e leva o visitante por 7 seções até a ação.",
+          "longDesc": "Andalá Viagens é landing page de agência de viagens em família, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Mais tempo em família. Menos tempo planejando.\" e segue por \"Não sabe para onde ir?\", \"Sua viagem em 4 passos\", \"Por que viajar com a Andalá\", \"Destinos favoritos das famílias\", \"As próximas férias já podem começar hoje\". A identidade usa Bricolage Grotesque com o destaque #639CCC.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/10-viagens/",
+          "cover": "img/covers/andala-viagens.webp",
+          "id": "andala-viagens",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Mais tempo em família. Menos tempo planejando.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Bricolage Grotesque, com a cor de destaque #639CCC guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 7 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Liana Nutri · E-commerce de suplementos de imunidade",
+          "desc": "E-commerce de suplementos de imunidade: Liana Nutri abre com \"Cuide da sua defesa natural, todo dia\" e leva o visitante por 7 seções até a ação.",
+          "longDesc": "Liana Nutri é e-commerce de suplementos de imunidade, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Cuide da sua defesa natural, todo dia\" e segue por \"Seu sistema imune está exposto o tempo todo\", \"Formas biodisponíveis ajudam os nutrientes a chegar às células com mais eficiência\", \"Suplementos /iana\", \"Escolhido por quem cuida da própria saúde\". A identidade usa Instrument Sans com o destaque #1F3B2A.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/11-suplementos/",
+          "cover": "img/covers/liana-nutri.webp",
+          "id": "liana-nutri",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Cuide da sua defesa natural, todo dia\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Instrument Sans, com a cor de destaque #1F3B2A guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 7 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Alento · Landing page de plataforma de bem-estar (wellness)",
+          "desc": "Landing page de plataforma de bem-estar (wellness): Alento abre com \"Equilíbrio possível\" e leva o visitante por 4 seções até a ação.",
+          "longDesc": "Alento é landing page de plataforma de bem-estar (wellness), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Equilíbrio possível\" e segue por \"A maioria das pessoas não falha no autocuidado. Falha em decidir o que fazer hoje\", \"Como ajudamos você a ficar bem, com realismo\", \"Equilíbrio que cabe em vidas reais, não em rotinas perfeitas\". A identidade usa Inter com o destaque #1FBF7A.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/12-wellness/",
+          "cover": "img/covers/alento.webp",
+          "id": "alento",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Equilíbrio possível\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Inter, com a cor de destaque #1FBF7A guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 4 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Mente Calma · Landing page de app de saúde mental e bem-estar",
+          "desc": "Landing page de app de saúde mental e bem-estar: Mente Calma abre com \"Uma mente calma. Um você mais leve.\" e leva o visitante por 6 seções até a ação.",
+          "longDesc": "Mente Calma é landing page de app de saúde mental e bem-estar, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Uma mente calma. Um você mais leve.\" e segue por \"Uma mente calma. Um você mais leve\", \"Pausas guiadas para qualquer hora do dia\", \"Cultive uma mente mais saudável nos ambientes do dia a dia\", \"Escolha o ritmo que cabe na sua rotina\", \"Perguntas frequentes\". A identidade usa Inter com o destaque #5E9473.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/13-mente-calma/",
+          "cover": "img/covers/mente-calma.webp",
+          "id": "mente-calma",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Uma mente calma. Um você mais leve.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Inter, com a cor de destaque #5E9473 guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 6 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Lastro · Landing page de SaaS de gestão financeira com IA",
+          "desc": "Landing page de SaaS de gestão financeira com IA: Lastro abre com \"Sua gestão financeira no próximo nível\" e leva o visitante por 10 seções até a ação.",
+          "longDesc": "Lastro é landing page de SaaS de gestão financeira com IA, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Sua gestão financeira no próximo nível\" e segue por \"Visão geral\", \"Tudo o que o financeiro precisa, sem planilha paralela\", \"Conecte tudo sem esforço ao seu ecossistema financeiro\", \"Planos que crescem junto com a sua operação\", \"Fique à frente nas finanças\". A identidade usa Outfit com o destaque #5E7D2A.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/14-saas-financas/",
+          "cover": "img/covers/lastro.webp",
+          "id": "lastro",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Sua gestão financeira no próximo nível\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Outfit, com a cor de destaque #5E7D2A guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 10 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Assenta · E-commerce de cadeiras e poltronas de design",
+          "desc": "E-commerce de cadeiras e poltronas de design: Assenta abre com \"Poltronas e cadeiras de design, feitas para durar décadas.\" e leva o visitante por 3 seções até a ação.",
+          "longDesc": "Assenta é e-commerce de cadeiras e poltronas de design, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Poltronas e cadeiras de design, feitas para durar décadas.\" e segue por \"VALORES\", \"COLEÇÃO DE CADEIRAS\", \"CATEGORIAS\". A identidade usa Anton e Inter Tight com o destaque #B5D97A.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/15-cadeiras/",
+          "cover": "img/covers/assenta.webp",
+          "id": "assenta",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Poltronas e cadeiras de design, feitas para durar décadas.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Anton + Inter Tight, com a cor de destaque #B5D97A guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 3 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Breu Cold Brew · E-commerce de cold brew engarrafado",
+          "desc": "E-commerce de cold brew engarrafado: Breu Cold Brew abre com \"Cold Brew\" e leva o visitante por 7 seções até a ação.",
+          "longDesc": "Breu Cold Brew é e-commerce de cold brew engarrafado, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Cold Brew\" e segue por \"Fazendo sucesso, um gole de cada vez\", \"Encontre o seu cold brew\", \"Energia para o seu dia com a Breu\", \"O que dizem nossos clientes\", \"Nossa newsletter\". A identidade usa DM Serif Display e Plus Jakarta Sans e Quicksand com o destaque #FF6B00.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/16-cold-brew/",
+          "cover": "img/covers/breu-cold-brew.webp",
+          "id": "breu-cold-brew",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Cold Brew\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em DM Serif Display + Plus Jakarta Sans + Quicksand, com a cor de destaque #FF6B00 guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 7 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Colo · Landing page de cuidados com recém-nascidos",
+          "desc": "Landing page de cuidados com recém-nascidos: Colo abre com \"Cuidado atento para o começo mais precioso.\" e leva o visitante por 7 seções até a ação.",
+          "longDesc": "Colo é landing page de cuidados com recém-nascidos, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Cuidado atento para o começo mais precioso.\" e segue por \"Porque cuidar de um bebê vai além do essencial\", \"O cuidado diário de que eles precisam\", \"Feito pensando nos bebês\", \"Mais preparo para os momentos que não dá para planejar\", \"O que as famílias contam\". A identidade usa Bricolage Grotesque com o destaque #0055FF.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/17-bebe/",
+          "cover": "img/covers/colo.webp",
+          "id": "colo",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Cuidado atento para o começo mais precioso.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Bricolage Grotesque, com a cor de destaque #0055FF guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 7 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Lume Casa · Landing page de dispositivos de casa inteligente com IA",
+          "desc": "Landing page de dispositivos de casa inteligente com IA: Lume Casa abre com \"Sua casa inteligente Segura · Fluida e Protegida\" e leva o visitante por 5 seções até a ação.",
+          "longDesc": "Lume Casa é landing page de dispositivos de casa inteligente com IA, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Sua casa inteligente Segura · Fluida e Protegida\" e segue por \"Conheça um jeito mais inteligente de viver\", \"Descubra os dispositivos mais recentes para casa\", \"O que as pessoas dizem\", \"Uma vida mais inteligente começa com um clique\". A identidade usa Inter com o destaque #E8F65A.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/18-smart-device/",
+          "cover": "img/covers/lume-casa.webp",
+          "id": "lume-casa",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Sua casa inteligente Segura · Fluida e Protegida\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Inter, com a cor de destaque #E8F65A guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 5 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Brisa · Landing page de app de saúde mental (B2C)",
+          "desc": "Landing page de app de saúde mental (B2C): Brisa abre com \"Um canto calmo para cuidar da sua mente\" e leva o visitante por 6 seções até a ação.",
+          "longDesc": "Brisa é landing page de app de saúde mental (B2C), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Um canto calmo para cuidar da sua mente\" e segue por \"SELOS E COMPROMISSOS\", \"CONECTA COM\", \"Ferramentas que acompanham o seu ritmo, não o contrário\", \"Seu apoio, onde você estiver\". A identidade usa Manrope com o destaque #5E8A5A.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/19-terapia-app/",
+          "cover": "img/covers/brisa.webp",
+          "id": "brisa",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Um canto calmo para cuidar da sua mente\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Manrope, com a cor de destaque #5E8A5A guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 6 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Ventara · Landing page de coleção de carros esportivos premium",
+          "desc": "Landing page de coleção de carros esportivos premium: Ventara abre com \"FEITO PARA DESAFIAR LIMITES\" e leva o visitante por 4 seções até a ação.",
+          "longDesc": "Ventara é landing page de coleção de carros esportivos premium, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"FEITO PARA DESAFIAR LIMITES\" e segue por \"Éter GT\", \"Encontre seu próximo carro\", \"Mais do que só dirigir\", \"FEITO PARA PERFORMAR\". A identidade usa Anton e Sora com o destaque #5B8BAA.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/20-carros/",
+          "cover": "img/covers/ventara.webp",
+          "id": "ventara",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"FEITO PARA DESAFIAR LIMITES\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Anton + Sora, com a cor de destaque #5B8BAA guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 4 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Lumiar Odontologia · Site de clínica odontológica familiar",
+          "desc": "Site de clínica odontológica familiar: Lumiar Odontologia abre com \"Odontologia para toda a família\" e leva o visitante por 6 seções até a ação.",
+          "longDesc": "Lumiar Odontologia é site de clínica odontológica familiar, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Odontologia para toda a família\" e segue por \"Odontologia avançada para um sorriso mais saudável\", \"Por que escolher a Lumiar Odontologia?\", \"Dicas simples para cuidar do sorriso da família inteira, entre uma consulta e outra\", \"Seu sorriso importa. Fale com a gente hoje\". A identidade usa Inter com o destaque #2BB0C9.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/21-clinica-dental/",
+          "cover": "img/covers/lumiar-odontologia.webp",
+          "id": "lumiar-odontologia",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Odontologia para toda a família\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Inter, com a cor de destaque #2BB0C9 guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 6 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Morada · E-commerce de decoração e móveis",
+          "desc": "E-commerce de decoração e móveis: Morada abre com \"Decoração atemporal para morar bem\" e leva o visitante por 8 seções até a ação.",
+          "longDesc": "Morada é e-commerce de decoração e móveis, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Decoração atemporal para morar bem\" e segue por \"Melhores escolhas para a sua casa\", \"Novidades\", \"Poltrona Alba em linho oliva\", \"Compre por categoria\", \"Grandes ofertas\". A identidade usa Plus Jakarta Sans com o destaque #5A6B2A.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/22-decoracao/",
+          "cover": "img/covers/morada.webp",
+          "id": "morada",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Decoração atemporal para morar bem\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Plus Jakarta Sans, com a cor de destaque #5A6B2A guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 8 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Mordida Chocolates · E-commerce de chocolate artesanal",
+          "desc": "E-commerce de chocolate artesanal: Mordida Chocolates abre com \"CHOCOLATE FEITO À MÃO PARA QUEM NÃO DIVIDE.\" e leva o visitante por 6 seções até a ação.",
+          "longDesc": "Mordida Chocolates é e-commerce de chocolate artesanal, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"CHOCOLATE FEITO À MÃO PARA QUEM NÃO DIVIDE.\" e segue por \"CONHEÇA SEUS NOVOS FAVORITOS\", \"O QUE TEM DE BOM\", \"NÃO ACREDITE SÓ NA NOSSA PALAVRA\", \"COMPRE CHOCOLATES ARTESANAIS\". A identidade usa League Gothic e Outfit com o destaque #F5C76A.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/23-chocolate/",
+          "cover": "img/covers/mordida-chocolates.webp",
+          "id": "mordida-chocolates",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"CHOCOLATE FEITO À MÃO PARA QUEM NÃO DIVIDE.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em League Gothic + Outfit, com a cor de destaque #F5C76A guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 6 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Cardume · Landing page de SaaS de gestão de projetos para times",
+          "desc": "Landing page de SaaS de gestão de projetos para times: Cardume abre com \"GESTÃO TUDO EM UM DE PROJETOS PARA TIMES MODERNOS\" e leva o visitante por 6 seções até a ação.",
+          "longDesc": "Cardume é landing page de SaaS de gestão de projetos para times, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"GESTÃO TUDO EM UM DE PROJETOS PARA TIMES MODERNOS\" e segue por \"POR QUE TIMES ESCOLHEM A CARDUME PARA CRESCER JUNTOS\", \"Tudo o que o seu time precisa, reunido em uma só plataforma\", \"Comece pequeno, cresça sem trocar de ferramenta\", \"TIRE AS IDEIAS DO PAPEL COM O TIME INTEIRO\". A identidade usa Anton e Caveat e Inter com o destaque #A6F06A.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/24-saas-times/",
+          "cover": "img/covers/cardume.webp",
+          "id": "cardume",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"GESTÃO TUDO EM UM DE PROJETOS PARA TIMES MODERNOS\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Anton + Caveat + Inter, com a cor de destaque #A6F06A guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 6 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Patalar · E-commerce pet: loja e serviços para cães e gatos",
+          "desc": "E-commerce pet: loja e serviços para cães e gatos: Patalar abre com \"Tudo o que seu pet precisa para uma vida mais feliz e saudável.\" e leva o visitante por 7 seções até a ação.",
+          "longDesc": "Patalar é e-commerce pet: loja e serviços para cães e gatos, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Tudo o que seu pet precisa para uma vida mais feliz e saudável.\" e segue por \"Começou com um cão sem raça e virou um lar para milhares de pets\", \"Conheça nossa coleção premium\", \"Pets saudáveis, lares mais felizes\", \"Banho, saúde e hospedagem no mesmo lugar\", \"Ganhe 10% na primeira compra e lembrete de reposição\". A identidade usa DM Sans e Fraunces com o destaque #F26A1B.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/25-pet/",
+          "cover": "img/covers/patalar.webp",
+          "id": "patalar",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Tudo o que seu pet precisa para uma vida mais feliz e saudável.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em DM Sans + Fraunces, com a cor de destaque #F26A1B guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 7 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Lapidária Joias · Site de joalheria fina (e-commerce de luxo)",
+          "desc": "Site de joalheria fina (e-commerce de luxo): Lapidária Joias abre com \"Lapidária Joias.\" e leva o visitante por 5 seções até a ação.",
+          "longDesc": "Lapidária Joias é site de joalheria fina (e-commerce de luxo), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Lapidária Joias.\" e segue por \"uma seleção de JOIAS EXTRAORDINÁRIAS\", \"desenhadas COM INTENÇÃO\", \"nascidas do EXTRAORDINÁRIO\", \"descubra no INSTAGRAM\", \"Fique perto do extraordinário\". A identidade usa Bodoni Moda com o destaque #3A2A20.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/26-joias/",
+          "cover": "img/covers/lapidaria-joias.webp",
+          "id": "lapidaria-joias",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Lapidária Joias.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Bodoni Moda, com a cor de destaque #3A2A20 guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 5 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Orla Odontologia · Landing page de clínica odontológica (hero azul tudo-em-um)",
+          "desc": "Landing page de clínica odontológica (hero azul tudo-em-um): Orla Odontologia abre com \"Seu sorriso bem cuidado começa aqui\" e leva o visitante por 8 seções até a ação.",
+          "longDesc": "Orla Odontologia é landing page de clínica odontológica (hero azul tudo-em-um), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Seu sorriso bem cuidado começa aqui\" e segue por \"Clareamento dental\", \"Tratamentos para cada fase do seu sorriso\", \"Do primeiro contato ao retorno, sem surpresa no caminho\", \"Tudo o que você precisa antes, durante e depois da consulta\", \"Quem passa pela Orla conta como foi o atendimento\". A identidade usa Plus Jakarta Sans com o destaque #3B6FA8.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/27-sorriso/",
+          "cover": "img/covers/orla-odontologia.webp",
+          "id": "orla-odontologia",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Seu sorriso bem cuidado começa aqui\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Plus Jakarta Sans, com a cor de destaque #3B6FA8 guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 8 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Forja Fit Club · Landing page de academia / fitness club",
+          "desc": "Landing page de academia / fitness club: Forja Fit Club abre com \"Supere seus limites, treine com propósito\" e leva o visitante por 8 seções até a ação.",
+          "longDesc": "Forja Fit Club é landing page de academia / fitness club, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Supere seus limites, treine com propósito\" e segue por \"Polo de vida ativa: eleve o seu dia a dia pelo treino\", \"Tudo o que você precisa para treinar com constância\", \"Fitness acessível para todo mundo\", \"Acompanhe a sua evolução\", \"TREINO QUE SE ADAPTA A VOCÊ\". A identidade usa Archivo com o destaque #7A0E14.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/28-academia/",
+          "cover": "img/covers/forja-fit-club.webp",
+          "id": "forja-fit-club",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Supere seus limites, treine com propósito\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Archivo, com a cor de destaque #7A0E14 guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 8 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "ANIL · E-commerce de moda feminina street/casual",
+          "desc": "E-commerce de moda feminina street/casual: ANIL abre com \"Vista a sua própria história.\" e leva o visitante por 8 seções até a ação.",
+          "longDesc": "ANIL é e-commerce de moda feminina street/casual, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Vista a sua própria história.\" e segue por \"Coleções em alta\", \"Seu estilo, sem complicação!\", \"Moda de rua com cara de céu aberto\", \"O que dizem nossas clientes\", \"Eleve seu estilo de todo dia!\". A identidade usa Plus Jakarta Sans com o destaque #1A6BFF.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/29-moda-street/",
+          "cover": "img/covers/anil.webp",
+          "id": "anil",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Vista a sua própria história.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Plus Jakarta Sans, com a cor de destaque #1A6BFF guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 8 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Cadência · Landing page de clube de ciclismo de estrada",
+          "desc": "Landing page de clube de ciclismo de estrada: Cadência abre com \"DOMINE A ESTRADA\" e leva o visitante por 4 seções até a ação.",
+          "longDesc": "Cadência é landing page de clube de ciclismo de estrada, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"DOMINE A ESTRADA\" e segue por \"Treine com método. Pedale mais forte\", \"Escolha seu pedal. Monte seu plano. Treine do seu jeito\", \"Seu primeiro pedal com a gente é por nossa conta\". A identidade usa Anton e Manrope com o destaque #2D6BE4.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/30-ciclismo/",
+          "cover": "img/covers/cadencia.webp",
+          "id": "cadencia",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"DOMINE A ESTRADA\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Anton + Manrope, com a cor de destaque #2D6BE4 guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 4 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Saibro Tênis Clube · Landing page de clube de tênis",
+          "desc": "Landing page de clube de tênis: Saibro Tênis Clube abre com \"TÊNIS CLUBE\" e leva o visitante por 8 seções até a ação.",
+          "longDesc": "Saibro Tênis Clube é landing page de clube de tênis, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"TÊNIS CLUBE\" e segue por \"RESERVA DE QUADRA\", \"AULAS DE TÊNIS\", \"MAIS QUE UM JOGO UMA COMUNIDADE FORTE\", \"Três planos pensados para elevar o seu jogo\", \"Uma plataforma que une design elegante a uma navegação intuitiva\". A identidade usa Barlow Condensed e Outfit com o destaque #C6F432.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/31-tenis/",
+          "cover": "img/covers/saibro-tenis-clube.webp",
+          "id": "saibro-tenis-clube",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"TÊNIS CLUBE\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Barlow Condensed + Outfit, com a cor de destaque #C6F432 guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 8 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Solário · Dashboard de casa inteligente com IA",
+          "desc": "Dashboard de casa inteligente com IA: Solário abre com \"Boa tarde, Helena\" e leva o visitante por 4 seções até a ação.",
+          "longDesc": "Solário é dashboard de casa inteligente com IA, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Boa tarde, Helena\" e segue por \"Clima e conforto\", \"Dispositivos inteligentes\", \"Consumo de energia\", \"Sala principal\". A identidade usa Outfit com o destaque #B8E09A.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/32-dashboard-casa/",
+          "cover": "img/covers/solario.webp",
+          "id": "solario",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Boa tarde, Helena\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Outfit, com a cor de destaque #B8E09A guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 4 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "broto. · Landing page de suco verde prensado a frio",
+          "desc": "Landing page de suco verde prensado a frio: broto. abre com \"UMA ESCOLHA MAIS VERDE PARA O SEU DIA A DIA\" e leva o visitante por 5 seções até a ação.",
+          "longDesc": "broto. é landing page de suco verde prensado a frio, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"UMA ESCOLHA MAIS VERDE PARA O SEU DIA A DIA\" e segue por \"MANTENHA VERDE. MANTENHA SIMPLES\", \"SIMPLES POR NATUREZA. FEITO COM INTENÇÃO\", \"ESCOLHA O SEU VERDE\", \"SINTA A DIFERENÇA EM CADA GOLE\". A identidade usa Archivo com o destaque #B9C98A.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/33-suco-detox/",
+          "cover": "img/covers/broto.webp",
+          "id": "broto",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"UMA ESCOLHA MAIS VERDE PARA O SEU DIA A DIA\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Archivo, com a cor de destaque #B9C98A guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 5 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Fominha · Landing page de hamburgueria (delivery e retirada)",
+          "desc": "Landing page de hamburgueria (delivery e retirada): Fominha abre com \"BURGERS FEITOS PRA DAR VONTADE\" e leva o visitante por 3 seções até a ação.",
+          "longDesc": "Fominha é landing page de hamburgueria (delivery e retirada), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"BURGERS FEITOS PRA DAR VONTADE\" e segue por \"SMASH CLÁSSICO\", \"SABOR GRANDE. INGREDIENTE FRESCO. NADA DE MORDIDA SEM GRAÇA. ZERO CONGELADO!\", \"OS MAIS PEDIDOS DA CHAPA\", \"PEDIU, CHEGOU QUENTE\". A identidade usa Anton e Archivo e Caveat com o destaque #8B1A1A.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/34-hamburgueria/",
+          "cover": "img/covers/fominha.webp",
+          "id": "fominha",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"BURGERS FEITOS PRA DAR VONTADE\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Anton + Archivo + Caveat, com a cor de destaque #8B1A1A guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 3 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Alcova · App de casa inteligente (3 painéis em vidro fosco)",
+          "desc": "App de casa inteligente (3 painéis em vidro fosco): Alcova abre com \"Alcova · três painéis da casa inteligente\" e leva o visitante por 3 seções até a ação.",
+          "longDesc": "Alcova é app de casa inteligente (3 painéis em vidro fosco), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Alcova · três painéis da casa inteligente\" e segue por \"Sala de estar\", \"Cômodos\", \"Quarto\", \"Sala de estar\", \"Caixas de som\". A identidade usa Urbanist com o destaque #A9C5C1.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/35-paineis-casa/",
+          "cover": "img/covers/alcova.webp",
+          "id": "alcova",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Alcova · três painéis da casa inteligente\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Urbanist, com a cor de destaque #A9C5C1 guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 3 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Penumbra · Landing page de automação residencial (casa inteligente, tema escuro)",
+          "desc": "Landing page de automação residencial (casa inteligente, tema escuro): Penumbra abre com \"SUA CASA INTELIGENTE, DO SEU JEITO.\" e leva o visitante por 7 seções até a ação.",
+          "longDesc": "Penumbra é landing page de automação residencial (casa inteligente, tema escuro), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"SUA CASA INTELIGENTE, DO SEU JEITO.\" e segue por \"Fechadura inteligente que guarda suas senhas de segurança\", \"TUDO CONECTADO, NADA À VISTA\", \"UM TOQUE, A CASA INTEIRA\", \"ANTES DA VISITA, O QUE TODO MUNDO PERGUNTA\", \"COMECE PELO CÔMODO QUE VOCÊ MAIS USA\". A identidade usa Archivo com o destaque #F2B045.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/36-lumora-casa/",
+          "cover": "img/covers/penumbra.webp",
+          "id": "penumbra",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"SUA CASA INTELIGENTE, DO SEU JEITO.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Archivo, com a cor de destaque #F2B045 guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 7 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Ondina · App web de música (player com fila e playlists)",
+          "desc": "App web de música (player com fila e playlists): Ondina abre com \"Artistas em alta\" e leva o visitante por 8 seções até a ação.",
+          "longDesc": "Ondina é app web de música (player com fila e playlists), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Artistas em alta\" e segue por \"Na sequência\", \"Playlists populares\", \"Âmbar às Duas\". A identidade usa Urbanist com o destaque #F2B640.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/37-player-musica/",
+          "cover": "img/covers/ondina.webp",
+          "id": "ondina",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Artistas em alta\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Urbanist, com a cor de destaque #F2B640 guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 8 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Ressoa · E-commerce de fones de ouvido",
+          "desc": "E-commerce de fones de ouvido: Ressoa abre com \"SOM MAIS INTELIGENTE PARA O SEU DIA\" e leva o visitante por 4 seções até a ação.",
+          "longDesc": "Ressoa é e-commerce de fones de ouvido, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"SOM MAIS INTELIGENTE PARA O SEU DIA\" e segue por \"COMPRE POR CATEGORIA\", \"SOM DE OUTRO NÍVEL\", \"Marcas parceiras\". A identidade usa Anton e Plus Jakarta Sans com o destaque #1F5BD8.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/38-fones/",
+          "cover": "img/covers/ressoa.webp",
+          "id": "ressoa",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"SOM MAIS INTELIGENTE PARA O SEU DIA\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Anton + Plus Jakarta Sans, com a cor de destaque #1F5BD8 guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 4 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Candeia · Landing page de ateliê de luminárias de design",
+          "desc": "Landing page de ateliê de luminárias de design: Candeia abre com \"DESIGN MODERNO. CONFORTO SEM ESFORÇO. QUALIDADE QUE FICA.\" e leva o visitante por 4 seções até a ação.",
+          "longDesc": "Candeia é landing page de ateliê de luminárias de design, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"DESIGN MODERNO. CONFORTO SEM ESFORÇO. QUALIDADE QUE FICA.\" e segue por \"A SELEÇÃO\", \"Quatro formas de acender o fim do dia\", \"Mande uma foto do ambiente. A gente indica a peça e a altura certas\". A identidade usa Urbanist com o destaque #E2761F.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/39-luminarias/",
+          "cover": "img/covers/candeia.webp",
+          "id": "candeia",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"DESIGN MODERNO. CONFORTO SEM ESFORÇO. QUALIDADE QUE FICA.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Urbanist, com a cor de destaque #E2761F guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 4 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Mirante Residências · Landing page de imobiliária de alto padrão",
+          "desc": "Landing page de imobiliária de alto padrão: Mirante Residências abre com \"Onde A VIDA MORA\" e leva o visitante por 6 seções até a ação.",
+          "longDesc": "Mirante Residências é landing page de imobiliária de alto padrão, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Onde A VIDA MORA\" e segue por \"Todo lar começa com a visão de viver melhor\", \"Feito com propósito\", \"Antes da visita, as respostas\", \"Sua próxima casa começa numa conversa\". A identidade usa Instrument Serif e Inter Tight com o destaque #0C2340.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/40-imovel-luxo/",
+          "cover": "img/covers/mirante-residencias.webp",
+          "id": "mirante-residencias",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Onde A VIDA MORA\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Instrument Serif + Inter Tight, com a cor de destaque #0C2340 guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 6 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Bruma · Landing page de luminária-objeto (peça de design numerada)",
+          "desc": "Landing page de luminária-objeto (peça de design numerada): Bruma abre com \"BRUMA, LUMINÁRIA-OBJETO BRUMA\" e leva o visitante por 6 seções até a ação.",
+          "longDesc": "Bruma é landing page de luminária-objeto (peça de design numerada), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"BRUMA, LUMINÁRIA-OBJETO BRUMA\" e segue por \"NÃO É SÓ LUZ. É UM SENTIMENTO\", \"LUZ QUE SE ADAPTA A VOCÊ\", \"CADA PARTE FEITA À MÃO\", \"TRÊS MATERIAIS. NENHUM ATALHO\", \"RESERVE A SUA BRUMA 01\". A identidade usa Archivo com o destaque #5E6B3A.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/41-luminaria-objeto/",
+          "cover": "img/covers/bruma.webp",
+          "id": "bruma",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"BRUMA, LUMINÁRIA-OBJETO BRUMA\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Archivo, com a cor de destaque #5E6B3A guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 6 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "argila · Landing page de skincare mineral",
+          "desc": "Landing page de skincare mineral: argila abre com \"argila: creme restaurador com argila vermelha e minerais vulcânicos\" e leva o visitante por 7 seções até a ação.",
+          "longDesc": "argila é landing page de skincare mineral, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"argila: creme restaurador com argila vermelha e minerais vulcânicos\" e segue por \"PELE, EM REPOUSO\", \"SKINCARE QUE FAZ MAIS, COM MENOS\", \"O QUE VAI NO POTE\", \"TRÊS PASSOS, MANHÃ E NOITE\", \"NA PELE DE QUEM USA\". A identidade usa Bodoni Moda e Jost com o destaque #7A1E12.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/42-skincare/",
+          "cover": "img/covers/argila.webp",
+          "id": "argila",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"argila: creme restaurador com argila vermelha e minerais vulcânicos\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Bodoni Moda + Jost, com a cor de destaque #7A1E12 guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 7 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "QUASAR · Landing page de galeria de arte digital colecionável",
+          "desc": "Landing page de galeria de arte digital colecionável: QUASAR abre com \"QUASAR, arte digital colecionável QUASAR\" e leva o visitante por 5 seções até a ação.",
+          "longDesc": "QUASAR é landing page de galeria de arte digital colecionável, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"QUASAR, arte digital colecionável QUASAR\" e segue por \"UM MUNDO FEITO PARA SER SEU\", \"PEÇAS DO DROP 01\", \"DA GALERIA PARA A SUA TELA\", \"QUEM FAZ AS PEÇAS\", \"ENTRE NA LISTA DO PRÓXIMO DROP\". A identidade usa Archivo e Silkscreen com o destaque #E10600.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/43-colecionaveis/",
+          "cover": "img/covers/quasar.webp",
+          "id": "quasar",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"QUASAR, arte digital colecionável QUASAR\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Archivo + Silkscreen, com a cor de destaque #E10600 guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 5 seções escritas à mão."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Sereno · Landing page de perfume (eau de parfum)",
+          "desc": "Landing page de perfume (eau de parfum): Sereno abre com \"FLOR NOTURNA\" e leva o visitante por 5 seções até a ação.",
+          "longDesc": "Sereno é landing page de perfume (eau de parfum), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"FLOR NOTURNA\" e segue por \"A ARTE DO FLORESCER\", \"A ARTE DO FLORESCER\", \"TRÊS TEMPOS, UMA SÓ NOITE\", \"ESCOLHA A SUA NOITE\", \"O RITUAL EM QUATRO GESTOS\". A identidade usa Bodoni Moda e Italiana e Manrope com o destaque #B30000, e o movimento roda em GSAP.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)",
+            "GSAP"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/44-perfume/",
+          "cover": "img/covers/sereno-perfume.webp",
+          "id": "sereno-perfume",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"FLOR NOTURNA\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Bodoni Moda + Italiana + Manrope, com a cor de destaque #B30000 guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 5 seções escritas à mão, com GSAP no movimento."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Filigrana · Landing page de joalheria de ouro feita à mão (noivas e alta joalheria)",
+          "desc": "Landing page de joalheria de ouro feita à mão (noivas e alta joalheria): Filigrana abre com \"feitas para ADORAÇÃO ATEMPORAL\" e leva o visitante por 6 seções até a ação.",
+          "longDesc": "Filigrana é landing page de joalheria de ouro feita à mão (noivas e alta joalheria), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"feitas para ADORAÇÃO ATEMPORAL\" e segue por \"nossas COLEÇÕES\", \"a peça da ESTAÇÃO\", \"feitas à mão no NOSSO ATELIÊ\", \"antes da SUA PROVA\", \"marque sua PROVA PRIVADA\". A identidade usa Archivo e Cormorant Garamond com o destaque #B4561C, e o movimento roda em GSAP.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)",
+            "GSAP"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/45-joalheria/",
+          "cover": "img/covers/filigrana.webp",
+          "id": "filigrana",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"feitas para ADORAÇÃO ATEMPORAL\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Archivo + Cormorant Garamond, com a cor de destaque #B4561C guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 6 seções escritas à mão, com GSAP no movimento."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Matiz · Página interativa de 6 paletas de gradiente (estúdio de cor)",
+          "desc": "Página interativa de 6 paletas de gradiente (estúdio de cor): Matiz abre com \"CHEGA DE GRADIENTES sem sal.\" e leva o visitante por 10 seções até a ação.",
+          "longDesc": "Matiz é página interativa de 6 paletas de gradiente (estúdio de cor), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"CHEGA DE GRADIENTES sem sal.\" e segue por \"Gradiente bom é um matiz só, indo do quase preto ao quase branco\", \"Acid Lime\", \"Tangerine\", \"Lagoon\", \"Cherry Cola\". A identidade usa Archivo e Inter Tight e JetBrains Mono e Permanent Marker com o destaque #E3261B, e o movimento roda em GSAP.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)",
+            "GSAP"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/46-paletas/",
+          "cover": "img/covers/matiz.webp",
+          "id": "matiz",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"CHEGA DE GRADIENTES sem sal.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Archivo + Inter Tight + JetBrains Mono + Permanent Marker, com a cor de destaque #E3261B guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 10 seções escritas à mão, com GSAP no movimento."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Calmaria · E-commerce de skincare natural",
+          "desc": "E-commerce de skincare natural: Calmaria abre com \"NOVO SKINCARE\" e leva o visitante por 9 seções até a ação.",
+          "longDesc": "Calmaria é e-commerce de skincare natural, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"NOVO SKINCARE\" e segue por \"ESCOLHA POR ONDE COMEÇAR\", \"MAIS AMADOS\", \"CINCO MINUTOS SÓ SEUS\", \"INGREDIENTES\", \"SUA ROTINA EM 3 PASSOS\". A identidade usa Anton e Plus Jakarta Sans com o destaque #2E4A33, e o movimento roda em GSAP.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)",
+            "GSAP"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/47-skincare-glow/",
+          "cover": "img/covers/calmaria.webp",
+          "id": "calmaria",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"NOVO SKINCARE\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Anton + Plus Jakarta Sans, com a cor de destaque #2E4A33 guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 9 seções escritas à mão, com GSAP no movimento."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Altamar · Landing page de GT elétrico de luxo (concessionária / marca automotiva) com seção de design system",
+          "desc": "Landing page de GT elétrico de luxo (concessionária / marca automotiva) com seção de design system: Altamar abre com \"O movimento fica mais bonito aqui.\" e leva o visitante por 8 seções até a ação.",
+          "longDesc": "Altamar é landing page de GT elétrico de luxo (concessionária / marca automotiva) com seção de design system, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"O movimento fica mais bonito aqui.\" e segue por \"Altamar Maré GT\", \"Três maneiras de chegar ao mar\", \"Potência que não precisa levantar a voz\", \"Uma cabine feita para a viagem longa\", \"Noventa minutos na estrada valem mais que um catálogo\". A identidade usa Mrs Saint Delafield com o destaque #A8967F, e o movimento roda em GSAP.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)",
+            "GSAP"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/48-carro-luxo/",
+          "cover": "img/covers/altamar.webp",
+          "id": "altamar",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"O movimento fica mais bonito aqui.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Mrs Saint Delafield, com a cor de destaque #A8967F guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 8 seções escritas à mão, com GSAP no movimento."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Lâmina Diagnósticos · Site institucional de laboratório de análises clínicas",
+          "desc": "Site institucional de laboratório de análises clínicas: Lâmina Diagnósticos abre com \"ANÁLISES CLÍNICAS COM RIGOR TÉCNICO E CONFIANÇA\" e leva o visitante por 10 seções até a ação.",
+          "longDesc": "Lâmina Diagnósticos é site institucional de laboratório de análises clínicas, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"ANÁLISES CLÍNICAS COM RIGOR TÉCNICO E CONFIANÇA\" e segue por \"EXAMES MAIS PROCURADOS\", \"POR DENTRO DO LABORATÓRIO\", \"Sobre a Lâmina Diagnósticos\", \"QUEM COLETOU CONTA\", \"SERVIÇOS DO LABORATÓRIO\". A identidade usa Barlow Condensed e Barlow com o destaque #1EA7E1, e o movimento roda em GSAP.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)",
+            "GSAP"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/49-laboratorio/",
+          "cover": "img/covers/lamina-diagnosticos.webp",
+          "id": "lamina-diagnosticos",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"ANÁLISES CLÍNICAS COM RIGOR TÉCNICO E CONFIANÇA\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Barlow Condensed + Barlow, com a cor de destaque #1EA7E1 guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 10 seções escritas à mão, com GSAP no movimento."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Ávora · Locadora de carros premium",
+          "desc": "Locadora de carros premium: Ávora abre com \"Dirija o carro que a viagem pede.\" e leva o visitante por 9 seções até a ação.",
+          "longDesc": "Ávora é locadora de carros premium, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Dirija o carro que a viagem pede.\" e segue por \"Escolha o carro antes de escolher a rota\", \"Quatro degraus entre a reserva e a estrada\", \"Rotas que valem cada quilômetro\", \"A reserva inteira cabe numa tela\", \"Quem dirigiu, conta\". A identidade usa fontes do sistema com o destaque #A8875A, e o movimento roda em GSAP.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)",
+            "GSAP"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/50-aluguel-carros/",
+          "cover": "img/covers/avora.webp",
+          "id": "avora",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Dirija o carro que a viagem pede.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em fontes do sistema, com a cor de destaque #A8875A guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 9 seções escritas à mão, com GSAP no movimento."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Orvalho · Landing page de skincare (gel de limpeza facial com vitamina C)",
+          "desc": "Landing page de skincare (gel de limpeza facial com vitamina C): Orvalho abre com \"Pele limpa, rotina leve, frescor cítrico.\" e leva o visitante por 10 seções até a ação.",
+          "longDesc": "Orvalho é landing page de skincare (gel de limpeza facial com vitamina C), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Pele limpa, rotina leve, frescor cítrico.\" e segue por \"Quatro ativos, cada um com uma função\", \"Sessenta segundos, manhã e noite\", \"O que 42 pessoas sentiram em 21 dias\", \"A rotina completa, do mesmo limão\", \"Na rotina de quem já testou\". A identidade usa Plus Jakarta Sans com o destaque #2E7D32, e o movimento roda em GSAP.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)",
+            "GSAP"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/51-skincare-vidro/",
+          "cover": "img/covers/orvalho.webp",
+          "id": "orvalho",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Pele limpa, rotina leve, frescor cítrico.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Plus Jakarta Sans, com a cor de destaque #2E7D32 guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 10 seções escritas à mão, com GSAP no movimento."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "Partida · Plataforma de aluguel de carros (diária, semanal e assinatura)",
+          "desc": "Plataforma de aluguel de carros (diária, semanal e assinatura): Partida abre com \"Seu próximo destino começa ao volante.\" e leva o visitante por 9 seções até a ação.",
+          "longDesc": "Partida é plataforma de aluguel de carros (diária, semanal e assinatura), escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"Seu próximo destino começa ao volante.\" e segue por \"Nada de locadora do jeito de sempre\", \"Escolha seu carro\", \"Para onde a estrada leva você nesta temporada\", \"Pague pelo tempo que você usa\", \"Quem já pegou a estrada com a gente\". A identidade usa fontes do sistema com o destaque #0E0E0E, e o movimento roda em GSAP.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)",
+            "GSAP"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/52-drive-locadora/",
+          "cover": "img/covers/partida.webp",
+          "id": "partida",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"Seu próximo destino começa ao volante.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em fontes do sistema, com a cor de destaque #0E0E0E guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 9 seções escritas à mão, com GSAP no movimento."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
+        },
+        {
+          "title": "PRENSA Smash Burger · Hamburgueria artesanal de rua (smash burger), cardápio interativo e pedido",
+          "desc": "Hamburgueria artesanal de rua (smash burger), cardápio interativo e pedido: PRENSA Smash Burger abre com \"SMASH DE RUA, PRENSADO NA HORA.\" e leva o visitante por 8 seções até a ação.",
+          "longDesc": "PRENSA Smash Burger é hamburgueria artesanal de rua (smash burger), cardápio interativo e pedido, escrito à mão em HTML, CSS e JavaScript puros, sem framework nem etapa de build.\n\nA página abre com \"SMASH DE RUA, PRENSADO NA HORA.\" e segue por \"Manifesto da casa\", \"ESCOLHE O ESTRAGO\", \"TRÊS PASSOS, ZERO ATALHO\", \"FUMAÇA, FILA E GENTE BOA\", \"PEDE QUE A CHAPA TÁ QUENTE\". A identidade usa Big Shoulders Display e Bricolage Grotesque com o destaque #E3171A, e o movimento roda em GSAP.",
+          "stack": [
+            "HTML5",
+            "CSS3",
+            "JavaScript (vanilla)",
+            "GSAP"
+          ],
+          "link": "https://lab.bernardoiannini.com/sites/55-burger-smash/",
+          "cover": "img/covers/prensa-smash-burger.webp",
+          "id": "prensa-smash-burger",
+          "category": "site",
+          "featured": false,
+          "status": "no ar",
+          "year": "2026",
+          "topics": [
+            {
+              "icon": "layers",
+              "title": "A proposta",
+              "text": "A primeira dobra resume a proposta: \"SMASH DE RUA, PRENSADO NA HORA.\". Cada seção depois dela responde uma dúvida de quem está decidindo."
+            },
+            {
+              "icon": "palette",
+              "title": "Tipografia e cor",
+              "text": "Tipografia em Big Shoulders Display + Bricolage Grotesque, com a cor de destaque #E3171A guiando botões, selos e detalhes."
+            },
+            {
+              "icon": "gauge",
+              "title": "HTML, CSS e JS puros",
+              "text": "Sem framework e sem build: 8 seções escritas à mão, com GSAP no movimento."
+            },
+            {
+              "icon": "globe",
+              "title": "Responsivo",
+              "text": "O layout se reorganiza para o celular em vez de só encolher, com áreas de toque confortáveis."
+            }
+          ]
         }
+        /* LAB:END */
       ]
     },
 
