@@ -9350,3 +9350,82 @@ main .bi-sign a.bi-sign__link{color:#fff;text-decoration:none;border:0}
 
 /* Navbar sem borda: idioma, menu e CV */
 header .pill, header .lang-switch.pill, header .lang-switch:hover, header .lang-switch[aria-expanded="true"], header .cv-btn, header .cv-btn:hover { border-color: transparent !important; }
+
+/* ===== paginas de projeto: linguagem premium 2026 (skill design-sites-premium) ===== */
+.cs { counter-reset: csSec; }
+.cs > section .cs-h2, .cs > nav .cs-h2 { flex-wrap: wrap; font-weight: 600; letter-spacing: -.035em; line-height: 1.05; font-size: clamp(1.9rem, 4vw, 3rem); }
+.cs > section:not(.cs-hero) .cs-h2::before, .cs > nav .cs-h2::before {
+  counter-increment: csSec; content: counter(csSec, decimal-leading-zero) " /";
+  flex: 0 0 100%; width: max-content; max-width: max-content; margin-bottom: 4px;
+  padding: 7px 13px; border: 1px solid var(--w-10); border-radius: 999px;
+  font: 700 11px/1 inherit; font-size: 11px; letter-spacing: .16em; color: var(--text-hint);
+}
+.cs-author .cs-author__kicker::before { content: none; }
+/* botao-assinatura: pilula + circulo com seta */
+.cs-pill--solid { padding: 6px 6px 6px 22px !important; gap: 12px !important; }
+.cs-pill--solid > span { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--bg); color: var(--lime); transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+.cs-pill--solid:hover > span { transform: rotate(45deg); }
+.cs-win__go svg, .cs-others__all svg, .cs-fact2--link svg { transition: transform .3s cubic-bezier(.2,.8,.2,1); }
+.cs-win--link:hover .cs-win__go svg, .cs-others__all:hover svg, .cs-fact2--link:hover svg { transform: translate(3px,-3px) rotate(-45deg); }
+/* bento: primeiro card destacado no acento */
+.cs-feat { border-radius: 24px; padding: 30px 28px 28px; }
+.cs-feat:first-child { background: var(--lime); border-color: transparent; }
+.cs-feat:first-child .cs-feat__title, .cs-feat:first-child .cs-feat__text, .cs-feat:first-child summary, .cs-feat:first-child li { color: #0b1206; }
+.cs-feat:first-child .cs-feat__icon { background: rgba(11,18,6,.12); color: #0b1206; border-color: transparent; }
+.cs-feat:hover { transform: translateY(-6px); box-shadow: 0 24px 50px -24px rgba(0,0,0,.6); }
+.cs-other__img { border-radius: 20px; }
+.cs-other:hover { transform: translateY(-4px); }
+.cs-other { transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+/* wordmark gigante no fim */
+.cs-wordmark { margin: var(--cs-gap) 0 -.12em; font-weight: 700; font-size: clamp(3.5rem, 15vw, 12rem); line-height: .8; letter-spacing: -.05em; white-space: nowrap; overflow: hidden; text-overflow: clip; color: transparent; -webkit-text-stroke: 1px var(--w-10); user-select: none; }
+@media (max-width: 700px) { .cs-feat-grid { grid-template-columns: 1fr; } }
+/* eyebrow em linha propria */
+.cs > section:not(.cs-hero) .cs-h2, .cs > nav .cs-h2 { display: block; }
+.cs > section:not(.cs-hero) .cs-h2::before, .cs > nav .cs-h2::before { display: block; margin-bottom: 14px; }
+.cs > section .cs-h2 .cs-h2__icon { display: none; }
+.cs-others__head { align-items: flex-end; }
+
+/* ===== card do projeto em destaque (home), linguagem premium ===== */
+.pj-panel::before {
+  background:
+    radial-gradient(120% 90% at 100% 0%, color-mix(in oklab, var(--lime) 18%, transparent), transparent 55%),
+    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px) 0 0 / 100% 40px,
+    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px) 0 0 / 40px 100%,
+    #0f1a13;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+}
+.pj-panel__meta { margin-bottom: 18px; }
+.pj-panel__cat {
+  display: inline-flex; align-items: center; gap: 8px; padding: 7px 13px;
+  border: 1px solid var(--w-12); border-radius: 999px;
+  font-size: .68rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--text-soft);
+}
+.pj-panel__cat::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 10px var(--lime); }
+.pj-panel__title, .pj-panel:hover .pj-panel__title {
+  text-transform: none; font-weight: 600; letter-spacing: -.035em; line-height: 1.04;
+  font-size: clamp(1.7rem, 2.5vw, 2.4rem);
+  background: none; -webkit-text-fill-color: #f3f6f4; color: #f3f6f4;
+}
+.pj-panel__desc { color: color-mix(in oklab, var(--text-soft) 85%, transparent); }
+.pj-panel__case {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 6px 6px 6px 22px; background: var(--lime); color: var(--pj-ink);
+}
+.pj-panel__case::after {
+  content: "↗"; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%;
+  background: var(--pj-ink); color: var(--lime); font-size: 1rem; transition: transform .35s cubic-bezier(.2,.8,.2,1);
+}
+@media (hover: hover) { .pj-panel__case:hover { background: var(--lime); } .pj-panel__case:hover::after { transform: rotate(45deg); } }
+/* indices viram barras de progresso */
+.pj-panel__nav { gap: 6px; align-items: center; }
+.pj-panel__dot { width: 34px; height: 4px; min-height: 0; border: 0; border-radius: 4px; background: var(--w-12); font-size: 0; transition: width .4s cubic-bezier(.2,.8,.2,1), background .3s; }
+.pj-panel__dot.is-on { width: 64px; background: var(--lime); }
+@media (pointer: coarse) { .pj-panel__dot { width: 34px; height: 4px; padding: 20px 0; background-clip: content-box; } .pj-panel__dot.is-on { width: 64px; } }
+/* proximo: circulo limpo no recorte */
+.pj-panel__flower { display: none; }
+.pj-panel__next::before { content: ""; position: absolute; inset: 6px; border-radius: 50%; background: var(--lime); transition: transform .45s cubic-bezier(.2,.8,.2,1); }
+@media (hover: hover) { .pj-panel__next:hover::before { transform: scale(1.08); } .pj-panel__next:hover > svg:last-child { transform: translateX(3px); } }
+.pj-panel__next > svg:last-child { transition: transform .3s cubic-bezier(.2,.8,.2,1); }
+/* capas de projeto: sem contorno no hover */
+.pj-card__frame::before, .pj-card.is-hot .pj-card__frame::before { display: none; }
+.pj-win.is-front:hover, .cs-win--link:hover { border-color: var(--w-05); }
