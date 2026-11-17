@@ -9442,3 +9442,21 @@ html.lg-ok header .pill, html.lg-ok header .lang-switch.pill, html.lg-ok header 
   -webkit-backdrop-filter: url(#lgRefract) blur(6px) saturate(1.6) brightness(1.08);
           backdrop-filter: url(#lgRefract) blur(6px) saturate(1.6) brightness(1.08);
 }
+/* card em destaque v2: mais limpo */
+.pj-panel::before {
+  background:
+    radial-gradient(90% 70% at 100% 0%, color-mix(in oklab, var(--lime) 22%, transparent), transparent 60%),
+    radial-gradient(70% 60% at 0% 100%, rgba(255,255,255,.04), transparent 70%),
+    linear-gradient(160deg, #142218 0%, #0c130e 100%);
+  box-shadow: none;
+}
+.pj-panel { padding: clamp(30px, 3vw, 40px); }
+.pj-panel__title, .pj-panel:hover .pj-panel__title { -webkit-text-fill-color: #fff; color: #fff; opacity: 1; font-size: clamp(1.8rem, 2.6vw, 2.55rem); margin-bottom: 16px; }
+.pj-panel__desc { font-size: 1rem; line-height: 1.62; color: rgba(243,246,244,.62); margin-bottom: 28px; }
+.pj-panel__cat { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.1); color: #e8ece9; }
+.pj-panel__case { box-shadow: 0 10px 30px -10px color-mix(in oklab, var(--lime) 70%, transparent); font-weight: 700; }
+.pj-panel__cta .ps-cta--ghost { position: relative; color: rgba(243,246,244,.75); padding-bottom: 2px; background: linear-gradient(currentColor,currentColor) 0 100% / 0 1px no-repeat; transition: background-size .35s cubic-bezier(.2,.8,.2,1), color .25s; }
+.pj-panel__cta .ps-cta--ghost::after { content: " ↗"; }
+@media (hover: hover) { .pj-panel__cta .ps-cta--ghost:hover { color: #fff; background-size: 100% 1px; } }
+.pj-panel__nav { margin-top: 30px; }
+.pj-panel__dot { background: rgba(255,255,255,.14); }
