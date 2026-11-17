@@ -579,3 +579,19 @@ function init() {
 
 if (document.readyState !== 'loading') init();
 else document.addEventListener('DOMContentLoaded', init);
+
+/* liquid glass: filtro SVG de refracao leve usado pelo backdrop-filter da navbar (Chromium) */
+(function () {
+  if (document.getElementById('lgRefract')) return;
+  var ns = 'http://www.w3.org/2000/svg';
+  var s = document.createElementNS(ns, 'svg');
+  s.setAttribute('aria-hidden', 'true'); s.setAttribute('width', '0'); s.setAttribute('height', '0');
+  s.style.cssText = 'position:absolute;width:0;height:0;pointer-events:none';
+  s.innerHTML = '<filter id="lgRefract" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">' +
+    '<feTurbulence type="fractalNoise" baseFrequency="0.008 0.03" numOctaves="2" seed="7" result="n"/>' +
+    '<feGaussianBlur in="n" stdDeviation="2" result="nb"/>' +
+    '<feDisplacementMap in="SourceGraphic" in2="nb" scale="18" xChannelSelector="R" yChannelSelector="G" result="d"/>' +
+    '<feGaussianBlur in="d" stdDeviation="1.2"/></filter>';
+  (document.body || document.documentElement).appendChild(s);
+  if (/Chrome\//.test(navigator.userAgent) && !/Edg\/|OPR\//.test(navigator.userAgent) || /Edg\//.test(navigator.userAgent)) document.documentElement.classList.add('lg-ok');
+})();

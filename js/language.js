@@ -570,7 +570,7 @@ Building the trust this corridor is missing is hard precisely because you can't 
               path: "portal/chat" }
           ]
         },
-        {
+        /* removido a pedido: {
           title: "Módulo Engenharia · Heavy-Industry Automation Site",
           desc: "Institutional site for an engineering firm that automates and maintains the critical machinery of heavy industry: mining, steel, offshore and energy.",
           longDesc: `Módulo Engenharia sells automation, electrical engineering and field maintenance for industry that cannot afford to stop. The site is a single-page journey that opens on a cinematic offshore hero, walks through six services and the four operating segments, and closes on a contact block that turns a visitor into a direct WhatsApp conversation with an engineer. It is a static Astro build with a self-hosted GSAP, ScrollTrigger and Lenis stack and self-hosted fonts, no CDN in production, content driven from typed source files, and Vitest guarding the WhatsApp and form logic.`
@@ -602,7 +602,7 @@ Building the trust this corridor is missing is hard precisely because you can't 
             { icon: "gauge", title: "Static Astro, no CDN",
               text: "Built as a static Astro site with fonts and the GSAP/Lenis stack self-hosted and no CDN in production, editable content centralized in typed source files, and Vitest tests over the WhatsApp, form and build logic." }
           ]
-        },
+        }, */
         {
           title: "Nest Battersea · Sky Homes Residence Selector",
           desc: "Interactive residence selector for Nest Battersea, a 34-storey tower of sky homes with gardens on the Thames in London: click a lit window, fly to it, turn the 3D floor plan and step inside.",
@@ -641,7 +641,7 @@ Building the trust this corridor is missing is hard precisely because you can't 
               text: "Twelve home types with areas and plans, 51 affordable homes, wheelchair layouts and the sustainability figures all come from the published planning documents, with sources logged. No price or rent appears, and everything illustrative is marked as such." }
           ]
         },
-        {
+        /* removido a pedido: {
           title: "BRASA · Fire Kitchen Restaurant",
           desc: "Landing page for BRASA, an authorial live-fire restaurant in São Paulo serving aged cuts over wood embers, with an à la carte menu, a twelve-seat chef's counter and table reservations.",
           longDesc: `BRASA is a fine-dining fire kitchen in São Paulo: long-aged cuts cooked over live wood embers, a twelve-seat chef's counter and a six-course experience. The site sells that room before you walk in, opening on a cinematic hero where a 241-frame JPEG sequence paints on a canvas driven by the scroll, then flowing through the house story, the à la carte menu, an embedded sommelier and a reservation form. It is a hand-built no-build static site in HTML, CSS and vanilla JavaScript, using GSAP ScrollTrigger and Lenis for the scroll cinematics and a full PT and EN dictionary, with a static poster fallback on mobile and reduced motion.`
@@ -673,7 +673,7 @@ Building the trust this corridor is missing is hard precisely because you can't 
             { icon: "gauge", title: "Static, fast, accessible",
               text: "A no-build static site with Fraunces and Hanken typography, a skip link and reduced-motion support: below 861px the hero stays a static poster and no frames are downloaded." }
           ]
-        },
+        }, */
         {
           title: "Sereno · Massage & Rest Studio",
           desc: "Premium landing page for a massage and rest studio that turns browsing into a session booked over WhatsApp.",
@@ -682,7 +682,7 @@ Building the trust this corridor is missing is hard precisely because you can't 
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP", "ScrollTrigger", "Lenis", "Canvas API"],
           link: "https://sereno-site-one.vercel.app",
           repo: "https://github.com/iannini25/sereno-site",
-          cover: "img/covers/sereno.webp?v=7c430872",
+          cover: "img/covers/sereno.webp?v=6c94e034",
           id: "sereno",
           flow: {
             steps: [
@@ -860,7 +860,7 @@ The EN/PT switch is an i18n engine written from scratch: the entire site changes
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP 3", "ScrollTrigger", "Lenis", "Node.js", "Markdown", "Supabase", "Vercel"],
           link: "https://www.bernardoiannini.com",
           repo: "https://github.com/iannini25/iannini-Frontend-Studio",
-          cover: "img/covers/portfolio.webp?v=a91316ed",
+          cover: "img/covers/portfolio.webp?v=cae4a185",
           id: "portfolio",
           category: "personal",
           status: "in production",
@@ -3603,7 +3603,7 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
               path: "portal/chat" }
           ]
         },
-        {
+        /* removido a pedido: {
           title: "Módulo Engenharia · Site de Automação Industrial",
           desc: "Site institucional de uma empresa de engenharia que automatiza e mantém as máquinas críticas da indústria pesada: mineração, siderurgia, offshore e energia.",
           longDesc: `A Módulo Engenharia vende automação, engenharia elétrica e manutenção em campo para a indústria que não pode parar. O site é uma jornada de página única que abre num hero offshore cinematográfico, apresenta seis serviços e os quatro segmentos de atuação, e fecha num bloco de contato que transforma o visitante em conversa direta no WhatsApp com um engenheiro. É um build estático em Astro, com GSAP, ScrollTrigger e Lenis self-hosted e fontes self-hosted, sem CDN em produção, conteúdo vindo de arquivos de fonte tipados, e Vitest cobrindo a lógica de WhatsApp e formulário.`
@@ -3635,7 +3635,7 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
             { icon: "gauge", title: "Astro estático, sem CDN",
               text: "Feito como site Astro estático, com fontes e a stack GSAP/Lenis self-hosted e sem CDN em produção, conteúdo editável centralizado em arquivos de fonte tipados, e testes Vitest sobre a lógica de WhatsApp, formulário e build." }
           ]
-        },
+        }, */
         {
           title: "Nest Battersea · Seletor de Residências",
           desc: "Seletor interativo de residências da Nest Battersea, torre de 34 andares com apartamentos com jardim às margens do Tâmisa, em Londres: você clica numa janela acesa, voa até ela, gira a planta 3D e entra no apartamento.",
@@ -3674,7 +3674,7 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
               text: "As doze tipologias com áreas e plantas, as 51 casas affordable, os layouts para cadeira de rodas e os dados de sustentabilidade saem dos documentos públicos de licenciamento, com as fontes registradas. Nenhum preço ou aluguel aparece, e tudo que é ilustrativo está marcado." }
           ]
         },
-        {
+        /* removido a pedido: {
           title: "BRASA · Restaurante de Cozinha de Fogo",
           desc: "Landing page da BRASA, restaurante autoral de fogo vivo em São Paulo que serve cortes maturados sobre brasa de lenha, com cardápio à la carte, balcão de chef de doze lugares e reservas de mesa.",
           longDesc: `A BRASA é uma cozinha de fogo autoral em São Paulo: cortes de maturação longa sobre brasa de lenha viva, um balcão de chef com doze lugares e uma experiência de seis tempos. O site vende essa sala antes de você entrar, abrindo num hero cinematográfico onde uma sequência de 241 frames JPEG desenha num canvas dirigido pelo scroll, e segue pela história da casa, pelo cardápio à la carte, por um sommelier embutido e pelo formulário de reservas. É um site estático feito à mão, sem build, em HTML, CSS e JavaScript puro, com GSAP ScrollTrigger e Lenis para o scroll cinematográfico e um dicionário completo PT e EN, além de pôster estático como fallback no mobile e no modo de movimento reduzido.`
@@ -3706,7 +3706,7 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
             { icon: "gauge", title: "Estático, rápido e acessível",
               text: "Site estático sem build, tipografia Fraunces e Hanken, skip link e suporte a movimento reduzido: abaixo de 861px o hero continua um pôster estático e nenhum frame é baixado." }
           ]
-        },
+        }, */
         {
           title: "Sereno · Estúdio de Massagem & Repouso",
           desc: "Landing page premium para um estúdio de massagem e repouso, que transforma a visita ao site em uma sessão agendada pelo WhatsApp.",
@@ -3715,7 +3715,7 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP", "ScrollTrigger", "Lenis", "Canvas API"],
           link: "https://sereno-site-one.vercel.app",
           repo: "https://github.com/iannini25/sereno-site",
-          cover: "img/covers/sereno.webp?v=7c430872",
+          cover: "img/covers/sereno.webp?v=6c94e034",
           id: "sereno",
           flow: {
             steps: [
@@ -3893,7 +3893,7 @@ A troca EN/PT é um motor de i18n escrito do zero: o site inteiro muda de idioma
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP 3", "ScrollTrigger", "Lenis", "Node.js", "Markdown", "Supabase", "Vercel"],
           link: "https://www.bernardoiannini.com",
           repo: "https://github.com/iannini25/iannini-Frontend-Studio",
-          cover: "img/covers/portfolio.webp?v=a91316ed",
+          cover: "img/covers/portfolio.webp?v=cae4a185",
           id: "portfolio",
           category: "personal",
           status: "em produção",
