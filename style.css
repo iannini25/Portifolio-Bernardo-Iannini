@@ -9386,3 +9386,9 @@ html.lg-ok .cs-back {
   -webkit-backdrop-filter: url(#lgRefract) blur(6px) saturate(1.6) brightness(1.08);
           backdrop-filter: url(#lgRefract) blur(6px) saturate(1.6) brightness(1.08);
 }
+/* capas sem fresta/franja na borda: a imagem sangra 2px alem da moldura
+   (subpixel do grid no hover deixava 1px do fundo aparecer como "borda") e a
+   moldura nao vira camada propria (mascara rasterizada e reamostrada = franja) */
+.pj-card__frame { transform: none; -webkit-mask-size: 74px 74px, 100% 100%; }
+.pj-card__img { inset: -2px; width: calc(100% + 4px); height: calc(100% + 4px); }
+.pj-card__view { margin: 0; background: transparent; }
