@@ -9401,3 +9401,12 @@ html.lg-ok .cs-back {
   background: radial-gradient(closest-side, #0c0f0d 62%, rgba(12,15,13,0) 100%); }
 .pj-card::after { top: -42px; right: -42px; width: 128px; height: 128px;
   background: radial-gradient(closest-side, #0c0f0d 74%, rgba(12,15,13,0) 100%); }
+/* causa real do fio: a mascara SVG do recorte terminava exatamente na borda
+   da capa e o antialiasing deixava 1px da imagem visivel. A mascara agora
+   passa 2px alem da borda de cima e da direita. */
+.pj-card__frame {
+  -webkit-mask-position: top -2px right -2px, 0 0;
+          mask-position: top -2px right -2px, 0 0;
+  -webkit-mask-size: 76px 76px, auto;
+          mask-size: 76px 76px, auto;
+}
