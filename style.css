@@ -9414,3 +9414,50 @@ html.lg-ok .cs-back {
    (sobra de antialias do canto da capa + ondas do fundo) */
 .pj-card__go { background: #1a1c1b !important; box-shadow: 0 0 0 8px #0c0f0d !important; }
 .pj-card.is-hot .pj-card__go { background: var(--lime) !important; }
+
+/* ===== modal de contato: cabe inteiro em telas baixas (notebook, zoom) =====
+   Em vez de rolar, o modal fica mais largo e compacto: canais lado a lado,
+   titulo menor, campos mais baixos. Escalonado pela ALTURA da janela. */
+@media (min-width: 761px) and (max-height: 860px) {
+  .ctm { --ctm-w: min(820px, 94vw); }
+  .ctm__shell { padding: 26px 30px 24px; gap: 14px; }
+  .ctm__head { gap: 4px; }
+  .ctm__title { font-size: clamp(1.7rem, 4.2vh, 2.3rem); }
+  .ctm__sub { margin: 0; font-size: .92rem; }
+  .ctm__channels { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .ctm__channel { padding: 10px 10px 10px 12px; gap: 10px; min-width: 0; }
+  .ctm__channel::after { display: none; }
+  .ctm__ch-ico { width: 36px; height: 36px; flex: none; }
+  .ctm__ch-meta { font-size: .78rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ctm__divider { margin: 2px 0; }
+  .ctm__form { gap: 10px 12px; }
+  .ctm__field { gap: 5px; }
+  .ctm__field input { padding-top: 11px; padding-bottom: 11px; }
+  .ctm__field textarea { min-height: 76px; height: 76px; }
+  .ctm__submit { min-height: 48px; padding-top: 12px; padding-bottom: 12px; }
+}
+@media (min-width: 761px) and (max-height: 640px) {
+  .ctm__shell { padding: 20px 26px 18px; gap: 10px; }
+  .ctm__title { font-size: 1.6rem; }
+  .ctm__sub { display: none; }
+  .ctm__field-label { font-size: .78rem; }
+  .ctm__field textarea { min-height: 60px; height: 60px; }
+}
+/* celular deitado / telas muito baixas: o shell rola, mas sem cortar o botao */
+@media (max-height: 520px) {
+  .ctm__shell { max-height: calc(100dvh - 12px); }
+}
+@media (max-width: 760px) {
+  .ctm__shell { gap: 12px; padding: 22px 16px 18px !important; }
+  .ctm__title { font-size: 1.9rem; }
+  .ctm__sub { font-size: .88rem; margin: 0; }
+  .ctm__channel { padding: 8px 8px 8px 10px; }
+  .ctm__channel::after { width: 34px; height: 34px; }
+  .ctm__ch-ico { width: 36px; height: 36px; }
+  .ctm__form { gap: 8px !important; }
+  .ctm__field { gap: 4px; }
+  .ctm__field input { padding-top: 11px; padding-bottom: 11px; }
+  .ctm__field textarea { min-height: 72px; height: 72px; }
+  .ctm__submit { min-height: 48px; }
+}
+@media (max-width: 760px) and (max-height: 760px) { .ctm__sub { display: none; } }

@@ -335,6 +335,31 @@ function pjSetupFeatured() {
 
 const PJ_CAT_ORDER = ['all', 'system', 'site', 'automation', 'personal'];
 
+/* ordem do catálogo: estes sempre no topo, nesta ordem; o resto em ordem
+   aleatória sorteada UMA vez por visita (Fisher-Yates com crypto quando
+   houver). O sorteio fica guardado pra trocar de idioma não reembaralhar. */
+const PJ_PINNED = ['moedanobre', 'iba', 'athena7', 'besafe', 'communityhub', 'nest-battersea'];
+let pjShuffleRank = null;
+function pjRand(n) {
+  if (window.crypto && crypto.getRandomValues) {
+    const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n;
+  }
+  return Math.floor(Math.random() * n);
+}
+function pjOrder(list) {
+  if (!pjShuffleRank) {
+    const ids = list.map(p => p.id).filter(id => !PJ_PINNED.includes(id));
+    for (let i = ids.length - 1; i > 0; i--) { const j = pjRand(i + 1); [ids[i], ids[j]] = [ids[j], ids[i]]; }
+    pjShuffleRank = new Map(ids.map((id, i) => [id, i]));
+  }
+  const rank = p => {
+    const k = PJ_PINNED.indexOf(p.id);
+    if (k >= 0) return k;
+    return PJ_PINNED.length + (pjShuffleRank.has(p.id) ? pjShuffleRank.get(p.id) : 9999);
+  };
+  return list.slice().sort((a, b) => rank(a) - rank(b));
+}
+
 function pjCounterText(shown, total, cat) {
   const c = cat || {};
   if (pjActiveFilter !== 'all') {
@@ -538,38 +563,66 @@ function pjApplyFilter(slug) {
      absolute:true do Flip, que colapsava o container e travava a página.
      window.__pjSwapping avisa o scrollfx pra ADIAR o rebuild dele durante a
      troca (senão ele re-aplica o clip-path e causa a "travada + volta"). */
+  /* À PROVA DE FALHA: cada troca ganha um token; cliques rápidos matam a
+     animação anterior na hora (nada fica preso no meio, invisível ou
+     encolhido) e um seguro de tempo garante que a troca SEMPRE termina,
+     mesmo se a aba ficar em segundo plano e o rAF parar. */
+  const token = (pjApplyFilter.token = (pjApplyFilter.token || 0) + 1);
+  const live = () => token === pjApplyFilter.token;
   const outgoing = Array.prototype.slice.call(arch.querySelectorAll('.pj-card'));
+  gsap.killTweensOf(outgoing);
+  clearTimeout(pjApplyFilter.safety);
   window.__pjSwapping = true;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const done = () => {
+    if (!live()) return;
+    clearTimeout(pjApplyFilter.safety);
+    const cards = arch.querySelectorAll('.pj-card');
+    gsap.killTweensOf(cards);
+    gsap.set(cards, { clearProps: 'opacity,visibility,transform,clipPath' });
     window.__pjSwapping = false;
     if (window.ScrollTrigger) ScrollTrigger.refresh();
   };
 
-  const animateIn = () => {
-    const incoming = Array.prototype.slice.call(arch.querySelectorAll('.pj-card'));
-    if (!incoming.length) { done(); return; }
-    /* ENTRA: cada card sobe com escala e leve overshoot (back.out), em
-       cascata pela direção do filtro. Só transform + opacity. */
-    gsap.fromTo(incoming,
-      { autoAlpha: 0, scale: .92, y: 40 },
-      { autoAlpha: 1, scale: 1, y: 0, duration: .55, ease: 'back.out(1.4)',
-        stagger: { each: .075, from: dir < 0 ? 'end' : 'start' },
-        clearProps: 'all', onComplete: done });
-  };
-
-  if (outgoing.length) {
-    /* SAI: os antigos encolhem e somem pra cima, rápido, antes de remontar. */
-    gsap.to(outgoing, {
-      autoAlpha: 0, scale: .94, y: -18,
-      duration: .26, ease: 'power2.in',
-      stagger: { each: .028, from: dir < 0 ? 'start' : 'end' },
-      onComplete: () => { rebuild(); reanchor(); animateIn(); },
-    });
-  } else {
+  let swapped = false;
+  const swap = () => {
+    if (swapped || !live()) return;
+    swapped = true;
     rebuild();
     reanchor();
-    animateIn();
+    const incoming = Array.prototype.slice.call(arch.querySelectorAll('.pj-card'));
+    if (!incoming.length || reduce) { done(); return; }
+    /* ENTRA: só os cards visíveis animam (os de baixo já nascem prontos,
+       então 60 cards não pesam). Cada um sobe de baixo, abre de uma faixa
+       (clip-path) e desfoca pra nítido, em cascata pela direção do filtro. */
+    const vh = window.innerHeight;
+    const visible = incoming.filter(c => c.getBoundingClientRect().top < vh + 80).slice(0, 12);
+    gsap.fromTo(visible,
+      { autoAlpha: 0, y: 46, scale: .955, clipPath: 'inset(12% 0% 0% 0% round 30px)' },
+      { autoAlpha: 1, y: 0, scale: 1, clipPath: 'inset(0% 0% 0% 0% round 0px)',
+        duration: .7, ease: 'expo.out',
+        stagger: { each: .06, from: dir < 0 ? 'end' : 'start' },
+        onComplete: done });
+  };
+
+  /* seguro: no pior caso a troca termina em 1.6s */
+  pjApplyFilter.safety = setTimeout(() => { swap(); done(); }, 1600);
+
+  const visibleOut = outgoing.filter(c => {
+    const r = c.getBoundingClientRect();
+    return r.bottom > 0 && r.top < window.innerHeight;
+  });
+  if (visibleOut.length && !reduce) {
+    /* SAI: os antigos visíveis afundam e somem, rápido */
+    gsap.to(visibleOut, {
+      autoAlpha: 0, y: -14, scale: .97,
+      duration: .22, ease: 'power2.in',
+      stagger: { each: .02, from: dir < 0 ? 'start' : 'end' },
+      onComplete: swap,
+    });
+  } else {
+    swap();
   }
 }
 
@@ -699,7 +752,7 @@ function renderProjects(lang) {
 
   const data = I18N[lang].projects;
   const cat = data.catalog || {};
-  const projects = pjPrepare(data.list);
+  const projects = pjOrder(pjPrepare(data.list));
 
   /* head — título + subtítulo (o kicker "Projects" foi removido a pedido) */
   const titleEl = document.querySelector('[data-ps-title]');

@@ -307,6 +307,8 @@ function renderCaseMain(o) {
      texto proprio do data/cases.json (whatIs) quando existir; senao o
      longDesc filtrado. A ficha usa so fatos ja cadastrados. */
   const ownWhat = cfg.whatIs && tx(cfg.whatIs, lang);
+  /* curto e direto: so as 2 primeiras frases do primeiro paragrafo */
+  const shortText = (t, n) => { const m = String(t).match(/[^.!?]+[.!?]+(s|$)/g); return m ? m.slice(0, n).join('').trim() : t; };
   const whatParas = ownWhat ? ownWhat.split(/\n\s*\n/).map(x => x.trim()).filter(Boolean) : whatIs;
   const CAT = { pt: { system: 'Plataforma web', site: 'Site', personal: 'Projeto pessoal', automation: 'Automação' },
                 en: { system: 'Web platform', site: 'Website', personal: 'Personal project', automation: 'Automation' } };
@@ -328,8 +330,7 @@ function renderCaseMain(o) {
       ${deco}
       <div class="cs-about__main">
         <h2 class="cs-h2" id="csWhat"><span class="cs-h2__icon">${ICON.idea}</span>${u.whatIs}</h2>
-        <p class="cs-about__lead">${esc(whatParas[0])}</p>
-        ${whatParas.slice(1, 3).map(x => `<p>${esc(x)}</p>`).join('')}
+        <p class="cs-about__lead">${esc(shortText(whatParas[0], 2))}</p>
       </div>
       <aside class="cs-about__facts" aria-label="${u.facts}">
         ${facts.map(([k, v]) => `<div class="cs-fact2"><span class="cs-fact2__k">${k}</span><span class="cs-fact2__v">${esc(v)}</span></div>`).join('')}

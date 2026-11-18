@@ -931,16 +931,16 @@
       <image:loc>https://www.bernardoiannini.com/img/covers/iba-1200.webp?v=b42aaaa7</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/nest-battersea.webp?v=1066e5e0</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub.webp?v=f509f968</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/nest-battersea-480.webp?v=1066e5e0</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-480.webp?v=f509f968</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/nest-battersea-800.webp?v=1066e5e0</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-800.webp?v=f509f968</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/nest-battersea-1200.webp?v=1066e5e0</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-1200.webp?v=f509f968</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/athena7-480.avif?v=c56c4bc5</image:loc>
@@ -1976,6 +1976,111 @@
     </image:image>
   </url>
   <url>
+    <loc>https://www.bernardoiannini.com/en/projects/communityhub.html</loc>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub.webp?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-480.webp?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-800.webp?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-1200.webp?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/scroll.webp?v=mwmlndvd</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/mscroll.webp?v=mwmloewd</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/desk-1-800.webp?v=mwmln5fg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/desk-1.webp?v=mwmln5de</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/desk-2-800.webp?v=mwmln7bq</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/desk-2.webp?v=mwmln79p</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/desk-3-800.webp?v=mwmln96q</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/desk-3.webp?v=mwmln94u</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/desk-4-800.webp?v=mwmlnb1p</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/desk-4.webp?v=mwmlnazp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/mob-1.webp?v=mwmlo6q2</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/mob-2.webp?v=mwmlo8va</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/mob-3.webp?v=mwmloaz9</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/eufoto1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/nest-battersea.webp?v=1066e5e0</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/nest-battersea-480.webp?v=1066e5e0</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/nest-battersea-800.webp?v=1066e5e0</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/nest-battersea-1200.webp?v=1066e5e0</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/sereno.webp?v=6c94e034</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/sereno-480.webp?v=6c94e034</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/sereno-800.webp?v=6c94e034</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/sereno-1200.webp?v=6c94e034</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/amarofy.webp?v=399ef1e5</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/amarofy-480.webp?v=399ef1e5</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/amarofy-800.webp?v=399ef1e5</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/amarofy-1200.webp?v=399ef1e5</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-480.avif?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-800.avif?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-1200.avif?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub.avif?v=f509f968</image:loc>
+    </image:image>
+  </url>
+  <url>
     <loc>https://www.bernardoiannini.com/en/projects/demao-pinturas.html</loc>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/demao-pinturas.webp</image:loc>
@@ -2512,6 +2617,18 @@
       <image:loc>https://www.bernardoiannini.com/img/eufoto1.webp</image:loc>
     </image:image>
     <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub.webp?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-480.webp?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-800.webp?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-1200.webp?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/nest-battersea.webp?v=1066e5e0</image:loc>
     </image:image>
     <image:image>
@@ -2534,18 +2651,6 @@
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/sereno-1200.webp?v=6c94e034</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/amarofy.webp?v=399ef1e5</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/amarofy-480.webp?v=399ef1e5</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/amarofy-800.webp?v=399ef1e5</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/amarofy-1200.webp?v=399ef1e5</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/iba-480.avif?v=b42aaaa7</image:loc>
@@ -3670,6 +3775,18 @@
       <image:loc>https://www.bernardoiannini.com/img/covers/iba-1200.webp?v=b42aaaa7</image:loc>
     </image:image>
     <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub.webp?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-480.webp?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-800.webp?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-1200.webp?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/nest-battersea.webp?v=1066e5e0</image:loc>
     </image:image>
     <image:image>
@@ -3680,18 +3797,6 @@
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/nest-battersea-1200.webp?v=1066e5e0</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/sereno.webp?v=6c94e034</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/sereno-480.webp?v=6c94e034</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/sereno-800.webp?v=6c94e034</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/sereno-1200.webp?v=6c94e034</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/moedanobre-480.avif?v=447d1696</image:loc>
@@ -6544,16 +6649,16 @@
       <image:loc>https://www.bernardoiannini.com/img/covers/iba-1200.webp?v=b42aaaa7</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/nest-battersea.webp?v=1066e5e0</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub.webp?v=f509f968</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/nest-battersea-480.webp?v=1066e5e0</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-480.webp?v=f509f968</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/nest-battersea-800.webp?v=1066e5e0</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-800.webp?v=f509f968</image:loc>
     </image:image>
     <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/nest-battersea-1200.webp?v=1066e5e0</image:loc>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-1200.webp?v=f509f968</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/athena7-480.avif?v=c56c4bc5</image:loc>
@@ -7589,6 +7694,111 @@
     </image:image>
   </url>
   <url>
+    <loc>https://www.bernardoiannini.com/projetos/communityhub.html</loc>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub.webp?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-480.webp?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-800.webp?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-1200.webp?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/scroll.webp?v=mwmlndvd</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/mscroll.webp?v=mwmloewd</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/desk-1-800.webp?v=mwmln5fg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/desk-1.webp?v=mwmln5de</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/desk-2-800.webp?v=mwmln7bq</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/desk-2.webp?v=mwmln79p</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/desk-3-800.webp?v=mwmln96q</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/desk-3.webp?v=mwmln94u</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/desk-4-800.webp?v=mwmlnb1p</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/desk-4.webp?v=mwmlnazp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/mob-1.webp?v=mwmlo6q2</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/mob-2.webp?v=mwmlo8va</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/projects/communityhub/mob-3.webp?v=mwmloaz9</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/eufoto1.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/nest-battersea.webp?v=1066e5e0</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/nest-battersea-480.webp?v=1066e5e0</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/nest-battersea-800.webp?v=1066e5e0</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/nest-battersea-1200.webp?v=1066e5e0</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/sereno.webp?v=6c94e034</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/sereno-480.webp?v=6c94e034</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/sereno-800.webp?v=6c94e034</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/sereno-1200.webp?v=6c94e034</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/amarofy.webp?v=399ef1e5</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/amarofy-480.webp?v=399ef1e5</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/amarofy-800.webp?v=399ef1e5</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/amarofy-1200.webp?v=399ef1e5</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-480.avif?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-800.avif?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-1200.avif?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub.avif?v=f509f968</image:loc>
+    </image:image>
+  </url>
+  <url>
     <loc>https://www.bernardoiannini.com/projetos/demao-pinturas.html</loc>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/demao-pinturas.webp</image:loc>
@@ -8125,6 +8335,18 @@
       <image:loc>https://www.bernardoiannini.com/img/eufoto1.webp</image:loc>
     </image:image>
     <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub.webp?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-480.webp?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-800.webp?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-1200.webp?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/nest-battersea.webp?v=1066e5e0</image:loc>
     </image:image>
     <image:image>
@@ -8147,18 +8369,6 @@
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/sereno-1200.webp?v=6c94e034</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/amarofy.webp?v=399ef1e5</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/amarofy-480.webp?v=399ef1e5</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/amarofy-800.webp?v=399ef1e5</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/amarofy-1200.webp?v=399ef1e5</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/iba-480.avif?v=b42aaaa7</image:loc>
@@ -9283,6 +9493,18 @@
       <image:loc>https://www.bernardoiannini.com/img/covers/iba-1200.webp?v=b42aaaa7</image:loc>
     </image:image>
     <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub.webp?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-480.webp?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-800.webp?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/covers/communityhub-1200.webp?v=f509f968</image:loc>
+    </image:image>
+    <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/nest-battersea.webp?v=1066e5e0</image:loc>
     </image:image>
     <image:image>
@@ -9293,18 +9515,6 @@
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/nest-battersea-1200.webp?v=1066e5e0</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/sereno.webp?v=6c94e034</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/sereno-480.webp?v=6c94e034</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/sereno-800.webp?v=6c94e034</image:loc>
-    </image:image>
-    <image:image>
-      <image:loc>https://www.bernardoiannini.com/img/covers/sereno-1200.webp?v=6c94e034</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/covers/moedanobre-480.avif?v=447d1696</image:loc>

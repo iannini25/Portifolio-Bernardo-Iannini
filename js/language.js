@@ -604,6 +604,30 @@ Building the trust this corridor is missing is hard precisely because you can't 
           ]
         }, */
         {
+          title: "CommunityHub · White Label Platform for Associations",
+          desc: "Sales landing page for a white label platform that gives chambers of commerce, alliances and business networks a members portal with their own brand, AI introductions, events, committees and documents in one place.",
+          longDesc: `CommunityHub is the white label version of the platform that already runs the IBA network between Brazil, Ireland and the United Kingdom. The page is written for association presidents and membership managers: it shows what a member does in a portal with the association's brand, how the AI introduces the right people and explains why, an assistant that only answers from the association's own content, the board running everything from one place, and LGPD and GDPR care. It ends on the plans and a demo request. Hand built in HTML, CSS and vanilla JavaScript, in Portuguese and English.`
+          ,
+          stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP", "ScrollTrigger"],
+          link: "https://communityhub.bernardoiannini.com",
+          cover: "img/covers/communityhub.webp?v=f509f968",
+          id: "communityhub",
+          category: "system",
+          featured: false,
+          status: "live",
+          year: "2026",
+          topics: [
+            { icon: "users", title: "Members portal with your brand",
+              text: "Directory, events, committees and documents in a portal that carries the association's name, colors and domain." },
+            { icon: "sparkles", title: "AI introductions that explain why",
+              text: "The AI suggests who each member should meet and says why, and the assistant answers only from the association's own content." },
+            { icon: "layers", title: "One place for the board",
+              text: "The board runs members, events and content without asking IT for anything, with LGPD and GDPR care built in." },
+            { icon: "globe", title: "Live at IBA",
+              text: "The same platform already runs the IBA network between Brazil, Ireland and the United Kingdom." }
+          ]
+        },
+        {
           title: "Nest Battersea · Sky Homes Residence Selector",
           desc: "Interactive residence selector for Nest Battersea, a 34-storey tower of sky homes with gardens on the Thames in London: click a lit window, fly to it, turn the 3D floor plan and step inside.",
           longDesc: `Nest Battersea is a build to rent tower at 38 Lombard Road, on the Battersea bank of the Thames, with 143 homes stacked like nests and a planted garden for each one. The site turns the official render of the tower into the navigation itself: the two available homes, LOFT 4 and Bungalow 3, are traced exactly over their windows, and a click sets off an AI generated camera flight that ends level with that window. From there the visitor opens a 3D dollhouse plan built from the official floor plans or steps through the glass into the living room and tours every room. Each clip starts and ends on frames of the official image itself, so the building never changes and only the camera moves. It is hand built in HTML, CSS and vanilla JavaScript with no framework, and the page goes on as the full launch site: the verified exterior views, the twelve home types with their official plans, sustainability, a live map of the neighbourhood with walking and driving routes, and the contact with the team. The Three.js plan, GSAP and the map load only when needed, and around 80 automated end-to-end checks cover desktop, phone, reduced motion and no JavaScript.`
@@ -3636,6 +3660,30 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
               text: "Feito como site Astro estático, com fontes e a stack GSAP/Lenis self-hosted e sem CDN em produção, conteúdo editável centralizado em arquivos de fonte tipados, e testes Vitest sobre a lógica de WhatsApp, formulário e build." }
           ]
         }, */
+        {
+          title: "CommunityHub · Plataforma White Label para Associações",
+          desc: "Landing de venda de uma plataforma white label que dá a câmaras de comércio, alianças e redes de negócios um portal de membros com a própria marca, apresentações por IA, eventos, comitês e documentos num só lugar.",
+          longDesc: `O CommunityHub é a versão white label da plataforma que já roda a rede da IBA entre Brasil, Irlanda e Reino Unido. A página fala com presidentes e gestores de membros de associações: mostra o que o membro faz num portal com a marca da associação, como a IA apresenta as pessoas certas e explica por quê, um assistente que só responde com o conteúdo da própria associação, a diretoria operando tudo de um lugar e o cuidado com LGPD e GDPR. Termina nos planos e no pedido de demonstração. Feita à mão em HTML, CSS e JavaScript puro, em português e inglês.`
+          ,
+          stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP", "ScrollTrigger"],
+          link: "https://communityhub.bernardoiannini.com",
+          cover: "img/covers/communityhub.webp?v=f509f968",
+          id: "communityhub",
+          category: "system",
+          featured: false,
+          status: "no ar",
+          year: "2026",
+          topics: [
+            { icon: "users", title: "Portal de membros com a sua marca",
+              text: "Diretório, eventos, comitês e documentos num portal com o nome, as cores e o domínio da associação." },
+            { icon: "sparkles", title: "IA que apresenta e explica",
+              text: "A IA sugere quem cada membro deve conhecer e diz por quê, e o assistente só responde com o conteúdo da própria associação." },
+            { icon: "layers", title: "Um lugar só para a diretoria",
+              text: "A diretoria cuida de membros, eventos e conteúdo sem pedir nada ao TI, com LGPD e GDPR previstos desde o início." },
+            { icon: "globe", title: "Em produção na IBA",
+              text: "A mesma plataforma já roda a rede da IBA entre Brasil, Irlanda e Reino Unido." }
+          ]
+        },
         {
           title: "Nest Battersea · Seletor de Residências",
           desc: "Seletor interativo de residências da Nest Battersea, torre de 34 andares com apartamentos com jardim às margens do Tâmisa, em Londres: você clica numa janela acesa, voa até ela, gira a planta 3D e entra no apartamento.",
