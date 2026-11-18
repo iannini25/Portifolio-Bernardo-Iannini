@@ -1,5 +1,28 @@
 [
   {
+    "id": "p_cmi2026cotemig01",
+    "slug": "circuito-mineiro-de-inovacao-2026",
+    "title": "Circuito Mineiro de Inovação: a primeira edição",
+    "subtitle": "Estive no CMI 2026 pelo COTEMIG: projetos de fim de curso, networking e a volta de um evento de inovação a Belo Horizonte.",
+    "cover": "",
+    "coverAlt": "Circuito Mineiro de Inovação: a primeira edição - Bernardo Iannini",
+    "tags": [
+      "Inovação",
+      "COTEMIG",
+      "Eventos"
+    ],
+    "category": "Eventos",
+    "author": "Bernardo Iannini",
+    "status": "published",
+    "featured": false,
+    "createdAt": "2026-11-18T12:00:00.000Z",
+    "updatedAt": "2026-11-18T12:00:00.000Z",
+    "readTimeMin": 1,
+    "views": 0,
+    "url": "/posts/circuito-mineiro-de-inovacao-2026.html",
+    "excerpt": "Desde a última Tecnofeira do COTEMIG, em novembro de 2019, Belo Horizonte sentia falta de um evento de inovação. Este ano isso mudou com a primeira edição do Circuito Mineiro de Inovação, o CMI. Estiv"
+  },
+  {
     "id": "today-we-launched-the-new-iba-platform",
     "slug": "today-we-launched-the-new-iba-platform",
     "title": "We launched the new IBA platform",
@@ -41,7 +64,7 @@
     "createdAt": "2026-05-11T17:36:42.939Z",
     "updatedAt": "2026-05-11T17:36:42.939Z",
     "readTimeMin": 2,
-    "views": 69,
+    "views": 76,
     "url": "/posts/aws-hackathon.html",
     "excerpt": "Great results do not always come from complexity, but from clear priorities and efficient execution. This weekend, I took part in my first hackathon: an AI Agents challenge hosted by Amazon Web Servic"
   },
@@ -64,7 +87,7 @@
     "createdAt": "2026-04-08T18:59:02.646Z",
     "updatedAt": "2026-04-08T18:59:02.646Z",
     "readTimeMin": 2,
-    "views": 26,
+    "views": 29,
     "url": "/posts/theres-a-deeper-shift-happening-in-agentic-ai-fintech-and-its-quieter-than-peopl.html",
     "excerpt": "There’s a deeper shift happening in agentic AI + fintech, and it’s quieter than people think... Last week I was at a Build with AI session by GDG Nova Lima with Matheus Freitas Martins, an event where"
   },
@@ -87,7 +110,7 @@
     "createdAt": "2026-03-13T12:32:16.979Z",
     "updatedAt": "2026-03-13T12:32:16.979Z",
     "readTimeMin": 1,
-    "views": 43,
+    "views": 44,
     "url": "/posts/europe-is-trying-to-build-the-future-of-payments-brazil-has-already-lived-part-o.html",
     "excerpt": "Europe is trying to build the future of payments. Brazil has already lived part of it. That made my last week in Ireland even more meaningful for me. I attended the BPFI - Banking & Payments Federatio"
   },
@@ -131,7 +154,7 @@
     "createdAt": "2025-09-05T21:43:46.039Z",
     "updatedAt": "2025-09-05T21:43:46.039Z",
     "readTimeMin": 3,
-    "views": 21,
+    "views": 23,
     "url": "/posts/ai-is-transforming-the-audiovisual-landscape.html",
     "excerpt": "Last Friday I was at Hotmart FIRE 10, a three-day immersive event packed with insights on digital marketing and the practical applications of Artificial Intelligence in the market. It was an incredibl"
   },
@@ -153,7 +176,7 @@
     "createdAt": "2025-08-22T21:04:55.132Z",
     "updatedAt": "2025-08-22T21:04:55.132Z",
     "readTimeMin": 2,
-    "views": 17,
+    "views": 18,
     "url": "/posts/ai-is-rewriting-the-rules-of-cybersecurity.html",
     "excerpt": "I had the chance to be at DCC Week at UFMG (Universidade Federal de Minas Gerais) over the last three days, and it was an amazing experience filled with great talks and networking opportunities. But, "
   },
@@ -240,7 +263,7 @@
     "createdAt": "2025-06-05T14:38:15.819Z",
     "updatedAt": "2025-06-05T14:38:15.819Z",
     "readTimeMin": 2,
-    "views": 18,
+    "views": 21,
     "url": "/posts/presence-on-money-2020-europe.html",
     "excerpt": "This week, I had the opportunity to attend Money 20/20 Europe, one of the world’s largest and most important events in financial technology. I came alongside Túlio Iannini a leading expert in fintech "
   }
