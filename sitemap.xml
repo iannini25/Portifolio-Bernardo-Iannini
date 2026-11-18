@@ -680,7 +680,26 @@
     <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/cmi-2026/cmi-3.jpg</image:loc>
+      <image:caption>Alunos do COTEMIG no Circuito Mineiro de Inovação 2026</image:caption>
+      <image:title>Circuito Mineiro de Inovação: a primeira edição</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/cmi-2026/cmi-3.jpg</image:loc>
+      <image:caption>Alunos do COTEMIG no Circuito Mineiro de Inovação 2026</image:caption>
+      <image:title>Alunos do COTEMIG no Circuito Mineiro de Inovação 2026</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/cmi-2026/cmi-1.jpg</image:loc>
+      <image:caption>Equipe do COTEMIG em frente ao painel do Circuito Mineiro de Inovação</image:caption>
+      <image:title>Equipe do COTEMIG em frente ao painel do Circuito Mineiro de Inovação</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/cmi-2026/cmi-2.jpg</image:loc>
+      <image:caption>Palestra no auditório do Circuito Mineiro de Inovação 2026</image:caption>
+      <image:title>Palestra no auditório do Circuito Mineiro de Inovação 2026</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://www.bernardoiannini.com/posts/today-we-launched-the-new-iba-platform.html</loc>

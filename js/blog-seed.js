@@ -7,7 +7,7 @@ window.BI_SEED_POSTS = [
     "title": "Circuito Mineiro de Inovação: a primeira edição",
     "subtitle": "Estive no CMI 2026 pelo COTEMIG: projetos de fim de curso, networking e a volta de um evento de inovação a Belo Horizonte.",
     "slug": "circuito-mineiro-de-inovacao-2026",
-    "cover": "",
+    "cover": "/img/posts/cmi-2026/cmi-3.jpg",
     "tags": [
       "Inovação",
       "COTEMIG",

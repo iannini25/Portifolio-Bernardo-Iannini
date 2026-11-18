@@ -9,6 +9,18 @@ tags:
   - Inovação
   - COTEMIG
   - Eventos
+cover: '/img/posts/cmi-2026/cmi-3.jpg'
+coverAlt: 'Alunos do COTEMIG no Circuito Mineiro de Inovação 2026'
+images:
+  - src: '/img/posts/cmi-2026/cmi-3.jpg'
+    alt: 'Alunos do COTEMIG no Circuito Mineiro de Inovação 2026'
+    caption: ''
+  - src: '/img/posts/cmi-2026/cmi-1.jpg'
+    alt: 'Equipe do COTEMIG em frente ao painel do Circuito Mineiro de Inovação'
+    caption: ''
+  - src: '/img/posts/cmi-2026/cmi-2.jpg'
+    alt: 'Palestra no auditório do Circuito Mineiro de Inovação 2026'
+    caption: ''
 linkedinUrl: 'https://www.linkedin.com/posts/bernardo-iannini_cmi2026-circuitomineirodeinovacao-cotemig-ugcPost-7528921474456444929-dUWt/'
 ---
 Desde a última Tecnofeira do COTEMIG, em novembro de 2019, Belo Horizonte sentia falta de um evento de inovação. Este ano isso mudou com a primeira edição do Circuito Mineiro de Inovação, o CMI.

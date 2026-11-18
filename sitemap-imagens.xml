@@ -2,6 +2,29 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
+    <loc>https://www.bernardoiannini.com/posts/circuito-mineiro-de-inovacao-2026.html</loc>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/cmi-2026/cmi-3.jpg</image:loc>
+      <image:title>Circuito Mineiro de Inovação: a primeira edição</image:title>
+      <image:caption>Alunos do COTEMIG no Circuito Mineiro de Inovação 2026</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/cmi-2026/cmi-3.jpg</image:loc>
+      <image:title>Alunos do COTEMIG no Circuito Mineiro de Inovação 2026</image:title>
+      <image:caption>Alunos do COTEMIG no Circuito Mineiro de Inovação 2026</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/cmi-2026/cmi-1.jpg</image:loc>
+      <image:title>Equipe do COTEMIG em frente ao painel do Circuito Mineiro de Inovação</image:title>
+      <image:caption>Equipe do COTEMIG em frente ao painel do Circuito Mineiro de Inovação</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.bernardoiannini.com/img/posts/cmi-2026/cmi-2.jpg</image:loc>
+      <image:title>Palestra no auditório do Circuito Mineiro de Inovação 2026</image:title>
+      <image:caption>Palestra no auditório do Circuito Mineiro de Inovação 2026</image:caption>
+    </image:image>
+  </url>
+  <url>
     <loc>https://www.bernardoiannini.com/posts/today-we-launched-the-new-iba-platform.html</loc>
     <image:image>
       <image:loc>https://www.bernardoiannini.com/img/posts/iba-launch/iba-launch-poster.jpg</image:loc>
