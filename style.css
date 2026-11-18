@@ -9399,3 +9399,5 @@ html.lg-ok .cs-back {
 .pj-card__go { z-index: 2; }
 .pj-card::after { top: -18px; right: -14px; width: 104px; height: 104px; border-radius: 0;
   background: radial-gradient(closest-side, #0c0f0d 62%, rgba(12,15,13,0) 100%); }
+.pj-card::after { top: -42px; right: -42px; width: 128px; height: 128px;
+  background: radial-gradient(closest-side, #0c0f0d 74%, rgba(12,15,13,0) 100%); }
