@@ -9410,3 +9410,7 @@ html.lg-ok .cs-back {
   -webkit-mask-size: 76px 76px, auto;
           mask-size: 76px 76px, auto;
 }
+/* anel na cor da pagina em volta da seta: cobre o vao do recorte por inteiro
+   (sobra de antialias do canto da capa + ondas do fundo) */
+.pj-card__go { background: #1a1c1b !important; box-shadow: 0 0 0 8px #0c0f0d !important; }
+.pj-card.is-hot .pj-card__go { background: var(--lime) !important; }
