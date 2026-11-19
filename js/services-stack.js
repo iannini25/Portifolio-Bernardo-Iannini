@@ -210,8 +210,9 @@
     /* caixa do card girado 10 graus, em multiplos do proprio tamanho */
     const ROTW = (cardW * Math.cos(RAD) + cardH * Math.sin(RAD)) / cardW;
     const ROTH = (cardW * Math.sin(RAD) + cardH * Math.cos(RAD)) / cardH;
-    const fitH = (VH - NAV - 2 * GAP - (rows - 1) * CGAP) / (rows * ROTH * cardH);
-    const fitW = (VW - 2 * GAP - (cols - 1) * CGAP) / (cols * ROTW * cardW);
+    /* TAMANHO igual ao original (pedido): so o ESPACAMENTO muda */
+    const fitH = (VH - NAV - 2 * GAP) / ((rows + 0.1) * cardH);
+    const fitW = (VW - 2 * GAP) / ((cols * 0.66 + 0.34) * cardW);
     const SCALE = Math.max(0.42, Math.min(0.82, fitH, fitW));
     /* meia-extensao do card JA girado (folga p/ nao vazar) */
     const HX = SCALE * cardW * ROTW / 2, HY = SCALE * cardH * ROTH / 2;
