@@ -341,7 +341,7 @@ The system runs two independent channels, Women's and Corporate Integrity, and i
           stack: ["TypeScript", "Node.js", "Express", "tRPC v11", "Drizzle ORM", "MySQL 8", "React 19", "Vite", "TailwindCSS", "Socket.io", "OpenPGP", "Google Gemini", "Resend", "PDFKit", "Docker", "Nginx"],
           link: "https://athena7.com.br",
           repo: "",
-          cover: "img/covers/athena7.webp?v=c56c4bc5",
+          cover: "img/covers/athena7.webp?v=4a7b8172",
           id: "athena7",
           category: "system",
           featured: true,
@@ -610,7 +610,7 @@ Building the trust this corridor is missing is hard precisely because you can't 
           ,
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP", "ScrollTrigger"],
           link: "https://communityhub.bernardoiannini.com",
-          cover: "img/covers/communityhub.webp?v=5da6269b",
+          cover: "img/covers/communityhub.webp?v=ee31ea6a",
           id: "communityhub",
           category: "system",
           featured: false,
@@ -635,7 +635,7 @@ Building the trust this corridor is missing is hard precisely because you can't 
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "Three.js", "GSAP", "ScrollTrigger", "MapLibre GL", "AI video (Kling 3.0)", "Puppeteer"],
           link: "https://nestbattersea.vercel.app",
           repo: "https://github.com/iannini25/NestBatterSea",
-          cover: "img/covers/nest-battersea.webp?v=1066e5e0",
+          cover: "img/covers/nest-battersea.webp?v=a854f8af",
           id: "nest-battersea",
           flow: {
             steps: [
@@ -5280,7 +5280,7 @@ O sistema opera com dois canais independentes, Integridade da Mulher e Integrida
           stack: ["TypeScript", "Node.js", "Express", "tRPC v11", "Drizzle ORM", "MySQL 8", "React 19", "Vite", "TailwindCSS", "Socket.io", "OpenPGP", "Google Gemini", "Resend", "PDFKit", "Docker", "Nginx"],
           link: "https://athena7.com.br",
           repo: "",
-          cover: "img/covers/athena7.webp?v=c56c4bc5",
+          cover: "img/covers/athena7.webp?v=4a7b8172",
           id: "athena7",
           category: "system",
           featured: true,
@@ -5549,7 +5549,7 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
           ,
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "GSAP", "ScrollTrigger"],
           link: "https://communityhub.bernardoiannini.com",
-          cover: "img/covers/communityhub.webp?v=5da6269b",
+          cover: "img/covers/communityhub.webp?v=ee31ea6a",
           id: "communityhub",
           category: "system",
           featured: false,
@@ -5574,7 +5574,7 @@ Construir a confiança que falta nesse corredor é difícil justamente porque el
           stack: ["HTML5", "CSS3", "JavaScript (vanilla)", "Three.js", "GSAP", "ScrollTrigger", "MapLibre GL", "Vídeo com IA (Kling 3.0)", "Puppeteer"],
           link: "https://nestbattersea.vercel.app",
           repo: "https://github.com/iannini25/NestBatterSea",
-          cover: "img/covers/nest-battersea.webp?v=1066e5e0",
+          cover: "img/covers/nest-battersea.webp?v=a854f8af",
           id: "nest-battersea",
           flow: {
             steps: [
