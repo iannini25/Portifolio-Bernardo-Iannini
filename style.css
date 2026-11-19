@@ -9465,7 +9465,7 @@ html.lg-ok .cs-back {
 /* ===== modal de contato: cabe inteiro em telas baixas (notebook, zoom) =====
    Em vez de rolar, o modal fica mais largo e compacto: canais lado a lado,
    titulo menor, campos mais baixos. Escalonado pela ALTURA da janela. */
-@media (min-width: 761px) and (max-height: 860px) {
+@media (min-width: 761px) {   /* horizontal em todo computador (antes so em tela baixa) */
   .ctm { --ctm-w: min(820px, 94vw); }
   .ctm__shell { padding: 26px 30px 24px; gap: 14px; }
   .ctm__head { gap: 4px; }
