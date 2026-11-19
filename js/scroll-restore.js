@@ -69,18 +69,29 @@
 
   /* reaplica algumas vezes enquanto o layout assenta (fontes, imagens,
      pin-spacers do ScrollTrigger). Para assim que a pessoa rolar. */
-  let userMoved = false;
-  const stop = () => { userMoved = true; };
-  ['wheel', 'touchstart', 'keydown'].forEach(ev => window.addEventListener(ev, stop, { passive: true, once: true }));
+  /* Para de vez assim que a pessoa fizer QUALQUER coisa (inclusive clicar
+     no menu: antes o clique nao contava, e um refresh do ScrollTrigger no
+     meio da rolagem puxava a pagina de volta — parecia que o clique
+     "travava"). E nunca passa de 3s depois do load. */
+  let done = false;
+  const stop = () => {
+    if (done) return;
+    done = true;
+    if (window.ScrollTrigger) window.ScrollTrigger.removeEventListener('refresh', apply);
+  };
+  ['wheel', 'touchstart', 'keydown', 'pointerdown', 'click'].forEach(ev =>
+    window.addEventListener(ev, stop, { passive: true, capture: true, once: true }));
+
+  function apply() { if (done) return; const y = target(); if (y != null) go(Math.max(0, y)); }
 
   window.addEventListener('pageshow', (e) => {
     if (e.persisted) return;                       // bfcache: ja esta certo
-    const apply = () => { if (userMoved) return; const y = target(); if (y != null) go(Math.max(0, y)); };
     [0, 300, 900, 1800].forEach(ms => setTimeout(apply, ms));
     if (window.ScrollTrigger) window.ScrollTrigger.addEventListener('refresh', apply);
     window.addEventListener('load', () => {
-      if (window.ScrollTrigger) window.ScrollTrigger.addEventListener('refresh', apply);
+      if (window.ScrollTrigger && !done) window.ScrollTrigger.addEventListener('refresh', apply);
       setTimeout(apply, 200);
+      setTimeout(stop, 3000);
     }, { once: true });
   });
 })();
