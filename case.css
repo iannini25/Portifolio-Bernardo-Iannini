@@ -80,12 +80,16 @@
   font: 600 11px/1 "JetBrains Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--pj-soft);
 }
 .pj-chip i { width: 7px; height: 7px; border-radius: 50%; background: var(--pa); box-shadow: 0 0 0 4px var(--pa-10); }
+.pj-hero__title, .pj-hero__side { min-width: 0; }
+.pj-hero__title { container-type: inline-size; }
+/* o titulo nunca passa da coluna: o tamanho e o menor entre a escala do
+   layout e o que cabe pela palavra mais longa (--len letras, ~.6em cada) */
 .pj-h1 {
   margin: 0; color: var(--text);
-  font: 600 clamp(2.9rem, 7vw, 6rem)/.94 var(--pj-font);
-  letter-spacing: -.045em; text-wrap: balance;
+  font: 600 clamp(2.4rem, 7vw, 6rem)/.94 var(--pj-font);
+  font-size: min(clamp(2.4rem, 7vw, 6rem), calc(100cqi / (var(--len, 10) * .6)));
+  letter-spacing: -.045em; text-wrap: balance; overflow-wrap: anywhere;
 }
-.pj-h1--long { font-size: clamp(2.5rem, 5.6vw, 4.6rem); }
 .pj-h1__sub {
   display: block; margin-top: .35em; max-width: 26ch;
   font-size: clamp(1.15rem, 2vw, 1.6rem); font-weight: 500; line-height: 1.2; letter-spacing: -.02em;
@@ -116,7 +120,8 @@
 .pj-notch::after { left: calc(var(--r) * -1); bottom: 0; }
 .pj-notch div { padding: 12px 16px; border-radius: var(--pj-ri); background: var(--pj-card); border: 1px solid var(--pj-line); min-width: 0; }
 .pj-notch dt { font: 600 10px/1 "JetBrains Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--pj-mute); margin-bottom: 7px; }
-.pj-notch dd { margin: 0; font-size: .88rem; font-weight: 600; color: var(--text); white-space: nowrap; }
+.pj-notch { max-width: calc(100% - 40px); }
+.pj-notch dd { margin: 0; font-size: .88rem; font-weight: 600; color: var(--text); max-width: 22ch; }
 
 /* ---------- números ---------- */
 .pj-stats {
@@ -229,8 +234,11 @@
   .pj-stat { border-left: 0; border-top: 1px solid var(--pj-line); }
   .pj-stat:first-child { border-top: 0; }
 }
+.pj-btn { max-width: 100%; }
+.pj-btn__txt { min-width: 0; }
+.pj-btn__txt small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pj-stat, .pj-card, .pj-step, .pj-type, .pj-swatch { min-width: 0; overflow-wrap: anywhere; }
 @media (max-width: 520px) {
-  .pj-h1 { font-size: clamp(2.4rem, 11vw, 2.9rem); }
   .pj-steps { grid-template-columns: 1fr; }
   .pj-type__aa { font-size: 4.6rem; }
   .pj-swatch, .pj-type { min-height: 170px; }

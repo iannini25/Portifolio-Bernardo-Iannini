@@ -292,7 +292,7 @@ function renderCaseMain(o) {
       <div class="pj-hero__top">
         <div class="pj-hero__title">
           <p class="pj-chip">${p.status ? '<i aria-hidden="true"></i>' : ''}${esc(kindLabel)}${p.year ? ` · ${esc(p.year)}` : ''}</p>
-          <h1 class="pj-h1${name.length > 14 ? ' pj-h1--long' : ''}" id="csTitle">${esc(name)}${sub ? `<span class="pj-h1__sub">${esc(sub)}</span>` : ''}</h1>
+          <h1 class="pj-h1" style="--len:${Math.max(6, Math.max(...name.split(/\s+/).map(w => w.length)))}" id="csTitle">${esc(name)}${sub ? `<span class="pj-h1__sub">${esc(sub)}</span>` : ''}</h1>
         </div>
         <div class="pj-hero__side">
           <p class="pj-lead">${esc(p.desc || answer)}</p>
