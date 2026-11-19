@@ -1903,7 +1903,9 @@ body.pc-nav-hidden header {
 .about-section,
 .xp,
 .work-timeline,
-.skills-tiles { position: relative; }
+/* z-index: o painel lime passa um pouco do fim da secao; sem isto a secao
+   seguinte (fundo translucido) pinta uma faixa escura por cima da base dele */
+.skills-tiles { position: relative; z-index: 2; }
 
 /* névoa ambiente removida das sections gerais a pedido; só o hero mantém
    o respiro atrás do nome (section de destaque preservada). */
