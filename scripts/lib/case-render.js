@@ -280,8 +280,7 @@ function renderCaseMain(o) {
   };
   const kindLabel = KIND[lang][isLab ? 'lab' : p.category] || '';
   const role = p.role || (isLab ? (lang === 'pt' ? 'design, copy e front-end' : 'design, copy and front-end') : '');
-  let ebN = 0;
-  const eb = (label) => `<p class="pj-eb" aria-hidden="true"><b>${String(++ebN).padStart(2, '0')}</b><span>/</span>${label}</p>`;
+  const eb = (label) => `<p class="pj-eb" aria-hidden="true">${label}</p>`;
   const btn = (href, label, small, cls = '') => `<a class="pj-btn ${cls}" href="${esc(href)}" target="_blank" rel="noopener noreferrer">
             <span class="pj-btn__txt"><b>${label}</b>${small ? `<small>${esc(small)}</small>` : ''}</span>
             <span class="pj-btn__ic" aria-hidden="true">${ICON.arrow}</span><span class="sr-only">(${u.newTab})</span></a>`;
