@@ -1,750 +1,78 @@
-'use strict';
-
-/* =========================================================
-   BLOG ADMIN — Dashboard + CRUD de posts
-   ========================================================= */
-
-/* ---------- Data layer = Supabase (window.BlogDB) ----------
-   O painel lê e grava direto no Supabase: o que você salva aqui já fica
-   gravado no banco na hora. Só que o site público é estático, então
-   publicar ou excluir também dispara POST /api/rebuild (triggerRebuild
-   logo abaixo): o build roda de novo, puxa os posts do banco e regera as
-   páginas com o SEO intacto.
-   A autenticação é checada de forma assíncrona no init().            */
-
-async function apiGetPosts() {
-  if (!window.BlogDB) throw new Error('Supabase não configurado — veja js/supabase-config.js');
-  return window.BlogDB.listAll();
-}
-
-async function reloadPosts() {
-  state.posts = await apiGetPosts();
-}
-
-/* ---------- Rebuild do site (POST /api/rebuild) ----------
-   Contrato do endpoint (a resposta é sempre JSON):
-     200 { ok: true, triggered: true }
-     401 { ok: false, error: 'unauthorized' }      -> sem token ou token inválido
-     403 { ok: false, error: 'forbidden' }         -> logado, mas não é o dono
-     405 { ok: false, error: 'method_not_allowed' }
-     501 { ok: false, error: 'not_configured' }   -> falta DEPLOY_HOOK_URL
-     502 { ok: false, error: 'hook_failed', detail }
-
-   404 (servidor estático local, sem serverless) e falha de rede contam
-   como 'not_configured': pro usuário dá no mesmo, não existe rebuild.
-
-   NUNCA lança: devolve { ok, reason, detail? } pra quem chamou decidir a
-   mensagem. Falha aqui não desfaz nada: o post já está salvo no banco. */
-async function triggerRebuild(reason) {
-  let token = '';
-  try {
-    const session = window.BlogDB ? await window.BlogDB.getSession() : null;
-    token = (session && session.access_token) || '';
-  } catch (e) {
-    token = '';   // sessão ilegível cai no unauthorized abaixo
-  }
-  if (!token) return { ok: false, reason: 'unauthorized' };
-
-  let res;
-  try {
-    res = await fetch('/api/rebuild', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token,
-      },
-      body: JSON.stringify({ reason: reason || '' }),
-    });
-  } catch (e) {
-    /* fetch só rejeita em falha de rede / servidor fora do ar. */
-    return { ok: false, reason: 'not_configured', detail: (e && e.message) || 'sem rede' };
-  }
-
-  let body = null;
-  try { body = await res.json(); } catch (e) { body = null; }   // resposta não-JSON (HTML de 404, por ex.)
-  const erro = (body && body.error) || '';
-
-  if (res.ok) {
-    /* Servidor estático pode devolver 200 com HTML pra rota inexistente:
-       sem { ok: true } no corpo, nenhum rebuild foi disparado. */
-    if (body && body.ok) return { ok: true, reason: 'ok' };
-    return { ok: false, reason: 'not_configured' };
-  }
-  /* 404 e 405 sem corpo JSON: o endpoint não existe aqui (servidor estático
-     local costuma responder 405 no POST em vez de 404). Não é falha de hook. */
-  if (res.status === 404) return { ok: false, reason: 'not_configured' };
-  if (res.status === 405 && !body) return { ok: false, reason: 'not_configured' };
-  if (res.status === 501 || erro === 'not_configured') return { ok: false, reason: 'not_configured' };
-  /* 403 é diferente de 401 e NÃO é 'not_configured': o endpoint existe, o
-     token vale, mas a conta não está na allowlist do dono (ADMIN_USER_ID).
-     Recarregar ou entrar de novo não resolve, então a mensagem é outra. */
-  if (res.status === 403 || erro === 'forbidden') return { ok: false, reason: 'forbidden' };
-  if (res.status === 401 || erro === 'unauthorized') {
-    return { ok: false, reason: 'unauthorized' };
-  }
-  /* 502, 405 e qualquer outra resposta: o post está salvo, o rebuild não rodou. */
-  return {
-    ok: false,
-    reason: 'hook_failed',
-    detail: (body && body.detail) || erro || ('HTTP ' + res.status),
-  };
-}
-
-/* Traduz o resultado do triggerRebuild numa mensagem honesta de toast.
-     feito: o que dizer quando o rebuild foi disparado ('Post publicado')
-     salvo: o que já está garantido no banco quando o rebuild não rodou
-   Devolve { msg, type } pronto pro toast(). */
-function rebuildMessage(feito, salvo, rebuild) {
-  if (!rebuild) return { msg: salvo + '.', type: 'success' };
-
-  if (rebuild.ok) {
-    return { msg: feito + '. O site atualiza em cerca de 1 minuto.', type: 'success' };
-  }
-  if (rebuild.reason === 'not_configured') {
-    return { msg: salvo + '. A atualização automática do site não respondeu, então ele entra no ar no próximo deploy (veja PUBLICAR.md).', type: 'error' };
-  }
-  if (rebuild.reason === 'unauthorized') {
-    return { msg: salvo + ', mas não deu pra confirmar sua sessão para atualizar o site. Recarregue a página; se persistir, entre de novo. O site atualiza no próximo deploy.', type: 'error' };
-  }
-  if (rebuild.reason === 'forbidden') {
-    return { msg: salvo + ', mas esta conta não tem permissão para atualizar o site (só o dono do painel dispara deploy). Confira ADMIN_USER_ID nas variáveis de ambiente da Vercel. O site atualiza no próximo deploy.', type: 'error' };
-  }
-  const detalhe = rebuild.detail ? ' (' + rebuild.detail + ')' : '';
-  return { msg: salvo + ', mas o rebuild do site falhou' + detalhe + '. O site atualiza no próximo deploy.', type: 'error' };
-}
-
-/* Mapa { id: views } montado a partir dos posts já carregados.
-   (a contagem de views agora mora na coluna `views` da tabela). */
-const loadViews = () => {
-  const m = {};
-  (state.posts || []).forEach(p => { m[p.id] = Number(p.views) || 0; });
-  return m;
-};
-
-/* Converte um data URL (imagem comprimida via canvas) num File nomeado,
-   pronto pra subir no Storage do Supabase. */
-function dataUrlToFile(dataUrl, baseName) {
-  const [head, b64] = String(dataUrl).split(',');
-  const mime = (head.match(/data:([^;]+)/) || [])[1] || 'image/jpeg';
-  const ext = (mime.split('/')[1] || 'jpg').replace('jpeg', 'jpg');
-  const bin = atob(b64 || '');
-  const arr = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
-  const name = String(baseName || 'img').replace(/\.[^.]+$/, '') + '.' + ext;
-  return new File([arr], name, { type: mime });
-}
-
-/* Mensagem amigável pra falhas de upload no Storage. */
-function uploadErrorMsg(err) {
-  const m = (err && err.message || String(err)).toLowerCase();
-  if (m.includes('bucket') && m.includes('not found')) {
-    return 'Bucket "blog-images" não existe no Supabase. Crie em Storage → New bucket (público).';
-  }
-  if (m.includes('row-level security') || m.includes('policy')) {
-    return 'Sem permissão pra subir imagem — confira as policies do bucket blog-images.';
-  }
-  return err && err.message || 'Falha ao enviar imagem';
-}
-
-/* ---------- Utilities ---------- */
-const uid = () => 'p_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
-
-const slugify = (s) => String(s || '')
-  .toLowerCase()
-  .normalize('NFD').replace(/[̀-ͯ]/g, '')
-  .replace(/[^a-z0-9\s-]/g, '')
-  .trim()
-  .replace(/\s+/g, '-')
-  .slice(0, 80);
-
-const formatDate = (iso) =>
-  new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
-
-const formatDateTime = (iso) =>
-  new Date(iso).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-
-/* datetime-local trabalha em horário local (YYYY-MM-DDTHH:mm).
-   O banco e o site usam ISO UTC — conversão nas duas pontas. */
-const pad2 = (n) => String(n).padStart(2, '0');
-const toDatetimeLocal = (iso) => {
-  const d = iso ? new Date(iso) : new Date();
-  if (Number.isNaN(d.getTime())) return toDatetimeLocal();
-  return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}T${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
-};
-const fromDatetimeLocal = (value) => {
-  if (!value) return null;
-  const d = new Date(value);
-  return Number.isNaN(d.getTime()) ? null : d.toISOString();
-};
-
-const estimateReadTime = (content) =>
-  Math.max(1, Math.ceil(((content || '').trim().split(/\s+/).length) / 200));
-
-const escapeHtml = (s) => String(s || '').replace(/[&<>"']/g, c => ({
-  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-}[c]));
-
-/* ---------- Status: allowlist ----------
-   O banco tem CHECK (draft|published) e o painel usa 'scheduled' só na tela.
-   O valor entra numa CLASSE CSS (admin-table-status--X), então vem de uma
-   lista fechada: valor estranho no banco não escolhe classe nenhuma.
-   O texto exibido é o valor real, escapado, pra não mentir na tela. */
-const STATUS_CONHECIDOS = ['draft', 'published', 'scheduled'];
-const statusClass = (s) => STATUS_CONHECIDOS.includes(String(s || '')) ? String(s) : 'draft';
-
-/* ---------- Endereço de imagem: allowlist de esquema ----------
-   Vale pro campo "URL ou caminho" da capa e pro src das imagens do post.
-   Passa:
-     - caminho do próprio site: img/blog/foto.png ou /img/blog/foto.png
-     - endereço http:// ou https:// (é o que o Storage do Supabase devolve)
-   Não passa: javascript:, vbscript:, data:, blob:, file:, //outro-host e
-   qualquer outro esquema. Esse valor vira src no painel e no site publicado,
-   e um dia pode virar href, então o esquema é decidido aqui e não na hora
-   de imprimir. */
-/* Tira espaço, tab e caractere de controle antes de olhar o esquema: é assim
-   que "java<tab>script:" engana uma checagem ingênua. A comparação é por
-   código do caractere pra não deixar caractere de controle literal no fonte. */
-const semEspacos = (v) => Array.prototype.filter
-  .call(String(v == null ? '' : v), (ch) => {
-    const code = ch.charCodeAt(0);
-    return code > 32 && code !== 127;
-  })
-  .join('');
-
-/* Bitmap em data URL: o upload antigo do painel gravava a capa comprimida
-   assim. data:image de bitmap não executa script (svg executaria, e está
-   fora da lista de propósito). */
-const DATA_URL_BITMAP = /^data:image\/(png|jpe?g|gif|webp|avif);base64,[A-Za-z0-9+/=]+$/;
-
-function isCaminhoDoSite(valor) {
-  const raw = String(valor == null ? '' : valor).trim();
-  if (!raw) return false;
-  if (raw.startsWith('//')) return false;                            // herda o protocolo e sai do site
-  if (/^[a-z][a-z0-9+.-]*:/i.test(semEspacos(raw))) return false;    // tem esquema: não é relativo
-  return raw.startsWith('/') || raw.startsWith('img/');
-}
-
-function isEnderecoHttp(valor) {
-  return /^https?:\/\/[^/\s]/i.test(semEspacos(valor));
-}
-
-/* O que o campo "URL ou caminho" aceita. */
-function isEnderecoImagemAceito(valor) {
-  return isCaminhoDoSite(valor) || isEnderecoHttp(valor);
-}
-
-/* src pronto pra <img>: devolve '' quando o endereço não passa na allowlist.
-   Melhor uma imagem quebrada do que um src hostil no DOM. Aceita também o
-   data:image de bitmap, que é o formato das capas antigas. */
-function safeImageSrc(valor) {
-  const raw = String(valor == null ? '' : valor).trim();
-  if (!raw) return '';
-  if (DATA_URL_BITMAP.test(semEspacos(raw))) return raw;
-  return isEnderecoImagemAceito(raw) ? raw : '';
-}
-
-const AVISO_ENDERECO_IMAGEM =
-  'Endereço de imagem não aceito. Use um caminho do site (img/blog/foto.png ou /img/blog/foto.png) ' +
-  'ou um endereço http(s). Endereços javascript:, data: e vbscript: são recusados.';
-
-/* =========================================================
-   MARKDOWN (.md) - preview do editor
-   ---------------------------------------------------------
-   O site publica os posts com a lib `marked` (ver scripts/build-posts.js),
-   então o preview usa a MESMA lib, carregada da CDN uma vez só e sob
-   demanda. Se a CDN falhar, cai no renderizador simples aqui embaixo:
-   o painel nunca fica em branco por causa disso.
-
-   Nota: os blocos customizados do design system (cartoes com icone e
-   caixas de destaque) sairam do editor. Aqui o conteudo e .md puro (GFM),
-   igual ao arquivo que vive em data/posts/<slug>.md.
-   ========================================================= */
-const MARKED_CDN = 'https://cdn.jsdelivr.net/npm/marked@12/marked.min.js';
-const MARKED_OPTS = { gfm: true, breaks: false, mangle: false, headerIds: false };
-let markedLoad = null;
-let markedWarned = false;
-
-/* Devolve parse(md) se a lib já estiver na página; senão null. */
-function getMarkedParser() {
-  const lib = window.marked;
-  if (!lib) return null;
-  if (typeof lib.parse === 'function') return (md) => lib.parse(md, MARKED_OPTS);
-  if (typeof lib === 'function') return (md) => lib(md, MARKED_OPTS);
-  if (lib.marked && typeof lib.marked.parse === 'function') return (md) => lib.marked.parse(md, MARKED_OPTS);
-  return null;
-}
-
-/* Carrega o marked uma única vez. Resolve com o parser ou com null
-   (nunca rejeita: falha de CDN só faz o preview usar o fallback). */
-function ensureMarked() {
-  const ready = getMarkedParser();
-  if (ready) return Promise.resolve(ready);
-  if (markedLoad) return markedLoad;
-  markedLoad = new Promise((resolve) => {
-    let settled = false;
-    const finish = () => { if (settled) return; settled = true; resolve(getMarkedParser()); };
-    const s = document.createElement('script');
-    s.src = MARKED_CDN;
-    s.async = true;
-    s.onload = finish;
-    s.onerror = finish;
-    document.head.appendChild(s);
-    setTimeout(finish, 8000); // CDN lenta não trava o preview
-  });
-  return markedLoad;
-}
-
-/* ---------- Sanitização do preview ----------
-   O markdown pode vir de qualquer lugar (colado, importado de um .md),
-   e o marked deixa HTML cru passar. Então todo HTML gerado passa por uma
-   allowlist antes de entrar no DOM: sem <script>, sem atributo on*, sem
-   href javascript:, sem tag fora da lista.                              */
-const PREVIEW_DROP_TAGS = 'script,style,iframe,object,embed,link,meta,base,form,noscript,template,svg,math,audio,video,source,track,canvas,button,select,textarea,frame,frameset,applet';
-
-const PREVIEW_TAGS = new Set([
-  'p', 'br', 'hr', 'strong', 'b', 'em', 'i', 'del', 's', 'strike', 'code', 'pre',
-  'blockquote', 'ul', 'ol', 'li', 'a', 'img', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-  'table', 'thead', 'tbody', 'tfoot', 'tr', 'th', 'td', 'caption', 'span', 'div',
-  'input', 'sup', 'sub', 'abbr', 'figure', 'figcaption', 'details', 'summary',
-  'dl', 'dt', 'dd', 'kbd', 'mark', 'small',
-]);
-
-/* `id` fica de fora de propósito: conteúdo colado não pode colidir com
-   os ids do painel. */
-const PREVIEW_GLOBAL_ATTRS = ['class', 'title'];
-
-const PREVIEW_TAG_ATTRS = {
-  a:       ['href', 'target', 'rel'],
-  img:     ['src', 'alt', 'width', 'height', 'loading'],
-  input:   ['type', 'checked', 'disabled'],
-  th:      ['align', 'colspan', 'rowspan', 'scope'],
-  td:      ['align', 'colspan', 'rowspan'],
-  ol:      ['start'],
-  li:      ['value'],
-  code:    ['class'],
-  details: ['open'],
-};
-
-/* Aceita http(s), mailto, tel, âncora e caminho relativo.
-   Para imagem aceita também data:image (menos svg, que executa script). */
-function isSafeUrl(url, kind) {
-  const raw = String(url || '').trim();
-  if (!raw) return false;
-  // tira espaços e caracteres de controle antes de olhar o esquema
-  const bare = raw.replace(/[\u0000-\u0020]+/g, '').toLowerCase();
-  if (kind === 'img' && /^data:image\/(png|jpe?g|gif|webp|avif);base64,/.test(bare)) return true;
-  if (/^[a-z][a-z0-9+.-]*:/.test(bare)) return /^(https?|mailto|tel):/.test(bare);
-  return true; // relativo: img/blog/foto.png, /post.html, #ancora
-}
-
-/* Troca o elemento pelos próprios filhos (mantém o texto, joga a tag fora). */
-function unwrapElement(el) {
-  const parent = el.parentNode;
-  if (!parent) { el.remove(); return; }
-  while (el.firstChild) parent.insertBefore(el.firstChild, el);
-  parent.removeChild(el);
-}
-
-function sanitizeHtml(dirty) {
-  const html = String(dirty || '');
-  if (!html) return '';
-  // Sem DOMParser não tem como limpar: mostra o markdown escapado
-  if (typeof DOMParser === 'undefined') return escapeHtml(html);
-  try {
-    return sanitizeWithDom(html);
-  } catch (err) {
-    console.warn('[admin] limpeza do preview falhou:', err);
-    return escapeHtml(html);
-  }
-}
-
-function sanitizeWithDom(html) {
-  // DOMParser não executa script nem baixa imagem: parse offline e seguro
-  const doc = new DOMParser().parseFromString(html, 'text/html');
-  const body = doc && doc.body;
-  if (!body) return '';
-
-  body.querySelectorAll(PREVIEW_DROP_TAGS).forEach(el => el.remove());
-
-  Array.from(body.querySelectorAll('*')).forEach(el => {
-    if (!el.parentNode) return; // já saiu do documento junto com o pai
-    const tag = el.tagName.toLowerCase();
-    if (!PREVIEW_TAGS.has(tag)) { unwrapElement(el); return; }
-
-    const allowed = PREVIEW_GLOBAL_ATTRS.concat(PREVIEW_TAG_ATTRS[tag] || []);
-    Array.from(el.attributes).forEach(attr => {
-      const name = attr.name.toLowerCase();
-      if (name.startsWith('on') || !allowed.includes(name)) el.removeAttribute(attr.name);
-    });
-
-    if (tag === 'a') {
-      const href = el.getAttribute('href');
-      if (!isSafeUrl(href, 'a')) el.removeAttribute('href');
-      if (el.hasAttribute('href')) {
-        el.setAttribute('target', '_blank');
-        el.setAttribute('rel', 'noopener noreferrer');
-      }
-    } else if (tag === 'img') {
-      if (!isSafeUrl(el.getAttribute('src'), 'img')) { el.remove(); return; }
-      el.setAttribute('loading', 'lazy');
-    } else if (tag === 'input') {
-      // só a checkbox das task lists do GFM, sempre travada
-      if ((el.getAttribute('type') || '').toLowerCase() !== 'checkbox') { el.remove(); return; }
-      el.setAttribute('disabled', '');
-      // hooks de estilo (o marked não marca as task lists com classe)
-      const li = el.closest('li');
-      if (li) {
-        li.classList.add('task-list-item');
-        const list = li.parentElement;
-        if (list && /^(ul|ol)$/i.test(list.tagName)) list.classList.add('contains-task-list');
-      }
-    }
-  });
-
-  return body.innerHTML;
-}
-
-/* ---------- Markdown -> HTML ---------- */
-function markdownToHtml(md) {
-  const src = String(md || '');
-  if (!src.trim()) return '<p class="admin-preview-empty">Sem conteúdo ainda.</p>';
-  const parse = getMarkedParser();
-  let html;
-  try {
-    html = parse ? parse(src) : markdownToHtmlSimple(src);
-  } catch (err) {
-    console.warn('[admin] marked falhou, usando renderizador simples:', err);
-    html = markdownToHtmlSimple(src);
-  }
-  return sanitizeHtml(html);
-}
-
-/* Renderizador de emergência (CDN fora do ar). Cobre o básico do markdown
-   e é sempre escapado antes, então não injeta HTML. */
-function markdownToHtmlSimple(md) {
-  let html = escapeHtml(md);
-
-  html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) =>
-    `<pre><code class="language-${lang || 'text'}">${code.trim()}</code></pre>`);
-
-  html = html.replace(/^(?:---+|\*\*\*+)$/gm, '<hr/>');
-  html = html.replace(/`([^`\n]+)`/g, '<code>$1</code>');
-  html = html.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
-  html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
-  html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
-  html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
-  html = html.replace(/^&gt;\s?(.+)$/gm, '<blockquote>$1</blockquote>');
-  html = html.replace(/~~([^~]+)~~/g, '<del>$1</del>');
-  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-  html = html.replace(/\*([^*\n]+)\*/g, '<em>$1</em>');
-  html = html.replace(/!\[([^\]]*)\]\(([^)\s]+)[^)]*\)/g, '<img src="$2" alt="$1"/>');
-  html = html.replace(/\[([^\]]+)\]\(([^)\s]+)[^)]*\)/g, '<a href="$2">$1</a>');
-
-  const listItem = (line) => {
-    const text = line.replace(/^\s*(?:[-*+] |\d+[.)] )/, '');
-    const task = text.match(/^\[([ xX])\]\s?(.*)$/);
-    if (!task) return `<li>${text}</li>`;
-    const checked = task[1].toLowerCase() === 'x' ? ' checked' : '';
-    return `<li class="task-list-item"><input type="checkbox" disabled${checked}/> ${task[2]}</li>`;
-  };
-
-  html = html.replace(/(?:^[-*+] .+(?:\n|$))+/gm, (block) =>
-    '<ul>' + block.trim().split('\n').map(listItem).join('') + '</ul>');
-  html = html.replace(/(?:^\d+[.)] .+(?:\n|$))+/gm, (block) =>
-    '<ol>' + block.trim().split('\n').map(listItem).join('') + '</ol>');
-
-  return html.split(/\n{2,}/).map(block => {
-    block = block.trim();
-    if (!block) return '';
-    if (/^<(h\d|ul|ol|pre|blockquote|img|hr|table|div)/i.test(block)) return block;
-    return `<p>${block.replace(/\n/g, '<br/>')}</p>`;
-  }).join('\n');
-}
-
-/* =========================================================
-   FRONT-MATTER YAML - parser local (sem dependência nova)
-   ---------------------------------------------------------
-   Cobre exatamente o que existe em data/posts/*.md:
-     chave: valor · chave: "valor com espaço" · booleanos · listas
-     simples (tags) e listas de objetos (images: - src/alt/caption).
-   ========================================================= */
-function parseYamlScalar(raw) {
-  let v = String(raw == null ? '' : raw).trim();
-  if (!/^["'[]/.test(v)) v = v.replace(/\s+#.*$/, '').trim(); // comentário à direita
-  if (v === '') return '';
-  if (/^".*"$/.test(v)) return v.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
-  if (/^'.*'$/.test(v)) return v.slice(1, -1).replace(/''/g, "'");
-  if (/^\[.*\]$/.test(v)) {
-    return v.slice(1, -1).split(',').map(s => parseYamlScalar(s)).filter(s => s !== '');
-  }
-  if (v === 'true') return true;
-  if (v === 'false') return false;
-  if (v === 'null' || v === '~') return '';
-  return v;
-}
-
-function parseYamlBlock(block) {
-  const data = {};
-  const lines = String(block || '').split('\n');
-  let i = 0;
-
-  while (i < lines.length) {
-    const line = lines[i];
-    if (!line.trim() || /^\s*#/.test(line)) { i++; continue; }
-
-    const entry = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
-    if (!entry) { i++; continue; }
-
-    const key = entry[1];
-    const inline = entry[2].trim();
-    i++;
-
-    if (inline !== '') { data[key] = parseYamlScalar(inline); continue; }
-
-    // valor vazio: pode ser uma lista nas linhas seguintes
-    const list = [];
-    while (i < lines.length && /^\s+-\s+/.test(lines[i])) {
-      const first = lines[i].replace(/^\s+-\s+/, '');
-      const pair = first.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
-      i++;
-      if (!pair) { list.push(parseYamlScalar(first)); continue; }
-
-      const obj = {};
-      obj[pair[1]] = parseYamlScalar(pair[2]);
-      // propriedades extra do mesmo item (indentadas, sem hífen)
-      while (i < lines.length && /^\s{2,}[A-Za-z0-9_-]+:/.test(lines[i]) && !/^\s*-\s/.test(lines[i])) {
-        const extra = lines[i].match(/^\s+([A-Za-z0-9_-]+):\s*(.*)$/);
-        if (!extra) break;
-        obj[extra[1]] = parseYamlScalar(extra[2]);
-        i++;
-      }
-      list.push(obj);
-    }
-    data[key] = list.length ? list : '';
-  }
-
-  return data;
-}
-
-/* Separa front-matter e corpo. Sem front-matter, devolve data: null e o
-   arquivo inteiro como corpo. */
-function parseFrontMatter(text) {
-  const src = String(text || '').replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n');
-  const match = src.match(/^---[ \t]*\n([\s\S]*?)\n---[ \t]*(?:\n|$)/);
-  if (!match) return { data: null, body: src };
-  return { data: parseYamlBlock(match[1]), body: src.slice(match[0].length).replace(/^\n+/, '') };
-}
-
-/* ---------- State ---------- */
-const state = {
-  view: 'dashboard',
-  editingId: null,
-  posts: [],
-  search: '',
-  statusFilter: 'all',
-  form: null,
-  saving: false,
-};
-
-/* ---------- Toast ---------- */
-/* Toast unico. Antes existia uma SEGUNDA declaracao de toast() mais abaixo no
-   arquivo; por hoisting ela vencia e ignorava o parametro `type`, entao as ~10
-   chamadas com 'error' apareciam como sucesso. A duplicata saiu e esta versao
-   (que usa .admin-toast/.admin-toast--error do blog.css) e a unica.
-   Reaproveita um unico elemento: .admin-toast e fixed no canto, dois toasts
-   simultaneos ficariam empilhados um sobre o outro. */
-function toast(message, type = 'success') {
-  const isError = type === 'error';
-  document.getElementById('adminToast')?.remove();   // nunca empilha
-
-  const el = document.createElement('div');
-  el.id = 'adminToast';
-  el.className = 'admin-toast' + (isError ? ' admin-toast--error' : '');
-  /* textContent, NUNCA innerHTML: metade das chamadas de toast() concatena
-     mensagem de erro do Supabase, e mensagem de servidor é dado externo. Com
-     textContent o texto aparece como texto, sem virar marcação. Se algum dia
-     alguém precisar de negrito aqui, monte elementos e use textContent neles. */
-  el.textContent = message;
-  document.body.appendChild(el);
-
-  clearTimeout(toast._t);
-  toast._t = setTimeout(() => {
-    el.style.transition = 'opacity .3s ease, transform .3s ease';
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(10px)';
-    setTimeout(() => el.remove(), 300);
-  }, isError ? 4200 : 2400);   // erro fica mais tempo: da tempo de ler
-}
-
-/* ---------- HTML helpers ---------- */
-const emptyState = (icon, title, text) => `
+"use strict";async function apiGetPosts(){if(!window.BlogDB)throw new Error("Supabase n\xE3o configurado \u2014 veja js/supabase-config.js");return window.BlogDB.listAll()}async function reloadPosts(){state.posts=await apiGetPosts()}async function triggerRebuild(e){let t="";try{const s=window.BlogDB?await window.BlogDB.getSession():null;t=s&&s.access_token||""}catch{t=""}if(!t)return{ok:!1,reason:"unauthorized"};let o;try{o=await fetch("/api/rebuild",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+t},body:JSON.stringify({reason:e||""})})}catch(s){return{ok:!1,reason:"not_configured",detail:s&&s.message||"sem rede"}}let n=null;try{n=await o.json()}catch{n=null}const r=n&&n.error||"";return o.ok?n&&n.ok?{ok:!0,reason:"ok"}:{ok:!1,reason:"not_configured"}:o.status===404?{ok:!1,reason:"not_configured"}:o.status===405&&!n?{ok:!1,reason:"not_configured"}:o.status===501||r==="not_configured"?{ok:!1,reason:"not_configured"}:o.status===403||r==="forbidden"?{ok:!1,reason:"forbidden"}:o.status===401||r==="unauthorized"?{ok:!1,reason:"unauthorized"}:{ok:!1,reason:"hook_failed",detail:n&&n.detail||r||"HTTP "+o.status}}function rebuildMessage(e,t,o){if(!o)return{msg:t+".",type:"success"};if(o.ok)return{msg:e+". O site atualiza em cerca de 1 minuto.",type:"success"};if(o.reason==="not_configured")return{msg:t+". A atualiza\xE7\xE3o autom\xE1tica do site n\xE3o respondeu, ent\xE3o ele entra no ar no pr\xF3ximo deploy (veja PUBLICAR.md).",type:"error"};if(o.reason==="unauthorized")return{msg:t+", mas n\xE3o deu pra confirmar sua sess\xE3o para atualizar o site. Recarregue a p\xE1gina; se persistir, entre de novo. O site atualiza no pr\xF3ximo deploy.",type:"error"};if(o.reason==="forbidden")return{msg:t+", mas esta conta n\xE3o tem permiss\xE3o para atualizar o site (s\xF3 o dono do painel dispara deploy). Confira ADMIN_USER_ID nas vari\xE1veis de ambiente da Vercel. O site atualiza no pr\xF3ximo deploy.",type:"error"};const n=o.detail?" ("+o.detail+")":"";return{msg:t+", mas o rebuild do site falhou"+n+". O site atualiza no pr\xF3ximo deploy.",type:"error"}}const loadViews=()=>{const e={};return(state.posts||[]).forEach(t=>{e[t.id]=Number(t.views)||0}),e};function dataUrlToFile(e,t){const[o,n]=String(e).split(","),r=(o.match(/data:([^;]+)/)||[])[1]||"image/jpeg",s=(r.split("/")[1]||"jpg").replace("jpeg","jpg"),m=atob(n||""),p=new Uint8Array(m.length);for(let l=0;l<m.length;l++)p[l]=m.charCodeAt(l);const v=String(t||"img").replace(/\.[^.]+$/,"")+"."+s;return new File([p],v,{type:r})}function uploadErrorMsg(e){const t=(e&&e.message||String(e)).toLowerCase();return t.includes("bucket")&&t.includes("not found")?'Bucket "blog-images" n\xE3o existe no Supabase. Crie em Storage \u2192 New bucket (p\xFAblico).':t.includes("row-level security")||t.includes("policy")?"Sem permiss\xE3o pra subir imagem \u2014 confira as policies do bucket blog-images.":e&&e.message||"Falha ao enviar imagem"}const uid=()=>"p_"+Math.random().toString(36).slice(2,10)+Date.now().toString(36),slugify=e=>String(e||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9\s-]/g,"").trim().replace(/\s+/g,"-").slice(0,80),formatDate=e=>new Date(e).toLocaleDateString("pt-BR",{day:"2-digit",month:"short",year:"numeric"}),formatDateTime=e=>new Date(e).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}),pad2=e=>String(e).padStart(2,"0"),toDatetimeLocal=e=>{const t=e?new Date(e):new Date;return Number.isNaN(t.getTime())?toDatetimeLocal():`${t.getFullYear()}-${pad2(t.getMonth()+1)}-${pad2(t.getDate())}T${pad2(t.getHours())}:${pad2(t.getMinutes())}`},fromDatetimeLocal=e=>{if(!e)return null;const t=new Date(e);return Number.isNaN(t.getTime())?null:t.toISOString()},estimateReadTime=e=>Math.max(1,Math.ceil((e||"").trim().split(/\s+/).length/200)),escapeHtml=e=>String(e||"").replace(/[&<>"']/g,t=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[t]),STATUS_CONHECIDOS=["draft","published","scheduled"],statusClass=e=>STATUS_CONHECIDOS.includes(String(e||""))?String(e):"draft",semEspacos=e=>Array.prototype.filter.call(String(e??""),t=>{const o=t.charCodeAt(0);return o>32&&o!==127}).join(""),DATA_URL_BITMAP=/^data:image\/(png|jpe?g|gif|webp|avif);base64,[A-Za-z0-9+/=]+$/;function isCaminhoDoSite(e){const t=String(e??"").trim();return!t||t.startsWith("//")||/^[a-z][a-z0-9+.-]*:/i.test(semEspacos(t))?!1:t.startsWith("/")||t.startsWith("img/")}function isEnderecoHttp(e){return/^https?:\/\/[^/\s]/i.test(semEspacos(e))}function isEnderecoImagemAceito(e){return isCaminhoDoSite(e)||isEnderecoHttp(e)}function safeImageSrc(e){const t=String(e??"").trim();return t&&(DATA_URL_BITMAP.test(semEspacos(t))||isEnderecoImagemAceito(t))?t:""}const AVISO_ENDERECO_IMAGEM="Endere\xE7o de imagem n\xE3o aceito. Use um caminho do site (img/blog/foto.png ou /img/blog/foto.png) ou um endere\xE7o http(s). Endere\xE7os javascript:, data: e vbscript: s\xE3o recusados.",MARKED_CDN="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js",MARKED_OPTS={gfm:!0,breaks:!1,mangle:!1,headerIds:!1};let markedLoad=null,markedWarned=!1;function getMarkedParser(){const e=window.marked;return e?typeof e.parse=="function"?t=>e.parse(t,MARKED_OPTS):typeof e=="function"?t=>e(t,MARKED_OPTS):e.marked&&typeof e.marked.parse=="function"?t=>e.marked.parse(t,MARKED_OPTS):null:null}function ensureMarked(){const e=getMarkedParser();return e?Promise.resolve(e):markedLoad||(markedLoad=new Promise(t=>{let o=!1;const n=()=>{o||(o=!0,t(getMarkedParser()))},r=document.createElement("script");r.src=MARKED_CDN,r.async=!0,r.onload=n,r.onerror=n,document.head.appendChild(r),setTimeout(n,8e3)}),markedLoad)}const PREVIEW_DROP_TAGS="script,style,iframe,object,embed,link,meta,base,form,noscript,template,svg,math,audio,video,source,track,canvas,button,select,textarea,frame,frameset,applet",PREVIEW_TAGS=new Set(["p","br","hr","strong","b","em","i","del","s","strike","code","pre","blockquote","ul","ol","li","a","img","h1","h2","h3","h4","h5","h6","table","thead","tbody","tfoot","tr","th","td","caption","span","div","input","sup","sub","abbr","figure","figcaption","details","summary","dl","dt","dd","kbd","mark","small"]),PREVIEW_GLOBAL_ATTRS=["class","title"],PREVIEW_TAG_ATTRS={a:["href","target","rel"],img:["src","alt","width","height","loading"],input:["type","checked","disabled"],th:["align","colspan","rowspan","scope"],td:["align","colspan","rowspan"],ol:["start"],li:["value"],code:["class"],details:["open"]};function isSafeUrl(e,t){const o=String(e||"").trim();if(!o)return!1;const n=o.replace(/[\u0000-\u0020]+/g,"").toLowerCase();return t==="img"&&/^data:image\/(png|jpe?g|gif|webp|avif);base64,/.test(n)?!0:/^[a-z][a-z0-9+.-]*:/.test(n)?/^(https?|mailto|tel):/.test(n):!0}function unwrapElement(e){const t=e.parentNode;if(!t){e.remove();return}for(;e.firstChild;)t.insertBefore(e.firstChild,e);t.removeChild(e)}function sanitizeHtml(e){const t=String(e||"");if(!t)return"";if(typeof DOMParser>"u")return escapeHtml(t);try{return sanitizeWithDom(t)}catch(o){return console.warn("[admin] limpeza do preview falhou:",o),escapeHtml(t)}}function sanitizeWithDom(e){const t=new DOMParser().parseFromString(e,"text/html"),o=t&&t.body;return o?(o.querySelectorAll(PREVIEW_DROP_TAGS).forEach(n=>n.remove()),Array.from(o.querySelectorAll("*")).forEach(n=>{if(!n.parentNode)return;const r=n.tagName.toLowerCase();if(!PREVIEW_TAGS.has(r)){unwrapElement(n);return}const s=PREVIEW_GLOBAL_ATTRS.concat(PREVIEW_TAG_ATTRS[r]||[]);if(Array.from(n.attributes).forEach(m=>{const p=m.name.toLowerCase();(p.startsWith("on")||!s.includes(p))&&n.removeAttribute(m.name)}),r==="a"){const m=n.getAttribute("href");isSafeUrl(m,"a")||n.removeAttribute("href"),n.hasAttribute("href")&&(n.setAttribute("target","_blank"),n.setAttribute("rel","noopener noreferrer"))}else if(r==="img"){if(!isSafeUrl(n.getAttribute("src"),"img")){n.remove();return}n.setAttribute("loading","lazy")}else if(r==="input"){if((n.getAttribute("type")||"").toLowerCase()!=="checkbox"){n.remove();return}n.setAttribute("disabled","");const m=n.closest("li");if(m){m.classList.add("task-list-item");const p=m.parentElement;p&&/^(ul|ol)$/i.test(p.tagName)&&p.classList.add("contains-task-list")}}}),o.innerHTML):""}function markdownToHtml(e){const t=String(e||"");if(!t.trim())return'<p class="admin-preview-empty">Sem conte\xFAdo ainda.</p>';const o=getMarkedParser();let n;try{n=o?o(t):markdownToHtmlSimple(t)}catch(r){console.warn("[admin] marked falhou, usando renderizador simples:",r),n=markdownToHtmlSimple(t)}return sanitizeHtml(n)}function markdownToHtmlSimple(e){let t=escapeHtml(e);t=t.replace(/```(\w*)\n([\s\S]*?)```/g,(n,r,s)=>`<pre><code class="language-${r||"text"}">${s.trim()}</code></pre>`),t=t.replace(/^(?:---+|\*\*\*+)$/gm,"<hr/>"),t=t.replace(/`([^`\n]+)`/g,"<code>$1</code>"),t=t.replace(/^#### (.+)$/gm,"<h4>$1</h4>"),t=t.replace(/^### (.+)$/gm,"<h3>$1</h3>"),t=t.replace(/^## (.+)$/gm,"<h2>$1</h2>"),t=t.replace(/^# (.+)$/gm,"<h1>$1</h1>"),t=t.replace(/^&gt;\s?(.+)$/gm,"<blockquote>$1</blockquote>"),t=t.replace(/~~([^~]+)~~/g,"<del>$1</del>"),t=t.replace(/\*\*([^*]+)\*\*/g,"<strong>$1</strong>"),t=t.replace(/\*([^*\n]+)\*/g,"<em>$1</em>"),t=t.replace(/!\[([^\]]*)\]\(([^)\s]+)[^)]*\)/g,'<img src="$2" alt="$1"/>'),t=t.replace(/\[([^\]]+)\]\(([^)\s]+)[^)]*\)/g,'<a href="$2">$1</a>');const o=n=>{const r=n.replace(/^\s*(?:[-*+] |\d+[.)] )/,""),s=r.match(/^\[([ xX])\]\s?(.*)$/);return s?`<li class="task-list-item"><input type="checkbox" disabled${s[1].toLowerCase()==="x"?" checked":""}/> ${s[2]}</li>`:`<li>${r}</li>`};return t=t.replace(/(?:^[-*+] .+(?:\n|$))+/gm,n=>"<ul>"+n.trim().split(`
+`).map(o).join("")+"</ul>"),t=t.replace(/(?:^\d+[.)] .+(?:\n|$))+/gm,n=>"<ol>"+n.trim().split(`
+`).map(o).join("")+"</ol>"),t.split(/\n{2,}/).map(n=>(n=n.trim(),n?/^<(h\d|ul|ol|pre|blockquote|img|hr|table|div)/i.test(n)?n:`<p>${n.replace(/\n/g,"<br/>")}</p>`:"")).join(`
+`)}function parseYamlScalar(e){let t=String(e??"").trim();return/^["'[]/.test(t)||(t=t.replace(/\s+#.*$/,"").trim()),t===""?"":/^".*"$/.test(t)?t.slice(1,-1).replace(/\\"/g,'"').replace(/\\\\/g,"\\"):/^'.*'$/.test(t)?t.slice(1,-1).replace(/''/g,"'"):/^\[.*\]$/.test(t)?t.slice(1,-1).split(",").map(o=>parseYamlScalar(o)).filter(o=>o!==""):t==="true"?!0:t==="false"?!1:t==="null"||t==="~"?"":t}function parseYamlBlock(e){const t={},o=String(e||"").split(`
+`);let n=0;for(;n<o.length;){const r=o[n];if(!r.trim()||/^\s*#/.test(r)){n++;continue}const s=r.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);if(!s){n++;continue}const m=s[1],p=s[2].trim();if(n++,p!==""){t[m]=parseYamlScalar(p);continue}const v=[];for(;n<o.length&&/^\s+-\s+/.test(o[n]);){const l=o[n].replace(/^\s+-\s+/,""),y=l.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);if(n++,!y){v.push(parseYamlScalar(l));continue}const b={};for(b[y[1]]=parseYamlScalar(y[2]);n<o.length&&/^\s{2,}[A-Za-z0-9_-]+:/.test(o[n])&&!/^\s*-\s/.test(o[n]);){const $=o[n].match(/^\s+([A-Za-z0-9_-]+):\s*(.*)$/);if(!$)break;b[$[1]]=parseYamlScalar($[2]),n++}v.push(b)}t[m]=v.length?v:""}return t}function parseFrontMatter(e){const t=String(e||"").replace(/^\uFEFF/,"").replace(/\r\n?/g,`
+`),o=t.match(/^---[ \t]*\n([\s\S]*?)\n---[ \t]*(?:\n|$)/);return o?{data:parseYamlBlock(o[1]),body:t.slice(o[0].length).replace(/^\n+/,"")}:{data:null,body:t}}const state={view:"dashboard",editingId:null,posts:[],search:"",statusFilter:"all",form:null,saving:!1};function toast(e,t="success"){const o=t==="error";document.getElementById("adminToast")?.remove();const n=document.createElement("div");n.id="adminToast",n.className="admin-toast"+(o?" admin-toast--error":""),n.textContent=e,document.body.appendChild(n),clearTimeout(toast._t),toast._t=setTimeout(()=>{n.style.transition="opacity .3s ease, transform .3s ease",n.style.opacity="0",n.style.transform="translateY(10px)",setTimeout(()=>n.remove(),300)},o?4200:2400)}const emptyState=(e,t,o)=>`
   <div class="admin-empty">
-    <div class="admin-empty-icon">${icon}</div>
-    <p class="admin-empty-title">${escapeHtml(title)}</p>
-    ${text ? `<p class="admin-empty-text">${escapeHtml(text)}</p>` : ''}
+    <div class="admin-empty-icon">${e}</div>
+    <p class="admin-empty-title">${escapeHtml(t)}</p>
+    ${o?`<p class="admin-empty-text">${escapeHtml(o)}</p>`:""}
   </div>
-`;
-
-const statCard = (label, value, iconSvg, hint) => `
+`,statCard=(e,t,o,n)=>`
   <div class="admin-stat">
-    <span class="admin-stat-label">${escapeHtml(label)}</span>
-    <span class="admin-stat-value">${value}</span>
-    ${hint ? `<span class="admin-stat-hint">${escapeHtml(hint)}</span>` : ''}
-    <span class="admin-stat-icon">${iconSvg}</span>
+    <span class="admin-stat-label">${escapeHtml(e)}</span>
+    <span class="admin-stat-value">${t}</span>
+    ${n?`<span class="admin-stat-hint">${escapeHtml(n)}</span>`:""}
+    <span class="admin-stat-icon">${o}</span>
   </div>
-`;
-
-const ICONS = {
-  plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>',
-  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  edit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
-  clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke-linecap="round"/></svg>',
-  trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>',
-  copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',
-  search: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></svg>',
-  paperplane: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>',
-  save: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21" fill="none"/><polyline points="7 3 7 8 15 8" fill="none"/></svg>',
-  inbox: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>',
-  star: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 6.6L21 9.2l-5 4.6L17.4 21 12 17.7 6.6 21 8 13.8 3 9.2l6.6-.6z"/></svg>',
-};
-
-const greeting = () => {
-  const h = new Date().getHours();
-  if (h < 5) return 'Boa madrugada';
-  if (h < 12) return 'Bom dia';
-  if (h < 18) return 'Boa tarde';
-  return 'Boa noite';
-};
-
-const formatDayLong = () =>
-  new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
-
-const fmtNum = (n) => Number(n || 0).toLocaleString('pt-BR');
-
-const statusLabel = (s) => {
-  const v = String(s || 'draft');
-  if (v === 'published') return 'publicado';
-  if (v === 'scheduled') return 'agendado';
-  return 'rascunho';
-};
-
-const newPostButton = `
+`,ICONS={plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>',check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke-linecap="round" stroke-linejoin="round"/></svg>',edit:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>',eye:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke-linecap="round"/></svg>',trash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>',copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',search:'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></svg>',paperplane:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>',save:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21" fill="none"/><polyline points="7 3 7 8 15 8" fill="none"/></svg>',inbox:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>',star:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 6.6L21 9.2l-5 4.6L17.4 21 12 17.7 6.6 21 8 13.8 3 9.2l6.6-.6z"/></svg>'},greeting=()=>{const e=new Date().getHours();return e<5?"Boa madrugada":e<12?"Bom dia":e<18?"Boa tarde":"Boa noite"},formatDayLong=()=>new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"}),fmtNum=e=>Number(e||0).toLocaleString("pt-BR"),statusLabel=e=>{const t=String(e||"draft");return t==="published"?"publicado":t==="scheduled"?"agendado":"rascunho"},newPostButton=`
   <button class="admin-btn admin-btn--primary" data-nav="editor" data-new>
     ${ICONS.plus}
     Novo Post
   </button>
-`;
-
-/* ---------- Views ---------- */
-function renderDashboard() {
-  const posts = state.posts;
-  const views = loadViews();
-  const viewOf = (p) => Number(views[p.id] || p.views || 0);
-  const published = posts.filter(p => p.status === 'published');
-  const drafts = posts.filter(p => p.status === 'draft');
-  const totalViews = published.reduce((a, p) => a + viewOf(p), 0);
-  const totalReadtime = published.reduce((acc, p) => acc + estimateReadTime(p.content), 0);
-  const featured = published.find(p => p.featured);
-  const now = Date.now();
-  const future = published.filter(p => new Date(p.createdAt).getTime() > now)
-    .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-
-  const mostRead = published
-    .slice()
-    .sort((a, b) => viewOf(b) - viewOf(a) || new Date(b.createdAt) - new Date(a.createdAt))
-    .slice(0, 6);
-  const maxViews = Math.max(1, ...mostRead.map(viewOf));
-
-  const recent = posts
-    .slice()
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    .slice(0, 6);
-
-  const cats = {};
-  published.forEach(p => {
-    const c = p.category || 'Sem categoria';
-    cats[c] = (cats[c] || 0) + 1;
-  });
-  const catEntries = Object.entries(cats).sort((a, b) => b[1] - a[1]);
-  const catMax = Math.max(1, ...catEntries.map(([, n]) => n));
-
-  const mostReadBody = mostRead.length
-    ? `<div class="admin-rank">
-         ${mostRead.map((p, i) => {
-           const v = viewOf(p);
-           const pct = Math.round((v / maxViews) * 100);
-           return `
-             <button type="button" class="admin-rank-row" data-edit="${escapeHtml(p.id)}">
-               <span class="admin-rank-n">${String(i + 1).padStart(2, '0')}</span>
+`;function renderDashboard(){const e=state.posts,t=loadViews(),o=u=>Number(t[u.id]||u.views||0),n=e.filter(u=>u.status==="published"),r=e.filter(u=>u.status==="draft"),s=n.reduce((u,w)=>u+o(w),0),m=n.reduce((u,w)=>u+estimateReadTime(w.content),0),p=n.find(u=>u.featured),v=Date.now(),l=n.filter(u=>new Date(u.createdAt).getTime()>v).sort((u,w)=>new Date(u.createdAt)-new Date(w.createdAt)),y=n.slice().sort((u,w)=>o(w)-o(u)||new Date(w.createdAt)-new Date(u.createdAt)).slice(0,6),b=Math.max(1,...y.map(o)),$=e.slice().sort((u,w)=>new Date(w.createdAt)-new Date(u.createdAt)).slice(0,6),k={};n.forEach(u=>{const w=u.category||"Sem categoria";k[w]=(k[w]||0)+1});const g=Object.entries(k).sort((u,w)=>w[1]-u[1]),B=Math.max(1,...g.map(([,u])=>u)),M=y.length?`<div class="admin-rank">
+         ${y.map((u,w)=>{const R=o(u),U=Math.round(R/b*100);return`
+             <button type="button" class="admin-rank-row" data-edit="${escapeHtml(u.id)}">
+               <span class="admin-rank-n">${String(w+1).padStart(2,"0")}</span>
                <div class="admin-rank-body">
-                 <span class="admin-rank-title">${escapeHtml(p.title)}</span>
-                 <span class="admin-rank-track" aria-hidden="true"><span style="width:${pct}%"></span></span>
+                 <span class="admin-rank-title">${escapeHtml(u.title)}</span>
+                 <span class="admin-rank-track" aria-hidden="true"><span style="width:${U}%"></span></span>
                </div>
-               <span class="admin-rank-val">${fmtNum(v)}</span>
-             </button>`;
-         }).join('')}
+               <span class="admin-rank-val">${fmtNum(R)}</span>
+             </button>`}).join("")}
        </div>
-       ${totalViews === 0 ? `<p class="admin-dash-note">As views agora gravam no banco. O número sobe quando alguém abre o post (uma vez por visita).</p>` : ''}`
-    : emptyState(ICONS.eye, 'Nenhum publicado', 'Publique um post pra aparecer o ranking.');
-
-  const recentBody = recent.length
-    ? `<div class="admin-feed">
-         ${recent.map(p => `
-           <button type="button" class="admin-feed-row" data-edit="${escapeHtml(p.id)}">
-             <span class="admin-table-status admin-table-status--${statusClass(p.status)}">${escapeHtml(statusLabel(p.status))}</span>
-             <span class="admin-feed-title">${escapeHtml(p.title)}</span>
-             <span class="admin-feed-date">${formatDate(p.createdAt)}</span>
-           </button>`).join('')}
-       </div>`
-    : emptyState(ICONS.edit, 'Nenhum post ainda', 'Clique em "Novo Post" pra começar.');
-
-  const featuredBody = featured
-    ? `<button type="button" class="admin-feat" data-edit="${escapeHtml(featured.id)}">
-         ${safeImageSrc(featured.cover) ? `<img class="admin-feat-cover" src="${escapeHtml(safeImageSrc(featured.cover))}" alt="">` : '<div class="admin-feat-cover admin-feat-cover--empty" aria-hidden="true"></div>'}
+       ${s===0?'<p class="admin-dash-note">As views agora gravam no banco. O n\xFAmero sobe quando algu\xE9m abre o post (uma vez por visita).</p>':""}`:emptyState(ICONS.eye,"Nenhum publicado","Publique um post pra aparecer o ranking."),S=$.length?`<div class="admin-feed">
+         ${$.map(u=>`
+           <button type="button" class="admin-feed-row" data-edit="${escapeHtml(u.id)}">
+             <span class="admin-table-status admin-table-status--${statusClass(u.status)}">${escapeHtml(statusLabel(u.status))}</span>
+             <span class="admin-feed-title">${escapeHtml(u.title)}</span>
+             <span class="admin-feed-date">${formatDate(u.createdAt)}</span>
+           </button>`).join("")}
+       </div>`:emptyState(ICONS.edit,"Nenhum post ainda",'Clique em "Novo Post" pra come\xE7ar.'),q=p?`<button type="button" class="admin-feat" data-edit="${escapeHtml(p.id)}">
+         ${safeImageSrc(p.cover)?`<img class="admin-feat-cover" src="${escapeHtml(safeImageSrc(p.cover))}" alt="">`:'<div class="admin-feat-cover admin-feat-cover--empty" aria-hidden="true"></div>'}
          <div class="admin-feat-text">
            <span class="admin-feat-kicker">${ICONS.star} Destaque do blog</span>
-           <span class="admin-feat-title">${escapeHtml(featured.title)}</span>
-           <span class="admin-feat-meta">${formatDate(featured.createdAt)} · ${fmtNum(viewOf(featured))} views · ${estimateReadTime(featured.content)} min</span>
+           <span class="admin-feat-title">${escapeHtml(p.title)}</span>
+           <span class="admin-feat-meta">${formatDate(p.createdAt)} \xB7 ${fmtNum(o(p))} views \xB7 ${estimateReadTime(p.content)} min</span>
          </div>
-       </button>`
-    : `<p class="admin-dash-note">Nenhum post marcado como destaque.</p>`;
-
-  const catsBody = catEntries.length
-    ? `<div class="admin-cats">
-         ${catEntries.map(([name, n]) => `
+       </button>`:'<p class="admin-dash-note">Nenhum post marcado como destaque.</p>',z=g.length?`<div class="admin-cats">
+         ${g.map(([u,w])=>`
            <div class="admin-cat">
-             <span class="admin-cat-name">${escapeHtml(name)}</span>
-             <span class="admin-cat-track" aria-hidden="true"><span style="width:${Math.round((n / catMax) * 100)}%"></span></span>
-             <span class="admin-cat-n">${n}</span>
-           </div>`).join('')}
-       </div>`
-    : emptyState(ICONS.inbox, 'Sem categorias', 'Categorias aparecem quando houver post publicado.');
-
-  const futureBody = future.length
-    ? `<div class="admin-feed">
-         ${future.map(p => `
-           <button type="button" class="admin-feed-row" data-edit="${escapeHtml(p.id)}">
-             <span class="admin-feed-title">${escapeHtml(p.title)}</span>
-             <span class="admin-feed-date">${formatDateTime(p.createdAt)}</span>
-           </button>`).join('')}
-       </div>`
-    : '';
-
-  return `
+             <span class="admin-cat-name">${escapeHtml(u)}</span>
+             <span class="admin-cat-track" aria-hidden="true"><span style="width:${Math.round(w/B*100)}%"></span></span>
+             <span class="admin-cat-n">${w}</span>
+           </div>`).join("")}
+       </div>`:emptyState(ICONS.inbox,"Sem categorias","Categorias aparecem quando houver post publicado."),P=l.length?`<div class="admin-feed">
+         ${l.map(u=>`
+           <button type="button" class="admin-feed-row" data-edit="${escapeHtml(u.id)}">
+             <span class="admin-feed-title">${escapeHtml(u.title)}</span>
+             <span class="admin-feed-date">${formatDateTime(u.createdAt)}</span>
+           </button>`).join("")}
+       </div>`:"";return`
     <header class="admin-header">
       <div>
         <h1 class="admin-title">${greeting()}, <em>Bernardo</em>.</h1>
-        <p class="admin-title-sub">${formatDayLong()} · ${published.length} no ar · ${fmtNum(totalViews)} views</p>
+        <p class="admin-title-sub">${formatDayLong()} \xB7 ${n.length} no ar \xB7 ${fmtNum(s)} views</p>
       </div>
       <div class="admin-header-actions">${newPostButton}</div>
     </header>
 
     <div class="admin-stats">
-      ${statCard('Publicados', published.length, ICONS.check, drafts.length ? drafts.length + ' rascunho' + (drafts.length === 1 ? '' : 's') : 'nenhum rascunho')}
-      ${statCard('Visualizações', fmtNum(totalViews), ICONS.eye, totalViews ? 'soma dos posts no ar' : 'ainda zerado no banco')}
-      ${statCard('Minutos no ar', totalReadtime, ICONS.clock, 'leitura dos publicados')}
-      ${statCard('Categorias', catEntries.length, ICONS.inbox, catEntries.length ? catEntries[0][0] + ' na frente' : '—')}
+      ${statCard("Publicados",n.length,ICONS.check,r.length?r.length+" rascunho"+(r.length===1?"":"s"):"nenhum rascunho")}
+      ${statCard("Visualiza\xE7\xF5es",fmtNum(s),ICONS.eye,s?"soma dos posts no ar":"ainda zerado no banco")}
+      ${statCard("Minutos no ar",m,ICONS.clock,"leitura dos publicados")}
+      ${statCard("Categorias",g.length,ICONS.inbox,g.length?g[0][0]+" na frente":"\u2014")}
     </div>
 
     <div class="admin-grid admin-grid--2">
@@ -755,17 +83,17 @@ function renderDashboard() {
             <p class="admin-card-sub">views reais no banco</p>
           </div>
         </header>
-        ${mostReadBody}
+        ${M}
       </section>
 
       <section class="admin-card">
         <header class="admin-card-head">
           <div class="admin-card-head-text">
-            <h3 class="admin-card-title">Por data de publicação</h3>
+            <h3 class="admin-card-title">Por data de publica\xE7\xE3o</h3>
             <p class="admin-card-sub">os mais recentes primeiro</p>
           </div>
         </header>
-        ${recentBody}
+        ${S}
       </section>
     </div>
 
@@ -777,7 +105,7 @@ function renderDashboard() {
             <p class="admin-card-sub">o que o blog empurra no topo</p>
           </div>
         </header>
-        ${featuredBody}
+        ${q}
       </section>
 
       <section class="admin-card">
@@ -787,110 +115,71 @@ function renderDashboard() {
             <p class="admin-card-sub">posts publicados por assunto</p>
           </div>
         </header>
-        ${catsBody}
+        ${z}
       </section>
     </div>
 
-    ${future.length ? `
+    ${l.length?`
       <section class="admin-card">
         <header class="admin-card-head">
           <div class="admin-card-head-text">
             <h3 class="admin-card-title">Data futura</h3>
-            <p class="admin-card-sub">já publicados, com data à frente de hoje</p>
+            <p class="admin-card-sub">j\xE1 publicados, com data \xE0 frente de hoje</p>
           </div>
         </header>
-        ${futureBody}
-      </section>` : ''}
-  `;
-}
-
-function postsTableRow(p, views, maxViews) {
-  const v = Number(views[p.id] || p.views || 0);
-  const pct = Math.round((v / Math.max(1, maxViews)) * 100);
-  const cover = safeImageSrc(p.cover);
-  const initial = (p.title || '?').trim().charAt(0).toUpperCase();
-  return `
+        ${P}
+      </section>`:""}
+  `}function postsTableRow(e,t,o){const n=Number(t[e.id]||e.views||0),r=Math.round(n/Math.max(1,o)*100),s=safeImageSrc(e.cover),m=(e.title||"?").trim().charAt(0).toUpperCase();return`
     <tr>
       <td>
         <div class="admin-table-post">
-          ${cover
-            ? `<img class="admin-table-thumb" src="${escapeHtml(cover)}" alt="" width="44" height="44">`
-            : `<span class="admin-table-thumb admin-table-thumb--letter" aria-hidden="true">${escapeHtml(initial)}</span>`}
+          ${s?`<img class="admin-table-thumb" src="${escapeHtml(s)}" alt="" width="44" height="44">`:`<span class="admin-table-thumb admin-table-thumb--letter" aria-hidden="true">${escapeHtml(m)}</span>`}
           <div>
-            <div class="admin-table-title" data-edit="${escapeHtml(p.id)}">
-              ${p.featured ? '<span class="admin-table-star" title="Destaque">★</span> ' : ''}
-              ${escapeHtml(p.title)}
+            <div class="admin-table-title" data-edit="${escapeHtml(e.id)}">
+              ${e.featured?'<span class="admin-table-star" title="Destaque">\u2605</span> ':""}
+              ${escapeHtml(e.title)}
             </div>
-            <div class="admin-table-slug">/${escapeHtml(p.slug || p.id)}</div>
+            <div class="admin-table-slug">/${escapeHtml(e.slug||e.id)}</div>
           </div>
         </div>
       </td>
-      <td>${p.category ? `<span class="blog-post-tag">${escapeHtml(p.category)}</span>` : '<span class="admin-table-dash">—</span>'}</td>
-      <td><span class="admin-table-status admin-table-status--${statusClass(p.status)}">${escapeHtml(statusLabel(p.status))}</span></td>
-      <td class="is-meta is-nowrap">${formatDate(p.createdAt)}</td>
+      <td>${e.category?`<span class="blog-post-tag">${escapeHtml(e.category)}</span>`:'<span class="admin-table-dash">\u2014</span>'}</td>
+      <td><span class="admin-table-status admin-table-status--${statusClass(e.status)}">${escapeHtml(statusLabel(e.status))}</span></td>
+      <td class="is-meta is-nowrap">${formatDate(e.createdAt)}</td>
       <td class="is-views">
         <div class="admin-table-views">
-          <span class="admin-table-views-n">${fmtNum(v)}</span>
-          <span class="admin-rank-track admin-rank-track--sm" aria-hidden="true"><span style="width:${pct}%"></span></span>
+          <span class="admin-table-views-n">${fmtNum(n)}</span>
+          <span class="admin-rank-track admin-rank-track--sm" aria-hidden="true"><span style="width:${r}%"></span></span>
         </div>
       </td>
       <td class="is-right is-nowrap">
         <div class="admin-table-actions">
-          <button class="admin-icon-btn" data-view-post="${escapeHtml(p.slug || p.id)}" title="Ver">${ICONS.eye}</button>
-          <button class="admin-icon-btn" data-edit="${escapeHtml(p.id)}" title="Editar">${ICONS.edit}</button>
-          <button class="admin-icon-btn" data-duplicate="${escapeHtml(p.id)}" title="Duplicar">${ICONS.copy}</button>
-          <button class="admin-icon-btn admin-icon-btn--danger" data-delete="${escapeHtml(p.id)}" title="Excluir">${ICONS.trash}</button>
+          <button class="admin-icon-btn" data-view-post="${escapeHtml(e.slug||e.id)}" title="Ver">${ICONS.eye}</button>
+          <button class="admin-icon-btn" data-edit="${escapeHtml(e.id)}" title="Editar">${ICONS.edit}</button>
+          <button class="admin-icon-btn" data-duplicate="${escapeHtml(e.id)}" title="Duplicar">${ICONS.copy}</button>
+          <button class="admin-icon-btn admin-icon-btn--danger" data-delete="${escapeHtml(e.id)}" title="Excluir">${ICONS.trash}</button>
         </div>
       </td>
     </tr>
-  `;
-}
-
-function renderPostsList() {
-  const q = state.search.toLowerCase();
-  const status = state.statusFilter || 'all';
-  const publishedN = state.posts.filter(p => p.status === 'published').length;
-  const draftN = state.posts.filter(p => p.status === 'draft').length;
-  const filtered = state.posts.filter(p => {
-    if (status === 'published' && p.status !== 'published') return false;
-    if (status === 'draft' && p.status !== 'draft') return false;
-    if (!q) return true;
-    return p.title.toLowerCase().includes(q)
-      || (p.category || '').toLowerCase().includes(q)
-      || (p.tags || []).some(t => t.toLowerCase().includes(q));
-  });
-  const views = loadViews();
-  const maxViews = Math.max(1, ...filtered.map(p => Number(views[p.id] || p.views || 0)));
-  const chip = (id, label, n) =>
-    `<button type="button" class="admin-chip${status === id ? ' is-on' : ''}" data-status-filter="${id}">${escapeHtml(label)} <em>${n}</em></button>`;
-
-  const body = filtered.length
-    ? `<div class="admin-table-scroll">
+  `}function renderPostsList(){const e=state.search.toLowerCase(),t=state.statusFilter||"all",o=state.posts.filter(l=>l.status==="published").length,n=state.posts.filter(l=>l.status==="draft").length,r=state.posts.filter(l=>t==="published"&&l.status!=="published"||t==="draft"&&l.status!=="draft"?!1:e?l.title.toLowerCase().includes(e)||(l.category||"").toLowerCase().includes(e)||(l.tags||[]).some(y=>y.toLowerCase().includes(e)):!0),s=loadViews(),m=Math.max(1,...r.map(l=>Number(s[l.id]||l.views||0))),p=(l,y,b)=>`<button type="button" class="admin-chip${t===l?" is-on":""}" data-status-filter="${l}">${escapeHtml(y)} <em>${b}</em></button>`,v=r.length?`<div class="admin-table-scroll">
          <table class="admin-table">
            <thead>
              <tr>
                <th>Post</th>
                <th>Categoria</th>
                <th>Status</th>
-               <th>Publicação</th>
+               <th>Publica\xE7\xE3o</th>
                <th>Views</th>
-               <th class="is-right">Ações</th>
+               <th class="is-right">A\xE7\xF5es</th>
              </tr>
            </thead>
-           <tbody>${filtered.map(p => postsTableRow(p, views, maxViews)).join('')}</tbody>
+           <tbody>${r.map(l=>postsTableRow(l,s,m)).join("")}</tbody>
          </table>
-       </div>`
-    : emptyState(
-        ICONS.inbox,
-        q || status !== 'all' ? 'Nenhum post neste filtro' : 'Nenhum post ainda',
-        q ? 'Tente outro termo de busca.' : 'Clique em "Novo Post" para começar.'
-      );
-
-  return `
+       </div>`:emptyState(ICONS.inbox,e||t!=="all"?"Nenhum post neste filtro":"Nenhum post ainda",e?"Tente outro termo de busca.":'Clique em "Novo Post" para come\xE7ar.');return`
     <header class="admin-header">
       <div>
         <h1 class="admin-title">Todos os <em>posts</em></h1>
-        <p class="admin-title-sub">${publishedN} no ar · ${draftN} rascunho${draftN === 1 ? '' : 's'}</p>
+        <p class="admin-title-sub">${o} no ar \xB7 ${n} rascunho${n===1?"":"s"}</p>
       </div>
       <div class="admin-header-actions">${newPostButton}</div>
     </header>
@@ -898,67 +187,30 @@ function renderPostsList() {
     <section class="admin-card">
       <header class="admin-card-head">
         <div class="admin-filters">
-          ${chip('all', 'Todos', state.posts.length)}
-          ${chip('published', 'Publicados', publishedN)}
-          ${chip('draft', 'Rascunhos', draftN)}
+          ${p("all","Todos",state.posts.length)}
+          ${p("published","Publicados",o)}
+          ${p("draft","Rascunhos",n)}
         </div>
         <div class="admin-search">
           ${ICONS.search}
-          <input type="search" id="adminSearch" placeholder="Buscar título, tag ou categoria..." value="${escapeHtml(state.search)}" autocomplete="off"/>
+          <input type="search" id="adminSearch" placeholder="Buscar t\xEDtulo, tag ou categoria..." value="${escapeHtml(state.search)}" autocomplete="off"/>
         </div>
       </header>
-      ${body}
+      ${v}
     </section>
-  `;
-}
+  `}function renderEditor(e){const t=!!e&&!!e.id;state.form=e?JSON.parse(JSON.stringify(e)):{title:"",subtitle:"",slug:"",cover:"",tags:[],images:[],category:"Engenharia",author:"Bernardo Iannini",status:"draft",featured:!1,content:""},Array.isArray(state.form.images)||(state.form.images=[]);const o=!!state.form.cover&&!safeImageSrc(state.form.cover);o&&(state.form.cover="");const n=state.form.images.length;state.form.images=state.form.images.filter(v=>v&&safeImageSrc(v.src)),(o||state.form.images.length<n)&&toast("Este post tinha endere\xE7o de imagem fora do aceito e ele foi retirado do formul\xE1rio. "+AVISO_ENDERECO_IMAGEM,"error");const r=["Engenharia","IA","Projetos","Carreira","Design","Vida","Outro"],s=state.form,p=s.content||(t?"":`# Comece a escrever aqui
 
-function renderEditor(post) {
-  const isEditing = !!post && !!post.id;
-  /* Cópia profunda: editar nunca mexe no objeto que vive em state.posts.
-     Cancelar descarta capa, tags e imagens; a lista só muda após o save. */
-  state.form = post ? JSON.parse(JSON.stringify(post)) : {
-    title: '',
-    subtitle: '',
-    slug: '',
-    cover: '',
-    tags: [],
-    images: [],
-    category: 'Engenharia',
-    author: 'Bernardo Iannini',
-    status: 'draft',
-    featured: false,
-    content: '',
-  };
-  if (!Array.isArray(state.form.images)) state.form.images = [];
+Use **negrito**, *it\xE1lico*, ~~riscado~~ ou \`c\xF3digo inline\`.
 
-  /* Capa e imagens que vêm do banco também passam pela allowlist. Um post
-     gravado antes dessa checagem (ou por fora do painel) entra no editor sem
-     o endereço recusado; se ficasse, o save travaria e o post viraria um post
-     que não dá pra editar. */
-  const capaRecusada = !!state.form.cover && !safeImageSrc(state.form.cover);
-  if (capaRecusada) state.form.cover = '';
-  const imagensAntes = state.form.images.length;
-  state.form.images = state.form.images.filter(im => im && safeImageSrc(im.src));
-  if (capaRecusada || state.form.images.length < imagensAntes) {
-    toast('Este post tinha endereço de imagem fora do aceito e ele foi retirado do formulário. ' + AVISO_ENDERECO_IMAGEM, 'error');
-  }
+## Subt\xEDtulos com ##
 
-  const categories = ['Engenharia', 'IA', 'Projetos', 'Carreira', 'Design', 'Vida', 'Outro'];
-  const f = state.form;
-
-  const seedContent = `# Comece a escrever aqui
-
-Use **negrito**, *itálico*, ~~riscado~~ ou \`código inline\`.
-
-## Subtítulos com ##
-
-- Listas com hífen
+- Listas com h\xEDfen
 - Outra linha
 
 - [ ] tarefa pendente
-- [x] tarefa concluída
+- [x] tarefa conclu\xEDda
 
-> Citação com >
+> Cita\xE7\xE3o com >
 
 [Link](https://exemplo.com)
 
@@ -967,25 +219,22 @@ Use **negrito**, *itálico*, ~~riscado~~ ou \`código inline\`.
 | markdown | puro |
 
 \`\`\`js
-// blocos de código
+// blocos de c\xF3digo
 const ola = "mundo";
 \`\`\`
-`;
-  const contentValue = f.content || (isEditing ? '' : seedContent);
-
-  return `
+`);return`
     <header class="admin-header">
       <div>
-        <h1 class="admin-title">${isEditing ? 'Editando' : 'Novo'} <em>post</em></h1>
-        <p class="admin-title-sub">${isEditing ? 'Atualize as informações abaixo' : 'Preencha os campos e publique ou salve como rascunho'}</p>
+        <h1 class="admin-title">${t?"Editando":"Novo"} <em>post</em></h1>
+        <p class="admin-title-sub">${t?"Atualize as informa\xE7\xF5es abaixo":"Preencha os campos e publique ou salve como rascunho"}</p>
       </div>
       <div class="admin-header-actions">
         <button class="admin-btn admin-btn--ghost" data-nav="posts" type="button">Cancelar</button>
-        ${isEditing ? `
-          <button class="admin-btn admin-btn--danger" id="deleteBtn" type="button" data-delete="${escapeHtml(post.id)}">
+        ${t?`
+          <button class="admin-btn admin-btn--danger" id="deleteBtn" type="button" data-delete="${escapeHtml(e.id)}">
             ${ICONS.trash} Excluir
           </button>
-        ` : ''}
+        `:""}
       </div>
     </header>
 
@@ -995,18 +244,18 @@ const ola = "mundo";
         <section class="admin-card">
           <header class="admin-card-head">
             <div class="admin-card-head-text">
-              <h3 class="admin-card-title">Informações principais</h3>
-              <p class="admin-card-sub">título, subtítulo e categoria</p>
+              <h3 class="admin-card-title">Informa\xE7\xF5es principais</h3>
+              <p class="admin-card-sub">t\xEDtulo, subt\xEDtulo e categoria</p>
             </div>
           </header>
           <div class="admin-card-body">
             <div class="admin-field admin-field-title">
-              <label for="f-title">Título <span class="admin-field-hint">obrigatório</span></label>
-              <input type="text" id="f-title" name="title" required value="${escapeHtml(f.title)}" placeholder="Um título marcante..."/>
+              <label for="f-title">T\xEDtulo <span class="admin-field-hint">obrigat\xF3rio</span></label>
+              <input type="text" id="f-title" name="title" required value="${escapeHtml(s.title)}" placeholder="Um t\xEDtulo marcante..."/>
             </div>
             <div class="admin-field">
-              <label for="f-subtitle">Subtítulo / Excerpt <span class="admin-field-hint">aparece nos cards e na busca</span></label>
-              <input type="text" id="f-subtitle" name="subtitle" value="${escapeHtml(f.subtitle)}" placeholder="Uma frase resumindo o post..."/>
+              <label for="f-subtitle">Subt\xEDtulo / Excerpt <span class="admin-field-hint">aparece nos cards e na busca</span></label>
+              <input type="text" id="f-subtitle" name="subtitle" value="${escapeHtml(s.subtitle)}" placeholder="Uma frase resumindo o post..."/>
             </div>
           </div>
         </section>
@@ -1014,8 +263,8 @@ const ola = "mundo";
         <section class="admin-card">
           <header class="admin-card-head">
             <div class="admin-card-head-text">
-              <h3 class="admin-card-title">Conteúdo</h3>
-              <p class="admin-card-sub">Markdown puro (.md) com GFM · Ctrl+S salva</p>
+              <h3 class="admin-card-title">Conte\xFAdo</h3>
+              <p class="admin-card-sub">Markdown puro (.md) com GFM \xB7 Ctrl+S salva</p>
             </div>
             <div class="admin-card-actions">
               <div class="admin-editor-tabs">
@@ -1030,7 +279,7 @@ const ola = "mundo";
           <div class="editor-md-io" id="mdIoBar">
             <div class="editor-md-io-text">
               <strong>Este editor fala .md</strong>
-              <span>Importe um arquivo com front-matter YAML (ou arraste ele aqui). Baixar é o caminho manual, opcional: publicar aqui já sobe pro site sozinho.</span>
+              <span>Importe um arquivo com front-matter YAML (ou arraste ele aqui). Baixar \xE9 o caminho manual, opcional: publicar aqui j\xE1 sobe pro site sozinho.</span>
             </div>
             <div class="editor-md-io-actions">
               <input type="file" id="mdFileInput" accept=".md,.markdown,text/markdown" hidden/>
@@ -1044,13 +293,13 @@ const ola = "mundo";
             <p class="editor-md-io-msg" id="mdIoMsg" hidden></p>
           </div>
 
-          <!-- Toolbar de formatação ============================ -->
+          <!-- Toolbar de formata\xE7\xE3o ============================ -->
           <div class="editor-toolbar" id="editorToolbar">
             <div class="editor-toolbar-group">
-              <button type="button" class="editor-toolbar-btn" data-md="heading2" title="Subtítulo (H2)">
+              <button type="button" class="editor-toolbar-btn" data-md="heading2" title="Subt\xEDtulo (H2)">
                 <strong>H2</strong>
               </button>
-              <button type="button" class="editor-toolbar-btn" data-md="heading3" title="Seção (H3)">
+              <button type="button" class="editor-toolbar-btn" data-md="heading3" title="Se\xE7\xE3o (H3)">
                 <strong>H3</strong>
               </button>
             </div>
@@ -1059,13 +308,13 @@ const ola = "mundo";
               <button type="button" class="editor-toolbar-btn" data-md="bold" title="Negrito (Ctrl+B)">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 4h8a4 4 0 0 1 0 8H6zM6 12h9a4 4 0 0 1 0 8H6z"/></svg>
               </button>
-              <button type="button" class="editor-toolbar-btn" data-md="italic" title="Itálico (Ctrl+I)">
+              <button type="button" class="editor-toolbar-btn" data-md="italic" title="It\xE1lico (Ctrl+I)">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="4" x2="10" y2="4"/><line x1="14" y1="20" x2="5" y2="20"/><line x1="15" y1="4" x2="9" y2="20"/></svg>
               </button>
               <button type="button" class="editor-toolbar-btn" data-md="strike" title="Riscado (~~texto~~)">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="12" x2="20" y2="12"/><path d="M16.5 6.5C16.5 5 14.4 4 12 4S7.5 5 7.5 6.8c0 1.9 2 2.5 4.5 3.2M7.5 17.4C7.5 19 9.6 20 12 20s4.5-1 4.5-2.6c0-1.5-1.3-2.3-3.5-2.9"/></svg>
               </button>
-              <button type="button" class="editor-toolbar-btn" data-md="code" title="Código inline">
+              <button type="button" class="editor-toolbar-btn" data-md="code" title="C\xF3digo inline">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
               </button>
             </div>
@@ -1080,7 +329,7 @@ const ola = "mundo";
               <button type="button" class="editor-toolbar-btn" data-md="task" title="Lista de tarefas (- [ ])">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2 7 4 9 8 4.5"/><polyline points="2 16 4 18 8 13.5"/><line x1="12" y1="7" x2="21" y2="7"/><line x1="12" y1="17" x2="21" y2="17"/></svg>
               </button>
-              <button type="button" class="editor-toolbar-btn" data-md="quote" title="Citação">
+              <button type="button" class="editor-toolbar-btn" data-md="quote" title="Cita\xE7\xE3o">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.75-2-2-2H4c-1.25 0-2 .75-2 2v4c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .5-1 1v2c0 .5.5 1 1 1zM15 21c3 0 7-1 7-8V5c0-1.25-.75-2-2-2h-4c-1.25 0-2 .75-2 2v4c0 1.25.75 2 2 2h.5c.5 0 .5 0 .5 1v1c0 1-1 2-2 2s-1 .5-1 1v2c0 .5.5 1 1 1z"/></svg>
               </button>
             </div>
@@ -1092,7 +341,7 @@ const ola = "mundo";
               <button type="button" class="editor-toolbar-btn" data-md="image" title="Imagem">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
               </button>
-              <button type="button" class="editor-toolbar-btn" data-md="codeblock" title="Bloco de código">
+              <button type="button" class="editor-toolbar-btn" data-md="codeblock" title="Bloco de c\xF3digo">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="14" y1="4" x2="10" y2="20"/></svg>
               </button>
               <button type="button" class="editor-toolbar-btn" data-md="table" title="Tabela (GFM)">
@@ -1105,25 +354,25 @@ const ola = "mundo";
           </div>
 
           <div class="admin-card-body">
-            <textarea id="f-content" name="content" class="admin-content-editor" placeholder="# Comece com um título...">${escapeHtml(contentValue)}</textarea>
+            <textarea id="f-content" name="content" class="admin-content-editor" placeholder="# Comece com um t\xEDtulo...">${escapeHtml(p)}</textarea>
             <div class="admin-preview" id="previewBox"></div>
             <div class="admin-preview" id="helpBox">
               <h3>Como este editor trabalha</h3>
-              <p>O post é um arquivo <code>.md</code>: front-matter YAML no topo, markdown no corpo.
+              <p>O post \xE9 um arquivo <code>.md</code>: front-matter YAML no topo, markdown no corpo.
                  Igual aos arquivos de <code>data/posts/&lt;slug&gt;.md</code>.</p>
-              <p><strong>Publicar</strong> salva no banco e já dispara o rebuild do site: em cerca de
-                 1 minuto o post está no ar, sem você abrir terminal nenhum. Excluir faz o mesmo
-                 caminho e tira a página do ar. Rascunho fica só no banco.</p>
-              <p><strong>Importar .md</strong> lê o front-matter, preenche os campos da direita e joga o
-                 resto do arquivo aqui no corpo. <strong>Baixar .md</strong> faz o caminho de volta: é o
-                 jeito manual, pra quando você quiser versionar o post em <code>data/posts/</code> e
-                 rodar <code>npm run build:posts</code> na mão. Continua funcionando, mas já não é
-                 obrigatório pra publicar.</p>
-              <p>Também dá pra arrastar um arquivo <code>.md</code> direto pra cima do editor.</p>
+              <p><strong>Publicar</strong> salva no banco e j\xE1 dispara o rebuild do site: em cerca de
+                 1 minuto o post est\xE1 no ar, sem voc\xEA abrir terminal nenhum. Excluir faz o mesmo
+                 caminho e tira a p\xE1gina do ar. Rascunho fica s\xF3 no banco.</p>
+              <p><strong>Importar .md</strong> l\xEA o front-matter, preenche os campos da direita e joga o
+                 resto do arquivo aqui no corpo. <strong>Baixar .md</strong> faz o caminho de volta: \xE9 o
+                 jeito manual, pra quando voc\xEA quiser versionar o post em <code>data/posts/</code> e
+                 rodar <code>npm run build:posts</code> na m\xE3o. Continua funcionando, mas j\xE1 n\xE3o \xE9
+                 obrigat\xF3rio pra publicar.</p>
+              <p>Tamb\xE9m d\xE1 pra arrastar um arquivo <code>.md</code> direto pra cima do editor.</p>
 
               <h3>Front-matter reconhecido</h3>
               <pre><code>---
-title: "Título do post"
+title: "T\xEDtulo do post"
 subtitle: "Uma frase de resumo"
 slug: titulo-do-post
 date: "2026-01-31T12:00:00.000Z"
@@ -1133,10 +382,10 @@ tags:
   - markdown
   - blog
 cover: "img/blog/capa.png"
-coverAlt: "Descrição da capa"
+coverAlt: "Descri\xE7\xE3o da capa"
 images:
   - src: "img/blog/foto-1.png"
-    alt: "Descrição da foto"
+    alt: "Descri\xE7\xE3o da foto"
     caption: "Legenda opcional"
 linkedinUrl: ""
 featured: false
@@ -1145,24 +394,24 @@ author: "Bernardo Iannini"
 ---</code></pre>
 
               <h3>Markdown do corpo</h3>
-              <p><code># Título</code> · <code>## Subtítulo</code> · <code>### Seção</code></p>
-              <p><code>**negrito**</code> · <code>*itálico*</code> · <code>~~riscado~~</code> · <code>\`código\`</code></p>
-              <p><code>&gt; citação</code> em linha separada</p>
-              <p><code>- item</code> · <code>1. item</code> · <code>- [ ] tarefa</code> · <code>- [x] tarefa feita</code></p>
-              <p><code>[texto](url)</code> pra link · <code>![alt](url)</code> pra imagem · <code>---</code> pra divisor</p>
-              <p>Parágrafo novo pede uma linha em branco. Uma quebra só continua o mesmo parágrafo,
+              <p><code># T\xEDtulo</code> \xB7 <code>## Subt\xEDtulo</code> \xB7 <code>### Se\xE7\xE3o</code></p>
+              <p><code>**negrito**</code> \xB7 <code>*it\xE1lico*</code> \xB7 <code>~~riscado~~</code> \xB7 <code>\`c\xF3digo\`</code></p>
+              <p><code>&gt; cita\xE7\xE3o</code> em linha separada</p>
+              <p><code>- item</code> \xB7 <code>1. item</code> \xB7 <code>- [ ] tarefa</code> \xB7 <code>- [x] tarefa feita</code></p>
+              <p><code>[texto](url)</code> pra link \xB7 <code>![alt](url)</code> pra imagem \xB7 <code>---</code> pra divisor</p>
+              <p>Par\xE1grafo novo pede uma linha em branco. Uma quebra s\xF3 continua o mesmo par\xE1grafo,
                  exatamente como o build renderiza.</p>
-              <p>Bloco de código com três crases:</p>
+              <p>Bloco de c\xF3digo com tr\xEAs crases:</p>
               <pre><code>\`\`\`js
-console.log("código");
+console.log("c\xF3digo");
 \`\`\`</code></pre>
               <p>Tabela no estilo GFM:</p>
               <pre><code>| Coluna | Valor |
 | --- | --- |
 | linha 1 | 10 |
 | linha 2 | 20 |</code></pre>
-              <p>O preview usa a mesma lib do build (marked, com GFM), então o que aparece aqui
-                 é o que sai no post publicado.</p>
+              <p>O preview usa a mesma lib do build (marked, com GFM), ent\xE3o o que aparece aqui
+                 \xE9 o que sai no post publicado.</p>
             </div>
             <div class="admin-content-stats">
               <span id="wordCount">0 palavras</span>
@@ -1176,54 +425,54 @@ console.log("código");
       <aside class="admin-editor-side">
         <div class="admin-field-section">
           <div class="admin-field-section-head">
-            <h4 class="admin-field-section-title">Publicação</h4>
+            <h4 class="admin-field-section-title">Publica\xE7\xE3o</h4>
             <span class="admin-field-section-hint">quando e como</span>
           </div>
 
           <div class="admin-field">
             <label for="f-status">Status</label>
             <select id="f-status" name="status">
-              <option value="draft"     ${f.status === 'draft'     ? 'selected' : ''}>📝 Rascunho</option>
-              <option value="published" ${f.status === 'published' ? 'selected' : ''}>✅ Publicado</option>
-              <option value="scheduled" ${f.status === 'scheduled' ? 'selected' : ''}>⏰ Agendado</option>
+              <option value="draft"     ${s.status==="draft"?"selected":""}>\u{1F4DD} Rascunho</option>
+              <option value="published" ${s.status==="published"?"selected":""}>\u2705 Publicado</option>
+              <option value="scheduled" ${s.status==="scheduled"?"selected":""}>\u23F0 Agendado</option>
             </select>
           </div>
 
           <div class="admin-field">
             <label for="f-publishedAt">
-              Data de publicação
-              <span class="admin-field-hint">aparece no post · passado ou futuro</span>
+              Data de publica\xE7\xE3o
+              <span class="admin-field-hint">aparece no post \xB7 passado ou futuro</span>
             </label>
-            <input type="datetime-local" id="f-publishedAt" name="publishedAt" value="${escapeHtml(toDatetimeLocal(f.createdAt))}"/>
+            <input type="datetime-local" id="f-publishedAt" name="publishedAt" value="${escapeHtml(toDatetimeLocal(s.createdAt))}"/>
           </div>
 
           <div class="admin-field admin-field-row">
-            <input type="checkbox" id="f-featured" name="featured" ${f.featured ? 'checked' : ''}/>
-            <label for="f-featured">⭐ Marcar como destaque</label>
+            <input type="checkbox" id="f-featured" name="featured" ${s.featured?"checked":""}/>
+            <label for="f-featured">\u2B50 Marcar como destaque</label>
           </div>
         </div>
 
         <div class="admin-field-section">
           <div class="admin-field-section-head">
-            <h4 class="admin-field-section-title">Identificação</h4>
+            <h4 class="admin-field-section-title">Identifica\xE7\xE3o</h4>
             <span class="admin-field-section-hint">URL e categoria</span>
           </div>
 
           <div class="admin-field">
             <label for="f-slug">Slug (URL)</label>
-            <input type="text" id="f-slug" name="slug" value="${escapeHtml(f.slug)}" placeholder="auto-gerado"/>
+            <input type="text" id="f-slug" name="slug" value="${escapeHtml(s.slug)}" placeholder="auto-gerado"/>
           </div>
 
           <div class="admin-field">
             <label for="f-category">Categoria</label>
             <select id="f-category" name="category">
-              ${categories.map(c => `<option value="${escapeHtml(c)}" ${f.category === c ? 'selected' : ''}>${escapeHtml(c)}</option>`).join('')}
+              ${r.map(v=>`<option value="${escapeHtml(v)}" ${s.category===v?"selected":""}>${escapeHtml(v)}</option>`).join("")}
             </select>
           </div>
 
           <div class="admin-field">
             <label for="f-author">Autor</label>
-            <input type="text" id="f-author" name="author" value="${escapeHtml(f.author)}"/>
+            <input type="text" id="f-author" name="author" value="${escapeHtml(s.author)}"/>
           </div>
         </div>
 
@@ -1235,11 +484,11 @@ console.log("código");
 
           <div class="admin-field">
             <div class="admin-tags" id="tagsContainer">
-              ${(f.tags || []).map(t => `
-                <span class="admin-tag-pill">${escapeHtml(t)}
-                  <button type="button" class="admin-tag-remove" data-tag="${escapeHtml(t)}">✕</button>
+              ${(s.tags||[]).map(v=>`
+                <span class="admin-tag-pill">${escapeHtml(v)}
+                  <button type="button" class="admin-tag-remove" data-tag="${escapeHtml(v)}">\u2715</button>
                 </span>
-              `).join('')}
+              `).join("")}
               <input type="text" id="f-tags-input" placeholder="adicionar tag..."/>
             </div>
           </div>
@@ -1247,22 +496,22 @@ console.log("código");
 
         <div class="admin-field-section">
           <div class="admin-field-section-head">
-            <h4 class="admin-field-section-title">Mídia</h4>
+            <h4 class="admin-field-section-title">M\xEDdia</h4>
             <span class="admin-field-section-hint">imagem de capa</span>
           </div>
 
-          <!-- Drop zone + botão de upload -->
+          <!-- Drop zone + bot\xE3o de upload -->
           <div class="admin-field">
             <div class="admin-dropzone" id="coverDropzone" tabindex="0">
               <input type="file" id="coverFile" accept="image/*" hidden/>
               <div class="admin-dropzone-content" id="coverDropzoneContent">
-                ${safeImageSrc(f.cover) ? `
-                  <img src="${escapeHtml(safeImageSrc(f.cover))}" alt="capa" class="admin-dropzone-preview"/>
+                ${safeImageSrc(s.cover)?`
+                  <img src="${escapeHtml(safeImageSrc(s.cover))}" alt="capa" class="admin-dropzone-preview"/>
                   <div class="admin-dropzone-actions">
                     <button type="button" class="admin-btn admin-btn--ghost admin-btn--sm" data-action="change-cover">Trocar</button>
                     <button type="button" class="admin-btn admin-btn--danger admin-btn--sm" data-action="remove-cover">Remover</button>
                   </div>
-                ` : `
+                `:`
                   <svg class="admin-dropzone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                     <rect x="3" y="3" width="18" height="18" rx="2"/>
                     <circle cx="8.5" cy="8.5" r="1.5"/>
@@ -1270,7 +519,7 @@ console.log("código");
                   </svg>
                   <p class="admin-dropzone-title">Arraste uma imagem aqui</p>
                   <p class="admin-dropzone-hint">ou <button type="button" class="admin-dropzone-link" data-action="pick-cover">escolha um arquivo</button></p>
-                  <p class="admin-dropzone-meta">PNG, JPG, WebP · máx 2MB recomendado</p>
+                  <p class="admin-dropzone-meta">PNG, JPG, WebP \xB7 m\xE1x 2MB recomendado</p>
                 `}
               </div>
             </div>
@@ -1280,16 +529,16 @@ console.log("código");
           <div class="admin-field">
             <label for="f-cover">
               URL ou caminho
-              <span class="admin-field-hint">opcional · use img/blog/foto.png</span>
+              <span class="admin-field-hint">opcional \xB7 use img/blog/foto.png</span>
             </label>
-            <input type="text" id="f-cover" name="cover" value="${escapeHtml(isEnderecoImagemAceito(f.cover) ? f.cover : '')}" placeholder="https://... ou img/blog/foto.png"/>
+            <input type="text" id="f-cover" name="cover" value="${escapeHtml(isEnderecoImagemAceito(s.cover)?s.cover:"")}" placeholder="https://... ou img/blog/foto.png"/>
           </div>
         </div>
 
         <div class="admin-field-section">
           <div class="admin-field-section-head">
             <h4 class="admin-field-section-title">Imagens do post</h4>
-            <span class="admin-field-section-hint">estilo LinkedIn · várias</span>
+            <span class="admin-field-section-hint">estilo LinkedIn \xB7 v\xE1rias</span>
           </div>
           <div class="admin-field">
             <input type="file" id="imagesFile" accept="image/*" multiple hidden/>
@@ -1298,31 +547,31 @@ console.log("código");
               ${ICONS.plus} Adicionar imagens
             </button>
             <p class="admin-field-hint" style="margin-top:8px">
-              Capa não é obrigatória — anexe quantas imagens quiser e elas aparecem
-              numa grade adaptativa no post (igual LinkedIn). Use ↑ ↓ para ordenar.
+              Capa n\xE3o \xE9 obrigat\xF3ria \u2014 anexe quantas imagens quiser e elas aparecem
+              numa grade adaptativa no post (igual LinkedIn). Use \u2191 \u2193 para ordenar.
             </p>
           </div>
         </div>
 
-        ${isEditing ? `
+        ${t?`
           <div class="admin-field-section">
             <div class="admin-field-section-head">
               <h4 class="admin-field-section-title">Metadados</h4>
             </div>
             <div class="admin-meta">
-              <span><strong>Publicação:</strong> ${formatDateTime(f.createdAt)}</span>
-              <span><strong>Atualizado:</strong> ${formatDateTime(f.updatedAt || f.createdAt)}</span>
-              <span><strong>ID:</strong> <code>${escapeHtml(f.id)}</code></span>
+              <span><strong>Publica\xE7\xE3o:</strong> ${formatDateTime(s.createdAt)}</span>
+              <span><strong>Atualizado:</strong> ${formatDateTime(s.updatedAt||s.createdAt)}</span>
+              <span><strong>ID:</strong> <code>${escapeHtml(s.id)}</code></span>
             </div>
           </div>
-        ` : ''}
+        `:""}
       </aside>
 
       <!-- STICKY ACTIONS BAR ========================================= -->
       <div class="admin-sticky-actions">
         <div class="admin-sticky-actions-info">
           <span class="admin-sticky-actions-dot"></span>
-          <span>${isEditing ? 'Editando rascunho · alterações não são salvas automaticamente' : 'Novo post · revise antes de publicar'}</span>
+          <span>${t?"Editando rascunho \xB7 altera\xE7\xF5es n\xE3o s\xE3o salvas automaticamente":"Novo post \xB7 revise antes de publicar"}</span>
         </div>
         <button class="admin-btn admin-btn--ghost" type="button" data-nav="posts">Cancelar</button>
         <button class="admin-btn" type="button" id="exportMdBtn" title="Baixa este post como arquivo .md pra data/posts/">
@@ -1332,126 +581,16 @@ console.log("código");
           ${ICONS.save} Salvar rascunho
         </button>
         <button class="admin-btn admin-btn--primary" type="button" id="publishBtn">
-          ${ICONS.paperplane} ${isEditing && f.status === 'published' ? 'Atualizar publicação' : 'Publicar'}
+          ${ICONS.paperplane} ${t&&s.status==="published"?"Atualizar publica\xE7\xE3o":"Publicar"}
         </button>
       </div>
     </form>
-  `;
-}
-
-/* ---------- Renderer principal ---------- */
-const TOPBAR_LABELS = {
-  dashboard: { title: 'Dashboard', crumb: 'visão geral' },
-  posts:     { title: 'Posts',     crumb: 'gerenciar publicações' },
-  editor:    { title: 'Editor',    crumb: 'criar / editar post' },
-};
-
-function updateTopbar() {
-  const t = TOPBAR_LABELS[state.view] || TOPBAR_LABELS.dashboard;
-  const titleEl = document.getElementById('adminTopbarTitle');
-  const crumbEl = document.getElementById('adminTopbarCrumb');
-  if (titleEl) titleEl.textContent = t.title;
-  if (crumbEl) {
-    if (state.view === 'editor') {
-      const post = state.editingId ? state.posts.find(p => p.id === state.editingId) : null;
-      crumbEl.textContent = post ? `editando · ${post.title}` : 'novo post';
-    } else {
-      crumbEl.textContent = t.crumb;
-    }
-  }
-}
-
-function render() {
-  const content = document.getElementById('adminContent');
-  const viewChanged = render._view !== state.view;
-  render._view = state.view;
-  let html = '';
-
-  if (state.view === 'dashboard') html = renderDashboard();
-  else if (state.view === 'posts') html = renderPostsList();
-  else if (state.view === 'editor') {
-    const post = state.editingId ? state.posts.find(p => p.id === state.editingId) : null;
-    html = renderEditor(post);
-  }
-
-  content.innerHTML = html;
-
-  // Setup específico do editor
-  if (state.view === 'editor') {
-    setupEditorEvents();
-  }
-
-  // Atualiza item ativo na sidebar
-  document.querySelectorAll('.admin-nav-item[data-view]').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.view === state.view);
-  });
-
-  // Atualiza topbar
-  updateTopbar();
-
-  // Volta scroll pro topo só quando troca de tela (filtro/busca não joga pra cima)
-  if (viewChanged) window.scrollTo({ top: 0, behavior: 'instant' });
-}
-
-/* ---------- Editor events ---------- */
-function setupEditorEvents() {
-  const form = document.getElementById('postForm');
-  const titleInput = document.getElementById('f-title');
-  const slugInput = document.getElementById('f-slug');
-  const contentEditor = document.getElementById('f-content');
-  const previewBox = document.getElementById('previewBox');
-  const helpBox = document.getElementById('helpBox');
-  const coverInput = document.getElementById('f-cover');
-  const statusSelect = document.getElementById('f-status');
-  const publishedAtInput = document.getElementById('f-publishedAt');
-  const tagsInput = document.getElementById('f-tags-input');
-  const tagsContainer = document.getElementById('tagsContainer');
-  const wordCount = document.getElementById('wordCount');
-  const readTime = document.getElementById('readTime');
-
-  // Set initial content
-  if (state.form.content) contentEditor.value = state.form.content;
-
-  const updateCounts = () => {
-    const words = (contentEditor.value || '').trim().split(/\s+/).filter(Boolean).length;
-    wordCount.textContent = `${words} ${words === 1 ? 'palavra' : 'palavras'}`;
-    readTime.textContent = `${estimateReadTime(contentEditor.value)} min de leitura`;
-  };
-  updateCounts();
-
-  // Auto-slug
-  let slugManuallyEdited = !!state.form.slug;
-  slugInput.addEventListener('input', () => { slugManuallyEdited = true; });
-
-  // Slug digitado vira kebab-case no blur (sem acento, espaço ou caractere YAML)
-  slugInput.addEventListener('blur', () => {
-    if (slugInput.value.trim()) slugInput.value = slugify(slugInput.value);
-  });
-
-  titleInput.addEventListener('input', () => {
-    if (!slugManuallyEdited) slugInput.value = slugify(titleInput.value);
-  });
-
-  /* ===== Capa: upload de arquivo + URL manual =====
-     - Upload (file/drag-drop) → comprime e salva como data URL
-     - URL manual → salva o caminho direto
-     Os dois caminhos atualizam state.form.cover + a preview da dropzone. */
-  const dropzone = document.getElementById('coverDropzone');
-  const fileInput = document.getElementById('coverFile');
-
-  const renderCoverDropzone = (src) => {
-    const content = document.getElementById('coverDropzoneContent');
-    if (!content) return;
-    const seguro = safeImageSrc(src);
-    if (seguro) {
-      content.innerHTML = `
-        <img src="${escapeHtml(seguro)}" alt="capa" class="admin-dropzone-preview"/>
+  `}const TOPBAR_LABELS={dashboard:{title:"Dashboard",crumb:"vis\xE3o geral"},posts:{title:"Posts",crumb:"gerenciar publica\xE7\xF5es"},editor:{title:"Editor",crumb:"criar / editar post"}};function updateTopbar(){const e=TOPBAR_LABELS[state.view]||TOPBAR_LABELS.dashboard,t=document.getElementById("adminTopbarTitle"),o=document.getElementById("adminTopbarCrumb");if(t&&(t.textContent=e.title),o)if(state.view==="editor"){const n=state.editingId?state.posts.find(r=>r.id===state.editingId):null;o.textContent=n?`editando \xB7 ${n.title}`:"novo post"}else o.textContent=e.crumb}function render(){const e=document.getElementById("adminContent"),t=render._view!==state.view;render._view=state.view;let o="";if(state.view==="dashboard")o=renderDashboard();else if(state.view==="posts")o=renderPostsList();else if(state.view==="editor"){const n=state.editingId?state.posts.find(r=>r.id===state.editingId):null;o=renderEditor(n)}e.innerHTML=o,state.view==="editor"&&setupEditorEvents(),document.querySelectorAll(".admin-nav-item[data-view]").forEach(n=>{n.classList.toggle("active",n.dataset.view===state.view)}),updateTopbar(),t&&window.scrollTo({top:0,behavior:"instant"})}function setupEditorEvents(){const e=document.getElementById("postForm"),t=document.getElementById("f-title"),o=document.getElementById("f-slug"),n=document.getElementById("f-content"),r=document.getElementById("previewBox"),s=document.getElementById("helpBox"),m=document.getElementById("f-cover"),p=document.getElementById("f-status"),v=document.getElementById("f-publishedAt"),l=document.getElementById("f-tags-input"),y=document.getElementById("tagsContainer"),b=document.getElementById("wordCount"),$=document.getElementById("readTime");state.form.content&&(n.value=state.form.content);const k=()=>{const a=(n.value||"").trim().split(/\s+/).filter(Boolean).length;b.textContent=`${a} ${a===1?"palavra":"palavras"}`,$.textContent=`${estimateReadTime(n.value)} min de leitura`};k();let g=!!state.form.slug;o.addEventListener("input",()=>{g=!0}),o.addEventListener("blur",()=>{o.value.trim()&&(o.value=slugify(o.value))}),t.addEventListener("input",()=>{g||(o.value=slugify(t.value))});const B=document.getElementById("coverDropzone"),M=document.getElementById("coverFile"),S=a=>{const i=document.getElementById("coverDropzoneContent");if(!i)return;const d=safeImageSrc(a);d?i.innerHTML=`
+        <img src="${escapeHtml(d)}" alt="capa" class="admin-dropzone-preview"/>
         <div class="admin-dropzone-actions">
           <button type="button" class="admin-btn admin-btn--ghost admin-btn--sm" data-action="change-cover">Trocar</button>
           <button type="button" class="admin-btn admin-btn--danger admin-btn--sm" data-action="remove-cover">Remover</button>
-        </div>`;
-    } else {
-      content.innerHTML = `
+        </div>`:i.innerHTML=`
         <svg class="admin-dropzone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <rect x="3" y="3" width="18" height="18" rx="2"/>
           <circle cx="8.5" cy="8.5" r="1.5"/>
@@ -1459,1177 +598,58 @@ function setupEditorEvents() {
         </svg>
         <p class="admin-dropzone-title">Arraste uma imagem aqui</p>
         <p class="admin-dropzone-hint">ou <button type="button" class="admin-dropzone-link" data-action="pick-cover">escolha um arquivo</button></p>
-        <p class="admin-dropzone-meta">PNG, JPG, WebP · máx 2MB recomendado</p>`;
-    }
-  };
-
-  /* Comprime imagem via canvas: redimensiona pra max 1600px, qualidade 0.82.
-     Retorna data URL JPEG/PNG. Mantém PNG só se tiver transparência forte. */
-  const compressImage = (file) => new Promise((resolve, reject) => {
-    if (!file.type.startsWith('image/')) return reject(new Error('Arquivo não é imagem'));
-    if (file.size > 8 * 1024 * 1024) return reject(new Error('Arquivo muito grande (>8MB)'));
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        const MAX = 1600;
-        let { width, height } = img;
-        if (width > MAX || height > MAX) {
-          const ratio = Math.min(MAX / width, MAX / height);
-          width = Math.round(width * ratio);
-          height = Math.round(height * ratio);
-        }
-        const canvas = document.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext('2d');
-        ctx.imageSmoothingEnabled = true;
-        ctx.imageSmoothingQuality = 'high';
-        ctx.drawImage(img, 0, 0, width, height);
-        // JPEG salva ~70% espaço vs PNG (sem alpha). Default JPEG.
-        const useJpeg = !/\.(png|webp)$/i.test(file.name) || file.size > 500_000;
-        const mime = useJpeg ? 'image/jpeg' : 'image/png';
-        const quality = useJpeg ? 0.82 : 1;
-        resolve(canvas.toDataURL(mime, quality));
-      };
-      img.onerror = () => reject(new Error('Falha ao carregar imagem'));
-      img.src = e.target.result;
-    };
-    reader.onerror = () => reject(new Error('Falha ao ler arquivo'));
-    reader.readAsDataURL(file);
-  });
-
-  // Capa: comprime no navegador e sobe pro Storage do Supabase.
-  const handleFile = async (file) => {
-    if (!file) return;
-    try {
-      toast('Enviando capa...');
-      const dataUrl = await compressImage(file);
-      const named = dataUrlToFile(dataUrl, file.name || 'capa');
-      const url = await window.BlogDB.uploadImage(named, 'covers');
-      state.form.cover = url;
-      renderCoverDropzone(url);
-      coverInput.value = ''; // limpa URL manual quando faz upload
-      toast('Capa enviada.');
-    } catch (err) {
-      toast(uploadErrorMsg(err), 'error');
-    }
-  };
-
-  // Click no dropzone (delegação pra capturar botões internos também)
-  dropzone.addEventListener('click', (e) => {
-    const action = e.target.closest('[data-action]')?.dataset.action;
-    if (action === 'change-cover' || action === 'pick-cover') {
-      fileInput.click();
-    } else if (action === 'remove-cover') {
-      state.form.cover = '';
-      renderCoverDropzone(null);
-      coverInput.value = '';
-      toast('Imagem removida.');
-    } else if (!e.target.closest('img, button')) {
-      // Click na área vazia também abre o picker
-      fileInput.click();
-    }
-  });
-
-  // File picker
-  fileInput.addEventListener('change', (e) => {
-    const file = e.target.files?.[0];
-    if (file) handleFile(file);
-    e.target.value = ''; // reseta pra permitir re-upload do mesmo arquivo
-  });
-
-  // Drag and drop
-  ['dragenter', 'dragover'].forEach(ev => {
-    dropzone.addEventListener(ev, (e) => {
-      e.preventDefault();
-      dropzone.classList.add('is-dragging');
-    });
-  });
-  ['dragleave', 'drop'].forEach(ev => {
-    dropzone.addEventListener(ev, (e) => {
-      e.preventDefault();
-      dropzone.classList.remove('is-dragging');
-    });
-  });
-  dropzone.addEventListener('drop', (e) => {
-    const file = e.dataTransfer?.files?.[0];
-    if (file) handleFile(file);
-  });
-
-  /* Marca o campo como inválido. A borda vai inline porque o blog.css não tem
-     estado de inválido pra esse input (e o CSS não é deste grupo de arquivos). */
-  const marcarCoverInvalido = (invalido) => {
-    coverInput.classList.toggle('is-invalid', invalido);
-    coverInput.style.borderColor = invalido ? '#e05260' : '';
-    if (invalido) coverInput.setAttribute('aria-invalid', 'true');
-    else coverInput.removeAttribute('aria-invalid');
-  };
-
-  /* URL manual — sobrescreve a imagem enviada (não pode ter as duas).
-     O endereço passa pela allowlist de esquema ANTES de virar a capa: enquanto
-     o que está digitado não é aceito, a capa não muda, o campo fica marcado
-     como inválido e o aviso aparece quando o campo perde o foco (avisar a cada
-     tecla enquanto se digita "https://" seria só barulho). Salvar com endereço
-     inválido é bloqueado no submitForm. */
-  coverInput.addEventListener('input', () => {
-    const v = coverInput.value.trim();
-    if (!v) {
-      marcarCoverInvalido(false);
-      if (!DATA_URL_BITMAP.test(state.form.cover || '')) {
-        // Não havia upload guardado: limpar o campo limpa a capa.
-        state.form.cover = '';
-        renderCoverDropzone(null);
-      }
-      return;
-    }
-    const aceito = isEnderecoImagemAceito(v);
-    marcarCoverInvalido(!aceito);
-    if (aceito) {
-      state.form.cover = v;
-      renderCoverDropzone(v);
-    }
-  });
-
-  coverInput.addEventListener('blur', () => {
-    const v = coverInput.value.trim();
-    if (v && !isEnderecoImagemAceito(v)) toast(AVISO_ENDERECO_IMAGEM, 'error');
-  });
-
-  /* ===== Imagens do post (multi, estilo LinkedIn) ===== */
-  const imagesFile = document.getElementById('imagesFile');
-  const imagesGrid = document.getElementById('imagesGrid');
-  const addImagesBtn = document.getElementById('addImagesBtn');
-
-  const currentSlug = () =>
-    slugify(slugInput.value || titleInput.value || 'post') || 'post';
-
-  const imagesRender = () => {
-    const imgs = state.form.images || [];
-    if (!imgs.length) {
-      imagesGrid.innerHTML = '<p class="admin-field-hint">Nenhuma imagem ainda.</p>';
-      return;
-    }
-    imagesGrid.innerHTML = imgs.map((im, i) => `
-      <div class="admin-image-item" data-idx="${i}">
-        <img src="${escapeHtml(safeImageSrc(im && im.src))}" alt="" loading="lazy"/>
+        <p class="admin-dropzone-meta">PNG, JPG, WebP \xB7 m\xE1x 2MB recomendado</p>`},q=a=>new Promise((i,d)=>{if(!a.type.startsWith("image/"))return d(new Error("Arquivo n\xE3o \xE9 imagem"));if(a.size>8*1024*1024)return d(new Error("Arquivo muito grande (>8MB)"));const c=new FileReader;c.onload=f=>{const h=new Image;h.onload=()=>{let{width:I,height:E}=h;if(I>1600||E>1600){const Y=Math.min(1600/I,1600/E);I=Math.round(I*Y),E=Math.round(E*Y)}const A=document.createElement("canvas");A.width=I,A.height=E;const L=A.getContext("2d");L.imageSmoothingEnabled=!0,L.imageSmoothingQuality="high",L.drawImage(h,0,0,I,E);const F=!/\.(png|webp)$/i.test(a.name)||a.size>5e5,it=F?"image/jpeg":"image/png",st=F?.82:1;i(A.toDataURL(it,st))},h.onerror=()=>d(new Error("Falha ao carregar imagem")),h.src=f.target.result},c.onerror=()=>d(new Error("Falha ao ler arquivo")),c.readAsDataURL(a)}),z=async a=>{if(a)try{toast("Enviando capa...");const i=await q(a),d=dataUrlToFile(i,a.name||"capa"),c=await window.BlogDB.uploadImage(d,"covers");state.form.cover=c,S(c),m.value="",toast("Capa enviada.")}catch(i){toast(uploadErrorMsg(i),"error")}};B.addEventListener("click",a=>{const i=a.target.closest("[data-action]")?.dataset.action;i==="change-cover"||i==="pick-cover"?M.click():i==="remove-cover"?(state.form.cover="",S(null),m.value="",toast("Imagem removida.")):a.target.closest("img, button")||M.click()}),M.addEventListener("change",a=>{const i=a.target.files?.[0];i&&z(i),a.target.value=""}),["dragenter","dragover"].forEach(a=>{B.addEventListener(a,i=>{i.preventDefault(),B.classList.add("is-dragging")})}),["dragleave","drop"].forEach(a=>{B.addEventListener(a,i=>{i.preventDefault(),B.classList.remove("is-dragging")})}),B.addEventListener("drop",a=>{const i=a.dataTransfer?.files?.[0];i&&z(i)});const P=a=>{m.classList.toggle("is-invalid",a),m.style.borderColor=a?"#e05260":"",a?m.setAttribute("aria-invalid","true"):m.removeAttribute("aria-invalid")};m.addEventListener("input",()=>{const a=m.value.trim();if(!a){P(!1),DATA_URL_BITMAP.test(state.form.cover||"")||(state.form.cover="",S(null));return}const i=isEnderecoImagemAceito(a);P(!i),i&&(state.form.cover=a,S(a))}),m.addEventListener("blur",()=>{const a=m.value.trim();a&&!isEnderecoImagemAceito(a)&&toast(AVISO_ENDERECO_IMAGEM,"error")});const u=document.getElementById("imagesFile"),w=document.getElementById("imagesGrid"),R=document.getElementById("addImagesBtn"),U=()=>slugify(o.value||t.value||"post")||"post",C=()=>{const a=state.form.images||[];if(!a.length){w.innerHTML='<p class="admin-field-hint">Nenhuma imagem ainda.</p>';return}w.innerHTML=a.map((i,d)=>`
+      <div class="admin-image-item" data-idx="${d}">
+        <img src="${escapeHtml(safeImageSrc(i&&i.src))}" alt="" loading="lazy"/>
         <div class="admin-image-item-body">
-          <input type="text" class="admin-image-caption" data-idx="${i}"
-                 value="${escapeHtml(im.caption || '')}" placeholder="Legenda (opcional)"/>
+          <input type="text" class="admin-image-caption" data-idx="${d}"
+                 value="${escapeHtml(i.caption||"")}" placeholder="Legenda (opcional)"/>
           <div class="admin-image-item-actions">
-            <button type="button" class="admin-icon-btn" data-img-up="${i}" title="Subir"${i === 0 ? ' disabled' : ''}>↑</button>
-            <button type="button" class="admin-icon-btn" data-img-down="${i}" title="Descer"${i === imgs.length - 1 ? ' disabled' : ''}>↓</button>
-            <button type="button" class="admin-icon-btn admin-icon-btn--danger" data-img-remove="${i}" title="Remover">${ICONS.trash}</button>
+            <button type="button" class="admin-icon-btn" data-img-up="${d}" title="Subir"${d===0?" disabled":""}>\u2191</button>
+            <button type="button" class="admin-icon-btn" data-img-down="${d}" title="Descer"${d===a.length-1?" disabled":""}>\u2193</button>
+            <button type="button" class="admin-icon-btn admin-icon-btn--danger" data-img-remove="${d}" title="Remover">${ICONS.trash}</button>
           </div>
         </div>
       </div>
-    `).join('');
-  };
-  imagesRender();
+    `).join("")};C();const Z=async a=>{const i=await q(a),d=dataUrlToFile(i,a.name||"imagem");return window.BlogDB.uploadImage(d,"gallery")},X=async a=>{const i=Array.from(a||[]).filter(c=>c.type.startsWith("image/"));if(!i.length)return;toast(`Enviando ${i.length} imagem(ns)...`);let d=0;for(const c of i)try{const f=await Z(c);state.form.images.push({src:f,alt:t.value||"",caption:""}),d++,C()}catch(f){toast("Falha em "+(c.name||"imagem")+": "+f.message,"error")}d&&toast(`${d} imagem(ns) adicionada(s).`)};R?.addEventListener("click",()=>u.click()),u?.addEventListener("change",a=>{X(a.target.files),a.target.value=""}),w?.addEventListener("click",a=>{const i=a.target.closest("[data-img-up]"),d=a.target.closest("[data-img-down]"),c=a.target.closest("[data-img-remove]"),f=state.form.images;if(i){const h=+i.dataset.imgUp;h>0&&([f[h-1],f[h]]=[f[h],f[h-1]],C())}else if(d){const h=+d.dataset.imgDown;h<f.length-1&&([f[h+1],f[h]]=[f[h],f[h+1]],C())}else c&&(f.splice(+c.dataset.imgRemove,1),C())}),w?.addEventListener("input",a=>{const i=a.target.closest(".admin-image-caption");if(i){const d=+i.dataset.idx;state.form.images[d]&&(state.form.images[d].caption=i.value)}}),p.addEventListener("change",()=>{p.value==="scheduled"&&toast("Agendamento ainda n\xE3o est\xE1 ativo: o post ser\xE1 salvo como rascunho. A data de publica\xE7\xE3o acima continua valendo quando voc\xEA publicar.","error")});const _=()=>{const a=n.value;r.innerHTML=markdownToHtml(a),!getMarkedParser()&&ensureMarked().then(i=>{if(!i){markedWarned||(markedWarned=!0,toast("Preview em modo simples: n\xE3o consegui carregar o marked da CDN.","error"));return}r.classList.contains("active")&&(r.innerHTML=markdownToHtml(a))})};document.querySelectorAll(".admin-editor-tab").forEach(a=>{a.addEventListener("click",()=>{document.querySelectorAll(".admin-editor-tab").forEach(d=>d.classList.remove("active")),a.classList.add("active");const i=a.dataset.tab;n.classList.toggle("hidden",i!=="write"),r.classList.toggle("active",i==="preview"),s.classList.toggle("active",i==="help"),i==="preview"&&_()})}),ensureMarked(),n.addEventListener("input",k);const Q={heading2:{wrap:["## ",""],placeholder:"Subt\xEDtulo"},heading3:{wrap:["### ",""],placeholder:"Se\xE7\xE3o"},bold:{wrap:["**","**"],placeholder:"texto em negrito"},italic:{wrap:["*","*"],placeholder:"texto em it\xE1lico"},strike:{wrap:["~~","~~"],placeholder:"texto riscado"},code:{wrap:["`","`"],placeholder:"c\xF3digo"},link:{wrap:["[","](https://)"],placeholder:"texto do link"},image:{wrap:["![","](https://)"],placeholder:"alt da imagem"},quote:{wrap:["> ",""],placeholder:"cita\xE7\xE3o aqui"},ul:{block:`- item
+- outro item
+- mais um`},ol:{block:`1. primeiro
+2. segundo
+3. terceiro`},task:{block:`- [ ] tarefa pendente
+- [x] tarefa conclu\xEDda`},hr:{block:"---"},codeblock:{block:"```js\n// c\xF3digo\n```"},table:{block:`| Coluna | Valor |
+| --- | --- |
+| linha 1 | 10 |
+| linha 2 | 20 |`}},N=a=>{const i=Q[a];if(!i)return;const d=n,c=d.selectionStart,f=d.selectionEnd,h=d.value.slice(0,c),x=d.value.slice(c,f),I=d.value.slice(f);let E="",A=c;if(i.block)E=(h&&!h.endsWith(`
+`)?`
 
-  const uploadOne = async (file) => {
-    const dataUrl = await compressImage(file);
-    const named = dataUrlToFile(dataUrl, file.name || 'imagem');
-    return window.BlogDB.uploadImage(named, 'gallery');
-  };
-
-  const handleImageFiles = async (files) => {
-    const list = Array.from(files || []).filter(f => f.type.startsWith('image/'));
-    if (!list.length) return;
-    toast(`Enviando ${list.length} imagem(ns)...`);
-    let ok = 0;
-    for (const file of list) {
-      try {
-        const path = await uploadOne(file);
-        state.form.images.push({ src: path, alt: titleInput.value || '', caption: '' });
-        ok++;
-        imagesRender();
-      } catch (e) {
-        toast('Falha em ' + (file.name || 'imagem') + ': ' + e.message, 'error');
-      }
-    }
-    if (ok) toast(`${ok} imagem(ns) adicionada(s).`);
-  };
-
-  addImagesBtn?.addEventListener('click', () => imagesFile.click());
-  imagesFile?.addEventListener('change', (e) => {
-    handleImageFiles(e.target.files);
-    e.target.value = '';
-  });
-
-  imagesGrid?.addEventListener('click', (e) => {
-    const up = e.target.closest('[data-img-up]');
-    const down = e.target.closest('[data-img-down]');
-    const rm = e.target.closest('[data-img-remove]');
-    const arr = state.form.images;
-    if (up) {
-      const i = +up.dataset.imgUp;
-      if (i > 0) { [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]]; imagesRender(); }
-    } else if (down) {
-      const i = +down.dataset.imgDown;
-      if (i < arr.length - 1) { [arr[i + 1], arr[i]] = [arr[i], arr[i + 1]]; imagesRender(); }
-    } else if (rm) {
-      arr.splice(+rm.dataset.imgRemove, 1);
-      imagesRender();
-    }
-  });
-
-  imagesGrid?.addEventListener('input', (e) => {
-    const cap = e.target.closest('.admin-image-caption');
-    if (cap) {
-      const i = +cap.dataset.idx;
-      if (state.form.images[i]) state.form.images[i].caption = cap.value;
-    }
-  });
-
-  // Status: agendamento ainda não publica sozinho (vira rascunho).
-  // A data de publicação é outro campo — grava em created_at, não agenda.
-  statusSelect.addEventListener('change', () => {
-    if (statusSelect.value === 'scheduled') {
-      toast('Agendamento ainda não está ativo: o post será salvo como rascunho. A data de publicação acima continua valendo quando você publicar.', 'error');
-    }
-  });
-
-  /* Preview: pinta na hora com o que estiver disponível e, se o marked
-     ainda não chegou da CDN, repinta quando ele carregar. */
-  const renderPreview = () => {
-    const md = contentEditor.value;
-    previewBox.innerHTML = markdownToHtml(md);
-    if (getMarkedParser()) return;
-    ensureMarked().then((parser) => {
-      if (!parser) {
-        if (!markedWarned) {
-          markedWarned = true;
-          toast('Preview em modo simples: não consegui carregar o marked da CDN.', 'error');
-        }
-        return;
-      }
-      if (previewBox.classList.contains('active')) previewBox.innerHTML = markdownToHtml(md);
-    });
-  };
-
-  // Tabs (write/preview/help)
-  document.querySelectorAll('.admin-editor-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.admin-editor-tab').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      const which = tab.dataset.tab;
-      contentEditor.classList.toggle('hidden', which !== 'write');
-      previewBox.classList.toggle('active', which === 'preview');
-      helpBox.classList.toggle('active', which === 'help');
-      if (which === 'preview') renderPreview();
-    });
-  });
-
-  // Deixa o marked pronto antes do primeiro clique em Preview
-  ensureMarked();
-
-  // Word count update
-  contentEditor.addEventListener('input', updateCounts);
-
-  /* ===== Toolbar do editor: só markdown de verdade (GFM) ===== */
-  const SNIPPETS = {
-    heading2:  { wrap: ['## ', ''], placeholder: 'Subtítulo' },
-    heading3:  { wrap: ['### ', ''], placeholder: 'Seção' },
-    bold:      { wrap: ['**', '**'], placeholder: 'texto em negrito' },
-    italic:    { wrap: ['*', '*'], placeholder: 'texto em itálico' },
-    strike:    { wrap: ['~~', '~~'], placeholder: 'texto riscado' },
-    code:      { wrap: ['`', '`'], placeholder: 'código' },
-    link:      { wrap: ['[', '](https://)'], placeholder: 'texto do link' },
-    image:     { wrap: ['![', '](https://)'], placeholder: 'alt da imagem' },
-    quote:     { wrap: ['> ', ''], placeholder: 'citação aqui' },
-    ul:        { block: '- item\n- outro item\n- mais um' },
-    ol:        { block: '1. primeiro\n2. segundo\n3. terceiro' },
-    task:      { block: '- [ ] tarefa pendente\n- [x] tarefa concluída' },
-    hr:        { block: '---' },
-    codeblock: { block: '```js\n// código\n```' },
-    table:     { block: '| Coluna | Valor |\n| --- | --- |\n| linha 1 | 10 |\n| linha 2 | 20 |' },
-  };
-
-  const insertSnippet = (key) => {
-    const snip = SNIPPETS[key];
-    if (!snip) return;
-    const ta = contentEditor;
-    const start = ta.selectionStart;
-    const end = ta.selectionEnd;
-    const before = ta.value.slice(0, start);
-    const selected = ta.value.slice(start, end);
-    const after = ta.value.slice(end);
-
-    let inserted = '';
-    let newCursor = start;
-
-    if (snip.block) {
-      // Insere em nova linha (com quebra antes se necessário)
-      const needsNewline = before && !before.endsWith('\n');
-      const prefix = needsNewline ? '\n\n' : '';
-      inserted = prefix + snip.block + '\n';
-      newCursor = start + inserted.length;
-      ta.value = before + inserted + after;
-    } else {
-      // Envolve seleção ou insere placeholder
-      const text = selected || snip.placeholder || '';
-      inserted = snip.wrap[0] + text + snip.wrap[1];
-      ta.value = before + inserted + after;
-      if (selected) {
-        newCursor = start + inserted.length;
-      } else {
-        // Cursor no início do placeholder, selecionado
-        newCursor = start + snip.wrap[0].length;
-        ta.focus();
-        ta.setSelectionRange(newCursor, newCursor + text.length);
-        updateCounts();
-        return;
-      }
-    }
-    ta.focus();
-    ta.setSelectionRange(newCursor, newCursor);
-    updateCounts();
-  };
-
-  document.querySelectorAll('.editor-toolbar-btn[data-md]').forEach(btn => {
-    btn.addEventListener('click', () => insertSnippet(btn.dataset.md));
-  });
-
-  // Atalhos: Ctrl+B (bold), Ctrl+I (italic)
-  contentEditor.addEventListener('keydown', (e) => {
-    if (!(e.metaKey || e.ctrlKey)) return;
-    const key = e.key.toLowerCase();
-    if (key === 'b') { e.preventDefault(); insertSnippet('bold'); }
-    else if (key === 'i') { e.preventDefault(); insertSnippet('italic'); }
-    else if (key === 'k') { e.preventDefault(); insertSnippet('link'); }
-  });
-
-  // Tags input
-  const addTag = (tag) => {
-    tag = tag.trim().toLowerCase();
-    if (!tag) return;
-    if (!state.form.tags) state.form.tags = [];
-    if (state.form.tags.includes(tag)) return;
-    state.form.tags.push(tag);
-    renderTags();
-  };
-
-  const removeTag = (tag) => {
-    state.form.tags = (state.form.tags || []).filter(t => t !== tag);
-    renderTags();
-  };
-
-  const renderTags = () => {
-    tagsContainer.innerHTML = `
-      ${(state.form.tags || []).map(t => `
-        <span class="admin-tag-pill">${escapeHtml(t)}
-          <button type="button" class="admin-tag-remove" data-tag="${escapeHtml(t)}">✕</button>
+`:"")+i.block+`
+`,A=c+E.length,d.value=h+E+I;else{const L=x||i.placeholder||"";if(E=i.wrap[0]+L+i.wrap[1],d.value=h+E+I,x)A=c+E.length;else{A=c+i.wrap[0].length,d.focus(),d.setSelectionRange(A,A+L.length),k();return}}d.focus(),d.setSelectionRange(A,A),k()};document.querySelectorAll(".editor-toolbar-btn[data-md]").forEach(a=>{a.addEventListener("click",()=>N(a.dataset.md))}),n.addEventListener("keydown",a=>{if(!(a.metaKey||a.ctrlKey))return;const i=a.key.toLowerCase();i==="b"?(a.preventDefault(),N("bold")):i==="i"?(a.preventDefault(),N("italic")):i==="k"&&(a.preventDefault(),N("link"))});const tt=a=>{a=a.trim().toLowerCase(),a&&(state.form.tags||(state.form.tags=[]),!state.form.tags.includes(a)&&(state.form.tags.push(a),j()))},et=a=>{state.form.tags=(state.form.tags||[]).filter(i=>i!==a),j()},j=()=>{y.innerHTML=`
+      ${(state.form.tags||[]).map(a=>`
+        <span class="admin-tag-pill">${escapeHtml(a)}
+          <button type="button" class="admin-tag-remove" data-tag="${escapeHtml(a)}">\u2715</button>
         </span>
-      `).join('')}
+      `).join("")}
       <input type="text" id="f-tags-input" placeholder="adicionar tag..."/>
-    `;
-    document.getElementById('f-tags-input').focus();
-    bindTagsInput();
-  };
-
-  const bindTagsInput = () => {
-    const inp = document.getElementById('f-tags-input');
-    inp.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ',') {
-        e.preventDefault();
-        addTag(inp.value);
-        inp.value = '';
-      }
-      if (e.key === 'Backspace' && !inp.value && state.form.tags?.length) {
-        state.form.tags.pop();
-        renderTags();
-      }
-    });
-  };
-  bindTagsInput();
-
-  tagsContainer.addEventListener('click', (e) => {
-    const btn = e.target.closest('.admin-tag-remove');
-    if (btn) removeTag(btn.dataset.tag);
-  });
-
-  // Salvar rascunho -> forca status=draft (nao aparece no site)
-  document.getElementById('saveDraftBtn').addEventListener('click', () => {
-    statusSelect.value = 'draft';
-    submitForm();
-  });
-
-  // Publicar -> forca status=published (a CORRECAO do bug: antes o botao
-  // publicar nao mexia no status, entao salvava como rascunho).
-  document.getElementById('publishBtn')?.addEventListener('click', () => {
-    if (statusSelect.value !== 'scheduled') statusSelect.value = 'published';
-    submitForm();
-  });
-
-  /* ===== .md: importar e baixar =====
-     O editor trabalha no formato de data/posts/<slug>.md. Importar lê o
-     front-matter YAML e preenche o formulário; baixar devolve o mesmo
-     formato, pronto pra rodar `npm run build:posts`. Isso é o caminho
-     MANUAL: publicar pelo painel já dispara o rebuild sozinho. */
-  const mdFileInput = document.getElementById('mdFileInput');
-  const mdIoBar = document.getElementById('mdIoBar');
-  const mdIoMsg = document.getElementById('mdIoMsg');
-
-  const setMdMsg = (text, kind) => {
-    if (!mdIoMsg) return;
-    mdIoMsg.textContent = text || '';
-    mdIoMsg.classList.toggle('is-error', kind === 'error');
-    mdIoMsg.classList.toggle('is-ok', kind === 'ok');
-    mdIoMsg.hidden = !text;
-  };
-
-  const isMarkdownFile = (file) =>
-    /\.(md|markdown)$/i.test(file.name || '') ||
-    /^text\/(markdown|x-markdown)$/i.test(file.type || '');
-
-  /* Joga o front-matter nos campos do formulário.
-     Devolve a lista do que foi preenchido (só pra mensagem). */
-  const applyFrontMatter = (data) => {
-    const applied = [];
-    const setInput = (el, value, label) => {
-      if (!el || value === undefined || value === null || value === '') return;
-      el.value = String(value);
-      applied.push(label);
-    };
-
-    setInput(titleInput, data.title, 'título');
-    setInput(document.getElementById('f-subtitle'), data.subtitle, 'subtítulo');
-    setInput(document.getElementById('f-author'), data.author, 'autor');
-
-    if (data.slug) {
-      slugInput.value = String(data.slug);
-      slugManuallyEdited = true;
-      applied.push('slug');
-    }
-
-    if (data.category) {
-      const cat = String(data.category);
-      const catSelect = document.getElementById('f-category');
-      if (catSelect) {
-        if (!Array.from(catSelect.options).some(o => o.value === cat)) {
-          catSelect.appendChild(new Option(cat, cat));
-        }
-        catSelect.value = cat;
-        applied.push('categoria');
-      }
-    }
-
-    if (data.status) {
-      const st = String(data.status).toLowerCase();
-      if (['draft', 'published', 'scheduled'].includes(st)) {
-        statusSelect.value = st;
-        applied.push('status');
-      }
-    }
-
-    if (typeof data.featured === 'boolean') {
-      const featuredChk = document.getElementById('f-featured');
-      if (featuredChk) {
-        featuredChk.checked = data.featured;
-        applied.push('destaque');
-      }
-    }
-
-    /* Arquivo .md é entrada não confiável: a capa e as imagens passam pela
-       mesma allowlist do campo digitado antes de entrar no formulário. */
-    if (data.cover) {
-      const capa = String(data.cover);
-      if (safeImageSrc(capa)) {
-        state.form.cover = capa;
-        coverInput.value = isEnderecoImagemAceito(capa) ? capa : '';
-        renderCoverDropzone(capa);
-        applied.push('capa');
-      } else {
-        toast('A capa do arquivo .md foi ignorada. ' + AVISO_ENDERECO_IMAGEM, 'error');
-      }
-    }
-    if (data.coverAlt) state.form.coverAlt = String(data.coverAlt);
-    /* linkedinUrl só existe no arquivo .md (o banco não tem essa coluna), mas
-       o build imprime esse valor como href, então só http(s) entra. */
-    if (data.linkedinUrl) {
-      const link = String(data.linkedinUrl);
-      if (isEnderecoHttp(link)) state.form.linkedinUrl = link;
-      else toast('O linkedinUrl do arquivo .md foi ignorado: use um endereço http(s).', 'error');
-    }
-
-    /* id e datas do arquivo ficam guardados só pra voltar no download.
-       Nunca sobrescrevem state.form.id: o id do banco manda no CRUD. */
-    if (data.date) {
-      state.form.importedDate = String(data.date);
-      if (publishedAtInput) {
-        publishedAtInput.value = toDatetimeLocal(data.date);
-        applied.push('data');
-      }
-    }
-    if (data.updated) state.form.importedUpdated = String(data.updated);
-
-    if (Array.isArray(data.tags)) {
-      state.form.tags = data.tags.map(t => String(t).trim().toLowerCase()).filter(Boolean);
-      renderTags();
-      document.getElementById('f-tags-input')?.blur();
-      applied.push('tags');
-    }
-
-    if (Array.isArray(data.images)) {
-      const brutas = data.images
-        .map(im => (typeof im === 'string' ? { src: im } : im))
-        .filter(im => im && im.src);
-      const aceitas = brutas.filter(im => safeImageSrc(im.src));
-      state.form.images = aceitas
-        .map(im => ({ src: String(im.src), alt: String(im.alt || ''), caption: String(im.caption || '') }));
-      imagesRender();
-      const recusadas = brutas.length - aceitas.length;
-      if (recusadas > 0) {
-        toast(recusadas + ' imagem(ns) do .md ignorada(s). ' + AVISO_ENDERECO_IMAGEM, 'error');
-      }
-      applied.push('imagens');
-    }
-
-    return applied;
-  };
-
-  const applyMarkdownText = (text, filename) => {
-    const parsed = parseFrontMatter(text);
-    contentEditor.value = parsed.body;
-    state.form.content = parsed.body;
-    updateCounts();
-    if (previewBox.classList.contains('active')) renderPreview();
-
-    if (!parsed.data) {
-      setMdMsg(`Corpo carregado de ${filename}. Não achei front-matter, então os campos ficaram como estavam.`, 'ok');
-      toast('Markdown carregado no corpo do post.');
-      return;
-    }
-
-    const applied = applyFrontMatter(parsed.data);
-    if (!parsed.data.slug && !slugInput.value) {
-      const fromName = slugify(String(filename || '').replace(/\.(md|markdown)$/i, ''));
-      if (fromName) {
-        slugInput.value = fromName;
-        slugManuallyEdited = true;
-        applied.push('slug (do nome do arquivo)');
-      }
-    }
-    setMdMsg(
-      applied.length
-        ? `${filename} importado. Preenchi: ${applied.join(', ')}.`
-        : `${filename} importado. Só o corpo veio preenchido.`,
-      'ok'
-    );
-    toast('Arquivo .md importado.');
-  };
-
-  const readMarkdownFile = (file) => {
-    if (!file) return;
-    if (!isMarkdownFile(file)) {
-      setMdMsg(`"${file.name}" não é um arquivo .md. Aceito só .md ou .markdown.`, 'error');
-      toast('Arquivo ignorado: use .md ou .markdown.', 'error');
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = () => applyMarkdownText(String(reader.result || ''), file.name);
-    reader.onerror = () => {
-      setMdMsg('Não consegui ler esse arquivo. Tente de novo.', 'error');
-      toast('Falha ao ler o arquivo .md', 'error');
-    };
-    reader.readAsText(file, 'utf-8');
-  };
-
-  document.getElementById('importMdBtn')?.addEventListener('click', () => mdFileInput?.click());
-  mdFileInput?.addEventListener('change', (e) => {
-    readMarkdownFile(e.target.files?.[0]);
-    e.target.value = ''; // deixa reimportar o mesmo arquivo
-  });
-
-  /* Drag and drop de .md sobre o editor (textarea e barra .md) */
-  const dragHasFiles = (e) => Array.from(e.dataTransfer?.types || []).includes('Files');
-  const setMdDragState = (on) => {
-    contentEditor.classList.toggle('is-md-dragover', on);
-    mdIoBar?.classList.toggle('is-md-dragover', on);
-  };
-
-  [contentEditor, mdIoBar].filter(Boolean).forEach(zone => {
-    ['dragenter', 'dragover'].forEach(ev => {
-      zone.addEventListener(ev, (e) => {
-        if (!dragHasFiles(e)) return; // arrastar texto continua normal
-        e.preventDefault();
-        setMdDragState(true);
-      });
-    });
-    zone.addEventListener('dragleave', (e) => {
-      // ignora a saída pra dentro de um filho (senão o destaque pisca)
-      if (e.relatedTarget && zone.contains(e.relatedTarget)) return;
-      setMdDragState(false);
-    });
-    zone.addEventListener('drop', (e) => {
-      if (!dragHasFiles(e)) return;
-      e.preventDefault();
-      setMdDragState(false);
-      readMarkdownFile(e.dataTransfer.files[0]);
-    });
-  });
-
-  /* Baixa o post como data/posts/<slug>.md */
-  const exportMd = () => {
-    const data = gatherExportPost();
-    const filename = (data.slug || slugify(data.title || 'post') || 'post') + '.md';
-    downloadAsFile(filename, postToMarkdown(data), 'text/markdown');
-    setMdMsg(`${filename} baixado. Coloque em data/posts/ e rode npm run build:posts.`, 'ok');
-    toast(`Baixei ${filename}`);
-  };
-  document.getElementById('exportMdBtn')?.addEventListener('click', exportMd);
-  document.getElementById('exportMdBarBtn')?.addEventListener('click', exportMd);
-
-  // Submit por Enter/Ctrl+S: usa o status que estiver selecionado
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    submitForm();
-  });
-}
-
-/* ---------- Export helpers ---------- */
-function escapeFrontMatterString(s) {
-  // YAML-safe: escapa aspas duplas e barras invertidas
-  return String(s ?? '').replace(/\\/g, '\\\\').replace(/"/g, '\\"');
-}
-
-function postToMarkdown(post) {
-  const fm = [];
-  fm.push('---');
-  /* id entre aspas: é o único campo do front-matter que não passa por
-     slugify nem por um select, e sem aspas um valor com `:` ou `#` quebraria
-     o YAML do arquivo baixado. */
-  if (post.id) fm.push(`id: "${escapeFrontMatterString(post.id)}"`);
-  fm.push(`title: "${escapeFrontMatterString(post.title || '')}"`);
-  if (post.subtitle) fm.push(`subtitle: "${escapeFrontMatterString(post.subtitle)}"`);
-  fm.push(`slug: ${post.slug || slugify(post.title || 'post')}`);
-  fm.push(`date: "${post.createdAt || new Date().toISOString()}"`);
-  fm.push(`updated: "${post.updatedAt || post.createdAt || new Date().toISOString()}"`);
-  if (post.category) fm.push(`category: "${escapeFrontMatterString(post.category)}"`);
-  if (post.tags?.length) {
-    fm.push('tags:');
-    post.tags.forEach(t => fm.push(`  - "${escapeFrontMatterString(t)}"`));
-  }
-  if (post.cover) fm.push(`cover: "${escapeFrontMatterString(post.cover)}"`);
-  fm.push(`coverAlt: "${escapeFrontMatterString(post.coverAlt || (post.title ? post.title + ' - Bernardo Iannini' : 'Bernardo Iannini'))}"`);
-  if (post.images && post.images.length) {
-    fm.push('images:');
-    post.images.forEach((im) => {
-      fm.push(`  - src: "${escapeFrontMatterString(im.src)}"`);
-      fm.push(`    alt: "${escapeFrontMatterString(im.alt || post.title || '')}"`);
-      if (im.caption) fm.push(`    caption: "${escapeFrontMatterString(im.caption)}"`);
-    });
-  } else {
-    fm.push('images: []');
-  }
-  fm.push(`linkedinUrl: "${escapeFrontMatterString(post.linkedinUrl || '')}"`);
-  fm.push(`featured: ${post.featured ? 'true' : 'false'}`);
-  fm.push(`status: ${post.status || 'draft'}`);
-  fm.push(`author: "${escapeFrontMatterString(post.author || 'Bernardo Iannini')}"`);
-  fm.push('---');
-  fm.push('');
-  fm.push(post.content || '');
-  fm.push('');
-  return fm.join('\n');
-}
-
-function downloadAsFile(filename, content, mime = 'text/plain') {
-  const blob = new Blob([content], { type: mime + ';charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 200);
-}
-
-
-function gatherFormData() {
-  const form = document.getElementById('postForm');
-  const fd = new FormData(form);
-
-  // Cover: prioriza URL manual se preenchida, senão usa o data URL do state.
-  const manualCover = fd.get('cover')?.trim() || '';
-  const cover = manualCover || state.form.cover || '';
-
-  return {
-    title: fd.get('title')?.trim() || '',
-    subtitle: fd.get('subtitle')?.trim() || '',
-    slug: slugify(fd.get('slug')) || slugify(fd.get('title')) || uid(),
-    cover,
-    tags: state.form.tags || [],
-    images: state.form.images || [],
-    category: fd.get('category') || 'Outro',
-    author: fd.get('author')?.trim() || 'Bernardo Iannini',
-    status: fd.get('status') || 'draft',
-    publishedAt: fromDatetimeLocal(fd.get('publishedAt')),
-    featured: !!fd.get('featured'),
-    content: fd.get('content') || '',
-  };
-}
-
-/* Payload do download .md: o formulário + os campos que só existem no
-   arquivo (id, date, updated, coverAlt, linkedinUrl). Assim um .md
-   importado volta completo, sem perder nada no caminho. */
-function gatherExportPost() {
-  const data = gatherFormData();
-  const f = state.form || {};
-  data.id = f.id || f.importedId || '';
-  data.createdAt = data.publishedAt || f.createdAt || f.importedDate || '';
-  data.updatedAt = f.updatedAt || f.importedUpdated || '';
-  data.coverAlt = f.coverAlt || '';
-  data.linkedinUrl = f.linkedinUrl || '';
-  return data;
-}
-
-async function submitForm() {
-  if (state.saving) return;   // duplo clique / Ctrl+S repetido não salva duas vezes
-  const data = gatherFormData();
-
-  if (!data.title) {
-    toast('O título é obrigatório.', 'error');
-    document.getElementById('f-title')?.focus();
-    return;
-  }
-  if (!data.publishedAt) {
-    toast('A data de publicação é obrigatória.', 'error');
-    document.getElementById('f-publishedAt')?.focus();
-    return;
-  }
-  if (!data.content || data.content.trim().length < 10) {
-    toast('Conteúdo muito curto.', 'error');
-    document.getElementById('f-content')?.focus();
-    return;
-  }
-
-  /* Endereço de imagem: última barreira antes de gravar no banco. Esse valor
-     sai daqui direto pro site publicado (src da capa e da galeria), então
-     endereço fora da allowlist não é salvo, nem com aviso, nem "por enquanto".
-     safeImageSrc ainda aceita a capa antiga em data:image de bitmap pra não
-     travar a edição de post velho. */
-  if (data.cover && !safeImageSrc(data.cover)) {
-    toast('Capa não salva. ' + AVISO_ENDERECO_IMAGEM, 'error');
-    document.getElementById('f-cover')?.focus();
-    return;
-  }
-  const imagemRuim = (data.images || []).findIndex(im => !im || !safeImageSrc(im.src));
-  if (imagemRuim >= 0) {
-    toast('A imagem ' + (imagemRuim + 1) + ' do post tem endereço não aceito. ' + AVISO_ENDERECO_IMAGEM, 'error');
-    return;
-  }
-
-  // Post sendo editado
-  const editing = state.editingId ? state.posts.find(p => p.id === state.editingId) : null;
-
-  // Garante slug único contra os posts que já existem
-  let slug = data.slug;
-  const clash = state.posts.find(p => p.slug === slug && (!editing || p.id !== editing.id));
-  if (clash) slug = slug + '-' + Math.random().toString(36).slice(2, 5);
-
-  // O banco só conhece draft/published — 'scheduled' entra como rascunho.
-  const status = data.status === 'scheduled' ? 'draft' : data.status;
-
-  const post = {
-    id: editing ? editing.id : uid(),
-    title: data.title,
-    subtitle: data.subtitle,
-    slug,
-    cover: data.cover,
-    coverAlt: (editing && editing.coverAlt) || (data.title + ' - Bernardo Iannini'),
-    tags: data.tags,
-    images: data.images,
-    category: data.category,
-    author: data.author,
-    status,
-    featured: data.featured,
-    content: data.content,
-    createdAt: data.publishedAt,
-  };
-
-  /* Trava anti duplo clique (mesmo padrão do login em blog-auth.js):
-     desabilita os botões enquanto o save está pendente e libera no finally. */
-  state.saving = true;
-  const saveBtns = ['saveDraftBtn', 'publishBtn']
-    .map(id => document.getElementById(id)).filter(Boolean);
-  saveBtns.forEach(b => { b.disabled = true; });
-
-  /* O mesmo guard cobre o rebuild: o botão só volta quando o site já foi
-     avisado, senão dá pra clicar em publicar duas vezes no meio do caminho. */
-  const publishBtn = document.getElementById('publishBtn');
-  const publishLabel = publishBtn ? publishBtn.innerHTML : '';
-
-  let featuredWarn = '';
-  let rebuild = null;
-  let desativado = false;   // saiu do ar (era publicado, virou rascunho)
-  toast('Salvando no Supabase...');
-  try {
-    if (editing) {
-      await window.BlogDB.update(editing.id, post);
-    } else {
-      await window.BlogDB.create(post);
-    }
-    // Destaque único: o banco não impõe, então desmarca o featured dos outros.
-    if (post.featured) {
-      const { error } = await window.BlogDB.raw
-        .from('posts')
-        .update({ featured: false })
-        .eq('featured', true)
-        .neq('id', post.id);
-      if (error) featuredWarn = ' Atenção: não consegui desmarcar o destaque dos outros posts (' + (error.message || error) + ').';
-    }
-    state.posts = await window.BlogDB.listAll();
-
-    /* Precisa avisar o build (quem gera a página estática) em DOIS casos:
-       publicando, e DESPUBLICANDO um post que estava no ar. Sem o segundo,
-       virar rascunho deixaria a página antiga acessível no site até o
-       próximo deploy. Rascunho que nunca foi publicado não gasta deploy.
-       triggerRebuild não lança: se falhar, o post continua salvo. */
-    const despublicando = !!editing && editing.status === 'published' && status !== 'published';
-    if (status === 'published' || despublicando) {
-      if (publishBtn) publishBtn.innerHTML = ICONS.paperplane + ' Publicando...';
-      toast(despublicando ? 'Tirando do site...' : 'Publicando no site...');
-      const motivo = despublicando
-        ? 'post despublicado: '
-        : (editing ? 'post atualizado: ' : 'post publicado: ');
-      rebuild = await triggerRebuild(motivo + slug);
-      desativado = despublicando;
-    }
-  } catch (err) {
-    toast('Erro ao salvar: ' + (err && err.message || err), 'error');
-    return;
-  } finally {
-    state.saving = false;
-    saveBtns.forEach(b => { b.disabled = false; });
-    if (publishBtn) publishBtn.innerHTML = publishLabel;
-  }
-
-  /* Toast honesto: rascunho fica só no banco; publicado depende do rebuild
-     pra virar página estática no ar. */
-  let aviso;
-  if (status === 'published') {
-    aviso = rebuildMessage('Post publicado', 'Post salvo', rebuild);
-  } else if (desativado) {
-    // Era publicado e virou rascunho: o rebuild é o que tira a página do ar.
-    aviso = rebuildMessage('Post tirado do site', 'Post salvo como rascunho', rebuild);
-  } else if (data.status === 'scheduled') {
-    aviso = { msg: 'Agendamento ainda não está ativo: salvei como rascunho. A data de publicação ficou gravada e vale quando você publicar.', type: 'error' };
-  } else {
-    aviso = { msg: 'Rascunho salvo. Ele não vai pro site.', type: 'success' };
-  }
-  toast(aviso.msg + featuredWarn, (featuredWarn || aviso.type === 'error') ? 'error' : 'success');
-  state.editingId = null;
-  state.view = 'posts';
-  render();
-}
-
-/* ---------- Event delegation ---------- */
-function attachGlobalEvents() {
-  // Sidebar navigation
-  document.querySelectorAll('.admin-nav-item[data-view]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      state.view = btn.dataset.view;
-      state.editingId = null;
-      if (btn.hasAttribute('data-new')) state.editingId = null;
-      render();
-    });
-  });
-
-  // Logout — escuta o botão da topbar E o botão da sidebar
-  const logoutHandler = async () => {
-    if (confirm('Tem certeza que quer sair?')) {
-      try { await window.BlogDB.signOut(); } catch (e) { /* noop */ }
-      location.href = 'bernardolindao.html';
-    }
-  };
-  document.getElementById('logoutBtn')?.addEventListener('click', logoutHandler);
-  document.getElementById('sidebarLogoutBtn')?.addEventListener('click', logoutHandler);
-
-  // Delegação no main content
-  document.getElementById('adminContent').addEventListener('click', (e) => {
-    const filterBtn = e.target.closest('[data-status-filter]');
-    if (filterBtn) {
-      state.statusFilter = filterBtn.dataset.statusFilter || 'all';
-      render();
-      return;
-    }
-
-    const navBtn = e.target.closest('[data-nav]');
-    if (navBtn) {
-      state.view = navBtn.dataset.nav;
-      if (navBtn.hasAttribute('data-new')) state.editingId = null;
-      render();
-      return;
-    }
-
-    const editBtn = e.target.closest('[data-edit]');
-    if (editBtn) {
-      state.editingId = editBtn.dataset.edit;
-      state.view = 'editor';
-      render();
-      return;
-    }
-
-    const delBtn = e.target.closest('[data-delete]');
-    if (delBtn) {
-      const id = delBtn.dataset.delete;
-      const post = state.posts.find(p => p.id === id);
-      if (post && confirm(`Excluir o post "${post.title}"? Esta ação não pode ser desfeita.`)) {
-        /* Mesmo guard de duplo clique do save: o botão fica travado até o
-           rebuild responder. */
-        delBtn.disabled = true;
-        toast('Excluindo...');
-        window.BlogDB.remove(id).then(async () => {
-          /* Quem tira posts/<slug>.html do ar é o build, não o banco: sem
-             rebuild a página continua publicada mesmo com o post apagado.
-             Vem ANTES do listAll: se recarregar a lista falhar, o post já
-             saiu do banco e a página não pode ficar no ar por causa disso. */
-          const rebuild = await triggerRebuild('post excluido: ' + (post.slug || post.id));
-          const aviso = rebuildMessage('Post excluído', 'Post excluído do banco', rebuild);
-          try {
-            state.posts = await window.BlogDB.listAll();
-          } catch (e) {
-            // Excluiu e avisou o site; só a lista da tela ficou velha.
-            state.posts = (state.posts || []).filter(p => p.id !== id);
-          }
-          toast(aviso.msg, aviso.type);
-          if (state.editingId === id) { state.editingId = null; state.view = 'posts'; }
-          render();
-        }).catch((err) => {
-          delBtn.disabled = false;
-          toast('Erro ao excluir: ' + (err && err.message || err), 'error');
-        });
-      }
-      return;
-    }
-
-    const dupBtn = e.target.closest('[data-duplicate]');
-    if (dupBtn) {
-      const post = state.posts.find(p => p.id === dupBtn.dataset.duplicate);
-      if (post) {
-        const copy = {
-          id: uid(),
-          title: post.title + ' (cópia)',
-          subtitle: post.subtitle || '',
-          slug: slugify(post.slug || post.title) + '-copia-' + Math.random().toString(36).slice(2, 5),
-          /* A cópia não reintroduz endereço de imagem recusado. */
-          cover: safeImageSrc(post.cover) ? post.cover : '',
-          coverAlt: post.coverAlt || '',
-          tags: post.tags || [],
-          images: (post.images || []).filter(im => im && safeImageSrc(im.src)),
-          category: post.category || '',
-          author: post.author || 'Bernardo Iannini',
-          status: 'draft',
-          featured: false,
-          content: post.content || '',
-        };
-        window.BlogDB.create(copy).then(async () => {
-          state.posts = await window.BlogDB.listAll();
-          toast('Post duplicado (como rascunho).');
-          render();
-        }).catch((err) => toast('Erro ao duplicar: ' + (err && err.message || err), 'error'));
-      }
-      return;
-    }
-
-    const viewBtn = e.target.closest('[data-view-post]');
-    if (viewBtn) {
-      /* encodeURIComponent no slug: o valor vem do banco e vai pra query
-         string. post.html já filtra o parâmetro, mas o painel não manda
-         caractere solto pra URL. */
-      const slug = encodeURIComponent(viewBtn.dataset.viewPost || '');
-      window.open('post.html?slug=' + slug, '_blank', 'noopener');
-      return;
-    }
-
-    const rowEdit = e.target.closest('tr[data-edit]');
-    if (rowEdit && !e.target.closest('button, a')) {
-      state.editingId = rowEdit.dataset.edit;
-      state.view = 'editor';
-      render();
-    }
-  });
-
-  // Search input (delegação)
-  document.getElementById('adminContent').addEventListener('input', (e) => {
-    if (e.target.id === 'adminSearch') {
-      state.search = e.target.value;
-      // Como agora o empty state não é uma <tr>, precisamos re-render completo
-      // mantendo apenas o foco do input para boa UX.
-      const cursorPos = e.target.selectionStart;
-      render();
-      const input = document.getElementById('adminSearch');
-      if (input) {
-        input.focus();
-        try { input.setSelectionRange(cursorPos, cursorPos); } catch {}
-      }
-    }
-  });
-
-  // Keyboard shortcuts
-  document.addEventListener('keydown', (e) => {
-    // Ctrl+S → salvar (no editor)
-    if ((e.metaKey || e.ctrlKey) && e.key === 's' && state.view === 'editor') {
-      e.preventDefault();
-      submitForm();
-    }
-    // Ctrl+N → novo post
-    if ((e.metaKey || e.ctrlKey) && e.key === 'n' && state.view !== 'editor') {
-      e.preventDefault();
-      state.view = 'editor';
-      state.editingId = null;
-      render();
-    }
-  });
-}
-
-/* =========================================================
-   SESSÃO — logout automático por inatividade
-   ---------------------------------------------------------
-   O token do Supabase se renova sozinho, então uma aba do painel esquecida
-   aberta continuaria valendo por tempo indeterminado. Depois de 60 minutos
-   SEM nenhuma interação (mouse, teclado, toque, rolagem) a sessão é encerrada
-   de verdade (signOut, que apaga as chaves sb-* do localStorage), a tela é
-   limpa e aparece a explicação com o caminho de volta pro login.
-
-   60 minutos é longo de propósito: ficar meia hora escrevendo em silêncio é
-   normal e derrubar a sessão no meio do texto seria pior que o problema que
-   isso resolve. Qualquer interação reinicia a contagem.
-
-   O timer é reiniciado no máximo uma vez a cada 30 segundos: mousemove
-   dispara centenas de vezes por segundo e não vale trocar o timeout em todas.
-   Na prática o limite fica entre 60 e 60,5 minutos.
-   ========================================================= */
-const IDLE_LIMITE_MS = 60 * 60 * 1000;
-const IDLE_RESET_THROTTLE_MS = 30 * 1000;
-const IDLE_EVENTOS = ['mousedown', 'mousemove', 'keydown', 'wheel', 'touchstart', 'touchmove', 'scroll'];
-
-let idleTimer = null;
-let idleUltimoReset = 0;
-let idleEncerrando = false;
-
-function reiniciarIdle() {
-  if (idleEncerrando) return;
-  const agora = Date.now();
-  if (idleTimer && (agora - idleUltimoReset) < IDLE_RESET_THROTTLE_MS) return;
-  idleUltimoReset = agora;
-  clearTimeout(idleTimer);
-  idleTimer = setTimeout(encerrarPorInatividade, IDLE_LIMITE_MS);
-}
-
-function pararRelogioIdle() {
-  clearTimeout(idleTimer);
-  idleTimer = null;
-  IDLE_EVENTOS.forEach(ev => window.removeEventListener(ev, reiniciarIdle, true));
-  document.removeEventListener('visibilitychange', idleVisibilidade);
-}
-
-function idleVisibilidade() {
-  if (!document.hidden) reiniciarIdle();
-}
-
-function iniciarRelogioIdle() {
-  IDLE_EVENTOS.forEach(ev => window.addEventListener(ev, reiniciarIdle, { passive: true, capture: true }));
-  document.addEventListener('visibilitychange', idleVisibilidade);
-  idleUltimoReset = 0;
-  reiniciarIdle();
-}
-
-async function encerrarPorInatividade() {
-  if (idleEncerrando) return;
-  /* Salvando agora: não derruba a sessão no meio da gravação. Espera mais um
-     minuto e tenta de novo. */
-  if (state.saving) {
-    idleTimer = setTimeout(encerrarPorInatividade, 60 * 1000);
-    idleUltimoReset = Date.now();
-    return;
-  }
-  idleEncerrando = true;
-  pararRelogioIdle();
-  try {
-    await window.BlogDB.signOut();
-  } catch (e) {
-    /* signOut não lança; e mesmo em falha de rede ele limpa as chaves sb-*. */
-  }
-  mostrarSessaoEncerrada();
-}
-
-/* Limpa a tela (nada do post fica visível pra quem chegar depois) e explica
-   o que aconteceu. Sem redirecionamento automático de propósito: se a aba
-   ficou sozinha, a mensagem precisa estar aqui quando alguém voltar. */
-function mostrarSessaoEncerrada() {
-  setSidebarStatus('sessão encerrada');
-  const conteudo = document.getElementById('adminContent');
-  if (conteudo) conteudo.innerHTML = '';
-  document.getElementById('adminToast')?.remove();
-  document.getElementById('adminIdleOverlay')?.remove();
-
-  const overlay = document.createElement('div');
-  overlay.id = 'adminIdleOverlay';
-  overlay.setAttribute('role', 'alertdialog');
-  overlay.setAttribute('aria-modal', 'true');
-  overlay.style.cssText = [
-    'position:fixed', 'inset:0', 'z-index:9999',
-    'display:flex', 'align-items:center', 'justify-content:center',
-    'padding:24px', 'background:#0b0b0f', 'color:#f4f4f6',
-    'font-family:inherit', 'text-align:center',
-  ].join(';');
-  overlay.innerHTML = `
+    `,document.getElementById("f-tags-input").focus(),H()},H=()=>{const a=document.getElementById("f-tags-input");a.addEventListener("keydown",i=>{(i.key==="Enter"||i.key===",")&&(i.preventDefault(),tt(a.value),a.value=""),i.key==="Backspace"&&!a.value&&state.form.tags?.length&&(state.form.tags.pop(),j())})};H(),y.addEventListener("click",a=>{const i=a.target.closest(".admin-tag-remove");i&&et(i.dataset.tag)}),document.getElementById("saveDraftBtn").addEventListener("click",()=>{p.value="draft",submitForm()}),document.getElementById("publishBtn")?.addEventListener("click",()=>{p.value!=="scheduled"&&(p.value="published"),submitForm()});const V=document.getElementById("mdFileInput"),G=document.getElementById("mdIoBar"),D=document.getElementById("mdIoMsg"),T=(a,i)=>{D&&(D.textContent=a||"",D.classList.toggle("is-error",i==="error"),D.classList.toggle("is-ok",i==="ok"),D.hidden=!a)},at=a=>/\.(md|markdown)$/i.test(a.name||"")||/^text\/(markdown|x-markdown)$/i.test(a.type||""),nt=a=>{const i=[],d=(c,f,h)=>{!c||f===void 0||f===null||f===""||(c.value=String(f),i.push(h))};if(d(t,a.title,"t\xEDtulo"),d(document.getElementById("f-subtitle"),a.subtitle,"subt\xEDtulo"),d(document.getElementById("f-author"),a.author,"autor"),a.slug&&(o.value=String(a.slug),g=!0,i.push("slug")),a.category){const c=String(a.category),f=document.getElementById("f-category");f&&(Array.from(f.options).some(h=>h.value===c)||f.appendChild(new Option(c,c)),f.value=c,i.push("categoria"))}if(a.status){const c=String(a.status).toLowerCase();["draft","published","scheduled"].includes(c)&&(p.value=c,i.push("status"))}if(typeof a.featured=="boolean"){const c=document.getElementById("f-featured");c&&(c.checked=a.featured,i.push("destaque"))}if(a.cover){const c=String(a.cover);safeImageSrc(c)?(state.form.cover=c,m.value=isEnderecoImagemAceito(c)?c:"",S(c),i.push("capa")):toast("A capa do arquivo .md foi ignorada. "+AVISO_ENDERECO_IMAGEM,"error")}if(a.coverAlt&&(state.form.coverAlt=String(a.coverAlt)),a.linkedinUrl){const c=String(a.linkedinUrl);isEnderecoHttp(c)?state.form.linkedinUrl=c:toast("O linkedinUrl do arquivo .md foi ignorado: use um endere\xE7o http(s).","error")}if(a.date&&(state.form.importedDate=String(a.date),v&&(v.value=toDatetimeLocal(a.date),i.push("data"))),a.updated&&(state.form.importedUpdated=String(a.updated)),Array.isArray(a.tags)&&(state.form.tags=a.tags.map(c=>String(c).trim().toLowerCase()).filter(Boolean),j(),document.getElementById("f-tags-input")?.blur(),i.push("tags")),Array.isArray(a.images)){const c=a.images.map(x=>typeof x=="string"?{src:x}:x).filter(x=>x&&x.src),f=c.filter(x=>safeImageSrc(x.src));state.form.images=f.map(x=>({src:String(x.src),alt:String(x.alt||""),caption:String(x.caption||"")})),C();const h=c.length-f.length;h>0&&toast(h+" imagem(ns) do .md ignorada(s). "+AVISO_ENDERECO_IMAGEM,"error"),i.push("imagens")}return i},ot=(a,i)=>{const d=parseFrontMatter(a);if(n.value=d.body,state.form.content=d.body,k(),r.classList.contains("active")&&_(),!d.data){T(`Corpo carregado de ${i}. N\xE3o achei front-matter, ent\xE3o os campos ficaram como estavam.`,"ok"),toast("Markdown carregado no corpo do post.");return}const c=nt(d.data);if(!d.data.slug&&!o.value){const f=slugify(String(i||"").replace(/\.(md|markdown)$/i,""));f&&(o.value=f,g=!0,c.push("slug (do nome do arquivo)"))}T(c.length?`${i} importado. Preenchi: ${c.join(", ")}.`:`${i} importado. S\xF3 o corpo veio preenchido.`,"ok"),toast("Arquivo .md importado.")},W=a=>{if(!a)return;if(!at(a)){T(`"${a.name}" n\xE3o \xE9 um arquivo .md. Aceito s\xF3 .md ou .markdown.`,"error"),toast("Arquivo ignorado: use .md ou .markdown.","error");return}const i=new FileReader;i.onload=()=>ot(String(i.result||""),a.name),i.onerror=()=>{T("N\xE3o consegui ler esse arquivo. Tente de novo.","error"),toast("Falha ao ler o arquivo .md","error")},i.readAsText(a,"utf-8")};document.getElementById("importMdBtn")?.addEventListener("click",()=>V?.click()),V?.addEventListener("change",a=>{W(a.target.files?.[0]),a.target.value=""});const K=a=>Array.from(a.dataTransfer?.types||[]).includes("Files"),O=a=>{n.classList.toggle("is-md-dragover",a),G?.classList.toggle("is-md-dragover",a)};[n,G].filter(Boolean).forEach(a=>{["dragenter","dragover"].forEach(i=>{a.addEventListener(i,d=>{K(d)&&(d.preventDefault(),O(!0))})}),a.addEventListener("dragleave",i=>{i.relatedTarget&&a.contains(i.relatedTarget)||O(!1)}),a.addEventListener("drop",i=>{K(i)&&(i.preventDefault(),O(!1),W(i.dataTransfer.files[0]))})});const J=()=>{const a=gatherExportPost(),i=(a.slug||slugify(a.title||"post")||"post")+".md";downloadAsFile(i,postToMarkdown(a),"text/markdown"),T(`${i} baixado. Coloque em data/posts/ e rode npm run build:posts.`,"ok"),toast(`Baixei ${i}`)};document.getElementById("exportMdBtn")?.addEventListener("click",J),document.getElementById("exportMdBarBtn")?.addEventListener("click",J),e.addEventListener("submit",a=>{a.preventDefault(),submitForm()})}function escapeFrontMatterString(e){return String(e??"").replace(/\\/g,"\\\\").replace(/"/g,'\\"')}function postToMarkdown(e){const t=[];return t.push("---"),e.id&&t.push(`id: "${escapeFrontMatterString(e.id)}"`),t.push(`title: "${escapeFrontMatterString(e.title||"")}"`),e.subtitle&&t.push(`subtitle: "${escapeFrontMatterString(e.subtitle)}"`),t.push(`slug: ${e.slug||slugify(e.title||"post")}`),t.push(`date: "${e.createdAt||new Date().toISOString()}"`),t.push(`updated: "${e.updatedAt||e.createdAt||new Date().toISOString()}"`),e.category&&t.push(`category: "${escapeFrontMatterString(e.category)}"`),e.tags?.length&&(t.push("tags:"),e.tags.forEach(o=>t.push(`  - "${escapeFrontMatterString(o)}"`))),e.cover&&t.push(`cover: "${escapeFrontMatterString(e.cover)}"`),t.push(`coverAlt: "${escapeFrontMatterString(e.coverAlt||(e.title?e.title+" - Bernardo Iannini":"Bernardo Iannini"))}"`),e.images&&e.images.length?(t.push("images:"),e.images.forEach(o=>{t.push(`  - src: "${escapeFrontMatterString(o.src)}"`),t.push(`    alt: "${escapeFrontMatterString(o.alt||e.title||"")}"`),o.caption&&t.push(`    caption: "${escapeFrontMatterString(o.caption)}"`)})):t.push("images: []"),t.push(`linkedinUrl: "${escapeFrontMatterString(e.linkedinUrl||"")}"`),t.push(`featured: ${e.featured?"true":"false"}`),t.push(`status: ${e.status||"draft"}`),t.push(`author: "${escapeFrontMatterString(e.author||"Bernardo Iannini")}"`),t.push("---"),t.push(""),t.push(e.content||""),t.push(""),t.join(`
+`)}function downloadAsFile(e,t,o="text/plain"){const n=new Blob([t],{type:o+";charset=utf-8"}),r=URL.createObjectURL(n),s=document.createElement("a");s.href=r,s.download=e,document.body.appendChild(s),s.click(),setTimeout(()=>{document.body.removeChild(s),URL.revokeObjectURL(r)},200)}function gatherFormData(){const e=document.getElementById("postForm"),t=new FormData(e),n=t.get("cover")?.trim()||""||state.form.cover||"";return{title:t.get("title")?.trim()||"",subtitle:t.get("subtitle")?.trim()||"",slug:slugify(t.get("slug"))||slugify(t.get("title"))||uid(),cover:n,tags:state.form.tags||[],images:state.form.images||[],category:t.get("category")||"Outro",author:t.get("author")?.trim()||"Bernardo Iannini",status:t.get("status")||"draft",publishedAt:fromDatetimeLocal(t.get("publishedAt")),featured:!!t.get("featured"),content:t.get("content")||""}}function gatherExportPost(){const e=gatherFormData(),t=state.form||{};return e.id=t.id||t.importedId||"",e.createdAt=e.publishedAt||t.createdAt||t.importedDate||"",e.updatedAt=t.updatedAt||t.importedUpdated||"",e.coverAlt=t.coverAlt||"",e.linkedinUrl=t.linkedinUrl||"",e}async function submitForm(){if(state.saving)return;const e=gatherFormData();if(!e.title){toast("O t\xEDtulo \xE9 obrigat\xF3rio.","error"),document.getElementById("f-title")?.focus();return}if(!e.publishedAt){toast("A data de publica\xE7\xE3o \xE9 obrigat\xF3ria.","error"),document.getElementById("f-publishedAt")?.focus();return}if(!e.content||e.content.trim().length<10){toast("Conte\xFAdo muito curto.","error"),document.getElementById("f-content")?.focus();return}if(e.cover&&!safeImageSrc(e.cover)){toast("Capa n\xE3o salva. "+AVISO_ENDERECO_IMAGEM,"error"),document.getElementById("f-cover")?.focus();return}const t=(e.images||[]).findIndex(g=>!g||!safeImageSrc(g.src));if(t>=0){toast("A imagem "+(t+1)+" do post tem endere\xE7o n\xE3o aceito. "+AVISO_ENDERECO_IMAGEM,"error");return}const o=state.editingId?state.posts.find(g=>g.id===state.editingId):null;let n=e.slug;state.posts.find(g=>g.slug===n&&(!o||g.id!==o.id))&&(n=n+"-"+Math.random().toString(36).slice(2,5));const s=e.status==="scheduled"?"draft":e.status,m={id:o?o.id:uid(),title:e.title,subtitle:e.subtitle,slug:n,cover:e.cover,coverAlt:o&&o.coverAlt||e.title+" - Bernardo Iannini",tags:e.tags,images:e.images,category:e.category,author:e.author,status:s,featured:e.featured,content:e.content,createdAt:e.publishedAt};state.saving=!0;const p=["saveDraftBtn","publishBtn"].map(g=>document.getElementById(g)).filter(Boolean);p.forEach(g=>{g.disabled=!0});const v=document.getElementById("publishBtn"),l=v?v.innerHTML:"";let y="",b=null,$=!1;toast("Salvando no Supabase...");try{if(o?await window.BlogDB.update(o.id,m):await window.BlogDB.create(m),m.featured){const{error:B}=await window.BlogDB.raw.from("posts").update({featured:!1}).eq("featured",!0).neq("id",m.id);B&&(y=" Aten\xE7\xE3o: n\xE3o consegui desmarcar o destaque dos outros posts ("+(B.message||B)+").")}state.posts=await window.BlogDB.listAll();const g=!!o&&o.status==="published"&&s!=="published";(s==="published"||g)&&(v&&(v.innerHTML=ICONS.paperplane+" Publicando..."),toast(g?"Tirando do site...":"Publicando no site..."),b=await triggerRebuild((g?"post despublicado: ":o?"post atualizado: ":"post publicado: ")+n),$=g)}catch(g){toast("Erro ao salvar: "+(g&&g.message||g),"error");return}finally{state.saving=!1,p.forEach(g=>{g.disabled=!1}),v&&(v.innerHTML=l)}let k;s==="published"?k=rebuildMessage("Post publicado","Post salvo",b):$?k=rebuildMessage("Post tirado do site","Post salvo como rascunho",b):e.status==="scheduled"?k={msg:"Agendamento ainda n\xE3o est\xE1 ativo: salvei como rascunho. A data de publica\xE7\xE3o ficou gravada e vale quando voc\xEA publicar.",type:"error"}:k={msg:"Rascunho salvo. Ele n\xE3o vai pro site.",type:"success"},toast(k.msg+y,y||k.type==="error"?"error":"success"),state.editingId=null,state.view="posts",render()}function attachGlobalEvents(){document.querySelectorAll(".admin-nav-item[data-view]").forEach(t=>{t.addEventListener("click",()=>{state.view=t.dataset.view,state.editingId=null,t.hasAttribute("data-new")&&(state.editingId=null),render()})});const e=async()=>{if(confirm("Tem certeza que quer sair?")){try{await window.BlogDB.signOut()}catch{}location.href="bernardolindao.html"}};document.getElementById("logoutBtn")?.addEventListener("click",e),document.getElementById("sidebarLogoutBtn")?.addEventListener("click",e),document.getElementById("adminContent").addEventListener("click",t=>{const o=t.target.closest("[data-status-filter]");if(o){state.statusFilter=o.dataset.statusFilter||"all",render();return}const n=t.target.closest("[data-nav]");if(n){state.view=n.dataset.nav,n.hasAttribute("data-new")&&(state.editingId=null),render();return}const r=t.target.closest("[data-edit]");if(r){state.editingId=r.dataset.edit,state.view="editor",render();return}const s=t.target.closest("[data-delete]");if(s){const l=s.dataset.delete,y=state.posts.find(b=>b.id===l);y&&confirm(`Excluir o post "${y.title}"? Esta a\xE7\xE3o n\xE3o pode ser desfeita.`)&&(s.disabled=!0,toast("Excluindo..."),window.BlogDB.remove(l).then(async()=>{const b=await triggerRebuild("post excluido: "+(y.slug||y.id)),$=rebuildMessage("Post exclu\xEDdo","Post exclu\xEDdo do banco",b);try{state.posts=await window.BlogDB.listAll()}catch{state.posts=(state.posts||[]).filter(g=>g.id!==l)}toast($.msg,$.type),state.editingId===l&&(state.editingId=null,state.view="posts"),render()}).catch(b=>{s.disabled=!1,toast("Erro ao excluir: "+(b&&b.message||b),"error")}));return}const m=t.target.closest("[data-duplicate]");if(m){const l=state.posts.find(y=>y.id===m.dataset.duplicate);if(l){const y={id:uid(),title:l.title+" (c\xF3pia)",subtitle:l.subtitle||"",slug:slugify(l.slug||l.title)+"-copia-"+Math.random().toString(36).slice(2,5),cover:safeImageSrc(l.cover)?l.cover:"",coverAlt:l.coverAlt||"",tags:l.tags||[],images:(l.images||[]).filter(b=>b&&safeImageSrc(b.src)),category:l.category||"",author:l.author||"Bernardo Iannini",status:"draft",featured:!1,content:l.content||""};window.BlogDB.create(y).then(async()=>{state.posts=await window.BlogDB.listAll(),toast("Post duplicado (como rascunho)."),render()}).catch(b=>toast("Erro ao duplicar: "+(b&&b.message||b),"error"))}return}const p=t.target.closest("[data-view-post]");if(p){const l=encodeURIComponent(p.dataset.viewPost||"");window.open("post.html?slug="+l,"_blank","noopener");return}const v=t.target.closest("tr[data-edit]");v&&!t.target.closest("button, a")&&(state.editingId=v.dataset.edit,state.view="editor",render())}),document.getElementById("adminContent").addEventListener("input",t=>{if(t.target.id==="adminSearch"){state.search=t.target.value;const o=t.target.selectionStart;render();const n=document.getElementById("adminSearch");if(n){n.focus();try{n.setSelectionRange(o,o)}catch{}}}}),document.addEventListener("keydown",t=>{(t.metaKey||t.ctrlKey)&&t.key==="s"&&state.view==="editor"&&(t.preventDefault(),submitForm()),(t.metaKey||t.ctrlKey)&&t.key==="n"&&state.view!=="editor"&&(t.preventDefault(),state.view="editor",state.editingId=null,render())})}const IDLE_LIMITE_MS=3600*1e3,IDLE_RESET_THROTTLE_MS=30*1e3,IDLE_EVENTOS=["mousedown","mousemove","keydown","wheel","touchstart","touchmove","scroll"];let idleTimer=null,idleUltimoReset=0,idleEncerrando=!1;function reiniciarIdle(){if(idleEncerrando)return;const e=Date.now();idleTimer&&e-idleUltimoReset<IDLE_RESET_THROTTLE_MS||(idleUltimoReset=e,clearTimeout(idleTimer),idleTimer=setTimeout(encerrarPorInatividade,IDLE_LIMITE_MS))}function pararRelogioIdle(){clearTimeout(idleTimer),idleTimer=null,IDLE_EVENTOS.forEach(e=>window.removeEventListener(e,reiniciarIdle,!0)),document.removeEventListener("visibilitychange",idleVisibilidade)}function idleVisibilidade(){document.hidden||reiniciarIdle()}function iniciarRelogioIdle(){IDLE_EVENTOS.forEach(e=>window.addEventListener(e,reiniciarIdle,{passive:!0,capture:!0})),document.addEventListener("visibilitychange",idleVisibilidade),idleUltimoReset=0,reiniciarIdle()}async function encerrarPorInatividade(){if(!idleEncerrando){if(state.saving){idleTimer=setTimeout(encerrarPorInatividade,60*1e3),idleUltimoReset=Date.now();return}idleEncerrando=!0,pararRelogioIdle();try{await window.BlogDB.signOut()}catch{}mostrarSessaoEncerrada()}}function mostrarSessaoEncerrada(){setSidebarStatus("sess\xE3o encerrada");const e=document.getElementById("adminContent");e&&(e.innerHTML=""),document.getElementById("adminToast")?.remove(),document.getElementById("adminIdleOverlay")?.remove();const t=document.createElement("div");t.id="adminIdleOverlay",t.setAttribute("role","alertdialog"),t.setAttribute("aria-modal","true"),t.style.cssText=["position:fixed","inset:0","z-index:9999","display:flex","align-items:center","justify-content:center","padding:24px","background:#0b0b0f","color:#f4f4f6","font-family:inherit","text-align:center"].join(";"),t.innerHTML=`
     <div style="max-width:460px">
-      <h2 style="font-size:22px;margin:0 0 12px">Sessão encerrada por inatividade</h2>
+      <h2 style="font-size:22px;margin:0 0 12px">Sess\xE3o encerrada por inatividade</h2>
       <p style="line-height:1.7;margin:0 0 8px;opacity:.85">
-        Passou 1 hora sem nenhuma interação, então o painel encerrou a sessão sozinho
-        para que ninguém continue de onde você parou.
+        Passou 1 hora sem nenhuma intera\xE7\xE3o, ent\xE3o o painel encerrou a sess\xE3o sozinho
+        para que ningu\xE9m continue de onde voc\xEA parou.
       </p>
       <p style="line-height:1.7;margin:0 0 20px;opacity:.6;font-size:13px">
-        Alterações que você não tinha salvo foram perdidas. Entre de novo para continuar.
+        Altera\xE7\xF5es que voc\xEA n\xE3o tinha salvo foram perdidas. Entre de novo para continuar.
       </p>
       <button type="button" id="adminIdleLoginBtn"
         style="cursor:pointer;border:0;border-radius:10px;padding:12px 20px;font-size:14px;font-weight:600;background:#f4f4f6;color:#0b0b0f">
         Entrar de novo
       </button>
-    </div>`;
-  document.body.appendChild(overlay);
-  const btn = document.getElementById('adminIdleLoginBtn');
-  btn?.addEventListener('click', () => { location.replace('bernardolindao.html'); });
-  btn?.focus();
-}
-
-/* ---------- Init ---------- */
-
-/* Erro de rede/DNS (backend fora do ar), e não credencial ou dado inválido. */
-const isNetworkError = (err) => {
-  const m = (err && err.message || String(err || '')).toLowerCase();
-  return (err && err.name === 'TypeError') || /failed to fetch|networkerror|fetch|network|dns/.test(m);
-};
-
-/* Sidebar: mostra quem está logado de verdade (email da sessão). */
-function renderSidebarUser(session) {
-  const email = session && session.user && session.user.email || '';
-  const name = email ? email.split('@')[0] : 'admin';
-  const nameEl = document.querySelector('.admin-user-name');
-  const avatarEl = document.querySelector('.admin-user-avatar');
-  if (nameEl) { nameEl.textContent = name; nameEl.title = email; }
-  if (avatarEl) avatarEl.textContent = (name.charAt(0) || 'B').toUpperCase();
-}
-
-function setSidebarStatus(text) {
-  const el = document.querySelector('.admin-user-status');
-  if (el) el.textContent = text;
-}
-
-function renderServerOffline(err) {
-  const el = document.getElementById('adminContent');
-  if (!el) return;
-  const net = isNetworkError(err);
-  setSidebarStatus('offline');
-  el.innerHTML = `
+    </div>`,document.body.appendChild(t);const o=document.getElementById("adminIdleLoginBtn");o?.addEventListener("click",()=>{location.replace("bernardolindao.html")}),o?.focus()}const isNetworkError=e=>{const t=(e&&e.message||String(e||"")).toLowerCase();return e&&e.name==="TypeError"||/failed to fetch|networkerror|fetch|network|dns/.test(t)};function renderSidebarUser(e){const t=e&&e.user&&e.user.email||"",o=t?t.split("@")[0]:"admin",n=document.querySelector(".admin-user-name"),r=document.querySelector(".admin-user-avatar");n&&(n.textContent=o,n.title=t),r&&(r.textContent=(o.charAt(0)||"B").toUpperCase())}function setSidebarStatus(e){const t=document.querySelector(".admin-user-status");t&&(t.textContent=e)}function renderServerOffline(e){const t=document.getElementById("adminContent");if(!t)return;const o=isNetworkError(e);setSidebarStatus("offline"),t.innerHTML=`
     <header class="admin-header">
       <div>
-        <h1 class="admin-title">${net ? 'Servidor de dados <em>indisponível</em>' : 'Não consegui falar com o <em>Supabase</em>'}</h1>
-        <p class="admin-title-sub">${net ? 'O banco Supabase não respondeu (falha de rede ou DNS). Sem ele o painel não lê nem grava posts.' : 'O painel lê e grava os posts no banco Supabase.'}</p>
+        <h1 class="admin-title">${o?"Servidor de dados <em>indispon\xEDvel</em>":"N\xE3o consegui falar com o <em>Supabase</em>"}</h1>
+        <p class="admin-title-sub">${o?"O banco Supabase n\xE3o respondeu (falha de rede ou DNS). Sem ele o painel n\xE3o l\xEA nem grava posts.":"O painel l\xEA e grava os posts no banco Supabase."}</p>
       </div>
     </header>
     <section class="admin-card">
@@ -2638,54 +658,9 @@ function renderServerOffline(err) {
         <ul style="margin:8px 0 12px 18px">
           <li><code>js/supabase-config.js</code> com a URL e a chave anon corretas</li>
           <li>o <code>schema.sql</code> rodado no SQL Editor do Supabase</li>
-          <li>conexão com a internet</li>
+          <li>conex\xE3o com a internet</li>
         </ul>
-        <p style="color:var(--text-hint);font-size:12.5px">Detalhe técnico: ${escapeHtml(err && err.message || String(err))}</p>
+        <p style="color:var(--text-hint);font-size:12.5px">Detalhe t\xE9cnico: ${escapeHtml(e&&e.message||String(e))}</p>
         <button class="admin-btn admin-btn--primary" type="button" onclick="location.reload()">Tentar de novo</button>
       </div>
-    </section>`;
-}
-
-async function init() {
-  // Guard de autenticação via Supabase Auth
-  if (!window.BlogDB) {
-    renderServerOffline(new Error('Supabase não configurado (js/supabase-config.js).'));
-    return;
-  }
-  let session = null;
-  try {
-    session = await window.BlogDB.getSession();
-  } catch (err) {
-    renderServerOffline(err);
-    return;
-  }
-  if (!session) {
-    /* Sem sessão local. Se o backend estiver fora do ar o login também não
-       funcionaria: avisa aqui em vez de redirecionar mudo pro login. */
-    try {
-      const { error: pingErr } = await window.BlogDB.raw.from('posts').select('id').limit(1);
-      if (pingErr && isNetworkError(pingErr)) { renderServerOffline(pingErr); return; }
-    } catch (err) {
-      if (isNetworkError(err)) { renderServerOffline(err); return; }
-    }
-    location.replace('bernardolindao.html');
-    return;
-  }
-
-  renderSidebarUser(session);
-  attachGlobalEvents();
-  try {
-    state.posts = await window.BlogDB.listAll();
-  } catch (err) {
-    console.error('[admin] Supabase indisponível:', err);
-    renderServerOffline(err);
-    return;
-  }
-  setSidebarStatus('online');
-  render();
-
-  /* Relógio de inatividade só depois que a sessão foi confirmada. */
-  iniciarRelogioIdle();
-}
-
-document.addEventListener('DOMContentLoaded', init);
+    </section>`}async function init(){if(!window.BlogDB){renderServerOffline(new Error("Supabase n\xE3o configurado (js/supabase-config.js)."));return}let e=null;try{e=await window.BlogDB.getSession()}catch(t){renderServerOffline(t);return}if(!e){try{const{error:t}=await window.BlogDB.raw.from("posts").select("id").limit(1);if(t&&isNetworkError(t)){renderServerOffline(t);return}}catch(t){if(isNetworkError(t)){renderServerOffline(t);return}}location.replace("bernardolindao.html");return}renderSidebarUser(e),attachGlobalEvents();try{state.posts=await window.BlogDB.listAll()}catch(t){console.error("[admin] Supabase indispon\xEDvel:",t),renderServerOffline(t);return}setSidebarStatus("online"),render(),iniciarRelogioIdle()}document.addEventListener("DOMContentLoaded",init);

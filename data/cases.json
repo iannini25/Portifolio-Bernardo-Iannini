@@ -6,7 +6,8 @@
     "whatIs": {
       "pt": "Seletor de residências da Nest Battersea, torre de aluguel com 34 andares e 143 apartamentos com jardim na margem do Tâmisa, em Londres. A imagem oficial da torre é a navegação: você clica na janela de uma das duas residências disponíveis, a câmera voa até ela, e dali dá para girar a planta 3D ou entrar e percorrer cada cômodo. Abaixo da torre vem o site completo: vistas, as doze tipologias, sustentabilidade e um mapa ao vivo do bairro.",
       "en": "Residence selector for Nest Battersea, a 34-storey build to rent tower with 143 homes with gardens on the Thames in London. The official image of the tower is the navigation: you click the window of one of the two available homes, the camera flies to it, and from there you can turn the 3D floor plan or step inside and tour every room. Below the tower comes the full site: views, the twelve home types, sustainability and a live map of the neighbourhood."
-    }
+    },
+    "accent": "#C9A46B"
   },
   "brasa": {
     "embed": true,
@@ -20,21 +21,24 @@
     "whatIs": {
       "pt": "Site do Sereno, estúdio de massagem e repouso na Savassi, em Belo Horizonte, que vende a pausa como um ritual. A rolagem leva a câmera pela sala até a recepção, apresenta os rituais e os planos avulso, mensal e anual, e termina num pedido de horário que chega pronto no WhatsApp do estúdio.",
       "en": "Website for Sereno, a massage and rest studio in Savassi, Belo Horizonte, that sells the pause as a ritual. Scrolling moves the camera through the room to the reception, presents the rituals and the single, monthly and yearly plans, and ends with a booking request that lands ready in the studio's WhatsApp."
-    }
+    },
+    "accent": "#C9A27E"
   },
   "amarofy": {
     "embed": true,
     "whatIs": {
       "pt": "Site da Amaro.fy, ateliê de crochê de Belo Horizonte que faz cada peça do zero, no tamanho e na cor da cliente. A página conta o feito sob medida, mostra o processo em quatro passos e as peças prontas com orientações de tamanho e cuidado, e fecha com um pedido que monta sozinho a mensagem de WhatsApp.",
       "en": "Website for Amaro.fy, a crochet studio in Belo Horizonte that makes every piece from scratch, in the client's size and color. The page tells the made-to-order story, shows the four-step process and the finished pieces with size and care guidance, and closes with an order form that writes the WhatsApp message by itself."
-    }
+    },
+    "accent": "#D98A6C"
   },
   "automotiva-express": {
     "embed": true,
     "whatIs": {
       "pt": "Site da Automotiva Express, oficina Bosch Car Service no Buritis, em Belo Horizonte, construído em cima de uma promessa: nada é mexido no carro antes de o cliente aprovar o preço. A página mostra como a oficina trabalha em quatro passos, o padrão Bosch e a garantia de cada serviço, e leva direto ao orçamento online.",
       "en": "Website for Automotiva Express, a Bosch Car Service shop in Buritis, Belo Horizonte, built around one promise: nothing is touched on the car before the customer approves the price. The page shows how the shop works in four steps, the Bosch standard and the warranty on every job, and leads straight to the online quote."
-    }
+    },
+    "accent": "#E3171A"
   },
   "modulo-engenharia": {
     "embed": true,
@@ -164,7 +168,8 @@
     "whatIs": {
       "pt": "O Moeda Nobre é uma moeda digital de benefícios. A empresa ou a prefeitura carrega o saldo das pessoas, e elas gastam nos comércios do bairro pagando pelo celular, com QR Code e PIN. O comércio recebe na hora e resgata em PIX quando quiser.\n\nNa prática são três produtos conversando entre si: a plataforma web, onde empresas, comércios e a operação acompanham e aprovam tudo, e dois aplicativos, um pra quem recebe o benefício e outro pra quem vende.",
       "en": "Moeda Nobre is a digital benefits currency. A company or a city loads people's balances, and they spend them at neighborhood shops by paying with their phone, using a QR Code and a PIN. The shop gets paid instantly and cashes out by PIX whenever it wants.\n\nIn practice it is three products talking to each other: the web platform, where companies, shops and the operations team track and approve everything, and two apps, one for people who receive the benefit and one for the shops that sell."
-    }
+    },
+    "accent": "#2FA9B8"
   },
   "athena7": {
     "whatIs": {
@@ -211,7 +216,8 @@
           }
         }
       ]
-    }
+    },
+    "accent": "#A06BFF"
   },
   "iba": {
     "whatIs": {
@@ -269,13 +275,15 @@
           }
         }
       ]
-    }
+    },
+    "accent": "#5B7CFA"
   },
   "portfolio": {
     "whatIs": {
       "pt": "Este é o site que você está vendo: o meu portfólio, onde reúno quem eu sou, o que faço, os projetos que construí e um blog com bastidores e eventos. Foi todo feito à mão, com um sistema visual próprio, animações leves e troca instantânea entre português e inglês.\n\nEle também é o meu laboratório: cada página é pensada pra abrir rápido em qualquer aparelho e pra ser encontrada por quem pesquisa o meu nome.",
       "en": "This is the site you are looking at: my portfolio, where I bring together who I am, what I do, the projects I have built and a blog with behind-the-scenes posts and events. It is entirely handmade, with its own visual system, lightweight animations and instant switching between Portuguese and English.\n\nIt is also my lab: every page is built to open fast on any device and to be found by anyone searching for my name."
-    }
+    },
+    "accent": "#a3e635"
   },
   "besafe": {
     "pillars": {
@@ -434,9 +442,14 @@
           }
         }
       ]
-    }
+    },
+    "accent": "#EE7A3A"
   },
   "jarvis": {
-    "tour": false
+    "tour": false,
+    "accent": "#a3e635"
+  },
+  "communityhub": {
+    "accent": "#8B6CFF"
   }
 }

@@ -270,38 +270,75 @@ function renderCaseMain(o) {
   sec.push(`
     <a class="cs-back" href="${t.list}" data-cs-back>${ICON.back}<span>${u.back}</span></a>`);
 
-  /* ---- hero ---- */
+  /* ---- hero (skill design-sites-premium): titulo em 2 tons, botao-
+     assinatura (pilula + circulo ↗), capa como card com recorte concavo
+     encaixando a ficha do projeto ---- */
+  const isLab = !!p.lab;
+  const KIND = {
+    pt: { lab: 'Estudo de design', system: 'Plataforma web', site: 'Site', personal: 'Projeto pessoal', automation: 'Automação' },
+    en: { lab: 'Design study', system: 'Web platform', site: 'Website', personal: 'Personal project', automation: 'Automation' },
+  };
+  const kindLabel = KIND[lang][isLab ? 'lab' : p.category] || '';
+  const role = p.role || (isLab ? (lang === 'pt' ? 'design, copy e front-end' : 'design, copy and front-end') : '');
+  let ebN = 0;
+  const eb = (label) => `<p class="pj-eb" aria-hidden="true"><b>${String(++ebN).padStart(2, '0')}</b><span>/</span>${label}</p>`;
+  const btn = (href, label, small, cls = '') => `<a class="pj-btn ${cls}" href="${esc(href)}" target="_blank" rel="noopener noreferrer">
+            <span class="pj-btn__txt"><b>${label}</b>${small ? `<small>${esc(small)}</small>` : ''}</span>
+            <span class="pj-btn__ic" aria-hidden="true">${ICON.arrow}</span><span class="sr-only">(${u.newTab})</span></a>`;
+  const heroFacts = [
+    [u.fType, kindLabel], [u.fYear, p.year], [u.fStatus, p.status], [u.fRole, role],
+  ].filter(([, v]) => v);
   sec.push(`
-    <section class="cs-hero" aria-labelledby="csTitle">
-      <div class="cs-hero__text">
-        ${reg.length ? `<p class="cs-reg">${p.status ? '<i class="cs-reg__dot" aria-hidden="true"></i>' : ''}${reg.join('<span aria-hidden="true">·</span>')}</p>` : ''}
-        <h1 class="cs-title${name.length > 12 ? ' cs-title--long' : ''}" id="csTitle">${esc(name)}${sub ? `<span class="cs-title__sub">${esc(sub)}</span>` : ''}</h1>
-        <p class="cs-lead">${esc(p.desc || answer)}</p>
-        <div class="cs-actions">
-          ${p.link ? `<a class="cs-visit" href="${esc(p.link)}" target="_blank" rel="noopener noreferrer">
-            <span class="cs-visit__icon" aria-hidden="true">${ICON.globe}</span>
-            <span class="cs-visit__text"><b>${u.visit}</b><span>${esc(host)}</span></span>
-            <span class="cs-visit__arrow" aria-hidden="true">${ICON.arrow}</span>
-            <span class="sr-only">(${u.newTab})</span>
-          </a>` : ''}
-          ${!p.link && p.local ? `<span class="cs-local">${ICON.chip}<span><b>${u.localTitle}</b>${esc(p.localNote || u.localSub)}</span></span>` : ''}
-          ${storeBadges(p, lang, u)}
-          ${Array.isArray(cfg.apps) && cfg.apps.length ? `<a class="cs-pill" href="#apps">${ICON.phone}${u.seeApps}</a>` : ''}
+    <section class="pj-hero" aria-labelledby="csTitle">
+      <div class="pj-hero__top">
+        <div class="pj-hero__title">
+          <p class="pj-chip">${p.status ? '<i aria-hidden="true"></i>' : ''}${esc(kindLabel)}${p.year ? ` · ${esc(p.year)}` : ''}</p>
+          <h1 class="pj-h1${name.length > 14 ? ' pj-h1--long' : ''}" id="csTitle">${esc(name)}${sub ? `<span class="pj-h1__sub">${esc(sub)}</span>` : ''}</h1>
         </div>
-        <p class="cs-by">${u.by} <a href="${t.about}" rel="author">Bernardo Iannini</a></p>
+        <div class="pj-hero__side">
+          <p class="pj-lead">${esc(p.desc || answer)}</p>
+          <div class="pj-actions">
+            ${p.link ? btn(p.link, u.visit, host) : ''}
+            ${!p.link && p.local ? `<span class="cs-local">${ICON.chip}<span><b>${u.localTitle}</b>${esc(p.localNote || u.localSub)}</span></span>` : ''}
+            ${storeBadges(p, lang, u)}
+            ${Array.isArray(cfg.apps) && cfg.apps.length ? `<a class="cs-pill" href="#apps">${ICON.phone}${u.seeApps}</a>` : ''}
+          </div>
+          <p class="cs-by">${u.by} <a href="${t.about}" rel="author">Bernardo Iannini</a></p>
+        </div>
       </div>
-      <figure class="cs-hero__media">
-        ${p.link ? `<a class="cs-win cs-win--link" href="${esc(p.link)}" target="_blank" rel="noopener noreferrer" aria-label="${u.visit}: ${esc(host)}">` : '<div class="cs-win">'}
-          <div class="cs-win__bar" aria-hidden="true"><i></i><i></i><i></i><span>${esc(host)}</span></div>
+      <figure class="pj-cover">
+        ${p.link ? `<a class="pj-cover__link" href="${esc(p.link)}" target="_blank" rel="noopener noreferrer" aria-label="${u.visit}: ${esc(host)}">` : '<div class="pj-cover__link">'}
           <picture>
-            <source type="image/avif" srcset="${coverSet('avif')}" sizes="(max-width: 900px) 92vw, 46vw">
-            <img class="cs-win__img" src="${coverSrc}" srcset="${coverSet('webp')}" sizes="(max-width: 900px) 92vw, 46vw"
+            <source type="image/avif" srcset="${coverSet('avif')}" sizes="(max-width: 900px) 94vw, 1140px">
+            <img class="pj-cover__img" src="${coverSrc}" srcset="${coverSet('webp')}" sizes="(max-width: 900px) 94vw, 1140px"
                  alt="${esc(p.title)}" width="1600" height="900" fetchpriority="high" decoding="async">
           </picture>
-          ${p.link ? `<span class="cs-win__go" aria-hidden="true">${u.visit} ${ICON.arrow}</span>` : ''}
         ${p.link ? '</a>' : '</div>'}
+        ${heroFacts.length ? `<dl class="pj-notch" aria-label="${u.facts}">
+          ${heroFacts.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}
+        </dl>` : ''}
       </figure>
     </section>`);
+
+  /* ---- numeros: metricas reais (sistemas) ou a ficha do estudo (Lab) ---- */
+  const statItems = metrics.length
+    ? metrics.map(m => ({ v: m.value, l: m.label, d: m.detail }))
+    : isLab ? [
+        { v: String(p.sections || ''), l: lang === 'pt' ? 'seções na página' : 'sections on the page' },
+        { v: String((p.fonts || []).length || ''), l: lang === 'pt' ? ((p.fonts || []).length > 1 ? 'famílias tipográficas' : 'família tipográfica') : ((p.fonts || []).length > 1 ? 'type families' : 'type family'), d: (p.fonts || []).join(' · ') },
+        { v: '1', l: lang === 'pt' ? 'cor de acento' : 'accent color', sw: p.accent },
+        p.goal ? { v: '→', l: lang === 'pt' ? 'ação principal' : 'main action', d: p.goal } : null,
+      ].filter(x => x && x.v && x.v !== '0') : [];
+  if (statItems.length >= 3) {
+    sec.push(`
+    <section class="pj-stats" aria-label="${u.facts}" data-reveal>
+      ${statItems.map(s => `<div class="pj-stat">
+        <span class="pj-stat__v">${s.sw ? `<i class="pj-stat__sw" style="background:${esc(s.sw)}" aria-hidden="true"></i>` : ''}${esc(s.v)}</span>
+        <span class="pj-stat__l">${esc(s.l)}</span>
+        ${s.d ? `<span class="pj-stat__d">${esc(s.d)}</span>` : ''}
+      </div>`).join('')}
+    </section>`);
+  }
 
   /* ---- o que é: painel com fundo geometrico + ficha do projeto ----
      texto proprio do data/cases.json (whatIs) quando existir; senao o
@@ -324,30 +361,63 @@ function renderCaseMain(o) {
       <circle class="cs-deco__ring" cx="1010" cy="120" r="260"/><circle class="cs-deco__ring" cx="1010" cy="120" r="180"/>
       <circle class="cs-deco__ring" cx="1010" cy="120" r="100"/><circle class="cs-deco__dot" cx="1010" cy="120" r="5"/>
     </svg>`;
+  void deco; void facts; void shortText;
+  /* frase de abertura em 2 tons: a 1a frase escura, o resto apagado */
+  const twoTone = (txt) => {
+    const m = String(txt).match(/^(.+?[.!?])\s+(.+)$/s);
+    return m ? `${esc(m[1])} <span class="pj-mute">${esc(m[2])}</span>` : esc(txt);
+  };
   if (whatParas.length) {
     sec.push(`
-    <section class="cs-about" aria-labelledby="csWhat" data-reveal>
-      ${deco}
-      <div class="cs-about__main">
-        <h2 class="cs-h2" id="csWhat"><span class="cs-h2__icon">${ICON.idea}</span>${u.whatIs}</h2>
-        <p class="cs-about__lead">${esc(shortText(whatParas[0], 2))}</p>
+    <section class="pj-split" aria-labelledby="csWhat" data-reveal>
+      <div class="pj-split__head">
+        ${eb(u.whatIs)}
+        <h2 class="sr-only" id="csWhat">${u.whatIs}</h2>
+        <p class="pj-statement">${twoTone(whatParas[0])}</p>
       </div>
-      <aside class="cs-about__facts" aria-label="${u.facts}">
-        ${facts.map(([k, v]) => `<div class="cs-fact2"><span class="cs-fact2__k">${k}</span><span class="cs-fact2__v">${esc(v)}</span></div>`).join('')}
-        ${p.link ? `<a class="cs-fact2 cs-fact2--link" href="${esc(p.link)}" target="_blank" rel="noopener noreferrer"><span class="cs-fact2__k">${u.fSite}</span><span class="cs-fact2__v">${esc(host)} ${ICON.arrow}</span></a>` : ''}
-      </aside>
+      <div class="pj-split__body">
+        ${whatParas.slice(1).map(x => `<p>${esc(x)}</p>`).join('')}
+        ${p.signature ? `<p class="pj-sig"><span>${lang === 'pt' ? 'Assinatura visual' : 'Visual signature'}</span>${esc(p.signature)}</p>` : ''}
+      </div>
     </section>`);
   }
 
-  /* ---- o problema: so nos projetos que resolvem um problema real
-     (sistemas). Site de vitrine nao tem esse bloco. ---- */
+  /* ---- o problema: so nos projetos que resolvem um problema real ---- */
   if (problem.length) {
     sec.push(`
-    <section class="cs-about cs-about--problem" aria-labelledby="csProblem" data-reveal>
-      <div class="cs-about__main">
-        <h2 class="cs-h2" id="csProblem"><span class="cs-h2__icon cs-h2__icon--warn">${ICON.alert}</span>${u.problem}</h2>
-        <p class="cs-about__lead">${esc(problem[0])}</p>
-        ${problem.slice(1, 2).map(x => `<p>${esc(x)}</p>`).join('')}
+    <section class="pj-split pj-split--problem" aria-labelledby="csProblem" data-reveal>
+      <div class="pj-split__head">
+        ${eb(u.problem)}
+        <h2 class="sr-only" id="csProblem">${u.problem}</h2>
+        <p class="pj-statement">${twoTone(problem[0])}</p>
+      </div>
+      <div class="pj-split__body">${problem.slice(1, 2).map(x => `<p>${esc(x)}</p>`).join('')}</div>
+    </section>`);
+  }
+
+  /* ---- sistema visual (so nos estudos do Lab): a cor e as fontes reais
+     do site, com especime renderizado na propria fonte ---- */
+  if (isLab && (p.accent || (p.fonts || []).length)) {
+    const fonts = (p.fonts || []).slice(0, 3);
+    const gf = fonts.length ? `https://fonts.googleapis.com/css2?${fonts.map(f => 'family=' + encodeURIComponent(f).replace(/%20/g, '+') + ':wght@400;700').join('&')}&display=swap` : '';
+    sec.push(`
+    ${gf ? `<link rel="stylesheet" href="${gf}" media="print" onload="this.media='all'">` : ''}
+    <section class="pj-visual" aria-labelledby="csVisual" data-reveal>
+      <div class="pj-visual__head">
+        ${eb(lang === 'pt' ? 'Sistema visual' : 'Visual system')}
+        <h2 class="pj-h2" id="csVisual">${lang === 'pt' ? 'Uma cor, ' : 'One color, '}<span class="pj-mute">${lang === 'pt' ? `${fonts.length > 1 ? fonts.length + ' famílias' : 'uma família'} e nada sobrando.` : `${fonts.length > 1 ? fonts.length + ' families' : 'one family'} and nothing extra.`}</span></h2>
+      </div>
+      <div class="pj-visual__grid">
+        ${p.accent ? `<div class="pj-swatch" style="--sw:${esc(p.accent)}">
+          <span class="pj-swatch__chip"></span>
+          <span class="pj-swatch__k">${lang === 'pt' ? 'Acento' : 'Accent'}</span>
+          <span class="pj-swatch__v">${esc(p.accent.toUpperCase())}</span>
+        </div>` : ''}
+        ${fonts.map((f, i) => `<div class="pj-type">
+          <span class="pj-type__aa" style="font-family:'${esc(f)}',var(--pj-font)">Aa</span>
+          <span class="pj-type__k">${i === 0 ? (lang === 'pt' ? 'Títulos' : 'Headings') : i === 1 ? (lang === 'pt' ? 'Texto' : 'Body') : (lang === 'pt' ? 'Detalhe' : 'Accent')}</span>
+          <span class="pj-type__v">${esc(f)}</span>
+        </div>`).join('')}
       </div>
     </section>`);
   }
@@ -492,28 +562,34 @@ function renderCaseMain(o) {
   /* ---- como funciona ---- */
   if (steps.length >= 2) {
     sec.push(`
-    <section class="cs-how" aria-labelledby="csHow">
-      <h2 class="cs-h2" id="csHow" data-reveal>${u.how}</h2>
-      <ol class="cs-steps" data-cs-steps style="--n:${steps.length}">
-        ${steps.map((s, i) => `<li class="cs-step" style="--i:${i}">
-          <span class="cs-step__num" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span>
-          <span class="cs-step__label">${s.label}</span>
-          ${s.sub ? `<span class="cs-step__sub">${s.sub}</span>` : ''}
+    <section class="pj-flow" aria-labelledby="csHow">
+      <div class="pj-sechead" data-reveal>
+        ${eb(isLab ? (lang === 'pt' ? 'A página' : 'The page') : u.how)}
+        <h2 class="pj-h2" id="csHow">${isLab ? (lang === 'pt' ? 'Da primeira dobra ' : 'From the first fold ') : (lang === 'pt' ? 'Do começo ' : 'From start ')}<span class="pj-mute">${isLab ? (lang === 'pt' ? `até ${esc(String(p.goal || 'a ação').toLowerCase())}.` : `to ${esc(String(p.goal || 'the action').toLowerCase())}.`) : (lang === 'pt' ? 'ao resultado, em etapas.' : 'to result, step by step.')}</span></h2>
+      </div>
+      <ol class="pj-steps" data-cs-steps style="--n:${steps.length}">
+        ${steps.map((s, i) => `<li class="pj-step${i === steps.length - 1 ? ' pj-step--end' : ''}" style="--i:${i}">
+          <span class="pj-step__num" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span>
+          <span class="pj-step__label">${s.label}</span>
+          ${s.sub ? `<span class="pj-step__sub">${s.sub}</span>` : ''}
         </li>`).join('')}
       </ol>
     </section>`);
   }
 
-  /* ---- o que ele faz ---- */
+  /* ---- o que ele faz: bento com 1 card destacado no acento ---- */
   if (topics.length) {
     sec.push(`
-    <section class="cs-features" aria-labelledby="csFeat">
-      <h2 class="cs-h2" id="csFeat" data-reveal>${u.features}</h2>
-      <div class="cs-feat-grid">
-        ${topics.map((tp, i) => `<article class="cs-feat" data-reveal style="--i:${i}">
-          <span class="cs-feat__icon" aria-hidden="true">${PC_ICONS[tp.icon] || PC_ICONS.layers}</span>
-          <h3 class="cs-feat__title">${tp.title}</h3>
-          <p class="cs-feat__text">${tp.text}</p>
+    <section class="pj-bento" aria-labelledby="csFeat">
+      <div class="pj-sechead" data-reveal>
+        ${eb(isLab ? (lang === 'pt' ? 'Decisões' : 'Decisions') : u.features)}
+        <h2 class="pj-h2" id="csFeat">${isLab ? (lang === 'pt' ? 'O que foi pensado ' : 'What was designed ') : (lang === 'pt' ? 'O que ele faz ' : 'What it does ')}<span class="pj-mute">${isLab ? (lang === 'pt' ? 'em cada detalhe.' : 'in every detail.') : (lang === 'pt' ? 'por quem usa.' : 'for the people using it.')}</span></h2>
+      </div>
+      <div class="pj-bento__grid" style="--n:${topics.length}">
+        ${topics.map((tp, i) => `<article class="pj-card${i === 0 ? ' pj-card--hi' : ''}" data-reveal style="--i:${i}">
+          <span class="pj-card__top"><span class="pj-card__icon" aria-hidden="true">${PC_ICONS[tp.icon] || PC_ICONS.layers}</span><span class="pj-card__n" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span></span>
+          <h3 class="pj-card__title">${tp.title}</h3>
+          <p class="pj-card__text">${tp.text}</p>
           ${(tp.deep && tp.deep.length) ? `<details class="cs-feat__more"><summary>${u.more}</summary><ul>${tp.deep.map(l => `<li>${l}</li>`).join('')}</ul></details>` : ''}
         </article>`).join('')}
       </div>
@@ -552,9 +628,20 @@ function renderCaseMain(o) {
   /* ---- resultado ---- */
   if (impact) {
     sec.push(`
-    <section class="cs-result" data-reveal aria-labelledby="csResult">
-      <h2 class="cs-h2" id="csResult">${u.result}</h2>
-      <p>${esc(impact)}</p>
+    <section class="pj-result" data-reveal aria-labelledby="csResult">
+      ${eb(u.result)}
+      <h2 class="sr-only" id="csResult">${u.result}</h2>
+      <p class="pj-statement">${twoTone(impact)}</p>
+    </section>`);
+  }
+
+  /* ---- CTA final: card escuro no acento com o botao-assinatura ---- */
+  if (p.link) {
+    sec.push(`
+    <section class="pj-cta" data-reveal>
+      <p class="pj-cta__k">${isLab ? (lang === 'pt' ? 'O estudo está no ar' : 'The study is live') : (lang === 'pt' ? 'Está no ar' : 'It is live')}</p>
+      <p class="pj-cta__t">${lang === 'pt' ? 'Veja ' : 'See '}${esc(name)} <span class="pj-mute">${lang === 'pt' ? 'funcionando de verdade.' : 'working for real.'}</span></p>
+      ${btn(p.link, u.visit, host, 'pj-btn--light')}
     </section>`);
   }
 
@@ -597,8 +684,11 @@ function renderCaseMain(o) {
     </nav>`);
   }
 
-  return `<main id="pcMain" class="cs" data-pc-root>
+  const accent = cfg.accent || p.accent || '#a3e635';
+  const kindCls = isLab ? 'lab' : (p.category || 'site');
+  return `<main id="pcMain" class="cs pj pj--${kindCls}${p.niche ? ' pj--' + esc(p.niche) : ''}" style="--pa:${esc(accent)}" data-pc-root>
 ${sec.join('\n')}
+    <div class="pj-wordmark" aria-hidden="true">${esc(name)}</div>
     <div class="bi-sign-row"><div class="bi-sign"><span class="bi-sign__by">${lang === 'pt' ? 'Feito por' : 'Made by'}</span><a class="bi-sign__link" href="https://www.bernardoiannini.com" aria-label="Bernardo Iannini"><span class="bi-sign__mark" aria-hidden="true"><svg viewBox="62 16 94 154"><g class="bi-sign__dot"><g transform="rotate(-21 146.5 27.5)"><rect x="142.5" y="23.5" width="8" height="8" rx="1"/></g><g transform="rotate(-21 131 32)"><rect x="124.5" y="25.5" width="13" height="13" rx="1.5"/></g><g transform="rotate(-21 95.5 47.5)"><rect x="77" y="29" width="37" height="37" rx="2.5"/></g></g><path d="M71 97.5 120 79.5V166H71Z"/></svg></span><span class="bi-sign__name">Bernardo Iannini</span></a></div></div>
   </main>`;
 }

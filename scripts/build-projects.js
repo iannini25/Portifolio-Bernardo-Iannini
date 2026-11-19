@@ -435,6 +435,7 @@ function page(p, lang, others, I18N, SHELL, PC) {
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;600;700&display=swap"></noscript></noscript>
   <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/case.css?v=${Math.round(fs.statSync(path.join(ROOT, 'case.css')).mtimeMs).toString(36)}">
 
   <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
   <link rel="icon" type="image/png" href="/favicon-48.png" sizes="48x48">

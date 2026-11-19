@@ -41,7 +41,7 @@ function topics(s, lang) {
 function entry(s, lang) {
   const t = s[lang];
   const pt = lang === 'pt';
-  return {
+  const out = {
     title: `${s.brand} · ${t.kind}`,
     desc: t.desc,
     longDesc: t.long,
@@ -53,8 +53,20 @@ function entry(s, lang) {
     featured: false,
     status: pt ? 'no ar' : 'live',
     year: '2026',
-    topics: topics(s, lang),
+    topics: Array.isArray(t.topics) && t.topics.length ? t.topics : topics(s, lang),
+    /* campos da pagina individual (case-render) */
+    lab: true,
+    accent: s.accent,
+    fonts: s.fonts,
+    sections: s.sections,
+    role: pt ? 'design, copy e front-end' : 'design, copy and front-end',
   };
+  if (Array.isArray(t.flow) && t.flow.length) out.flow = { steps: t.flow };
+  if (t.signature) out.signature = t.signature;
+  if (s.goal) out.goal = s.goal[lang];
+  if (s.niche) out.niche = s.niche;
+  if (s.mood) out.mood = s.mood;
+  return out;
 }
 
 function block(lang) {

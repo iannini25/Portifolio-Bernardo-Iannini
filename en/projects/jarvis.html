@@ -13,6 +13,7 @@
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;600;700&display=swap"></noscript></noscript>
   <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/case.css?v=mwnzuw21">
 
   <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
   <link rel="icon" type="image/png" href="/favicon-48.png" sizes="48x48">
@@ -299,106 +300,113 @@
     </div>
   </header>
 
-  <main id="pcMain" class="cs" data-pc-root>
+  <main id="pcMain" class="cs pj pj--personal" style="--pa:#a3e635" data-pc-root>
 
     <a class="cs-back" href="/#projects" data-cs-back><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Back</span></a>
 
-    <section class="cs-hero" aria-labelledby="csTitle">
-      <div class="cs-hero__text">
-        <p class="cs-reg"><i class="cs-reg__dot" aria-hidden="true"></i>runs locally<span aria-hidden="true">·</span>2026<span aria-hidden="true">·</span>personal project, whole product</p>
-        <h1 class="cs-title" id="csTitle">JARVIS<span class="cs-title__sub">Voice Assistant for the Car</span></h1>
-        <p class="cs-lead">A voice assistant for the car: you say &quot;Hey Jarvis&quot; and talk normally, and it reads the engine live, controls music and navigation and warns you before problems.</p>
-        <div class="cs-actions">
-          
-          <span class="cs-local"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M9 2.5v3M15 2.5v3M9 18.5v3M15 18.5v3M2.5 9h3M2.5 15h3M18.5 9h3M18.5 15h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><rect x="9.5" y="9.5" width="5" height="5" rx="1" fill="currentColor"/></svg><span><b>Runs locally</b>No website: it lives on a computer inside the car</span></span>
-          
-          
+    <section class="pj-hero" aria-labelledby="csTitle">
+      <div class="pj-hero__top">
+        <div class="pj-hero__title">
+          <p class="pj-chip"><i aria-hidden="true"></i>Personal project · 2026</p>
+          <h1 class="pj-h1" id="csTitle">JARVIS<span class="pj-h1__sub">Voice Assistant for the Car</span></h1>
         </div>
-        <p class="cs-by">Project built by <a href="/en/about.html" rel="author">Bernardo Iannini</a></p>
+        <div class="pj-hero__side">
+          <p class="pj-lead">A voice assistant for the car: you say &quot;Hey Jarvis&quot; and talk normally, and it reads the engine live, controls music and navigation and warns you before problems.</p>
+          <div class="pj-actions">
+            
+            <span class="cs-local"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M9 2.5v3M15 2.5v3M9 18.5v3M15 18.5v3M2.5 9h3M2.5 15h3M18.5 9h3M18.5 15h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><rect x="9.5" y="9.5" width="5" height="5" rx="1" fill="currentColor"/></svg><span><b>Runs locally</b>No website: it lives on a computer inside the car</span></span>
+            
+            
+          </div>
+          <p class="cs-by">Project built by <a href="/en/about.html" rel="author">Bernardo Iannini</a></p>
+        </div>
       </div>
-      <figure class="cs-hero__media">
-        <div class="cs-win">
-          <div class="cs-win__bar" aria-hidden="true"><i></i><i></i><i></i><span>localhost · jarvis</span></div>
+      <figure class="pj-cover">
+        <div class="pj-cover__link">
           <picture>
-            <source type="image/avif" srcset="/img/covers/jarvis-480.avif?v=e5c56b6e 480w, /img/covers/jarvis-800.avif?v=e5c56b6e 800w, /img/covers/jarvis-1200.avif?v=e5c56b6e 1200w, /img/covers/jarvis.avif?v=e5c56b6e 1600w" sizes="(max-width: 900px) 92vw, 46vw">
-            <img class="cs-win__img" src="/img/covers/jarvis.webp?v=e5c56b6e" srcset="/img/covers/jarvis-480.webp?v=e5c56b6e 480w, /img/covers/jarvis-800.webp?v=e5c56b6e 800w, /img/covers/jarvis-1200.webp?v=e5c56b6e 1200w, /img/covers/jarvis.webp?v=e5c56b6e 1600w" sizes="(max-width: 900px) 92vw, 46vw"
+            <source type="image/avif" srcset="/img/covers/jarvis-480.avif?v=e5c56b6e 480w, /img/covers/jarvis-800.avif?v=e5c56b6e 800w, /img/covers/jarvis-1200.avif?v=e5c56b6e 1200w, /img/covers/jarvis.avif?v=e5c56b6e 1600w" sizes="(max-width: 900px) 94vw, 1140px">
+            <img class="pj-cover__img" src="/img/covers/jarvis.webp?v=e5c56b6e" srcset="/img/covers/jarvis-480.webp?v=e5c56b6e 480w, /img/covers/jarvis-800.webp?v=e5c56b6e 800w, /img/covers/jarvis-1200.webp?v=e5c56b6e 1200w, /img/covers/jarvis.webp?v=e5c56b6e 1600w" sizes="(max-width: 900px) 94vw, 1140px"
                  alt="JARVIS · Voice Assistant for the Car" width="1600" height="900" fetchpriority="high" decoding="async">
           </picture>
-          
         </div>
+        <dl class="pj-notch" aria-label="Project facts">
+          <div><dt>Type</dt><dd>Personal project</dd></div><div><dt>Year</dt><dd>2026</dd></div><div><dt>Status</dt><dd>runs locally</dd></div><div><dt>My role</dt><dd>personal project, whole product</dd></div>
+        </dl>
       </figure>
     </section>
 
-    <section class="cs-about" aria-labelledby="csWhat" data-reveal>
-      <svg class="cs-deco" viewBox="0 0 1200 600" preserveAspectRatio="xMaxYMid slice" aria-hidden="true" focusable="false">
-      <defs><pattern id="csDots-jarvis" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.3"/></pattern></defs>
-      <rect class="cs-deco__dots" width="1200" height="600" fill="url(#csDots-jarvis)"/>
-      <circle class="cs-deco__ring" cx="1010" cy="120" r="260"/><circle class="cs-deco__ring" cx="1010" cy="120" r="180"/>
-      <circle class="cs-deco__ring" cx="1010" cy="120" r="100"/><circle class="cs-deco__dot" cx="1010" cy="120" r="5"/>
-    </svg>
-      <div class="cs-about__main">
-        <h2 class="cs-h2" id="csWhat"><span class="cs-h2__icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1.1 2V17h5v-1.2c.1-.8.5-1.5 1.1-2A6 6 0 0 0 12 3z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>What it is</h2>
-        <p class="cs-about__lead">You say &quot;Hey Jarvis&quot; and talk normally, in Portuguese, and it answers with a casual Brazilian personality, hearing you over road noise and letting you interrupt it mid-sentence.</p>
+    <section class="pj-split" aria-labelledby="csWhat" data-reveal>
+      <div class="pj-split__head">
+        <p class="pj-eb" aria-hidden="true"><b>01</b><span>/</span>What it is</p>
+        <h2 class="sr-only" id="csWhat">What it is</h2>
+        <p class="pj-statement">JARVIS is a voice assistant I built for my own car, a VW up! <span class="pj-mute">You say &quot;Hey Jarvis&quot; and talk normally, in Portuguese, and it answers with a casual Brazilian personality, hearing you over road noise and letting you interrupt it mid-sentence.</span></p>
       </div>
-      <aside class="cs-about__facts" aria-label="Project facts">
-        <div class="cs-fact2"><span class="cs-fact2__k">Type</span><span class="cs-fact2__v">Personal project</span></div><div class="cs-fact2"><span class="cs-fact2__k">Year</span><span class="cs-fact2__v">2026</span></div><div class="cs-fact2"><span class="cs-fact2__k">Status</span><span class="cs-fact2__v">runs locally</span></div><div class="cs-fact2"><span class="cs-fact2__k">My role</span><span class="cs-fact2__v">personal project, whole product</span></div>
+      <div class="pj-split__body">
+        <p>It is the only project here without a website: it lives in the car, and a dashboard on the screen shows the gauges in real time.</p>
         
-      </aside>
-    </section>
-
-    <section class="cs-about cs-about--problem" aria-labelledby="csProblem" data-reveal>
-      <div class="cs-about__main">
-        <h2 class="cs-h2" id="csProblem"><span class="cs-h2__icon cs-h2__icon--warn"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10v4.5M12 17.3v.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>The problem</h2>
-        <p class="cs-about__lead">Car assistants from phones do not know the car: they cannot read the engine, they do not understand a warning light and they struggle with cabin noise. Looking at a screen to find information while driving is exactly what should not happen.</p>
-        <p>The challenge was a hands-free copilot that really hears you in a noisy car, answers instantly for simple commands and still handles open questions, all running on a small computer inside the vehicle.</p>
       </div>
     </section>
 
-    <section class="cs-how" aria-labelledby="csHow">
-      <h2 class="cs-h2" id="csHow" data-reveal>How it works</h2>
-      <ol class="cs-steps" data-cs-steps style="--n:4">
-        <li class="cs-step" style="--i:0">
-          <span class="cs-step__num" aria-hidden="true">01</span>
-          <span class="cs-step__label">"Hey Jarvis"</span>
-          <span class="cs-step__sub">wake word, hands-free</span>
-        </li><li class="cs-step" style="--i:1">
-          <span class="cs-step__num" aria-hidden="true">02</span>
-          <span class="cs-step__label">Understands</span>
-          <span class="cs-step__sub">instant skills or AI</span>
-        </li><li class="cs-step" style="--i:2">
-          <span class="cs-step__num" aria-hidden="true">03</span>
-          <span class="cs-step__label">Reads the car</span>
-          <span class="cs-step__sub">live OBD2 data</span>
-        </li><li class="cs-step" style="--i:3">
-          <span class="cs-step__num" aria-hidden="true">04</span>
-          <span class="cs-step__label">Answers by voice</span>
-          <span class="cs-step__sub">and acts: music, route</span>
+    <section class="pj-split pj-split--problem" aria-labelledby="csProblem" data-reveal>
+      <div class="pj-split__head">
+        <p class="pj-eb" aria-hidden="true"><b>02</b><span>/</span>The problem</p>
+        <h2 class="sr-only" id="csProblem">The problem</h2>
+        <p class="pj-statement">Car assistants from phones do not know the car: they cannot read the engine, they do not understand a warning light and they struggle with cabin noise. <span class="pj-mute">Looking at a screen to find information while driving is exactly what should not happen.</span></p>
+      </div>
+      <div class="pj-split__body"><p>The challenge was a hands-free copilot that really hears you in a noisy car, answers instantly for simple commands and still handles open questions, all running on a small computer inside the vehicle.</p></div>
+    </section>
+
+    <section class="pj-flow" aria-labelledby="csHow">
+      <div class="pj-sechead" data-reveal>
+        <p class="pj-eb" aria-hidden="true"><b>03</b><span>/</span>How it works</p>
+        <h2 class="pj-h2" id="csHow">From start <span class="pj-mute">to result, step by step.</span></h2>
+      </div>
+      <ol class="pj-steps" data-cs-steps style="--n:4">
+        <li class="pj-step" style="--i:0">
+          <span class="pj-step__num" aria-hidden="true">01</span>
+          <span class="pj-step__label">"Hey Jarvis"</span>
+          <span class="pj-step__sub">wake word, hands-free</span>
+        </li><li class="pj-step" style="--i:1">
+          <span class="pj-step__num" aria-hidden="true">02</span>
+          <span class="pj-step__label">Understands</span>
+          <span class="pj-step__sub">instant skills or AI</span>
+        </li><li class="pj-step" style="--i:2">
+          <span class="pj-step__num" aria-hidden="true">03</span>
+          <span class="pj-step__label">Reads the car</span>
+          <span class="pj-step__sub">live OBD2 data</span>
+        </li><li class="pj-step pj-step--end" style="--i:3">
+          <span class="pj-step__num" aria-hidden="true">04</span>
+          <span class="pj-step__label">Answers by voice</span>
+          <span class="pj-step__sub">and acts: music, route</span>
         </li>
       </ol>
     </section>
 
-    <section class="cs-features" aria-labelledby="csFeat">
-      <h2 class="cs-h2" id="csFeat" data-reveal>What it does</h2>
-      <div class="cs-feat-grid">
-        <article class="cs-feat" data-reveal style="--i:0">
-          <span class="cs-feat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" opacity=".8"/></svg></span>
-          <h3 class="cs-feat__title">Voice built for the car</h3>
-          <p class="cs-feat__text">Say "Hey Jarvis" and talk normally: it hears you over road noise, can be interrupted and raises its own voice when the cabin gets loud.</p>
+    <section class="pj-bento" aria-labelledby="csFeat">
+      <div class="pj-sechead" data-reveal>
+        <p class="pj-eb" aria-hidden="true"><b>04</b><span>/</span>What it does</p>
+        <h2 class="pj-h2" id="csFeat">What it does <span class="pj-mute">for the people using it.</span></h2>
+      </div>
+      <div class="pj-bento__grid" style="--n:4">
+        <article class="pj-card pj-card--hi" data-reveal style="--i:0">
+          <span class="pj-card__top"><span class="pj-card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" opacity=".8"/></svg></span><span class="pj-card__n" aria-hidden="true">01</span></span>
+          <h3 class="pj-card__title">Voice built for the car</h3>
+          <p class="pj-card__text">Say "Hey Jarvis" and talk normally: it hears you over road noise, can be interrupted and raises its own voice when the cabin gets loud.</p>
           
-        </article><article class="cs-feat" data-reveal style="--i:1">
-          <span class="cs-feat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 14a9 9 0 1 1 18 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M12 14 16 9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="14" r="1.5" fill="currentColor"/></svg></span>
-          <h3 class="cs-feat__title">It knows the car</h3>
-          <p class="cs-feat__text">Reads RPM, speed, temperature and more than 36 sensors live, explains fault codes and answers questions from the owner manual.</p>
+        </article><article class="pj-card" data-reveal style="--i:1">
+          <span class="pj-card__top"><span class="pj-card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 14a9 9 0 1 1 18 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M12 14 16 9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="14" r="1.5" fill="currentColor"/></svg></span><span class="pj-card__n" aria-hidden="true">02</span></span>
+          <h3 class="pj-card__title">It knows the car</h3>
+          <p class="pj-card__text">Reads RPM, speed, temperature and more than 36 sensors live, explains fault codes and answers questions from the owner manual.</p>
           
-        </article><article class="cs-feat" data-reveal style="--i:2">
-          <span class="cs-feat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 3 8l9 5 9-5-9-5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M3 13l9 5 9-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 17.5l9 5 9-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/></svg></span>
-          <h3 class="cs-feat__title">Hybrid brain</h3>
-          <p class="cs-feat__text">Common commands get an instant answer, open questions go to AI with backups, and a safety check reviews each action.</p>
+        </article><article class="pj-card" data-reveal style="--i:2">
+          <span class="pj-card__top"><span class="pj-card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 3 8l9 5 9-5-9-5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M3 13l9 5 9-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 17.5l9 5 9-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/></svg></span><span class="pj-card__n" aria-hidden="true">03</span></span>
+          <h3 class="pj-card__title">Hybrid brain</h3>
+          <p class="pj-card__text">Common commands get an instant answer, open questions go to AI with backups, and a safety check reviews each action.</p>
           
-        </article><article class="cs-feat" data-reveal style="--i:3">
-          <span class="cs-feat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          <h3 class="cs-feat__title">Proactive copilot</h3>
-          <p class="cs-feat__text">Warns about maintenance, fuel, weather and routes before you ask, controls Spotify and navigation and learns your habits.</p>
+        </article><article class="pj-card" data-reveal style="--i:3">
+          <span class="pj-card__top"><span class="pj-card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="pj-card__n" aria-hidden="true">04</span></span>
+          <h3 class="pj-card__title">Proactive copilot</h3>
+          <p class="pj-card__text">Warns about maintenance, fuel, weather and routes before you ask, controls Spotify and navigation and learns your habits.</p>
           
         </article>
       </div>
@@ -464,10 +472,11 @@
           </a></li><li><a class="cs-other" href="/en/projects/demao-pinturas.html">
             <span class="cs-other__img"><img src="/img/covers/demao-pinturas.webp" srcset="/img/covers/demao-pinturas-480.webp 480w, /img/covers/demao-pinturas-800.webp 800w, /img/covers/demao-pinturas-1200.webp 1200w, /img/covers/demao-pinturas.webp 1600w" sizes="(max-width: 700px) 90vw, 30vw" alt="" width="1600" height="900" loading="lazy" decoding="async"></span>
             <span class="cs-other__name">Demão Pinturas</span>
-            <span class="cs-other__sub">Home painting service landing page</span>
+            <span class="cs-other__sub">Residential painting service landing page</span>
           </a></li>
       </ul>
     </nav>
+    <div class="pj-wordmark" aria-hidden="true">JARVIS</div>
     <div class="bi-sign-row"><div class="bi-sign"><span class="bi-sign__by">Made by</span><a class="bi-sign__link" href="https://www.bernardoiannini.com" aria-label="Bernardo Iannini"><span class="bi-sign__mark" aria-hidden="true"><svg viewBox="62 16 94 154"><g class="bi-sign__dot"><g transform="rotate(-21 146.5 27.5)"><rect x="142.5" y="23.5" width="8" height="8" rx="1"/></g><g transform="rotate(-21 131 32)"><rect x="124.5" y="25.5" width="13" height="13" rx="1.5"/></g><g transform="rotate(-21 95.5 47.5)"><rect x="77" y="29" width="37" height="37" rx="2.5"/></g></g><path d="M71 97.5 120 79.5V166H71Z"/></svg></span><span class="bi-sign__name">Bernardo Iannini</span></a></div></div>
   </main>
 
