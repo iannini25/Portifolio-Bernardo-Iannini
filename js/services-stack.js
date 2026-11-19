@@ -204,16 +204,28 @@
     const rows = Math.ceil(N / cols);                 // 2 pra N=4
     /* SCALE que cabe as LINHAS na altura (descontando a nav) e as COLUNAS na
        largura. Teto 0.82 (nao gigante em telas enormes), piso 0.42 (legivel). */
-    const fitH = (VH - NAV - 2 * GAP) / ((rows + 0.1) * cardH);
-    const fitW = (VW - 2 * GAP) / ((cols * 0.66 + 0.34) * cardW);
+    /* o card girado ocupa ~1.18x a largura e ~1.25x a altura (giro de ate 10
+       graus): o SCALE garante que a grade inteira cabe COM vao real entre eles */
+    const CGAP = 34, RAD = 10 * Math.PI / 180;
+    /* caixa do card girado 10 graus, em multiplos do proprio tamanho */
+    const ROTW = (cardW * Math.cos(RAD) + cardH * Math.sin(RAD)) / cardW;
+    const ROTH = (cardW * Math.sin(RAD) + cardH * Math.cos(RAD)) / cardH;
+    const fitH = (VH - NAV - 2 * GAP - (rows - 1) * CGAP) / (rows * ROTH * cardH);
+    const fitW = (VW - 2 * GAP - (cols - 1) * CGAP) / (cols * ROTW * cardW);
     const SCALE = Math.max(0.42, Math.min(0.82, fitH, fitW));
     /* meia-extensao do card JA girado (folga p/ nao vazar) */
-    const HX = (SCALE * cardW / 2) * 1.12, HY = (SCALE * cardH / 2) * 1.12;
+    const HX = SCALE * cardW * ROTW / 2, HY = SCALE * cardH * ROTH / 2;
     const SPREAD_X = 0.5;    // horizontal: colunas proximas
     const SPREAD_Y = 0.95;   // vertical: usa o range disponivel abaixo da nav
-    const OFFY = NAV / 2;    // desce o cluster p/ centrar ABAIXO da nav
-    const SX = Math.max(30, (VW / 2 - HX - GAP) * SPREAD_X);
-    const SY = Math.max(20, ((VH - NAV) / 2 - HY - GAP) * SPREAD_Y);
+    /* o palco fixado fica ~20px abaixo do meio da tela: compensa, senao a
+       fileira de baixo vaza a borda inferior em telas de ate 900px de altura */
+    const OFFY = NAV / 2 - 22;
+    /* distancia entre centros = card girado + vao fixo (nunca encosta). Se
+       sobrar espaco, abre um pouco mais, sem passar da borda. */
+    const minSX = (SCALE * cardW * ROTW + CGAP) / 2;
+    const minSY = (SCALE * cardH * ROTH + CGAP) / 2;
+    const SX = Math.max(minSX, Math.min((VW / 2 - HX - GAP) * SPREAD_X, minSX * 1.25));
+    const SY = Math.max(minSY, Math.min(((VH - NAV) / 2 - HY - GAP) * SPREAD_Y, minSY * 1.15));
     const scatter = cards.map((_, i) => {
       const col = i % cols, row = Math.floor(i / cols);
       const cx = cols > 1 ? (col / (cols - 1)) * 2 - 1 : 0;   // -1 .. 1
