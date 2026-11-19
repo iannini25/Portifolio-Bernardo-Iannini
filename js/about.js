@@ -1,1 +1,63 @@
-"use strict";const term=document.getElementById("terminal");function termLine(s){if(!term)return;const n=document.createElement("div");n.innerHTML=s,term.appendChild(n),term.scrollTop=term.scrollHeight}async function typeKaliPromptAndCmd(s){if(!term)return;termLine('<span class="k-ps1-top">\u250C\u2500\u2500(</span><span class="k-ps1-user">bernardoiannini</span><span class="k-ps1-top">\u327F</span><span class="k-ps1-host">localhost</span><span class="k-ps1-top">)-[</span><span class="k-ps1-path">~</span><span class="k-ps1-top">]</span>');const n='<span class="k-ps1-bottom">\u2514\u2500$</span> <span class="cmd">';let e="";for(let t=0;t<=s.length;t++){const p=n+e+"</span>";if(term.lastChild?.dataset?.typing==="1")term.lastChild.innerHTML=p;else{const a=document.createElement("div");a.dataset.typing="1",a.innerHTML=p,term.appendChild(a)}t<s.length&&(e+=s[t],await sleep(22))}term.lastChild?.removeAttribute("data-typing")}async function renderTerminal(s){if(!term)return;term.innerHTML="";const e=window.matchMedia("(max-width: 640px)").matches&&I18N[s].about.terminalMobile||I18N[s].about.terminal;for(const t of e)t.type==="type"?await typeKaliPromptAndCmd(t.text):t.type==="out"&&termLine(`<span class="out">${t.text.replace(/\n/g,"<br>")}</span>`),await sleep(300)}
+'use strict';
+
+/* =========================================================
+   ABOUT — Terminal (Kali style)
+   ========================================================= */
+
+const term = document.getElementById('terminal');
+
+function termLine(html) {
+  if (!term) return;
+  const d = document.createElement('div');
+  d.innerHTML = html;
+  term.appendChild(d);
+  term.scrollTop = term.scrollHeight;
+}
+
+async function typeKaliPromptAndCmd(cmdToType) {
+  if (!term) return;
+
+  termLine(
+    `<span class="k-ps1-top">┌──(</span><span class="k-ps1-user">bernardoiannini</span><span class="k-ps1-top">㉿</span><span class="k-ps1-host">localhost</span><span class="k-ps1-top">)-[</span><span class="k-ps1-path">~</span><span class="k-ps1-top">]</span>`
+  );
+
+  const pre = `<span class="k-ps1-bottom">└─$</span> <span class="cmd">`;
+  let typed = '';
+
+  for (let i = 0; i <= cmdToType.length; i++) {
+    const html = pre + typed + `</span>`;
+
+    if (term.lastChild?.dataset?.typing === '1') {
+      term.lastChild.innerHTML = html;
+    } else {
+      const d = document.createElement('div');
+      d.dataset.typing = '1';
+      d.innerHTML = html;
+      term.appendChild(d);
+    }
+
+    if (i < cmdToType.length) {
+      typed += cmdToType[i];
+      await sleep(22);
+    }
+  }
+
+  term.lastChild?.removeAttribute('data-typing');
+}
+
+async function renderTerminal(lang) {
+  if (!term) return;
+
+  term.innerHTML = '';
+  /* celular: versao curta (sem o contact --show), quando existir */
+  const mobile = window.matchMedia('(max-width: 640px)').matches;
+  const script = (mobile && I18N[lang].about.terminalMobile) || I18N[lang].about.terminal;
+
+  for (const step of script) {
+    if (step.type === 'type') await typeKaliPromptAndCmd(step.text);
+    else if (step.type === 'out')
+      termLine(`<span class="out">${step.text.replace(/\n/g, '<br>')}</span>`);
+
+    await sleep(300);
+  }
+}

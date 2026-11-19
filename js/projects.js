@@ -1,32 +1,809 @@
-"use strict";let pjActiveFilter="all",pjStackOrder=[],pjSwapBusy=!1,pjBound=!1;const pjTouchMode=window.matchMedia("(hover: none)").matches,PJ_AUTO_MS=6e3;let pjAutoTimer=null;const pjCtx={projects:[],featured:[],data:null,lang:"en"},pjReducedMotion=()=>!1,pjPerf=()=>document.documentElement.dataset.perf||"high";function pjFeaturedVisible(){const t=document.querySelector("[data-pj-featured]");if(!t||t.style.display==="none")return!1;const n=t.getBoundingClientRect();return n.bottom>0&&n.top<(window.innerHeight||document.documentElement.clientHeight)}function pjClearAdvance(){clearTimeout(pjAutoTimer),pjAutoTimer=null}function pjAdvance(){pjClearAdvance();const t=pjCtx.featured;if(t.length<2)return;if(document.hidden||pjReducedMotion()||!pjFeaturedVisible()){pjAutoTimer=setTimeout(pjAdvance,1e3);return}if(pjSwapBusy){pjAutoTimer=setTimeout(pjAdvance,700);return}const n=t.findIndex(a=>a.id===pjStackOrder[0]),e=t[(n+1)%t.length];e&&pjPromote(e.id)}function pjScheduleAdvance(){pjClearAdvance(),!(pjCtx.featured.length<2)&&(pjAutoTimer=setTimeout(pjAdvance,PJ_AUTO_MS))}const PJ_ICONS={arrowUpRight:'<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'};function pjSlug(t){return String(t||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"project"}function pjPrepare(t){return(t||[]).filter(n=>n&&n.cover&&(n.link||n.local)).map(n=>({...n,id:n.id||pjSlug(n.title),category:n.category||"personal"}))}function pjHost(t){try{return new URL(t).hostname.replace(/^www\./,"")}catch{return String(t||"").replace(/^https?:\/\/(www\.)?/,"").split("/")[0]}}function pjCaseHref(t){const n=encodeURIComponent(t.id);return pjCtx.lang==="en"?`/en/projects/${n}.html`:`/projetos/${n}.html`}const PJ_COVER_W=[480,800,1200,1600],PJ_SIZES={win:"(max-width: 640px) 92vw, (max-width: 1080px) 560px, 620px",card:"(max-width: 640px) 92vw, (max-width: 900px) 46vw, 430px"};function pjCoverSet(t,n){const e=/^(.*\/covers\/[^/?]+)\.webp(\?[^#]*)?$/.exec(t||"");if(!e)return"";const[,a,r=""]=e;return PJ_COVER_W.map((c,s)=>`${a}${s===PJ_COVER_W.length-1?"":"-"+c}.${n}${r} ${c}w`).join(", ")}function pjMediaHTML(t,n,e,a){const r=e?"eager":"lazy",c=`<img class="${n}" src="${t.cover}" alt="${t.title}" width="1600" height="900" loading="${r}" decoding="async"`,s=pjCoverSet(t.cover,"webp");return s?`<picture><source type="image/avif" srcset="${pjCoverSet(t.cover,"avif")}" sizes="${a}">${c} srcset="${s}" sizes="${a}"></picture>`:`${c}>`}function buildFeaturedWindow(t,n){const e=document.createElement("article");return e.className=`pj-win is-slot-${n}${n===0?" is-front":""}`,e.dataset.id=t.id,e.innerHTML=`
+'use strict';
+
+/* =========================================================
+   PROJECTS — "A BANCADA VIVA" (catálogo completo)
+   Três atos: pilha de janelas (featured), linha de comando
+   (filtros) e arquivo (fileiras que respiram no hover).
+
+   Este arquivo cuida de DADOS + INTERAÇÃO (render i18n, swap
+   da pilha, filtros/FLIP, hover-expand das fileiras, teclado).
+   A camada de motion ambiente (pulsos das guias, anel de
+   proximidade, reveals de scroll) vive em js/scrollfx.js e é
+   reconstruída via 'pj:rendered' / MutationObserver.
+
+   Degradação: sem GSAP tudo funciona com transições CSS ou
+   troca instantânea; sem hover (touch) os cards mostram a
+   régua completa e o tap navega direto (CSS cuida).
+   ========================================================= */
+
+let pjActiveFilter = 'all';
+let pjStackOrder = [];        /* ids na ordem [frente, trás-1, trás-2] */
+let pjSwapBusy = false;
+let pjBound = false;          /* listeners são delegados e presos UMA vez */
+
+/* ---- auto-rotação do featured: cada projeto fica PJ_AUTO_MS (6s) e troca ----
+   Tempo fixo por projeto. Nunca troca quando é
+   inútil/proibido (fora da tela, aba oculta, reduced-motion): nesses casos
+   re-checa sozinho sem prender. Interação manual REINICIA a contagem. */
+const pjTouchMode = window.matchMedia('(hover: none)').matches;
+const PJ_AUTO_MS = 6000;   /* tempo fixo de cada projeto em destaque */
+let pjAutoTimer = null;
+
+/* contexto do render atual — os handlers delegados leem daqui, então a
+   troca de idioma (re-render) nunca deixa closure velha viva */
+const pjCtx = { projects: [], featured: [], data: null, lang: 'en' };
+
+const pjReducedMotion = () => false;
+
+/* tier atual (js/perf-tier.js grava em <html data-perf>). Fallback
+   'high' se o script nao rodou — nao pune quem tem o site sem o gate. */
+const pjPerf = () =>
+  document.documentElement.dataset.perf || 'high';
+
+/* featured com QUALQUER parte na viewport (medido na hora — à prova de
+   flag presa; um getBoundingClientRect a cada 5s é irrelevante) */
+function pjFeaturedVisible() {
+  const wrap = document.querySelector('[data-pj-featured]');
+  if (!wrap || wrap.style.display === 'none') return false;
+  const r = wrap.getBoundingClientRect();
+  return r.bottom > 0 && r.top < (window.innerHeight || document.documentElement.clientHeight);
+}
+
+/* limpa o timer pendente da rotação */
+function pjClearAdvance() {
+  clearTimeout(pjAutoTimer);
+  pjAutoTimer = null;
+}
+
+/* troca pra próxima janela, respeitando visibilidade/reduced-motion.
+   Quando trocar é inútil/proibido, re-checa em 1s sem prender. */
+function pjAdvance() {
+  pjClearAdvance();
+  const featured = pjCtx.featured;
+  if (featured.length < 2) return;
+  if (document.hidden || pjReducedMotion() || !pjFeaturedVisible()) {
+    pjAutoTimer = setTimeout(pjAdvance, 1000);
+    return;
+  }
+  /* troca em andamento: espera assentar e re-tenta (senão pjPromote sai
+     cedo por pjSwapBusy e a rotação não se re-agenda) */
+  if (pjSwapBusy) { pjAutoTimer = setTimeout(pjAdvance, 700); return; }
+  const i = featured.findIndex(p => p.id === pjStackOrder[0]);
+  const next = featured[(i + 1) % featured.length];
+  if (next) pjPromote(next.id); /* pjPromote re-agenda no fim */
+}
+
+/* agenda a próxima troca: tempo FIXO de PJ_AUTO_MS (6s) por projeto.
+   Chamado no setup, em cada promoção e ao voltar pra aba. */
+function pjScheduleAdvance() {
+  pjClearAdvance();
+  if (pjCtx.featured.length < 2) return;
+  pjAutoTimer = setTimeout(pjAdvance, PJ_AUTO_MS);
+}
+
+const PJ_ICONS = {
+  arrowUpRight:
+    '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">' +
+    '<path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2" ' +
+    'stroke-linecap="round" stroke-linejoin="round"/></svg>',
+};
+
+/* slug a partir do título (sem acento, lowercase, hifenizado) */
+function pjSlug(s) {
+  return String(s || '')
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '') || 'project';
+}
+
+/* Só projetos reais entram: precisa de capa E link. Deriva id quando
+   faltar; category cai em "personal" se alguém esquecer o campo. */
+function pjPrepare(list) {
+  return (list || [])
+    .filter(p => p && p.cover && (p.link || p.local))
+    .map(p => ({
+      ...p,
+      id: p.id || pjSlug(p.title),
+      category: p.category || 'personal',
+    }));
+}
+
+/* hostname legível a partir do link (barra da "janela de browser") */
+function pjHost(link) {
+  try {
+    return new URL(link).hostname.replace(/^www\./, '');
+  } catch {
+    return String(link || '').replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
+  }
+}
+
+/* página estática do case no idioma ativo (gerada pelo build-projects):
+   link direto, sem o redirect do project.html?slug= */
+function pjCaseHref(p) {
+  const id = encodeURIComponent(p.id);
+  return pjCtx.lang === 'en' ? `/en/projects/${id}.html` : `/projetos/${id}.html`;
+}
+
+/* Capa estatica responsiva. Capas geradas pelo build:covers vivem em
+   img/covers/<id>.webp(?v=hash) com variantes -480/-800/-1200 em AVIF e
+   WebP: o <picture> deixa o browser escolher formato + largura pela tela
+   (celular baixa ~10KB, TV/retina a de 1600). Fora desse padrao, <img> puro. */
+const PJ_COVER_W = [480, 800, 1200, 1600];
+const PJ_SIZES = {
+  win:  '(max-width: 640px) 92vw, (max-width: 1080px) 560px, 620px',
+  card: '(max-width: 640px) 92vw, (max-width: 900px) 46vw, 430px',
+};
+
+function pjCoverSet(cover, ext) {
+  const m = /^(.*\/covers\/[^/?]+)\.webp(\?[^#]*)?$/.exec(cover || '');
+  if (!m) return '';
+  const [, base, q = ''] = m;
+  return PJ_COVER_W.map((w, i) =>
+    `${base}${i === PJ_COVER_W.length - 1 ? '' : '-' + w}.${ext}${q} ${w}w`).join(', ');
+}
+
+function pjMediaHTML(p, imgClass, eager, sizes) {
+  /* a section fica abaixo da dobra: nada de fetchpriority alto (roubaria
+     banda da foto da hero, o LCP). A janela da frente só não é lazy. */
+  const loading = eager ? 'eager' : 'lazy';
+  const img = `<img class="${imgClass}" src="${p.cover}" alt="${p.title}" width="1600" height="900" ` +
+    `loading="${loading}" decoding="async"`;
+  const webp = pjCoverSet(p.cover, 'webp');
+  if (!webp) return `${img}>`;
+  return `<picture><source type="image/avif" srcset="${pjCoverSet(p.cover, 'avif')}" sizes="${sizes}">` +
+    `${img} srcset="${webp}" sizes="${sizes}"></picture>`;
+}
+
+/* =========================================================
+   ATO 1 — PILHA DE JANELAS (featured)
+   ========================================================= */
+
+/* slots visuais da pilha: 0 = frente, 1 = trás-direita, 2 = trás-esquerda.
+   As classes .is-slot-N carregam transform/filtro no CSS; o swap só
+   troca classes (GSAP-free) — a transição CSS faz a coreografia. */
+function buildFeaturedWindow(p, slot) {
+  const win = document.createElement('article');
+  win.className = `pj-win is-slot-${slot}${slot === 0 ? ' is-front' : ''}`;
+  win.dataset.id = p.id;
+  win.innerHTML = `
     <div class="ps-frame__bar" aria-hidden="true">
       <span class="ps-frame__dots"><i></i><i></i><i></i></span>
-      <span class="ps-frame__url">${pjHost(t.link)}</span>
+      <span class="ps-frame__url">${pjHost(p.link)}</span>
     </div>
-    <a class="pj-win__view ps-frame__view" href="${pjCaseHref(t)}" tabindex="${n===0?0:-1}"
-       aria-label="${t.title}">
-      ${pjMediaHTML(t,"pj-win__img",n===0,PJ_SIZES.win)}
+    <a class="pj-win__view ps-frame__view" href="${pjCaseHref(p)}" tabindex="${slot === 0 ? 0 : -1}"
+       aria-label="${p.title}">
+      ${pjMediaHTML(p, 'pj-win__img', slot === 0, PJ_SIZES.win)}
       <span class="pj-win__veil" aria-hidden="true"></span>
     </a>
-  `,e}function pjFeaturedList(t){return t.filter(n=>n.featured).sort((n,e)=>(n.featuredOrder||99)-(e.featuredOrder||99)).slice(0,3)}function pjUpdatePanel(t,n){const e=document.querySelector("[data-pj-panel]");if(!e||!t)return;const a=n.catalog&&n.catalog.cats||{},r=n.case||{},c=()=>{const s=e.querySelector("[data-pj-cat]"),o=e.querySelector("[data-pj-title-detail]"),i=e.querySelector("[data-pj-desc]"),l=e.querySelector("[data-pj-case]"),u=e.querySelector("[data-pj-link]");if(s&&(s.textContent=a[t.category]||t.category),o&&(o.textContent=t.title),i&&(i.textContent=t.desc||""),l){l.href=pjCaseHref(t);const p=l.querySelector("[data-pj-case-label]");p&&(p.textContent=r.viewCase||"View case study")}if(u){u.style.display=t.link?"":"none",u.href=t.link||"#";const p=u.querySelector("[data-pj-link-label]");p&&(p.textContent=r.visitSite||"Visit live site")}};if(window.gsap&&!pjReducedMotion()){const s=[".pj-panel__meta","[data-pj-title-detail]","[data-pj-desc]",".pj-panel__cta"].map(o=>e.querySelector(o)).filter(Boolean);gsap.to(s,{autoAlpha:0,y:-8,duration:.18,ease:"power2.in",stagger:.02,onComplete:()=>{c(),gsap.fromTo(s,{autoAlpha:0,y:14},{autoAlpha:1,y:0,duration:.45,ease:"power3.out",stagger:.05,clearProps:"visibility"})}})}else c()}function pjUpdateNav(t,n){const e=document.querySelector("[data-pj-nav]");if(!e)return;const a=e.querySelectorAll(".pj-panel__dot");if(a.length===t.length&&t.every(c=>e.querySelector(`[data-pj-goto="${c.id}"]`))){a.forEach(c=>{const s=c.dataset.pjGoto===n;c.classList.toggle("is-on",s),c.setAttribute("aria-pressed",s);const o=t.find(i=>i.id===c.dataset.pjGoto);o&&c.setAttribute("aria-label",o.title)});return}e.innerHTML=t.map((c,s)=>`
-    <button type="button" class="pj-panel__dot${c.id===n?" is-on":""}"
-      data-pj-goto="${c.id}" aria-label="${c.title}"
-      aria-pressed="${c.id===n}">${String(s+1).padStart(2,"0")}</button>
-  `).join("")}function pjPromote(t){const n=pjCtx.featured,e=pjCtx.data;if(pjSwapBusy||pjStackOrder.indexOf(t)<=0)return;pjSwapBusy=!0,pjStackOrder=[t,...pjStackOrder.filter(s=>s!==t)];const r=document.querySelector("[data-pj-stack]");r&&pjStackOrder.forEach((s,o)=>{const i=r.querySelector(`.pj-win[data-id="${s}"]`);if(!i)return;i.classList.remove("is-slot-0","is-slot-1","is-slot-2","is-front"),i.classList.add(`is-slot-${o}`),o===0&&i.classList.add("is-front");const l=i.querySelector(".pj-win__view");l&&(l.tabIndex=o===0?0:-1)});const c=n.find(s=>s.id===t);pjUpdatePanel(c,e),pjUpdateNav(n,t),setTimeout(()=>{pjSwapBusy=!1},pjReducedMotion()?0:620),pjScheduleAdvance()}function pjSetupFeatured(){const t=document.querySelector("[data-pj-stack]"),n=document.querySelector("[data-pj-featured]");if(!t||!n)return;const e=pjCtx.featured;if(!e.length){n.style.display="none";return}n.style.display="",pjStackOrder.length===e.length&&e.every(s=>pjStackOrder.includes(s.id))||(pjStackOrder=e.map(s=>s.id)),t.innerHTML="",pjStackOrder.forEach((s,o)=>{const i=e.find(l=>l.id===s);i&&t.appendChild(buildFeaturedWindow(i,o))});const r=pjStackOrder[0],c=e.find(s=>s.id===r);pjUpdatePanel(c,pjCtx.data),pjUpdateNav(e,r),pjScheduleAdvance()}const PJ_CAT_ORDER=["all","system","site","automation","personal"],PJ_PINNED=["moedanobre","iba","athena7","besafe","communityhub","nest-battersea"];let pjShuffleRank=null;function pjRand(t){if(window.crypto&&crypto.getRandomValues){const n=new Uint32Array(1);return crypto.getRandomValues(n),n[0]%t}return Math.floor(Math.random()*t)}function pjOrder(t){if(!pjShuffleRank){const e=t.map(a=>a.id).filter(a=>!PJ_PINNED.includes(a));for(let a=e.length-1;a>0;a--){const r=pjRand(a+1);[e[a],e[r]]=[e[r],e[a]]}pjShuffleRank=new Map(e.map((a,r)=>[a,r]))}const n=e=>{const a=PJ_PINNED.indexOf(e.id);return a>=0?a:PJ_PINNED.length+(pjShuffleRank.has(e.id)?pjShuffleRank.get(e.id):9999)};return t.slice().sort((e,a)=>n(e)-n(a))}function pjCounterText(t,n,e){const a=e||{};return pjActiveFilter!=="all"?(a.countFiltered||"\u2192 {n} of {total}").replace("{n}",t).replace("{total}",n):t===1?a.countOne||"\u2192 1 project":(a.count||"\u2192 {n} projects").replace("{n}",t)}function pjSetupFilters(){const t=document.querySelector("[data-pj-filters]"),n=document.querySelector("[data-pj-count]");if(!t)return;const e=pjCtx.projects,a=pjCtx.data&&pjCtx.data.catalog||{},r=a.cats||{},c=PJ_CAT_ORDER.filter(o=>o==="all"||e.some(i=>i.category===o));c.includes(pjActiveFilter)||(pjActiveFilter="all"),t.innerHTML=c.map(o=>`
-    <button type="button" class="pj-filter${o===pjActiveFilter?" is-on":""}"
-      data-pj-filter="${o}" aria-pressed="${o===pjActiveFilter}">
-      ${r[o]||o}
+  `;
+  return win;
+}
+
+function pjFeaturedList(projects) {
+  return projects
+    .filter(p => p.featured)
+    .sort((a, b) => (a.featuredOrder || 99) - (b.featuredOrder || 99))
+    .slice(0, 3);
+}
+
+/* painel de texto do projeto ativo (crossfade no swap) */
+function pjUpdatePanel(project, data) {
+  const panel = document.querySelector('[data-pj-panel]');
+  if (!panel || !project) return;
+
+  const cats = (data.catalog && data.catalog.cats) || {};
+  const caseLabels = data.case || {};
+
+  const write = () => {
+    const catEl  = panel.querySelector('[data-pj-cat]');
+    const title  = panel.querySelector('[data-pj-title-detail]');
+    const desc   = panel.querySelector('[data-pj-desc]');
+    const caseEl = panel.querySelector('[data-pj-case]');
+    const linkEl = panel.querySelector('[data-pj-link]');
+
+    if (catEl) catEl.textContent = cats[project.category] || project.category;
+    if (title) title.textContent = project.title;
+    if (desc)  desc.textContent  = project.desc || '';
+    if (caseEl) {
+      caseEl.href = pjCaseHref(project);
+      const lbl = caseEl.querySelector('[data-pj-case-label]');
+      if (lbl) lbl.textContent = caseLabels.viewCase || 'View case study';
+    }
+    if (linkEl) {
+      /* projeto que roda localmente (ex.: Jarvis) nao tem site pra visitar */
+      linkEl.style.display = project.link ? '' : 'none';
+      linkEl.href = project.link || '#';
+      const lbl = linkEl.querySelector('[data-pj-link-label]');
+      if (lbl) lbl.textContent = caseLabels.visitSite || 'Visit live site';
+    }
+  };
+
+  /* crossfade discreto com GSAP quando disponível; senão troca direta */
+  if (window.gsap && !pjReducedMotion()) {
+    const parts = ['.pj-panel__meta', '[data-pj-title-detail]', '[data-pj-desc]',
+      '.pj-panel__cta'].map(s => panel.querySelector(s)).filter(Boolean);
+    gsap.to(parts, {
+      autoAlpha: 0, y: -8, duration: .18, ease: 'power2.in', stagger: .02,
+      onComplete: () => {
+        write();
+        gsap.fromTo(parts, { autoAlpha: 0, y: 14 },
+          { autoAlpha: 1, y: 0, duration: .45, ease: 'power3.out', stagger: .05, clearProps: 'visibility' });
+      },
+    });
+  } else {
+    write();
+  }
+}
+
+/* dots 01 02 03 sob o painel. Atualiza IN PLACE quando os botões já
+   existem — reconstruir o innerHTML no promote destruía o botão focado
+   (foco caía pro body e o focusout religava a auto-rotação no meio da
+   interação). Reconstrução completa só no render i18n. */
+function pjUpdateNav(featured, activeId) {
+  const nav = document.querySelector('[data-pj-nav]');
+  if (!nav) return;
+
+  const dots = nav.querySelectorAll('.pj-panel__dot');
+  const sameSet = dots.length === featured.length &&
+    featured.every(p => nav.querySelector(`[data-pj-goto="${p.id}"]`));
+  if (sameSet) {
+    dots.forEach(b => {
+      const on = b.dataset.pjGoto === activeId;
+      b.classList.toggle('is-on', on);
+      b.setAttribute('aria-pressed', on);
+      /* label acompanha o idioma atual (o in-place também roda no i18n) */
+      const p = featured.find(x => x.id === b.dataset.pjGoto);
+      if (p) b.setAttribute('aria-label', p.title);
+    });
+    return;
+  }
+
+  nav.innerHTML = featured.map((p, i) => `
+    <button type="button" class="pj-panel__dot${p.id === activeId ? ' is-on' : ''}"
+      data-pj-goto="${p.id}" aria-label="${p.title}"
+      aria-pressed="${p.id === activeId}">${String(i + 1).padStart(2, '0')}</button>
+  `).join('');
+}
+
+/* promove a janela `id` pra frente da pilha */
+function pjPromote(id) {
+  const featured = pjCtx.featured, data = pjCtx.data;
+  if (pjSwapBusy) return;
+  const from = pjStackOrder.indexOf(id);
+  if (from <= 0) return; // já é a frente (ou não existe)
+
+  pjSwapBusy = true;
+  /* nova ordem: clicada vira frente; as outras mantêm ordem relativa */
+  pjStackOrder = [id, ...pjStackOrder.filter(x => x !== id)];
+
+  const stack = document.querySelector('[data-pj-stack]');
+  if (stack) {
+    pjStackOrder.forEach((pid, slot) => {
+      const win = stack.querySelector(`.pj-win[data-id="${pid}"]`);
+      if (!win) return;
+      win.classList.remove('is-slot-0', 'is-slot-1', 'is-slot-2', 'is-front');
+      win.classList.add(`is-slot-${slot}`);
+      if (slot === 0) win.classList.add('is-front');
+      const view = win.querySelector('.pj-win__view');
+      if (view) view.tabIndex = slot === 0 ? 0 : -1;
+    });
+  }
+
+  const project = featured.find(p => p.id === id);
+  pjUpdatePanel(project, data);
+  pjUpdateNav(featured, id);
+
+  /* trava re-cliques até a coreografia CSS assentar (~.65s) */
+  setTimeout(() => { pjSwapBusy = false; }, pjReducedMotion() ? 0 : 620);
+
+  pjScheduleAdvance();
+}
+
+function pjSetupFeatured() {
+  const stack = document.querySelector('[data-pj-stack]');
+  const featuredWrap = document.querySelector('[data-pj-featured]');
+  if (!stack || !featuredWrap) return;
+
+  const featured = pjCtx.featured;
+  if (!featured.length) { featuredWrap.style.display = 'none'; return; }
+  featuredWrap.style.display = '';
+
+  /* preserva a ordem atual da pilha entre re-renders (troca de idioma) */
+  const sameSet = pjStackOrder.length === featured.length &&
+    featured.every(p => pjStackOrder.includes(p.id));
+  if (!sameSet) pjStackOrder = featured.map(p => p.id);
+
+  stack.innerHTML = '';
+  pjStackOrder.forEach((id, slot) => {
+    const p = featured.find(x => x.id === id);
+    if (p) stack.appendChild(buildFeaturedWindow(p, slot));
+  });
+
+  const activeId = pjStackOrder[0];
+  const active = featured.find(p => p.id === activeId);
+  pjUpdatePanel(active, pjCtx.data);
+  pjUpdateNav(featured, activeId);
+
+  /* (re)agenda a rotação — cobre também o rebuild na troca de idioma */
+  pjScheduleAdvance();
+}
+
+/* =========================================================
+   ATO 2 — LINHA DE COMANDO (filtros por categoria)
+   ========================================================= */
+
+const PJ_CAT_ORDER = ['all', 'system', 'site', 'automation', 'personal'];
+
+/* ordem do catálogo: estes sempre no topo, nesta ordem; o resto em ordem
+   aleatória sorteada UMA vez por visita (Fisher-Yates com crypto quando
+   houver). O sorteio fica guardado pra trocar de idioma não reembaralhar. */
+const PJ_PINNED = ['moedanobre', 'iba', 'athena7', 'besafe', 'communityhub', 'nest-battersea'];
+let pjShuffleRank = null;
+function pjRand(n) {
+  if (window.crypto && crypto.getRandomValues) {
+    const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n;
+  }
+  return Math.floor(Math.random() * n);
+}
+function pjOrder(list) {
+  if (!pjShuffleRank) {
+    const ids = list.map(p => p.id).filter(id => !PJ_PINNED.includes(id));
+    for (let i = ids.length - 1; i > 0; i--) { const j = pjRand(i + 1); [ids[i], ids[j]] = [ids[j], ids[i]]; }
+    pjShuffleRank = new Map(ids.map((id, i) => [id, i]));
+  }
+  const rank = p => {
+    const k = PJ_PINNED.indexOf(p.id);
+    if (k >= 0) return k;
+    return PJ_PINNED.length + (pjShuffleRank.has(p.id) ? pjShuffleRank.get(p.id) : 9999);
+  };
+  return list.slice().sort((a, b) => rank(a) - rank(b));
+}
+
+function pjCounterText(shown, total, cat) {
+  const c = cat || {};
+  if (pjActiveFilter !== 'all') {
+    return (c.countFiltered || '→ {n} of {total}')
+      .replace('{n}', shown).replace('{total}', total);
+  }
+  if (shown === 1) return c.countOne || '→ 1 project';
+  return (c.count || '→ {n} projects').replace('{n}', shown);
+}
+
+function pjSetupFilters() {
+  const bar = document.querySelector('[data-pj-filters]');
+  const countEl = document.querySelector('[data-pj-count]');
+  if (!bar) return;
+
+  const projects = pjCtx.projects;
+  const cat = (pjCtx.data && pjCtx.data.catalog) || {};
+  const cats = cat.cats || {};
+
+  /* só categorias com >=1 projeto viram chip (nunca filtro morto) */
+  const available = PJ_CAT_ORDER.filter(slug =>
+    slug === 'all' || projects.some(p => p.category === slug));
+
+  /* filtro ativo pode ter sumido num re-render — volta pro all */
+  if (!available.includes(pjActiveFilter)) pjActiveFilter = 'all';
+
+  bar.innerHTML = available.map(slug => `
+    <button type="button" class="pj-filter${slug === pjActiveFilter ? ' is-on' : ''}"
+      data-pj-filter="${slug}" aria-pressed="${slug === pjActiveFilter}">
+      ${cats[slug] || slug}
     </button>
-  `).join("");const s=document.createElement("span");if(s.className="pj-cli__ink",s.setAttribute("aria-hidden","true"),t.appendChild(s),pjMoveInk(),n){const o=pjActiveFilter==="all"?e.length:e.filter(i=>i.category===pjActiveFilter).length;n.textContent=pjCounterText(o,e.length,a)}}function pjMoveInk(){const t=document.querySelector("[data-pj-filters]"),n=t&&t.querySelector(".pj-cli__ink"),e=t&&t.querySelector(".pj-filter.is-on");!n||!e||(n.style.transform=`translateX(${e.offsetLeft}px) translateY(${e.offsetTop+e.offsetHeight-n.offsetHeight}px)`,n.style.width=`${e.offsetWidth}px`)}function buildArchCard(t,n){const e=n.catalog&&n.catalog.cats||{},a=n.case||{},r=document.createElement("article");return r.className="pj-card",r.dataset.id=t.id,r.dataset.cat=t.category,r.setAttribute("data-flip-id",t.id),r.innerHTML=`
-    <a class="pj-card__frame ps-frame__view" href="${pjCaseHref(t)}"
-       aria-label="${t.title} \xB7 ${a.viewCase||"View case study"}">
+  `).join('');
+
+  /* sublinhado que viaja entre os chips (a transicao CSS faz a viagem) */
+  const ink = document.createElement('span');
+  ink.className = 'pj-cli__ink';
+  ink.setAttribute('aria-hidden', 'true');
+  bar.appendChild(ink);
+  pjMoveInk();
+
+  if (countEl) {
+    const shown = pjActiveFilter === 'all'
+      ? projects.length
+      : projects.filter(p => p.category === pjActiveFilter).length;
+    countEl.textContent = pjCounterText(shown, projects.length, cat);
+  }
+}
+
+/* posiciona o sublinhado sob o chip ativo (chamado no render, no clique
+   e no resize) */
+function pjMoveInk() {
+  const bar = document.querySelector('[data-pj-filters]');
+  const ink = bar && bar.querySelector('.pj-cli__ink');
+  const on = bar && bar.querySelector('.pj-filter.is-on');
+  if (!ink || !on) return;
+  ink.style.transform = `translateX(${on.offsetLeft}px) translateY(${on.offsetTop + on.offsetHeight - ink.offsetHeight}px)`;
+  ink.style.width = `${on.offsetWidth}px`;
+}
+
+/* =========================================================
+   ATO 3 — O ARQUIVO (fileiras que respiram)
+   ========================================================= */
+
+/* card do arquivo: só o screenshot num frame limpo (sem chrome de browser),
+   com o recorte curvo e a seta no canto, como os cartões do blog. Categoria e
+   título numa legenda ABAIXO do frame, pra capa aparecer inteira. */
+function buildArchCard(p, data) {
+  const cats = (data.catalog && data.catalog.cats) || {};
+  const caseLabels = data.case || {};
+  const card = document.createElement('article');
+  card.className = 'pj-card';
+  card.dataset.id = p.id;
+  card.dataset.cat = p.category;
+  /* o Flip casa card antigo -> novo por este id (sem ele, getState de
+     elementos destruídos + elementos novos = nada viaja no filtro) */
+  card.setAttribute('data-flip-id', p.id);
+
+  card.innerHTML = `
+    <a class="pj-card__frame ps-frame__view" href="${pjCaseHref(p)}"
+       aria-label="${p.title} · ${caseLabels.viewCase || 'View case study'}">
       <span class="pj-card__view">
-        ${pjMediaHTML(t,"pj-card__img",!1,PJ_SIZES.card)}
+        ${pjMediaHTML(p, 'pj-card__img', false, PJ_SIZES.card)}
       </span>
     </a>
     <span class="pj-card__go" aria-hidden="true">${PJ_ICONS.arrowUpRight}</span>
     <div class="pj-card__cap">
-      <span class="pj-card__catlabel">${e[t.category]||t.category}</span>
-      <a class="pj-card__title" href="${pjCaseHref(t)}" tabindex="-1">${t.title}</a>
+      <span class="pj-card__catlabel">${cats[p.category] || p.category}</span>
+      <a class="pj-card__title" href="${pjCaseHref(p)}" tabindex="-1">${p.title}</a>
     </div>
-  `,r}function pjChunkRows(t){const n=window.matchMedia("(max-width: 640px)").matches?2:3,e=[];for(let a=0;a<t.length;a+=n)e.push(t.slice(a,a+n));return e}function pjMountRows(t,n){t.innerHTML="",pjChunkRows(n).forEach(e=>{const a=document.createElement("div");a.className="pj-row",a.dataset.n=e.length,e.forEach(r=>a.appendChild(r)),t.appendChild(a)})}function pjBindRowHover(t){const n=window.matchMedia("(hover: none)"),e=(a,r)=>a.classList.toggle("is-hot",r);t.addEventListener("mouseover",a=>{if(n.matches)return;const r=a.target.closest(".pj-card");r&&e(r,!0)}),t.addEventListener("mouseout",a=>{if(n.matches)return;const r=a.target.closest(".pj-card");r&&!r.contains(a.relatedTarget)&&e(r,!1)}),t.addEventListener("focusin",a=>{if(n.matches)return;const r=a.target.closest(".pj-card");r&&e(r,!0)}),t.addEventListener("focusout",a=>{const r=a.target.closest(".pj-card");r&&!r.contains(a.relatedTarget)&&e(r,!1)})}function pjApplyFilter(t){const n=pjCtx.projects,e=pjCtx.data;pjActiveFilter=t;const a=document.querySelector("[data-ps-list]"),r=document.querySelector("[data-pj-filters]"),c=document.querySelector("[data-pj-count]"),s=document.querySelector("[data-pj-empty]");if(!a)return;let o=1;if(r){const d=[...r.querySelectorAll("[data-pj-filter]")].map(m=>m.dataset.pjFilter),f=r.querySelector(".is-on");o=d.indexOf(t)>=d.indexOf(f?f.dataset.pjFilter:"all")?1:-1,r.querySelectorAll("[data-pj-filter]").forEach(m=>{const g=m.dataset.pjFilter===t;m.classList.toggle("is-on",g),m.setAttribute("aria-pressed",g)}),pjMoveInk()}const i=t==="all"?n:n.filter(d=>d.category===t);c&&(c.textContent=pjCounterText(i.length,n.length,e.catalog)),s&&(s.hidden=i.length>0),a.style.display=i.length?"":"none";const l=()=>pjMountRows(a,i.map(d=>buildArchCard(d,e))),u=document.querySelector("[data-pj-cli]"),p=u?u.getBoundingClientRect().top:null,h=()=>{if(p===null||!u)return;const d=u.getBoundingClientRect().top-p;Math.abs(d)>1&&window.scrollBy(0,d)};if(!!!window.gsap){l(),h();return}const x=pjApplyFilter.token=(pjApplyFilter.token||0)+1,v=()=>x===pjApplyFilter.token,S=Array.prototype.slice.call(a.querySelectorAll(".pj-card"));gsap.killTweensOf(S),clearTimeout(pjApplyFilter.safety),window.__pjSwapping=!0;const b=window.matchMedia("(prefers-reduced-motion: reduce)").matches,j=()=>{if(!v())return;clearTimeout(pjApplyFilter.safety);const d=a.querySelectorAll(".pj-card");gsap.killTweensOf(d),gsap.set(d,{clearProps:"opacity,visibility,transform,clipPath"}),window.__pjSwapping=!1,window.ScrollTrigger&&ScrollTrigger.refresh()};let _=!1;const w=()=>{if(_||!v())return;_=!0,l(),h();const d=Array.prototype.slice.call(a.querySelectorAll(".pj-card"));if(!d.length||b){j();return}const f=window.innerHeight,m=d.filter(g=>g.getBoundingClientRect().top<f+80).slice(0,12);gsap.fromTo(m,{autoAlpha:0,y:46,scale:.955,clipPath:"inset(12% 0% 0% 0% round 30px)"},{autoAlpha:1,y:0,scale:1,clipPath:"inset(0% 0% 0% 0% round 0px)",duration:.7,ease:"expo.out",stagger:{each:.06,from:o<0?"end":"start"},onComplete:j})};pjApplyFilter.safety=setTimeout(()=>{w(),j()},1600);const q=S.filter(d=>{const f=d.getBoundingClientRect();return f.bottom>0&&f.top<window.innerHeight});q.length&&!b?gsap.to(q,{autoAlpha:0,y:-14,scale:.97,duration:.22,ease:"power2.in",stagger:{each:.02,from:o<0?"start":"end"},onComplete:w}):w()}function pjBindOnce(t){if(pjBound)return;pjBound=!0,pjBindRowHover(t);const n=document.querySelector("[data-pj-stack]");n&&n.addEventListener("click",o=>{const i=o.target.closest(".pj-win");!i||i.classList.contains("is-front")||(o.preventDefault(),pjPromote(i.dataset.id))});const e=document.querySelector("[data-pj-nav]");e&&(e.addEventListener("click",o=>{const i=o.target.closest("[data-pj-goto]");i&&pjPromote(i.dataset.pjGoto)}),e.addEventListener("keydown",o=>{if(o.key!=="ArrowRight"&&o.key!=="ArrowLeft")return;o.preventDefault();const i=pjCtx.featured;if(!i.length)return;const l=i.findIndex(p=>p.id===pjStackOrder[0]),u=i[(l+(o.key==="ArrowRight"?1:i.length-1))%i.length];pjPromote(u.id),e.querySelector(".is-on")?.focus()}));const a=document.querySelector("[data-pj-next]");a&&a.addEventListener("click",()=>{const o=pjCtx.featured;if(o.length<2)return;const i=o.findIndex(l=>l.id===pjStackOrder[0]);pjPromote(o[(i+1)%o.length].id)});const r=document.querySelector("[data-pj-filters]");r&&r.addEventListener("click",o=>{const i=o.target.closest("[data-pj-filter]");!i||i.dataset.pjFilter===pjActiveFilter||pjApplyFilter(i.dataset.pjFilter)});const c=document.querySelector("[data-pj-empty-cta]");c&&c.addEventListener("click",()=>pjApplyFilter("all")),pjScheduleAdvance(),document.addEventListener("visibilitychange",()=>{document.hidden||pjScheduleAdvance()});let s=null;window.addEventListener("resize",()=>{s||(s=requestAnimationFrame(()=>{s=null,pjMoveInk()}))},{passive:!0})}let hintObserver=null;function setupScrollHint(){const t=document.querySelector("[data-ps-hint]"),n=document.querySelector(".ps-head");!t||!n||(hintObserver&&hintObserver.disconnect(),hintObserver=new IntersectionObserver(e=>{e.forEach(a=>t.classList.toggle("is-hidden",!a.isIntersecting))},{threshold:.1}),hintObserver.observe(n))}function setupReposCta(t){const n=document.querySelector("[data-ps-repos]"),e=document.querySelector("[data-ps-repos-link]"),a=document.querySelector("[data-ps-repos-label]");if(!n||!e)return;const r=t.repoAll||"https://github.com/iannini25";r?(e.href=r,a&&(a.textContent=t.ctaTitle||t.ctas&&t.ctas.viewAll||"GitHub"),n.style.display=""):n.style.display="none"}function renderProjects(t){const n=document.querySelector("[data-ps-list]");if(!n||document.querySelector("#projects[data-ps-soon]"))return;const e=I18N[t].projects,a=e.catalog||{},r=pjOrder(pjPrepare(e.list)),c=document.querySelector("[data-ps-title]");c&&(c.innerHTML=a.title||"Projects");const s=document.querySelector("[data-ps-sub]");s&&(s.textContent=a.sub||"");const o=document.querySelector("[data-pj-prompt]");o&&(o.textContent=a.filterPrefix||"$ filter:");const i=document.querySelector("[data-ps-hint-label]");i&&e.showcase&&(i.textContent=e.showcase.scrollHint||""),n.dataset.visitLabel=e.ctas&&e.ctas.viewMore||e.case&&e.case.viewCase||"View more";const l=document.querySelector("[data-pj-empty-text]"),u=document.querySelector("[data-pj-empty-cta]");l&&(l.textContent=a.empty||""),u&&(u.textContent=a.emptyCta||"\u2192 View all"),pjCtx.projects=r,pjCtx.featured=pjFeaturedList(r),pjCtx.data=e,pjCtx.lang=t,pjSetupFeatured(),pjSetupFilters();const p=pjActiveFilter==="all"?r:r.filter(y=>y.category===pjActiveFilter);pjMountRows(n,p.map(y=>buildArchCard(y,e)));const h=document.querySelector("[data-pj-empty]");h&&(h.hidden=p.length>0),n.style.display=p.length?"":"none",pjBindOnce(n),setupScrollHint(),setupReposCta(e),document.dispatchEvent(new CustomEvent("pj:rendered"))}window.renderProjects=renderProjects;
+  `;
+  return card;
+}
+
+/* agrupa em fileiras de 3 (2 no celular) — cada fileira é um grid próprio,
+   pro hover só re-ponderar as colunas da própria fileira */
+function pjChunkRows(cards) {
+  const perRow = window.matchMedia('(max-width: 640px)').matches ? 2 : 3;
+  const rows = [];
+  for (let i = 0; i < cards.length; i += perRow) rows.push(cards.slice(i, i + perRow));
+  return rows;
+}
+
+function pjMountRows(arch, cards) {
+  arch.innerHTML = '';
+  pjChunkRows(cards).forEach(row => {
+    const rowEl = document.createElement('div');
+    rowEl.className = 'pj-row';
+    rowEl.dataset.n = row.length;
+    row.forEach(card => rowEl.appendChild(card));
+    arch.appendChild(rowEl);
+  });
+}
+
+/* hover: o card sob o cursor ganha .is-hot (o CSS sobe o frame e
+   aproxima a capa, só transform). focus-within espelha pro teclado. No
+   touch (hover: none) os eventos de mouse SINTÉTICOS do tap não armam o
+   estado — o tap navega direto. */
+function pjBindRowHover(arch) {
+  const touch = window.matchMedia('(hover: none)');
+  const setHot = (card, on) => card.classList.toggle('is-hot', on);
+
+  arch.addEventListener('mouseover', e => {
+    if (touch.matches) return;
+    const card = e.target.closest('.pj-card');
+    if (card) setHot(card, true);
+  });
+  arch.addEventListener('mouseout', e => {
+    if (touch.matches) return;
+    const card = e.target.closest('.pj-card');
+    if (card && !card.contains(e.relatedTarget)) setHot(card, false);
+  });
+  arch.addEventListener('focusin', e => {
+    if (touch.matches) return;
+    const card = e.target.closest('.pj-card');
+    if (card) setHot(card, true);
+  });
+  arch.addEventListener('focusout', e => {
+    const card = e.target.closest('.pj-card');
+    if (card && !card.contains(e.relatedTarget)) setHot(card, false);
+  });
+}
+
+/* aplica o filtro. Com GSAP Flip: cards navegam pra nova posição
+   (getState → re-chunk → Flip.from). Sem Flip: troca instantânea. */
+function pjApplyFilter(slug) {
+  const projects = pjCtx.projects, data = pjCtx.data;
+  pjActiveFilter = slug;
+
+  const arch = document.querySelector('[data-ps-list]');
+  const bar = document.querySelector('[data-pj-filters]');
+  const countEl = document.querySelector('[data-pj-count]');
+  const emptyEl = document.querySelector('[data-pj-empty]');
+  if (!arch) return;
+
+  /* chips: estado visual + direção do stagger (novo à direita → entra
+     da direita) */
+  let dir = 1;
+  if (bar) {
+    const order = [...bar.querySelectorAll('[data-pj-filter]')].map(b => b.dataset.pjFilter);
+    const prev = bar.querySelector('.is-on');
+    dir = order.indexOf(slug) >= order.indexOf(prev ? prev.dataset.pjFilter : 'all') ? 1 : -1;
+    bar.querySelectorAll('[data-pj-filter]').forEach(b => {
+      const on = b.dataset.pjFilter === slug;
+      b.classList.toggle('is-on', on);
+      b.setAttribute('aria-pressed', on);
+    });
+    pjMoveInk();
+  }
+
+  const filtered = slug === 'all' ? projects : projects.filter(p => p.category === slug);
+  if (countEl) countEl.textContent = pjCounterText(filtered.length, projects.length, data.catalog);
+
+  if (emptyEl) emptyEl.hidden = filtered.length > 0;
+  arch.style.display = filtered.length ? '' : 'none';
+
+  const rebuild = () => pjMountRows(arch, filtered.map(p => buildArchCard(p, data)));
+
+  /* ÂNCORA DE SCROLL: re-montar o arquivo muda a altura do documento e
+     o browser pode clampar o scroll (no mobile o catálogo em coluna
+     única perde ~1500px de uma vez — a seção "sumia" da viewport).
+     Medimos a barra de filtros antes e devolvemos ela pro MESMO lugar
+     da tela depois do re-layout. */
+  const cli = document.querySelector('[data-pj-cli]');
+  const anchorBefore = cli ? cli.getBoundingClientRect().top : null;
+  const reanchor = () => {
+    if (anchorBefore === null || !cli) return;
+    const delta = cli.getBoundingClientRect().top - anchorBefore;
+    if (Math.abs(delta) > 1) window.scrollBy(0, delta);
+  };
+
+  /* sem GSAP: troca instantânea ancorada (o visual final é o mesmo) */
+  const canAnim = !!window.gsap;
+  if (!canAnim) {
+    rebuild();
+    reanchor();
+    return;
+  }
+
+  /* SEM Flip: coreografia OUT -> remonta -> IN. Todo card do novo conjunto
+     anima (sempre VISÍVEL, em qualquer direção do filtro) e não usa o
+     absolute:true do Flip, que colapsava o container e travava a página.
+     window.__pjSwapping avisa o scrollfx pra ADIAR o rebuild dele durante a
+     troca (senão ele re-aplica o clip-path e causa a "travada + volta"). */
+  /* À PROVA DE FALHA: cada troca ganha um token; cliques rápidos matam a
+     animação anterior na hora (nada fica preso no meio, invisível ou
+     encolhido) e um seguro de tempo garante que a troca SEMPRE termina,
+     mesmo se a aba ficar em segundo plano e o rAF parar. */
+  const token = (pjApplyFilter.token = (pjApplyFilter.token || 0) + 1);
+  const live = () => token === pjApplyFilter.token;
+  const outgoing = Array.prototype.slice.call(arch.querySelectorAll('.pj-card'));
+  gsap.killTweensOf(outgoing);
+  clearTimeout(pjApplyFilter.safety);
+  window.__pjSwapping = true;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const done = () => {
+    if (!live()) return;
+    clearTimeout(pjApplyFilter.safety);
+    const cards = arch.querySelectorAll('.pj-card');
+    gsap.killTweensOf(cards);
+    gsap.set(cards, { clearProps: 'opacity,visibility,transform,clipPath' });
+    window.__pjSwapping = false;
+    if (window.ScrollTrigger) ScrollTrigger.refresh();
+  };
+
+  let swapped = false;
+  const swap = () => {
+    if (swapped || !live()) return;
+    swapped = true;
+    rebuild();
+    reanchor();
+    const incoming = Array.prototype.slice.call(arch.querySelectorAll('.pj-card'));
+    if (!incoming.length || reduce) { done(); return; }
+    /* ENTRA: só os cards visíveis animam (os de baixo já nascem prontos,
+       então 60 cards não pesam). Cada um sobe de baixo, abre de uma faixa
+       (clip-path) e desfoca pra nítido, em cascata pela direção do filtro. */
+    const vh = window.innerHeight;
+    const visible = incoming.filter(c => c.getBoundingClientRect().top < vh + 80).slice(0, 12);
+    gsap.fromTo(visible,
+      { autoAlpha: 0, y: 46, scale: .955, clipPath: 'inset(12% 0% 0% 0% round 30px)' },
+      { autoAlpha: 1, y: 0, scale: 1, clipPath: 'inset(0% 0% 0% 0% round 0px)',
+        duration: .7, ease: 'expo.out',
+        stagger: { each: .06, from: dir < 0 ? 'end' : 'start' },
+        onComplete: done });
+  };
+
+  /* seguro: no pior caso a troca termina em 1.6s */
+  pjApplyFilter.safety = setTimeout(() => { swap(); done(); }, 1600);
+
+  const visibleOut = outgoing.filter(c => {
+    const r = c.getBoundingClientRect();
+    return r.bottom > 0 && r.top < window.innerHeight;
+  });
+  if (visibleOut.length && !reduce) {
+    /* SAI: os antigos visíveis afundam e somem, rápido */
+    gsap.to(visibleOut, {
+      autoAlpha: 0, y: -14, scale: .97,
+      duration: .22, ease: 'power2.in',
+      stagger: { each: .02, from: dir < 0 ? 'start' : 'end' },
+      onComplete: swap,
+    });
+  } else {
+    swap();
+  }
+}
+
+/* =========================================================
+   BINDS ÚNICOS — todos os listeners são delegados em containers
+   que sobrevivem ao re-render (innerHTML troca, container fica).
+   Handlers leem pjCtx, então nunca seguram closure de idioma velho.
+   ========================================================= */
+function pjBindOnce(arch) {
+  if (pjBound) return;
+  pjBound = true;
+
+  pjBindRowHover(arch);
+
+  /* pilha: janela de trás promove; frente navega (o <a> cuida) */
+  const stack = document.querySelector('[data-pj-stack]');
+  if (stack) {
+    stack.addEventListener('click', e => {
+      const win = e.target.closest('.pj-win');
+      if (!win || win.classList.contains('is-front')) return;
+      e.preventDefault();
+      pjPromote(win.dataset.id);
+    });
+  }
+
+  /* dots 01 02 03 + setas do teclado */
+  const nav = document.querySelector('[data-pj-nav]');
+  if (nav) {
+    nav.addEventListener('click', e => {
+      const btn = e.target.closest('[data-pj-goto]');
+      if (btn) pjPromote(btn.dataset.pjGoto);
+    });
+    nav.addEventListener('keydown', e => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      e.preventDefault();
+      const featured = pjCtx.featured;
+      if (!featured.length) return;
+      const i = featured.findIndex(p => p.id === pjStackOrder[0]);
+      const next = featured[(i + (e.key === 'ArrowRight' ? 1 : featured.length - 1)) % featured.length];
+      pjPromote(next.id);
+      nav.querySelector('.is-on')?.focus();
+    });
+  }
+
+  /* flor do painel: próximo projeto da pilha */
+  const nextBtn = document.querySelector('[data-pj-next]');
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      const featured = pjCtx.featured;
+      if (featured.length < 2) return;
+      const i = featured.findIndex(p => p.id === pjStackOrder[0]);
+      pjPromote(featured[(i + 1) % featured.length].id);
+    });
+  }
+
+  /* barra de filtros */
+  const bar = document.querySelector('[data-pj-filters]');
+  if (bar) {
+    bar.addEventListener('click', e => {
+      const btn = e.target.closest('[data-pj-filter]');
+      if (!btn || btn.dataset.pjFilter === pjActiveFilter) return;
+      pjApplyFilter(btn.dataset.pjFilter);
+    });
+  }
+
+  /* CTA do estado vazio → volta pro "all" */
+  const emptyCta = document.querySelector('[data-pj-empty-cta]');
+  if (emptyCta) emptyCta.addEventListener('click', () => pjApplyFilter('all'));
+
+  /* auto-rotação do featured: tempo fixo por capa; ao voltar pra aba,
+     re-agenda a contagem do zero. */
+  pjScheduleAdvance();
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) pjScheduleAdvance();
+  });
+
+  /* o sublinhado dos filtros re-mede no resize (quebra de linha muda
+     offsetTop dos chips) */
+  let inkRaf = null;
+  window.addEventListener('resize', () => {
+    if (inkRaf) return;
+    inkRaf = requestAnimationFrame(() => { inkRaf = null; pjMoveInk(); });
+  }, { passive: true });
+}
+
+/* =========================================================
+   SCROLL HINT + CTA REPOS (mantidos da showcase)
+   ========================================================= */
+let hintObserver = null;
+
+function setupScrollHint() {
+  const hint = document.querySelector('[data-ps-hint]');
+  const head = document.querySelector('.ps-head');
+  if (!hint || !head) return;
+  if (hintObserver) hintObserver.disconnect();
+  hintObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => hint.classList.toggle('is-hidden', !e.isIntersecting));
+  }, { threshold: 0.1 });
+  hintObserver.observe(head);
+}
+
+function setupReposCta(data) {
+  const wrap = document.querySelector('[data-ps-repos]');
+  const link = document.querySelector('[data-ps-repos-link]');
+  const lbl  = document.querySelector('[data-ps-repos-label]');
+  if (!wrap || !link) return;
+  const href = data.repoAll || 'https://github.com/iannini25';
+  if (href) {
+    link.href = href;
+    if (lbl) lbl.textContent = data.ctaTitle || (data.ctas && data.ctas.viewAll) || 'GitHub';
+    wrap.style.display = '';
+  } else {
+    wrap.style.display = 'none';
+  }
+}
+
+/* =========================================================
+   RENDER PRINCIPAL (i18n) — chamado pelo applyI18n
+   ========================================================= */
+function renderProjects(lang) {
+  const arch = document.querySelector('[data-ps-list]');
+  if (!arch) return;
+
+  /* PLACEHOLDER "em construção": com data-ps-soon na section, o CSS
+     esconde o catálogo e mostra o aviso — nada precisa ser montado. */
+  if (document.querySelector('#projects[data-ps-soon]')) return;
+
+  const data = I18N[lang].projects;
+  const cat = data.catalog || {};
+  const projects = pjOrder(pjPrepare(data.list));
+
+  /* head — título + subtítulo (o kicker "Projects" foi removido a pedido) */
+  const titleEl = document.querySelector('[data-ps-title]');
+  if (titleEl) titleEl.innerHTML = cat.title || 'Projects';
+  const subEl = document.querySelector('[data-ps-sub]');
+  if (subEl) subEl.textContent = cat.sub || '';
+
+  /* prompt da linha de filtros */
+  const prompt = document.querySelector('[data-pj-prompt]');
+  if (prompt) prompt.textContent = cat.filterPrefix || '$ filter:';
+
+  /* hint do scroll (label do chip que segue o cursor sobre as capas) */
+  const hintLbl = document.querySelector('[data-ps-hint-label]');
+  if (hintLbl && data.showcase) hintLbl.textContent = data.showcase.scrollHint || '';
+  /* label do cursor-badge circular (scrollfx) — curto pra caber girando
+     em volta da bolinha: "Ver mais / View more" */
+  arch.dataset.visitLabel = (data.ctas && data.ctas.viewMore) ||
+    (data.case && data.case.viewCase) || 'View more';
+
+  /* empty state */
+  const emptyText = document.querySelector('[data-pj-empty-text]');
+  const emptyCta = document.querySelector('[data-pj-empty-cta]');
+  if (emptyText) emptyText.textContent = cat.empty || '';
+  if (emptyCta) emptyCta.textContent = cat.emptyCta || '→ View all';
+
+  /* contexto novo ANTES de montar os atos (handlers delegados leem dele) */
+  pjCtx.projects = projects;
+  pjCtx.featured = pjFeaturedList(projects);
+  pjCtx.data = data;
+  pjCtx.lang = lang;
+
+  /* três atos */
+  pjSetupFeatured();
+  pjSetupFilters();
+
+  const filtered = pjActiveFilter === 'all'
+    ? projects
+    : projects.filter(p => p.category === pjActiveFilter);
+  pjMountRows(arch, filtered.map(p => buildArchCard(p, data)));
+  const emptyEl = document.querySelector('[data-pj-empty]');
+  if (emptyEl) emptyEl.hidden = filtered.length > 0;
+  arch.style.display = filtered.length ? '' : 'none';
+
+  pjBindOnce(arch);
+  setupScrollHint();
+  setupReposCta(data);
+
+  /* sinaliza pra camada de motion (scrollfx.js) reconstruir os fx
+     ambientes da seção (pulsos, anel de proximidade, reveals) */
+  document.dispatchEvent(new CustomEvent('pj:rendered'));
+}
+
+/* expor pro language.js */
+window.renderProjects = renderProjects;

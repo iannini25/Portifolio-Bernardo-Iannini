@@ -1,1 +1,430 @@
-"use strict";const SKILLS_FOLDERS=[{key:"os",labelKey:"os",label:"OS & Cloud",icon:"icons/server-operating-systems-svgrepo-com.svg",files:[{name:"Linux",icon:"icons/ubuntulinux.png",ext:".sh"},{name:"Kali",icon:"icons/kalilinux.png",ext:".iso"},{name:"Windows",icon:"icons/windows.png",ext:".exe"},{name:"macOS",icon:"icons/apple.svg",ext:".app"},{name:"AWS",icon:"icons/aws.svg",ext:".tf"},{name:"VPS",icon:"icons/VPS.svg",ext:".ssh"}]},{key:"programming",labelKey:"programming",label:"Programming",icon:"icons/code-svgrepo-com.svg",files:[{name:"C#",icon:"icons/csharp.png",ext:".cs"},{name:"Python",icon:"icons/python.png",ext:".py"},{name:"TypeScript",icon:"icons/typescript.svg",ext:".ts"},{name:"JavaScript",icon:"icons/javascript.png",ext:".js"},{name:"Dart",icon:"icons/dart.svg",ext:".dart"},{name:"MySQL",icon:"icons/mysql.png",ext:".sql"}]},{key:"web",labelKey:"web",label:"Web & Mobile",icon:"icons/web-svgrepo-com.svg",files:[{name:"HTML",icon:"icons/html.png",ext:".html"},{name:"CSS",icon:"icons/css.png",ext:".css"},{name:"WordPress",icon:"icons/wordpress.png",ext:".php"},{name:"React",icon:"icons/react.svg",ext:".tsx"},{name:"Flutter",icon:"icons/flutter.svg",ext:".dart"},{name:"Kotlin",icon:"icons/kotlin.svg",ext:".kt"},{name:"Swift",icon:"icons/swift.svg",ext:".swift"}]},{key:"creative",labelKey:"creative",label:"Design & AI",icon:"icons/design-svgrepo-com.svg",files:[{name:"Figma",icon:"icons/figma.svg",ext:".fig"},{name:"Photoshop",icon:"icons/photoshop.png",ext:".psd"},{name:"Premiere",icon:"icons/premiere.png",ext:".prproj"},{name:"After Effects",icon:"icons/aftereffects.png",ext:".aep"},{name:"Blender",icon:"icons/blender.png",ext:".blend"},{name:"Claude",icon:"icons/claude.svg",ext:".md"},{name:"Jupyter",icon:"icons/jupyter.png",ext:".ipynb"}]}];function buildSkillFile(t,e,s){const n=(s-1)/2,o=e-n,r=n===0?1:1-Math.abs(o)/n,i=(Math.abs(o)*.045).toFixed(3),a=document.createElement("span");a.className="ff-file",a.setAttribute("role","listitem"),a.style.setProperty("--off",String(o)),a.style.setProperty("--arch",r.toFixed(3)),a.style.setProperty("--fd",i+"s"),a.style.setProperty("--fdi",(e*.04).toFixed(3)+"s"),a.style.setProperty("--fc",((n-Math.abs(o))*.045).toFixed(3)+"s"),a.style.setProperty("--row",String(Math.ceil(s/2)-1-Math.floor(e/2)));const l=document.createElement("img");l.className="ff-icon",l.src=t.icon,l.alt="",l.loading="lazy",l.decoding="async";const c=document.createElement("span");c.className="ff-name",c.textContent=t.name;const d=document.createElement("span");return d.className="ff-ext",d.textContent=t.ext,a.append(l,c,d),a}function buildSkillFolder(t){const e=t.files.length,s=document.createElement("div");s.className="skill-folder",s.dataset.key=t.key;const n=document.createElement("div");n.className="folder-files",n.id="ff-"+t.key,n.setAttribute("role","list"),n.setAttribute("aria-hidden","true"),t.files.forEach((h,x)=>n.appendChild(buildSkillFile(h,x,e))),n.addEventListener("pointermove",onFilesPointerMove,{passive:!0}),n.addEventListener("pointerleave",onFilesPointerLeave,{passive:!0});const o=document.createElement("button");o.className="folder-btn",o.type="button",o.setAttribute("aria-expanded","false"),o.setAttribute("aria-controls",n.id),o.setAttribute("aria-label",t.label+", "+e+" skills");const r=document.createElement("span");r.className="folder-shape",r.setAttribute("aria-hidden","true");const i=document.createElement("span");i.className="folder-tab";const a=document.createElement("span");a.className="folder-back";const l=document.createElement("span");l.className="folder-front";const c=document.createElement("span");c.className="folder-front__top";const d=document.createElement("span");d.className="folder-ico-wrap";const m=document.createElement("img");m.className="folder-ico",m.src=t.icon,m.alt="",m.loading="lazy",m.decoding="async",d.appendChild(m),c.append(d);const p=document.createElement("span");p.className="folder-front__bottom";const u=document.createElement("span");u.className="folder-label",u.dataset.labelKey=t.labelKey,u.textContent=t.label;const f=document.createElement("span");f.className="folder-meta",f.setAttribute("aria-hidden","true");const y=document.createElement("span");y.className="status-dot";const b=document.createElement("span");b.className="folder-detail",b.dataset.count=String(e),b.textContent=e+" tools",f.append(y,b),p.append(u,f),l.append(c,p),r.append(l),o.appendChild(r);const g=document.createElement("span");return g.className="folder-rear",g.setAttribute("aria-hidden","true"),g.append(i,a),s.append(g,n,o),s}var FINE_POINTER=window.matchMedia("(hover: hover) and (pointer: fine)"),lastHotX=null,lastHotY=null;function clearHot(t){t.querySelectorAll(".ff-file.ff-hot").forEach(e=>e.classList.remove("ff-hot"))}function onFilesPointerMove(t){if(t.clientX===lastHotX&&t.clientY===lastHotY)return;lastHotX=t.clientX,lastHotY=t.clientY;const e=t.currentTarget,s=e.closest(".skill-folder");if(!s||!s.classList.contains("open")){clearHot(e);return}const n=t.target.closest(".ff-file");if(!n){clearHot(e);return}n.classList.contains("ff-hot")||(clearHot(e),n.classList.add("ff-hot"))}function onFilesPointerLeave(t){clearHot(t.currentTarget)}function closeOpenFolders(t){document.querySelectorAll(".skill-folder.open").forEach(e=>{if(e===t)return;e.classList.remove("open");const s=e.querySelector(".folder-btn");s&&s.setAttribute("aria-expanded","false");const n=e.querySelector(".folder-files");n&&(n.setAttribute("aria-hidden","true"),clearHot(n))})}function ensureFolderVisible(t){const e=t.querySelector(".folder-btn"),s=t.querySelector(".folder-files");if(!e)return;const n=56,o=16,i=window.matchMedia("(max-width: 980px)").matches&&s?s.getBoundingClientRect().top:e.getBoundingClientRect().top-300,a=n+o;if(i>=a)return;const l=a-i,c=Math.max(0,window.scrollY-l);window.lenis&&typeof window.lenis.scrollTo=="function"?window.lenis.scrollTo(c,{duration:.6}):window.scrollTo({top:c,behavior:"smooth"})}function toggleFolder(t){const e=t.querySelector(".folder-btn"),s=t.querySelector(".folder-files"),n=!t.classList.contains("open");closeOpenFolders(t),t.classList.toggle("open",n),e&&e.setAttribute("aria-expanded",String(n)),s&&(n?s.removeAttribute("aria-hidden"):(s.setAttribute("aria-hidden","true"),clearHot(s))),n&&ensureFolderVisible(t)}function initBoxSpotlight(t){const e={t:0,r:0,b:0,l:0};function s(){const i=getComputedStyle(t);e.t=parseFloat(i.getPropertyValue("--box-top"))||0,e.r=parseFloat(i.getPropertyValue("--box-right"))||0,e.b=parseFloat(i.getPropertyValue("--box-bottom"))||0,e.l=parseFloat(i.getPropertyValue("--box-left"))||0}s(),window.addEventListener("resize",s,{passive:!0});let n=0,o=50,r=50;t.addEventListener("pointermove",i=>{const a=t.getBoundingClientRect(),l=a.width-e.l-e.r,c=a.height-e.t-e.b;l<=0||c<=0||(o=(i.clientX-(a.left+e.l))/l*100,r=(i.clientY-(a.top+e.t))/c*100,n||(n=requestAnimationFrame(()=>{n=0,t.style.setProperty("--mx",o.toFixed(2)+"%"),t.style.setProperty("--my",r.toFixed(2)+"%")})))},{passive:!0})}function buildSkillsFolders(){const t=document.getElementById("skillsFolders");!t||t.dataset.built==="1"||(t.dataset.built="1",SKILLS_FOLDERS.forEach(e=>{const s=buildSkillFolder(e);t.appendChild(s);const n=s.querySelector(".folder-btn");n&&n.addEventListener("click",()=>toggleFolder(s))}),initBoxSpotlight(t),buildSkillsMobile(t),document.addEventListener("keydown",e=>{if(e.key!=="Escape")return;const s=document.querySelector(".skill-folder.open");if(!s)return;closeOpenFolders(null);const n=s.querySelector(".folder-btn");n&&n.focus()}))}function buildSkillsMobile(t){const e=document.createElement("div");e.className="skm",e.id="skillsMobile",SKILLS_FOLDERS.forEach((s,n)=>{const o=document.createElement("details");o.className="skm-cat",o.name="skm",o.setAttribute("name","skm"),n===0&&(o.open=!0),o.dataset.key=s.key,o.innerHTML=`<summary><span class="skm-ico"><img src="/${s.icon}" alt="" width="22" height="22" loading="lazy"></span><span class="skm-name">${s.label}</span><span class="skm-count">${s.files.length}</span><svg class="skm-chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary><div class="skm-chips">${s.files.map(r=>`<span class="skm-chip"><img src="/${r.icon}" alt="" width="20" height="20" loading="lazy">${r.name}</span>`).join("")}</div>`,e.appendChild(o)}),t.insertAdjacentElement("afterend",e)}function renderSkills(t){const e=typeof I18N<"u"&&I18N[t]&&I18N[t].skills||null,s=document.querySelector("#skills .section-title"),n=document.querySelector("#skills .section-sub");e&&(s&&(s.textContent=e.title),n&&(n.textContent=e.sub)),n&&window.matchMedia("(max-width: 640px)").matches&&(n.textContent=t==="pt"?"Toque numa categoria pra ver as ferramentas.":"Tap a category to see the tools."),document.querySelectorAll("#skillsMobile .skm-cat").forEach(i=>{const a=i.querySelector(".skm-name"),l=i.dataset.key;a&&e&&e.tilesLabels&&e.tilesLabels[l]&&(a.textContent=e.tilesLabels[l])});const o=t==="pt"?"ferramentas":"tools",r=t==="pt"?"habilidades":"skills";document.querySelectorAll("#skillsFolders .skill-folder").forEach(i=>{const a=i.dataset.key,l=i.querySelector(".folder-label"),c=i.querySelector(".folder-detail"),d=i.querySelector(".folder-btn"),m=c&&c.dataset.count?c.dataset.count:"",p=e&&e.tilesLabels&&e.tilesLabels[a]?e.tilesLabels[a]:l?l.textContent:"";l&&p&&(l.textContent=p),c&&m&&(c.textContent=m+" "+o),d&&p&&d.setAttribute("aria-label",p+", "+m+" "+r)})}document.readyState!=="loading"?buildSkillsFolders():document.addEventListener("DOMContentLoaded",buildSkillsFolders);
+'use strict';
+
+/* =========================================================
+   SKILLS — PASTAS (folders UI)
+   Cada categoria e uma PASTA 3D. Clicar abre a tampa frontal
+   (rotateX) e os arquivos sobem e se abrem em LEQUE acima da
+   pasta; cada arquivo mostra icone + nome + extensao (como um
+   arquivo de verdade). Uma pasta aberta por vez.
+
+   Fluxo: SKILLS_FOLDERS (dados) -> buildSkillsFolders (render
+   uma vez) -> renderSkills (i18n de titulo/sub/labels a cada
+   troca de idioma). Nenhum no de arquivo e escrito a mao no
+   HTML — tudo nasce daqui.
+   ========================================================= */
+
+const SKILLS_FOLDERS = [
+  {
+    key: 'os',
+    labelKey: 'os',
+    label: 'OS & Cloud',
+    icon: 'icons/server-operating-systems-svgrepo-com.svg',
+    files: [
+      { name: 'Linux',   icon: 'icons/ubuntulinux.png', ext: '.sh' },
+      { name: 'Kali',    icon: 'icons/kalilinux.png',   ext: '.iso' },
+      { name: 'Windows', icon: 'icons/windows.png',     ext: '.exe' },
+      { name: 'macOS',   icon: 'icons/apple.svg',       ext: '.app' },
+      { name: 'AWS',     icon: 'icons/aws.svg',         ext: '.tf' },
+      { name: 'VPS',     icon: 'icons/VPS.svg',         ext: '.ssh' }
+    ]
+  },
+  {
+    key: 'programming',
+    labelKey: 'programming',
+    label: 'Programming',
+    icon: 'icons/code-svgrepo-com.svg',
+    files: [
+      { name: 'C#',         icon: 'icons/csharp.png',     ext: '.cs' },
+      { name: 'Python',     icon: 'icons/python.png',     ext: '.py' },
+      { name: 'TypeScript', icon: 'icons/typescript.svg', ext: '.ts' },
+      { name: 'JavaScript', icon: 'icons/javascript.png', ext: '.js' },
+      { name: 'Dart',       icon: 'icons/dart.svg',       ext: '.dart' },
+      { name: 'MySQL',      icon: 'icons/mysql.png',      ext: '.sql' }
+    ]
+  },
+  {
+    key: 'web',
+    labelKey: 'web',
+    label: 'Web & Mobile',
+    icon: 'icons/web-svgrepo-com.svg',
+    files: [
+      { name: 'HTML',      icon: 'icons/html.png',      ext: '.html' },
+      { name: 'CSS',       icon: 'icons/css.png',       ext: '.css' },
+      { name: 'WordPress', icon: 'icons/wordpress.png', ext: '.php' },
+      { name: 'React',     icon: 'icons/react.svg',     ext: '.tsx' },
+      { name: 'Flutter',   icon: 'icons/flutter.svg',   ext: '.dart' },
+      { name: 'Kotlin',    icon: 'icons/kotlin.svg',    ext: '.kt' },
+      { name: 'Swift',     icon: 'icons/swift.svg',     ext: '.swift' }
+    ]
+  },
+  {
+    key: 'creative',
+    labelKey: 'creative',
+    label: 'Design & AI',
+    icon: 'icons/design-svgrepo-com.svg',
+    files: [
+      { name: 'Figma',         icon: 'icons/figma.svg',       ext: '.fig' },
+      { name: 'Photoshop',     icon: 'icons/photoshop.png',   ext: '.psd' },
+      { name: 'Premiere',      icon: 'icons/premiere.png',    ext: '.prproj' },
+      { name: 'After Effects', icon: 'icons/aftereffects.png', ext: '.aep' },
+      { name: 'Blender',       icon: 'icons/blender.png',     ext: '.blend' },
+      { name: 'Claude',        icon: 'icons/claude.svg',      ext: '.md' },
+      { name: 'Jupyter',       icon: 'icons/jupyter.png',     ext: '.ipynb' }
+    ]
+  }
+];
+
+/* -------- render de um arquivo (mini-card que voa) -------- */
+function buildSkillFile(file, index, total) {
+  const mid = (total - 1) / 2;
+  const off = index - mid;                         // -mid .. +mid (centro = 0)
+  const arch = mid === 0 ? 1 : 1 - Math.abs(off) / mid; // 1 no centro, 0 nas pontas
+  const delay = (Math.abs(off) * 0.045).toFixed(3);     // leque abre do centro pra fora
+
+  const el = document.createElement('span');
+  el.className = 'ff-file';
+  el.setAttribute('role', 'listitem');
+  el.style.setProperty('--off', String(off));
+  el.style.setProperty('--arch', arch.toFixed(3));
+  el.style.setProperty('--fd', delay + 's');            // leque (desktop): stagger centro->fora
+  el.style.setProperty('--fdi', (index * 0.04).toFixed(3) + 's'); // grade (mobile): stagger em ordem
+  el.style.setProperty('--fc', ((mid - Math.abs(off)) * 0.045).toFixed(3) + 's'); // fechando: pontas primeiro
+  el.style.setProperty('--row', String(Math.ceil(total / 2) - 1 - Math.floor(index / 2))); // grade: fila contada de baixo
+
+  const img = document.createElement('img');
+  img.className = 'ff-icon';
+  img.src = file.icon;
+  img.alt = '';
+  img.loading = 'lazy';
+  img.decoding = 'async';
+
+  const name = document.createElement('span');
+  name.className = 'ff-name';
+  name.textContent = file.name;
+
+  const ext = document.createElement('span');
+  ext.className = 'ff-ext';
+  ext.textContent = file.ext;
+
+  el.append(img, name, ext);
+  return el;
+}
+
+/* -------- render de uma pasta -------- */
+function buildSkillFolder(cat) {
+  const total = cat.files.length;
+
+  const wrap = document.createElement('div');
+  wrap.className = 'skill-folder';
+  wrap.dataset.key = cat.key;
+
+  // arquivos (ficam acima da pasta ao abrir). aria-hidden fechado: um
+  // leitor de tela NAO deve anunciar os arquivos de uma pasta colapsada
+  // (aria-hidden nao afeta layout -> a animacao de abrir continua).
+  const filesBox = document.createElement('div');
+  filesBox.className = 'folder-files';
+  filesBox.id = 'ff-' + cat.key;
+  filesBox.setAttribute('role', 'list');
+  filesBox.setAttribute('aria-hidden', 'true');
+  cat.files.forEach((f, i) => filesBox.appendChild(buildSkillFile(f, i, total)));
+  // foco sob o cursor (sem :hover -> sem tremida entre arquivos sobrepostos)
+  filesBox.addEventListener('pointermove', onFilesPointerMove, { passive: true });
+  filesBox.addEventListener('pointerleave', onFilesPointerLeave, { passive: true });
+
+  // a pasta em si e o botao. aria-label explicito ("OS & Cloud, 6 skills")
+  // pra o nome acessivel nao virar o run-on "6OS & Cloud// 6 files".
+  const btn = document.createElement('button');
+  btn.className = 'folder-btn';
+  btn.type = 'button';
+  btn.setAttribute('aria-expanded', 'false');
+  btn.setAttribute('aria-controls', filesBox.id);
+  btn.setAttribute('aria-label', cat.label + ', ' + total + ' skills');
+
+  const shape = document.createElement('span');
+  shape.className = 'folder-shape';
+  shape.setAttribute('aria-hidden', 'true');
+
+  const tab = document.createElement('span');
+  tab.className = 'folder-tab';
+
+  const back = document.createElement('span');
+  back.className = 'folder-back';
+
+  const front = document.createElement('span');
+  front.className = 'folder-front';
+
+  const top = document.createElement('span');
+  top.className = 'folder-front__top';
+
+  // icone grande e solido dentro de um TILE arredondado verde (duotone) ->
+  // UM foco cheio, nao um risquinho fino no canto.
+  const icoWrap = document.createElement('span');
+  icoWrap.className = 'folder-ico-wrap';
+  const fico = document.createElement('img');
+  fico.className = 'folder-ico';
+  fico.src = cat.icon;
+  fico.alt = '';
+  fico.loading = 'lazy';
+  fico.decoding = 'async';
+  icoWrap.appendChild(fico);
+
+  top.append(icoWrap);
+
+  const bottom = document.createElement('span');
+  bottom.className = 'folder-front__bottom';
+
+  const label = document.createElement('span');
+  label.className = 'folder-label';
+  label.dataset.labelKey = cat.labelKey;
+  label.textContent = cat.label;
+
+  // UM contador so: dot verde pulsante + "N tools" mono sob o label
+  // (a antiga pill "● N" no topo saiu -> sem repeticao). decorativo.
+  const meta = document.createElement('span');
+  meta.className = 'folder-meta';
+  meta.setAttribute('aria-hidden', 'true');   // o nome acessivel vem do aria-label
+
+  const dot = document.createElement('span');
+  dot.className = 'status-dot';
+
+  const detail = document.createElement('span');
+  detail.className = 'folder-detail';
+  detail.dataset.count = String(total);
+  detail.textContent = total + ' tools';
+
+  meta.append(dot, detail);
+  bottom.append(label, meta);
+  front.append(top, bottom);
+  shape.append(front);
+  btn.appendChild(shape);
+
+  // aba e fundo ficam ATRAS dos arquivos; a tampa (no botao) fica NA FRENTE
+  const rear = document.createElement('span');
+  rear.className = 'folder-rear';
+  rear.setAttribute('aria-hidden', 'true');
+  rear.append(tab, back);
+
+  wrap.append(rear, filesBox, btn);
+  return wrap;
+}
+
+/* -------- foco sob o cursor nos arquivos abertos (sem :hover) --------
+   Os arquivos do leque se SOBREPOEM; com :hover puro, o `scale` de foco move a
+   area-alvo e o :hover "pisca" entre 2 arquivos na borda/ponta. Aqui o JS marca
+   UM alvo por movimento -> o topo real sob o cursor -> zero tremida/travamento.
+   Ver style.css .ff-file.ff-hot. */
+var FINE_POINTER = window.matchMedia('(hover: hover) and (pointer: fine)');
+var lastHotX = null, lastHotY = null;
+
+function clearHot(container) {
+  container.querySelectorAll('.ff-file.ff-hot').forEach(f => f.classList.remove('ff-hot'));
+}
+function onFilesPointerMove(e) {
+  // guard anti-scroll: ao rolar, o browser dispara pointermove com o cursor
+  // PARADO -> so mexe no foco quando o mouse ANDA de verdade (clientX/Y mudam).
+  if (e.clientX === lastHotX && e.clientY === lastHotY) return;
+  lastHotX = e.clientX; lastHotY = e.clientY;
+  const box = e.currentTarget;
+  const folder = box.closest('.skill-folder');
+  if (!folder || !folder.classList.contains('open')) { clearHot(box); return; }
+  const file = e.target.closest('.ff-file');
+  if (!file) { clearHot(box); return; }
+  if (file.classList.contains('ff-hot')) return;   // ja e o alvo -> nada muda
+  clearHot(box);
+  file.classList.add('ff-hot');
+}
+function onFilesPointerLeave(e) {
+  clearHot(e.currentTarget);
+}
+
+/* -------- interacao: uma pasta aberta por vez -------- */
+function closeOpenFolders(except) {
+  document.querySelectorAll('.skill-folder.open').forEach(folder => {
+    if (folder === except) return;
+    folder.classList.remove('open');
+    const btn = folder.querySelector('.folder-btn');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+    const files = folder.querySelector('.folder-files');
+    if (files) {
+      files.setAttribute('aria-hidden', 'true');   // esconde do leitor ao fechar
+      clearHot(files);                              // some o foco ao fechar
+    }
+  });
+}
+
+/* garante FOLGA: o leque sobe ~300px (desktop) ou a altura da grade
+   (mobile) acima da pasta. Se a pasta esta perto do topo (comum num tap
+   mobile), o leque ficaria atras da nav fixa -> rola pra uma posicao
+   segura, com o topo do leque abaixo da nav. */
+function ensureFolderVisible(folder) {
+  const btn = folder.querySelector('.folder-btn');
+  const files = folder.querySelector('.folder-files');
+  if (!btn) return;
+
+  const navH = 56;   // --nav-h
+  const margin = 16;
+  const coarse = window.matchMedia('(max-width: 980px)').matches;
+
+  // no reflow (grade) o container tem altura real -> seu topo E o topo do leque.
+  // no leque (desktop) o container tem altura 0 -> estima 300px acima da pasta.
+  const fanTop = (coarse && files)
+    ? files.getBoundingClientRect().top
+    : btn.getBoundingClientRect().top - 300;
+
+  const safeTop = navH + margin;
+  if (fanTop >= safeTop) return;                      // ja tem folga
+
+  const delta = safeTop - fanTop;                     // desce o conteudo em delta
+  const targetY = Math.max(0, window.scrollY - delta);
+  if (window.lenis && typeof window.lenis.scrollTo === 'function') {
+    window.lenis.scrollTo(targetY, { duration: 0.6 });
+  } else {
+    window.scrollTo({ top: targetY, behavior: 'smooth' });
+  }
+}
+
+function toggleFolder(folder) {
+  const btn = folder.querySelector('.folder-btn');
+  const files = folder.querySelector('.folder-files');
+  const willOpen = !folder.classList.contains('open');
+  closeOpenFolders(folder);                 // fecha qualquer outra antes
+  folder.classList.toggle('open', willOpen);
+  if (btn) btn.setAttribute('aria-expanded', String(willOpen));
+  if (files) {
+    if (willOpen) {
+      files.removeAttribute('aria-hidden');   // revela pro leitor
+    } else {
+      files.setAttribute('aria-hidden', 'true');
+      clearHot(files);                         // fechando -> tira o foco
+    }
+  }
+  if (willOpen) ensureFolderVisible(folder);
+}
+
+/* -------- boot: monta as pastas uma unica vez -------- */
+/* HOVER na box do gradiente: um facho de luz suave segue o cursor. Escreve
+   --mx/--my em % RELATIVOS a box (::before/::after usam os mesmos insets
+   --box-*, entao a conta bate). So mouse fino; rAF-throttled; recalcula os
+   insets no resize (mudam por breakpoint). O fade e do CSS (:hover::after). */
+function initBoxSpotlight(host) {
+  const ins = { t: 0, r: 0, b: 0, l: 0 };
+  function readInsets() {
+    const cs = getComputedStyle(host);
+    ins.t = parseFloat(cs.getPropertyValue('--box-top')) || 0;
+    ins.r = parseFloat(cs.getPropertyValue('--box-right')) || 0;
+    ins.b = parseFloat(cs.getPropertyValue('--box-bottom')) || 0;
+    ins.l = parseFloat(cs.getPropertyValue('--box-left')) || 0;
+  }
+  readInsets();
+  window.addEventListener('resize', readInsets, { passive: true });
+  let raf = 0, mx = 50, my = 50;
+  host.addEventListener('pointermove', e => {
+    const r = host.getBoundingClientRect();
+    const boxW = r.width - ins.l - ins.r;
+    const boxH = r.height - ins.t - ins.b;
+    if (boxW <= 0 || boxH <= 0) return;
+    mx = ((e.clientX - (r.left + ins.l)) / boxW) * 100;
+    my = ((e.clientY - (r.top + ins.t)) / boxH) * 100;
+    if (!raf) raf = requestAnimationFrame(() => {
+      raf = 0;
+      host.style.setProperty('--mx', mx.toFixed(2) + '%');
+      host.style.setProperty('--my', my.toFixed(2) + '%');
+    });
+  }, { passive: true });
+}
+
+function buildSkillsFolders() {
+  const host = document.getElementById('skillsFolders');
+  if (!host || host.dataset.built === '1') return;
+  host.dataset.built = '1';
+
+  SKILLS_FOLDERS.forEach(cat => {
+    const folder = buildSkillFolder(cat);
+    host.appendChild(folder);
+    const btn = folder.querySelector('.folder-btn');
+    if (btn) btn.addEventListener('click', () => toggleFolder(folder));
+  });
+  initBoxSpotlight(host);
+  buildSkillsMobile(host);
+
+  // Esc fecha a pasta aberta e devolve o foco ao botao
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    const open = document.querySelector('.skill-folder.open');
+    if (!open) return;
+    closeOpenFolders(null);
+    const btn = open.querySelector('.folder-btn');
+    if (btn) btn.focus();
+  });
+}
+
+/* -------- celular: lista em sanfona no lugar das pastas --------
+   As pastas 3D pedem espaco e hover; no celular viravam um painel de
+   2.400px com uma pasta por tela. Aqui cada categoria e um <details>
+   (uma aberta por vez via name=, a 1a ja aberta) com as ferramentas em
+   etiquetas. O CSS mostra uma ou outra versao pela largura. */
+function buildSkillsMobile(host) {
+  const list = document.createElement('div');
+  list.className = 'skm';
+  list.id = 'skillsMobile';
+  SKILLS_FOLDERS.forEach((cat, i) => {
+    const d = document.createElement('details');
+    d.className = 'skm-cat';
+    d.name = 'skm';
+    d.setAttribute('name', 'skm');
+    if (i === 0) d.open = true;
+    d.dataset.key = cat.key;
+    d.innerHTML =
+      `<summary><span class="skm-ico"><img src="/${cat.icon}" alt="" width="22" height="22" loading="lazy"></span>` +
+      `<span class="skm-name">${cat.label}</span><span class="skm-count">${cat.files.length}</span>` +
+      `<svg class="skm-chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>` +
+      `<div class="skm-chips">${cat.files.map(f =>
+        `<span class="skm-chip"><img src="/${f.icon}" alt="" width="20" height="20" loading="lazy">${f.name}</span>`).join('')}</div>`;
+    list.appendChild(d);
+  });
+  host.insertAdjacentElement('afterend', list);
+}
+
+/* -------- i18n: titulo, subtitulo e labels das pastas -------- */
+function renderSkills(lang) {
+  const S = (typeof I18N !== 'undefined' && I18N[lang] && I18N[lang].skills) || null;
+
+  const title = document.querySelector('#skills .section-title');
+  const sub = document.querySelector('#skills .section-sub');
+  if (S) {
+    if (title) title.textContent = S.title;
+    if (sub) sub.textContent = S.sub;
+  }
+  /* celular: a instrucao fala de tocar numa categoria, nao de pasta */
+  if (sub && window.matchMedia('(max-width: 640px)').matches) {
+    sub.textContent = lang === 'pt' ? 'Toque numa categoria pra ver as ferramentas.' : 'Tap a category to see the tools.';
+  }
+  document.querySelectorAll('#skillsMobile .skm-cat').forEach(d => {
+    const name = d.querySelector('.skm-name');
+    const key = d.dataset.key;
+    if (name && S && S.tilesLabels && S.tilesLabels[key]) name.textContent = S.tilesLabels[key];
+  });
+
+  const toolsWord = lang === 'pt' ? 'ferramentas' : 'tools';
+  const skillsWord = lang === 'pt' ? 'habilidades' : 'skills';
+
+  document.querySelectorAll('#skillsFolders .skill-folder').forEach(folder => {
+    const key = folder.dataset.key;
+    const label = folder.querySelector('.folder-label');
+    const detail = folder.querySelector('.folder-detail');
+    const btn = folder.querySelector('.folder-btn');
+    const count = detail && detail.dataset.count ? detail.dataset.count : '';
+
+    const labelText = (S && S.tilesLabels && S.tilesLabels[key])
+      ? S.tilesLabels[key]
+      : (label ? label.textContent : '');
+
+    if (label && labelText) label.textContent = labelText;
+    if (detail && count) detail.textContent = count + ' ' + toolsWord;
+    // nome acessivel limpo, localizado ("OS & Cloud, 6 skills" / "6 habilidades")
+    if (btn && labelText) btn.setAttribute('aria-label', labelText + ', ' + count + ' ' + skillsWord);
+  });
+}
+
+if (document.readyState !== 'loading') buildSkillsFolders();
+else document.addEventListener('DOMContentLoaded', buildSkillsFolders);

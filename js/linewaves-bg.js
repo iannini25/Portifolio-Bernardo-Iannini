@@ -1,4 +1,31 @@
-import{Renderer as re,Program as ae,Mesh as ie,Triangle as le}from"https://cdn.jsdelivr.net/npm/ogl@1.0.11/+esm";import{createGovernor as se,isScrolling as ue,TOUCH as ce}from"./gl-governor.js";const W=o=>{const n=o.replace("#","");return[parseInt(n.slice(0,2),16)/255,parseInt(n.slice(2,4),16)/255,parseInt(n.slice(4,6),16)/255]},de=`
+/* ============================================================
+   LINEWAVES BG — fundo WebGL animado da section de Serviços.
+
+   Porte vanilla (sem React) do componente <LineWaves/> do React Bits,
+   adaptado ao site (mesma "linguagem" do fundo anterior):
+     · cores do tema — verde institucional (--green) + lima (--lime)
+     · desktop-only (perf; mobile fica sem, igual glow-wire)
+     · mascara vertical (CSS .linewaves-bg) funde nas sections vizinhas:
+       desvanece no topo (-> Sobre) e na base (-> Experiencia)
+     · pausa fora da viewport / aba oculta; respeita prefers-reduced-motion
+       (pinta 1 frame e para)
+
+   Shader e uniforms sao os do componente original (so as cores mudaram).
+   ogl carregado via CDN ESM, mesmo padrao de GSAP/Lenis no index.
+   ============================================================ */
+import { Renderer, Program, Mesh, Triangle } from 'https://cdn.jsdelivr.net/npm/ogl@1.0.11/+esm';
+import { createGovernor, isScrolling, TOUCH } from './gl-governor.js';
+
+const hexToVec3 = hex => {
+  const h = hex.replace('#', '');
+  return [
+    parseInt(h.slice(0, 2), 16) / 255,
+    parseInt(h.slice(2, 4), 16) / 255,
+    parseInt(h.slice(4, 6), 16) / 255,
+  ];
+};
+
+const vertexShader = `
 attribute vec2 uv;
 attribute vec2 position;
 varying vec2 vUv;
@@ -6,7 +33,9 @@ void main() {
   vUv = uv;
   gl_Position = vec4(position, 0, 1);
 }
-`,fe=`
+`;
+
+const fragmentShader = `
 precision highp float;
 
 uniform float uTime;
@@ -113,4 +142,270 @@ void main() {
 
   gl_FragColor = vec4(col, alpha);
 }
-`;function me(o,n={}){const{speed:l=.3,innerLineCount:v=32,outerLineCount:w=36,warpIntensity:y=1,rotation:F=-45,edgeFadeWidth:h=0,colorCycleSpeed:z=1,brightness:N=.2,color1:U="#ffffff",color2:G="#ffffff",color3:X="#ffffff",enableMouseInteraction:x=!0,mouseInfluence:j=2,renderScale:J=.8,maxDpr:K=1.5,maxBuffer:Q=2200,targetFps:E=60,interactTarget:b=o}=n;let u;try{u=new re({alpha:!0,premultipliedAlpha:!1,antialias:!1,dpr:Math.min(window.devicePixelRatio||1,K),powerPreference:"low-power"})}catch{return()=>{}}const r=u.gl;if(!r)return()=>{};r.clearColor(0,0,0,0);const a=r.canvas;a.style.display="block",a.style.width="100%",a.style.height="100%",o.appendChild(a);const Z=new le(r),$=F*Math.PI/180,c=new ae(r,{vertex:de,fragment:fe,uniforms:{uTime:{value:0},uResolution:{value:new Float32Array([1,1,1])},uSpeed:{value:l},uInnerLines:{value:v},uOuterLines:{value:w},uWarpIntensity:{value:y},uRotation:{value:$},uEdgeFadeWidth:{value:h},uColorCycleSpeed:{value:z},uBrightness:{value:N},uColor1:{value:new Float32Array(W(U))},uColor2:{value:new Float32Array(W(G))},uColor3:{value:new Float32Array(W(X))},uMouse:{value:new Float32Array([.5,.5])},uMouseInfluence:{value:j},uEnableMouse:{value:x}}}),R=new ie(r,{geometry:Z,program:c}),d=[.5,.5],f=[.5,.5],P=e=>{const t=o.getBoundingClientRect();f[0]=(e.clientX-t.left)/t.width,f[1]=1-(e.clientY-t.top)/t.height},k=()=>{f[0]=.5,f[1]=.5};x&&(b.addEventListener("mousemove",P,{passive:!0}),b.addEventListener("mouseleave",k,{passive:!0}));let m=J,M=!1;const A=()=>{const e=o.getBoundingClientRect(),t=u.dpr||1,B=Math.max(1,e.width*m)*t,te=Math.max(1,e.height*m)*t,V=Math.min(1,Q/Math.max(B,te)),oe=Math.max(1,Math.floor(e.width*m*V)),ne=Math.max(1,Math.floor(e.height*m*V));u.setSize(oe,ne),a.style.width="100%",a.style.height="100%";const S=c.uniforms.uResolution.value;S[0]=r.drawingBufferWidth,S[1]=r.drawingBufferHeight,S[2]=r.drawingBufferWidth/Math.max(1,r.drawingBufferHeight)},q=new ResizeObserver(()=>{M||(M=!0,requestAnimationFrame(()=>{M=!1,A()}))});q.observe(o),A();let i=0,C=!1,s=!1,p=document.visibilityState!=="hidden",I=1e3/E;const ee=se({scale:m,fps:E,onScale:e=>{m=e,A()},onFps:e=>{I=1e3/e}});let L=0;const ve=()=>{c.uniforms.uTime.value=0,u.render({scene:R})},g=e=>{if(C||!s||!p)return;ee(e);const t=ue(e);if(t&&ce){i=requestAnimationFrame(g);return}const B=t?I*2:I;if(e-L<B){i=requestAnimationFrame(g);return}L=e,c.uniforms.uTime.value=e*.001,x&&(d[0]+=.05*(f[0]-d[0]),d[1]+=.05*(f[1]-d[1]),c.uniforms.uMouse.value[0]=d[0],c.uniforms.uMouse.value[1]=d[1]),u.render({scene:R}),i=requestAnimationFrame(g)},D=e=>{e.preventDefault(),C=!0,cancelAnimationFrame(i)},O=()=>{C=!1,s&&p&&(cancelAnimationFrame(i),i=requestAnimationFrame(g))};a.addEventListener("webglcontextlost",D),a.addEventListener("webglcontextrestored",O);const T=()=>{cancelAnimationFrame(i),s&&p&&!C&&(L=0,i=requestAnimationFrame(g))},Y=new IntersectionObserver(([e])=>{const t=s;s=e.isIntersecting,s&&!t?T():s||cancelAnimationFrame(i)},{rootMargin:"160px 0px",threshold:0});Y.observe(o);const _=()=>{p=document.visibilityState!=="hidden",p?T():cancelAnimationFrame(i)};document.addEventListener("visibilitychange",_);const H=o.getBoundingClientRect();return s=H.bottom>-160&&H.top<(window.innerHeight||0)+160,T(),()=>{cancelAnimationFrame(i),q.disconnect(),Y.disconnect(),document.removeEventListener("visibilitychange",_),a.removeEventListener("webglcontextlost",D),a.removeEventListener("webglcontextrestored",O),x&&(b.removeEventListener("mousemove",P),b.removeEventListener("mouseleave",k));try{o.removeChild(a)}catch{}r.getExtension("WEBGL_lose_context")?.loseContext()}}(function(){const n=document.querySelector("#services");if(!n)return;let l=n.querySelector(".linewaves-bg");l||(l=document.createElement("div"),l.className="linewaves-bg",l.setAttribute("aria-hidden","true"),n.prepend(l));const v=window.matchMedia("(pointer: coarse)").matches,w=()=>{me(l,{speed:.2,innerLineCount:32,outerLineCount:40,warpIntensity:1,rotation:-52,edgeFadeWidth:0,colorCycleSpeed:1,brightness:.1,color1:"#a3e635",color2:"#d9f99d",color3:"#ffffff",enableMouseInteraction:!0,mouseInfluence:.8,interactTarget:n,renderScale:v?.6:.8,maxDpr:v?1:1.5,targetFps:v?30:60})};if(!("IntersectionObserver"in window)){w();return}const y=new IntersectionObserver(F=>{F.some(h=>h.isIntersecting)&&(y.disconnect(),(window.requestIdleCallback||(h=>setTimeout(h,1)))(w,{timeout:600}))},{rootMargin:"900px 0px"});y.observe(n)})();
+`;
+
+/* Inicia o LineWaves dentro de `container`. `interactTarget` recebe o
+   mouse (usamos a section inteira pra reagir mesmo por cima dos cards,
+   ja que o container fica atras deles). Devolve o teardown. */
+function initLineWaves(container, opts = {}) {
+  const {
+    speed = 0.3,
+    innerLineCount = 32,
+    outerLineCount = 36,
+    warpIntensity = 1.0,
+    rotation = -45,
+    edgeFadeWidth = 0.0,
+    colorCycleSpeed = 1.0,
+    brightness = 0.2,
+    color1 = '#ffffff',
+    color2 = '#ffffff',
+    color3 = '#ffffff',
+    enableMouseInteraction = true,
+    mouseInfluence = 2.0,
+    renderScale = 0.8,
+    maxDpr = 1.5,
+    maxBuffer = 2200,
+    targetFps = 60,
+    interactTarget = container,
+  } = opts;
+
+  let renderer;
+  try {
+    renderer = new Renderer({
+      alpha: true,
+      premultipliedAlpha: false,
+      antialias: false,
+      dpr: Math.min(window.devicePixelRatio || 1, maxDpr),
+      powerPreference: 'low-power',
+    });
+  } catch {
+    return () => {};
+  }
+  const gl = renderer.gl;
+  if (!gl) return () => {};
+  gl.clearColor(0, 0, 0, 0);
+  const canvas = gl.canvas;
+  canvas.style.display = 'block';
+  canvas.style.width = '100%';
+  canvas.style.height = '100%';
+  container.appendChild(canvas);
+
+  const geometry = new Triangle(gl);
+  const rotationRad = (rotation * Math.PI) / 180;
+
+  const program = new Program(gl, {
+    vertex: vertexShader,
+    fragment: fragmentShader,
+    uniforms: {
+      uTime: { value: 0 },
+      uResolution: { value: new Float32Array([1, 1, 1]) },
+      uSpeed: { value: speed },
+      uInnerLines: { value: innerLineCount },
+      uOuterLines: { value: outerLineCount },
+      uWarpIntensity: { value: warpIntensity },
+      uRotation: { value: rotationRad },
+      uEdgeFadeWidth: { value: edgeFadeWidth },
+      uColorCycleSpeed: { value: colorCycleSpeed },
+      uBrightness: { value: brightness },
+      uColor1: { value: new Float32Array(hexToVec3(color1)) },
+      uColor2: { value: new Float32Array(hexToVec3(color2)) },
+      uColor3: { value: new Float32Array(hexToVec3(color3)) },
+      uMouse: { value: new Float32Array([0.5, 0.5]) },
+      uMouseInfluence: { value: mouseInfluence },
+      uEnableMouse: { value: enableMouseInteraction },
+    },
+  });
+
+  const mesh = new Mesh(gl, { geometry, program });
+
+  // mouse com lerp suave (0.05) e recentragem ao sair — atachado na section
+  const current = [0.5, 0.5];
+  const target = [0.5, 0.5];
+  const handleMove = e => {
+    const rect = container.getBoundingClientRect();
+    target[0] = (e.clientX - rect.left) / rect.width;
+    target[1] = 1.0 - (e.clientY - rect.top) / rect.height;
+  };
+  const handleLeave = () => { target[0] = 0.5; target[1] = 0.5; };
+  if (enableMouseInteraction) {
+    interactTarget.addEventListener('mousemove', handleMove, { passive: true });
+    interactTarget.addEventListener('mouseleave', handleLeave, { passive: true });
+  }
+
+  let scaleNow = renderScale;
+  let resizePending = false;
+  const setSize = () => {
+    const rect = container.getBoundingClientRect();
+    // Cap no maior lado do drawing-buffer: a section fica MUITO alta quando o
+    // deck CardSwap pina (pin-spacer). Buffer real = w * dpr, contamos o dpr.
+    const dpr = renderer.dpr || 1;
+    const bw = Math.max(1, rect.width * scaleNow) * dpr;
+    const bh = Math.max(1, rect.height * scaleNow) * dpr;
+    const k = Math.min(1, maxBuffer / Math.max(bw, bh));
+    const width = Math.max(1, Math.floor(rect.width * scaleNow * k));
+    const height = Math.max(1, Math.floor(rect.height * scaleNow * k));
+    renderer.setSize(width, height);
+
+    // renderer.setSize sobrescreve o style do canvas com o tamanho do buffer —
+    // devolvemos 100% pra CSS esticar de volta ao container.
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+
+    const res = program.uniforms.uResolution.value;
+    res[0] = gl.drawingBufferWidth;
+    res[1] = gl.drawingBufferHeight;
+    res[2] = gl.drawingBufferWidth / Math.max(1, gl.drawingBufferHeight);
+  };
+
+  const ro = new ResizeObserver(() => {
+    if (resizePending) return;
+    resizePending = true;
+    requestAnimationFrame(() => { resizePending = false; setSize(); });
+  });
+  ro.observe(container);
+  setSize();
+
+  let raf = 0;
+  let contextLost = false;
+  let isVisible = false;
+  let tabVisible = document.visibilityState !== 'hidden';
+  let frameInterval = 1000 / targetFps;
+  /* qualidade adaptativa: se a pagina perde fluidez neste aparelho, o
+     efeito baixa a resolucao interna (e no limite o fps) sozinho */
+  const governor = createGovernor({
+    scale: scaleNow, fps: targetFps,
+    onScale: v => { scaleNow = v; setSize(); },
+    onFps: v => { frameInterval = 1000 / v; },
+  });
+  let lastFrameTime = 0;
+
+  const renderStaticFrame = () => {
+    program.uniforms.uTime.value = 0;
+    renderer.render({ scene: mesh });
+  };
+
+  const loop = t => {
+    if (contextLost || !isVisible || !tabVisible) return;
+    governor(t);
+    /* rolando: no toque o fundo segura o quadro (rolagem tem prioridade);
+       no desktop segue vivo na metade da taxa */
+    const rolling = isScrolling(t);
+    if (rolling && TOUCH) { raf = requestAnimationFrame(loop); return; }
+    const budget = rolling ? frameInterval * 2 : frameInterval;
+    if (t - lastFrameTime < budget) { raf = requestAnimationFrame(loop); return; }
+    lastFrameTime = t;
+
+    program.uniforms.uTime.value = t * 0.001;
+
+    if (enableMouseInteraction) {
+      current[0] += 0.05 * (target[0] - current[0]);
+      current[1] += 0.05 * (target[1] - current[1]);
+      program.uniforms.uMouse.value[0] = current[0];
+      program.uniforms.uMouse.value[1] = current[1];
+    }
+
+    renderer.render({ scene: mesh });
+    raf = requestAnimationFrame(loop);
+  };
+
+  const handleContextLost = e => { e.preventDefault(); contextLost = true; cancelAnimationFrame(raf); };
+  const handleContextRestored = () => {
+    contextLost = false;
+    if (isVisible && tabVisible) {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(loop);
+    }
+  };
+  canvas.addEventListener('webglcontextlost', handleContextLost);
+  canvas.addEventListener('webglcontextrestored', handleContextRestored);
+
+  const kick = () => {
+    cancelAnimationFrame(raf);
+    if (isVisible && tabVisible && !contextLost) {
+      lastFrameTime = 0;
+      raf = requestAnimationFrame(loop);
+    }
+  };
+
+  const io = new IntersectionObserver(([entry]) => {
+    const wasVisible = isVisible;
+    isVisible = entry.isIntersecting;
+    if (isVisible && !wasVisible) kick();
+    else if (!isVisible) cancelAnimationFrame(raf);
+  }, { rootMargin: '160px 0px', threshold: 0 });
+  io.observe(container);
+
+  const handleVisibilityChange = () => {
+    tabVisible = document.visibilityState !== 'hidden';
+    if (tabVisible) kick();
+    else cancelAnimationFrame(raf);
+  };
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+
+  const r0 = container.getBoundingClientRect();
+  isVisible = r0.bottom > -160 && r0.top < (window.innerHeight || 0) + 160;
+  kick();
+
+  return () => {
+    cancelAnimationFrame(raf);
+    ro.disconnect();
+    io.disconnect();
+    document.removeEventListener('visibilitychange', handleVisibilityChange);
+    canvas.removeEventListener('webglcontextlost', handleContextLost);
+    canvas.removeEventListener('webglcontextrestored', handleContextRestored);
+    if (enableMouseInteraction) {
+      interactTarget.removeEventListener('mousemove', handleMove);
+      interactTarget.removeEventListener('mouseleave', handleLeave);
+    }
+    try { container.removeChild(canvas); } catch {}
+    gl.getExtension('WEBGL_lose_context')?.loseContext();
+  };
+}
+
+/* ---- monta o fundo na section de Servicos ---- */
+(function mountServicesLineWaves() {
+  const section = document.querySelector('#services');
+  if (!section) return;
+
+  let layer = section.querySelector('.linewaves-bg');
+  if (!layer) {
+    layer = document.createElement('div');
+    layer.className = 'linewaves-bg';
+    layer.setAttribute('aria-hidden', 'true');
+    section.prepend(layer);
+  }
+
+  const coarse = window.matchMedia('(pointer: coarse)').matches;
+    /* so compila o shader quando a secao chega perto da tela: no load o
+     fundo nao existe ainda, e a pagina abre sem esse custo no processador */
+  const start = () => {
+  initLineWaves(layer, {
+      speed: 0.2,
+      innerLineCount: 32,
+      outerLineCount: 40,
+      warpIntensity: 1.0,
+      rotation: -52,
+      edgeFadeWidth: 0.0,
+      colorCycleSpeed: 1.0,
+      brightness: 0.1,
+      color1: '#a3e635',       // lime (cor principal)
+      color2: '#d9f99d',       // lime claro (brilho da onda)
+      color3: '#ffffff',       // realce
+      enableMouseInteraction: true,
+      mouseInfluence: 0.8,
+      interactTarget: section,
+      // linhas finas pedem nitidez no desktop; no toque nao ha mouse pra
+      // interagir, entao 30fps + dpr 1 seguram a GPU movel e a bateria
+      renderScale: coarse ? 0.6 : 0.8,
+      maxDpr: coarse ? 1 : 1.5,
+      targetFps: coarse ? 30 : 60,
+    });
+  };
+  if (!('IntersectionObserver' in window)) { start(); return; }
+  const io = new IntersectionObserver((entries) => {
+    if (!entries.some(e => e.isIntersecting)) return;
+    io.disconnect();
+    (window.requestIdleCallback || ((f) => setTimeout(f, 1)))(start, { timeout: 600 });
+  }, { rootMargin: '900px 0px' });
+  io.observe(section);
+})();

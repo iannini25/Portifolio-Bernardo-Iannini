@@ -1,4 +1,56 @@
-import{Renderer as ae,Program as se,Mesh as ue,Triangle as ce}from"https://cdn.jsdelivr.net/npm/ogl@1.0.11/+esm";import{createGovernor as fe,isScrolling as me,TOUCH as de}from"./gl-governor.js";const _=8,pe=o=>{const t=o.replace("#","").padEnd(6,"0");return[parseInt(t.slice(0,2),16)/255,parseInt(t.slice(2,4),16)/255,parseInt(t.slice(4,6),16)/255]},ve=o=>{const t=(o&&o.length?o:["#4F46E5","#06B6D4","#E0F2FE"]).slice(0,_),r=t.length,i=[];for(let n=0;n<_;n++)i.push(pe(t[Math.min(n,t.length-1)]));const l=[0,0,0];for(let n=0;n<r;n++)l[0]+=i[n][0],l[1]+=i[n][1],l[2]+=i[n][2];return l[0]/=r,l[1]/=r,l[2]/=r,{arr:i,count:r,avg:l}},he=o=>{switch(o){case"up":return[0,1];case"down":return[0,-1];case"left":return[-1,0];case"right":return[1,0];default:return[0,-1]}},ge=`
+/* ============================================================
+   FERROFLUID BG — fundo WebGL animado da experiencia INTEIRA (#xp +
+   #timeline), envoltos em .experience-bg-wrap.
+
+   Porte vanilla (sem React) do componente <Ferrofluid/> do React Bits.
+   E um shader 2D fullscreen (ogl) -> preenche QUALQUER proporcao limpo,
+   sem "caixa" nem distorcao. Ocupa a section inteira (canvas inset:0),
+   SEM mascara: substitui o fundo preto por fluido verde fluindo.
+
+   Adaptado ao site: SO as cores mudaram (verde/lima/branco do tema); o
+   resto dos parametros e o do exemplo de uso. Fundo transparente
+   (clearColor 0) -> o fluido compoe sobre o --bg escuro do site.
+
+   Perf: render em escala reduzida (renderScale) com cap de buffer, dpr
+   limitado, ~30fps (24 no toque), pausa fora da viewport / aba oculta.
+   ogl via CDN ESM (padrao GSAP/Lenis).
+   ============================================================ */
+import { Renderer, Program, Mesh, Triangle } from 'https://cdn.jsdelivr.net/npm/ogl@1.0.11/+esm';
+import { createGovernor, isScrolling, TOUCH } from './gl-governor.js';
+
+const MAX_COLORS = 8;
+
+const hexToRGB = hex => {
+  const c = hex.replace('#', '').padEnd(6, '0');
+  return [
+    parseInt(c.slice(0, 2), 16) / 255,
+    parseInt(c.slice(2, 4), 16) / 255,
+    parseInt(c.slice(4, 6), 16) / 255,
+  ];
+};
+
+const prepColors = input => {
+  const base = (input && input.length ? input : ['#4F46E5', '#06B6D4', '#E0F2FE']).slice(0, MAX_COLORS);
+  const count = base.length;
+  const arr = [];
+  for (let i = 0; i < MAX_COLORS; i++) arr.push(hexToRGB(base[Math.min(i, base.length - 1)]));
+  const avg = [0, 0, 0];
+  for (let i = 0; i < count; i++) { avg[0] += arr[i][0]; avg[1] += arr[i][1]; avg[2] += arr[i][2]; }
+  avg[0] /= count; avg[1] /= count; avg[2] /= count;
+  return { arr, count, avg };
+};
+
+const flowVec = d => {
+  switch (d) {
+    case 'up': return [0, 1];
+    case 'down': return [0, -1];
+    case 'left': return [-1, 0];
+    case 'right': return [1, 0];
+    default: return [0, -1];
+  }
+};
+
+const vertex = `
 attribute vec2 position;
 attribute vec2 uv;
 varying vec2 vUv;
@@ -6,7 +58,9 @@ void main() {
   vUv = uv;
   gl_Position = vec4(position, 0.0, 1.0);
 }
-`,xe=`
+`;
+
+const fragment = `
 precision highp float;
 
 uniform vec3  iResolution;
@@ -137,4 +191,244 @@ void main() {
   mainImage(color, vUv * iResolution.xy);
   gl_FragColor = color;
 }
-`;function we(o,t={}){const{colors:r=["#ffffff"],speed:i=.5,scale:l=1.6,turbulence:n=1,fluidity:R=.1,rimWidth:x=.2,sharpness:V=2.5,shimmer:H=1.5,glow:N=2,flowDirection:X="down",opacity:Y=1,mouseInteraction:F=!1,mouseStrength:j=1,mouseRadius:J=.35,mouseDampening:E=.15,renderScale:K=.5,maxDpr:Q=1.25,targetFps:O=30,maxBuffer:Z=1400}=t;let p;try{p=new ae({dpr:Math.min(window.devicePixelRatio||1,Q),alpha:!0,antialias:!1,powerPreference:"low-power"})}catch{return()=>{}}const c=p.gl;if(!c)return()=>{};c.clearColor(0,0,0,0);const a=c.canvas;a.style.width="100%",a.style.height="100%",a.style.display="block",o.appendChild(a);const{arr:f,count:$,avg:ee}=ve(r),q=new se(c,{vertex:ge,fragment:xe,uniforms:{iResolution:{value:[1,1,1]},iMouse:{value:[0,0]},iTime:{value:0},uColor0:{value:f[0]},uColor1:{value:f[1]},uColor2:{value:f[2]},uColor3:{value:f[3]},uColor4:{value:f[4]},uColor5:{value:f[5]},uColor6:{value:f[6]},uColor7:{value:f[7]},uColorCount:{value:$},uMouseColor:{value:ee},uFlow:{value:he(X)},uSpeed:{value:i},uScale:{value:l},uTurbulence:{value:n},uFluidity:{value:R},uRimWidth:{value:x},uSharpness:{value:V},uShimmer:{value:H},uGlow:{value:N},uOpacity:{value:Y},uMouseEnabled:{value:F?1:0},uMouseStrength:{value:j},uMouseRadius:{value:J}}}),w=q.uniforms,oe=new ce(c),te=new ue(c,{geometry:oe,program:q});let m=K,k=!1;const I=()=>{const e=o.getBoundingClientRect(),u=p.dpr||1,h=Math.max(1,e.width*m)*u,B=Math.max(1,e.height*m)*u,M=Math.min(1,Z/Math.max(h,B)),g=Math.max(1,Math.floor(e.width*m*M)),le=Math.max(1,Math.floor(e.height*m*M));p.setSize(g,le),a.style.width="100%",a.style.height="100%",w.iResolution.value=[c.drawingBufferWidth,c.drawingBufferHeight,1]},G=new ResizeObserver(()=>{k||(k=!0,requestAnimationFrame(()=>{k=!1,I()}))});G.observe(o),I();const v=[0,0],P=e=>{const u=o.getBoundingClientRect(),h=p.dpr||1;v[0]=(e.clientX-u.left)*h*m,v[1]=(u.height-(e.clientY-u.top))*h*m,E<=0&&(w.iMouse.value[0]=v[0],w.iMouse.value[1]=v[1])};F&&o.addEventListener("pointermove",P,{passive:!0});let s=0,S=!1,d=!1,b=document.visibilityState!=="hidden",A=1e3/O;const re=fe({scale:m,fps:O,onScale:e=>{m=e,I()},onFps:e=>{A=1e3/e}});let T=0,C=0;const ne=()=>p.render({scene:te}),y=e=>{if(S||!d||!b)return;re(e);const u=me(e);if(u&&de){s=requestAnimationFrame(y);return}const h=u?A*2:A;if(e-T<h){s=requestAnimationFrame(y);return}if(T=e,w.iTime.value=e*.001,F&&E>0){C||(C=e);const B=(e-C)/1e3;C=e;const M=Math.min(1,1-Math.exp(-B/Math.max(1e-4,E))),g=w.iMouse.value;g[0]+=(v[0]-g[0])*M,g[1]+=(v[1]-g[1])*M}ne(),s=requestAnimationFrame(y)},ie=()=>{T=0,C=0,cancelAnimationFrame(s),s=requestAnimationFrame(y)},D=e=>{e.preventDefault(),S=!0,cancelAnimationFrame(s)},W=()=>{S=!1,d&&b&&ie()};a.addEventListener("webglcontextlost",D),a.addEventListener("webglcontextrestored",W);const L=()=>{cancelAnimationFrame(s),d&&b&&!S&&(s=requestAnimationFrame(y))},z=new IntersectionObserver(([e])=>{const u=d;d=e.isIntersecting,d&&!u?L():d||cancelAnimationFrame(s)},{rootMargin:"160px 0px",threshold:0});z.observe(o);const U=()=>{b=document.visibilityState!=="hidden",b?L():cancelAnimationFrame(s)};return document.addEventListener("visibilitychange",U),d=o.getBoundingClientRect().bottom>-160&&o.getBoundingClientRect().top<(window.innerHeight||0)+160,L(),()=>{cancelAnimationFrame(s),G.disconnect(),z.disconnect(),document.removeEventListener("visibilitychange",U),a.removeEventListener("webglcontextlost",D),a.removeEventListener("webglcontextrestored",W),F&&o.removeEventListener("pointermove",P);try{o.removeChild(a)}catch{}c.getExtension("WEBGL_lose_context")?.loseContext()}}(function(){const t=document.querySelector(".experience-bg-wrap");if(!t)return;let r=t.querySelector(":scope > .ferrofluid-bg");r||(r=document.createElement("div"),r.className="ferrofluid-bg",r.setAttribute("aria-hidden","true"),t.prepend(r));const i=window.matchMedia("(pointer: coarse)").matches,l=()=>{we(r,{colors:["#a3e635","#bef264","#ffffff"],speed:.1,scale:1.5,turbulence:.5,fluidity:.19,rimWidth:.2,sharpness:5,shimmer:1,glow:2.1,flowDirection:"down",opacity:1,mouseInteraction:!1,renderScale:i?.4:.5,maxDpr:i?1:1.25,maxBuffer:i?900:1400,targetFps:i?24:30})};if(!("IntersectionObserver"in window)){l();return}const n=new IntersectionObserver(R=>{R.some(x=>x.isIntersecting)&&(n.disconnect(),(window.requestIdleCallback||(x=>setTimeout(x,1)))(l,{timeout:600}))},{rootMargin:"900px 0px"});n.observe(t)})();
+`;
+
+function initFerrofluid(container, opts = {}) {
+  const {
+    colors = ['#ffffff'],
+    speed = 0.5, scale = 1.6, turbulence = 1, fluidity = 0.1,
+    rimWidth = 0.2, sharpness = 2.5, shimmer = 1.5, glow = 2,
+    flowDirection = 'down', opacity = 1,
+    mouseInteraction = false, mouseStrength = 1, mouseRadius = 0.35, mouseDampening = 0.15,
+    renderScale = 0.5, maxDpr = 1.25, targetFps = 30, maxBuffer = 1400,
+  } = opts;
+
+  let renderer;
+  try {
+    renderer = new Renderer({
+      dpr: Math.min(window.devicePixelRatio || 1, maxDpr),
+      alpha: true,
+      antialias: false,
+      powerPreference: 'low-power',
+    });
+  } catch {
+    return () => {};
+  }
+  const gl = renderer.gl;
+  if (!gl) return () => {};
+  gl.clearColor(0, 0, 0, 0);
+  const canvas = gl.canvas;
+  canvas.style.width = '100%';
+  canvas.style.height = '100%';
+  canvas.style.display = 'block';
+  container.appendChild(canvas);
+
+  const { arr, count, avg } = prepColors(colors);
+
+  const program = new Program(gl, {
+    vertex,
+    fragment,
+    uniforms: {
+      iResolution: { value: [1, 1, 1] },
+      iMouse: { value: [0, 0] },
+      iTime: { value: 0 },
+      uColor0: { value: arr[0] }, uColor1: { value: arr[1] },
+      uColor2: { value: arr[2] }, uColor3: { value: arr[3] },
+      uColor4: { value: arr[4] }, uColor5: { value: arr[5] },
+      uColor6: { value: arr[6] }, uColor7: { value: arr[7] },
+      uColorCount: { value: count },
+      uMouseColor: { value: avg },
+      uFlow: { value: flowVec(flowDirection) },
+      uSpeed: { value: speed },
+      uScale: { value: scale },
+      uTurbulence: { value: turbulence },
+      uFluidity: { value: fluidity },
+      uRimWidth: { value: rimWidth },
+      uSharpness: { value: sharpness },
+      uShimmer: { value: shimmer },
+      uGlow: { value: glow },
+      uOpacity: { value: opacity },
+      uMouseEnabled: { value: mouseInteraction ? 1 : 0 },
+      uMouseStrength: { value: mouseStrength },
+      uMouseRadius: { value: mouseRadius },
+    },
+  });
+  const uniforms = program.uniforms;
+
+  const geometry = new Triangle(gl);
+  const mesh = new Mesh(gl, { geometry, program });
+
+  let scaleNow = renderScale;
+  let resizePending = false;
+  const setSize = () => {
+    const rect = container.getBoundingClientRect();
+    const dpr = renderer.dpr || 1;
+    // cap no maior lado do buffer: a experiencia e ALTA (cabecalho + timeline);
+    // sem o cap o buffer explodiria. buffer real = w * dpr.
+    const bw = Math.max(1, rect.width * scaleNow) * dpr;
+    const bh = Math.max(1, rect.height * scaleNow) * dpr;
+    const k = Math.min(1, maxBuffer / Math.max(bw, bh));
+    const w = Math.max(1, Math.floor(rect.width * scaleNow * k));
+    const h = Math.max(1, Math.floor(rect.height * scaleNow * k));
+    renderer.setSize(w, h);
+    // renderer.setSize mexe no style do canvas — devolvemos 100% pra o CSS
+    // esticar de volta ao container (preenche a section inteira)
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    uniforms.iResolution.value = [gl.drawingBufferWidth, gl.drawingBufferHeight, 1];
+  };
+  const ro = new ResizeObserver(() => {
+    if (resizePending) return;
+    resizePending = true;
+    requestAnimationFrame(() => { resizePending = false; setSize(); });
+  });
+  ro.observe(container);
+  setSize();
+
+  // mouse (opcional; desligado no uso atual) — le na section, nao no canvas
+  const mouseTarget = [0, 0];
+  const handleMove = e => {
+    const rect = container.getBoundingClientRect();
+    const sc = renderer.dpr || 1;
+    mouseTarget[0] = (e.clientX - rect.left) * sc * scaleNow;
+    mouseTarget[1] = (rect.height - (e.clientY - rect.top)) * sc * scaleNow;
+    if (mouseDampening <= 0) { uniforms.iMouse.value[0] = mouseTarget[0]; uniforms.iMouse.value[1] = mouseTarget[1]; }
+  };
+  if (mouseInteraction) container.addEventListener('pointermove', handleMove, { passive: true });
+
+  let raf = 0;
+  let contextLost = false;
+  let isVisible = false;
+  let tabVisible = document.visibilityState !== 'hidden';
+  let frameInterval = 1000 / targetFps;
+  /* qualidade adaptativa: se a pagina perde fluidez neste aparelho, o
+     efeito baixa a resolucao interna (e no limite o fps) sozinho */
+  const governor = createGovernor({
+    scale: scaleNow, fps: targetFps,
+    onScale: v => { scaleNow = v; setSize(); },
+    onFps: v => { frameInterval = 1000 / v; },
+  });
+  let lastFrame = 0;
+  let lastMouseT = 0;
+
+  const render = () => renderer.render({ scene: mesh });
+
+  const loop = t => {
+    if (contextLost || !isVisible || !tabVisible) return;
+    governor(t);
+    /* rolando: no toque o fundo segura o quadro (rolagem tem prioridade);
+       no desktop segue vivo na metade da taxa */
+    const rolling = isScrolling(t);
+    if (rolling && TOUCH) { raf = requestAnimationFrame(loop); return; }
+    const budget = rolling ? frameInterval * 2 : frameInterval;
+    if (t - lastFrame < budget) { raf = requestAnimationFrame(loop); return; }
+    lastFrame = t;
+
+    uniforms.iTime.value = t * 0.001;
+
+    if (mouseInteraction && mouseDampening > 0) {
+      if (!lastMouseT) lastMouseT = t;
+      const dt = (t - lastMouseT) / 1000;
+      lastMouseT = t;
+      const factor = Math.min(1, 1 - Math.exp(-dt / Math.max(1e-4, mouseDampening)));
+      const cur = uniforms.iMouse.value;
+      cur[0] += (mouseTarget[0] - cur[0]) * factor;
+      cur[1] += (mouseTarget[1] - cur[1]) * factor;
+    }
+
+    render();
+    raf = requestAnimationFrame(loop);
+  };
+  const start = () => { lastFrame = 0; lastMouseT = 0; cancelAnimationFrame(raf); raf = requestAnimationFrame(loop); };
+
+  const handleContextLost = e => { e.preventDefault(); contextLost = true; cancelAnimationFrame(raf); };
+  const handleContextRestored = () => { contextLost = false; if (isVisible && tabVisible) start(); };
+  canvas.addEventListener('webglcontextlost', handleContextLost);
+  canvas.addEventListener('webglcontextrestored', handleContextRestored);
+
+  const kick = () => {
+    cancelAnimationFrame(raf);
+    if (isVisible && tabVisible && !contextLost) raf = requestAnimationFrame(loop);
+  };
+
+  const io = new IntersectionObserver(([entry]) => {
+    const was = isVisible;
+    isVisible = entry.isIntersecting;
+    if (isVisible && !was) kick();
+    else if (!isVisible) cancelAnimationFrame(raf);
+  }, { rootMargin: '160px 0px', threshold: 0 });
+  io.observe(container);
+
+  const handleVisibilityChange = () => {
+    tabVisible = document.visibilityState !== 'hidden';
+    if (tabVisible) kick();
+    else cancelAnimationFrame(raf);
+  };
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+
+  isVisible = container.getBoundingClientRect().bottom > -160 &&
+    container.getBoundingClientRect().top < (window.innerHeight || 0) + 160;
+  kick();
+
+  return () => {
+    cancelAnimationFrame(raf);
+    ro.disconnect();
+    io.disconnect();
+    document.removeEventListener('visibilitychange', handleVisibilityChange);
+    canvas.removeEventListener('webglcontextlost', handleContextLost);
+    canvas.removeEventListener('webglcontextrestored', handleContextRestored);
+    if (mouseInteraction) container.removeEventListener('pointermove', handleMove);
+    try { container.removeChild(canvas); } catch {}
+    gl.getExtension('WEBGL_lose_context')?.loseContext();
+  };
+}
+
+/* ---- monta o fundo cobrindo a experiencia INTEIRA (#xp + #timeline) ---- */
+(function mountExperienceFerrofluid() {
+  const wrap = document.querySelector('.experience-bg-wrap');
+  if (!wrap) return;
+
+  let layer = wrap.querySelector(':scope > .ferrofluid-bg');
+  if (!layer) {
+    layer = document.createElement('div');
+    layer.className = 'ferrofluid-bg';
+    layer.setAttribute('aria-hidden', 'true');
+    wrap.prepend(layer);
+  }
+
+  const coarse = window.matchMedia('(pointer: coarse)').matches;
+    /* so compila o shader quando a secao chega perto da tela: no load o
+     fundo nao existe ainda, e a pagina abre sem esse custo no processador */
+  const start = () => {
+  initFerrofluid(layer, {
+      // SO as cores mudaram (lima -> verde -> branco, tema do site);
+      // o resto e o do exemplo de uso.
+      colors: ['#a3e635', '#bef264', '#ffffff'],
+      speed: 0.1,
+      scale: 1.5,
+      turbulence: 0.5,
+      fluidity: 0.19,
+      rimWidth: 0.2,
+      sharpness: 5,
+      shimmer: 1,
+      glow: 2.1,
+      flowDirection: 'down',
+      opacity: 1,
+      mouseInteraction: false,
+      // fluido e macio por natureza: meia resolucao + upscale do CSS nao se
+      // ve, e corta ~60% dos pixels do shader. No toque (celular/tablet) cai
+      // mais um degrau: GPU movel + bateria.
+      renderScale: coarse ? 0.4 : 0.5,
+      maxDpr: coarse ? 1 : 1.25,
+      maxBuffer: coarse ? 900 : 1400,
+      targetFps: coarse ? 24 : 30,
+    });
+  };
+  if (!('IntersectionObserver' in window)) { start(); return; }
+  const io = new IntersectionObserver((entries) => {
+    if (!entries.some(e => e.isIntersecting)) return;
+    io.disconnect();
+    (window.requestIdleCallback || ((f) => setTimeout(f, 1)))(start, { timeout: 600 });
+  }, { rootMargin: '900px 0px' });
+  io.observe(wrap);
+})();
