@@ -9508,3 +9508,6 @@ html.lg-ok .cs-back {
   .ctm__submit { min-height: 48px; }
 }
 @media (max-width: 760px) and (max-height: 760px) { .ctm__sub { display: none; } }
+
+/* navbar: item da secao atual aceso (aria-current vem do js/UI.js) */
+header a[data-scroll][aria-current="location"] { color: var(--lime); }

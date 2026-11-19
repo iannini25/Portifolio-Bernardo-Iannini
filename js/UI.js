@@ -20,10 +20,43 @@ function anchorTop(el) {
   const navBottom = header?.querySelector('.nav')?.getBoundingClientRect().bottom || offset();
   return Math.max(0, y + pad - navBottom - 28);
 }
-function scrollToAnchor(el) {
+/* Rola ate a ancora e CONFERE no fim: secoes que montam tarde (pin de
+   Servicos, pastas, timeline) mudam o layout no meio da rolagem suave, e
+   o destino calculado no clique ficava velho. No fim recalcula e, se
+   errou por mais de 4px, corrige sem animacao. `instant` = sem animacao
+   (chegada por link/recarga). */
+function scrollToAnchor(el, instant) {
+  const fix = () => {
+    const t = anchorTop(el);
+    if (Math.abs(window.scrollY - t) > 4) {
+      if (window.lenis) window.lenis.scrollTo(t, { immediate: true, force: true });
+      else window.scrollTo(0, t);
+    }
+  };
   const top = anchorTop(el);
-  if (window.lenis) window.lenis.scrollTo(top, { force: true });
-  else window.scrollTo({ top, behavior: 'smooth' });
+  if (instant) {
+    if (window.lenis) window.lenis.scrollTo(top, { immediate: true, force: true });
+    window.scrollTo(0, top);
+    return;
+  }
+  if (window.lenis) {
+    window.lenis.scrollTo(top, { force: true, onComplete: () => setTimeout(fix, 60) });
+  } else {
+    window.scrollTo({ top, behavior: 'smooth' });
+    if ('onscrollend' in window) window.addEventListener('scrollend', fix, { once: true });
+    else setTimeout(fix, 900);
+  }
+}
+/* a mesma conta vale pra quem chega por link (#ancora) e pra recarga:
+   ver js/scroll-restore.js */
+window.biAnchorTop = anchorTop;
+window.biScrollToAnchor = scrollToAnchor;
+
+/* A URL acompanha a ancora (sem criar entrada nova no historico): recarregar
+   ou compartilhar o link leva pro mesmo ponto. #home vira a URL limpa. */
+function setAnchorUrl(hash) {
+  const url = location.pathname + location.search + (hash === '#home' ? '' : hash);
+  try { history.replaceState(history.state, '', url); } catch (e) {}
 }
 
 document.querySelectorAll('a[data-scroll]').forEach(a => {
@@ -31,8 +64,9 @@ document.querySelectorAll('a[data-scroll]').forEach(a => {
     const href = a.getAttribute('href');
     if (href && href.startsWith('#')) {
       e.preventDefault();
-      const el = document.querySelector(href);
+      const el = document.getElementById(href.slice(1));
       if (el) {
+        setAnchorUrl(href);
         scrollToAnchor(el);
         /* Contato: abre o modal na hora e o fundo rola ate a section atras dele */
         if (href === '#contato' && typeof openContactModal === 'function') openContactModal();
@@ -44,6 +78,41 @@ document.querySelectorAll('a[data-scroll]').forEach(a => {
       }
     }
   });
+});
+
+/* Secao atual -> URL + item do menu aceso. So as secoes que estao na
+   navbar; a "atual" e a ultima cujo topo ja passou de 40% da tela. Roda
+   com atraso (150ms) e so troca quando muda, entao nao pesa na rolagem. */
+(function () {
+  const ids = [...new Set([...document.querySelectorAll('header a[data-scroll]')]
+    .map(a => a.getAttribute('href')).filter(h => h && h.length > 1 && h[0] === '#'))];
+  const secs = ids.map(h => document.getElementById(h.slice(1))).filter(Boolean);
+  if (secs.length < 2) return;
+  const links = [...document.querySelectorAll('header a[data-scroll]')];
+  let current = null, t = 0;
+  const update = () => {
+    const line = window.innerHeight * 0.4;
+    let found = secs[0];
+    for (const s of secs) if (s.getBoundingClientRect().top <= line) found = s;
+    if (found === current) return;
+    current = found;
+    const hash = '#' + found.id;
+    links.forEach(a => a.getAttribute('href') === hash ? a.setAttribute('aria-current', 'location') : a.removeAttribute('aria-current'));
+    /* nao reescreve a URL antes da pessoa interagir: quem chegou por
+       /#projects continua com esse link ate rolar */
+    if (interacted) setAnchorUrl(hash);
+  };
+  let interacted = false;
+  ['wheel', 'touchmove', 'keydown', 'click'].forEach(ev => window.addEventListener(ev, () => { interacted = true; }, { passive: true }));
+  window.addEventListener('scroll', () => { clearTimeout(t); t = setTimeout(update, 150); }, { passive: true });
+  window.addEventListener('load', update, { once: true });
+})();
+
+/* hash trocado na mao (barra de endereco, link interno sem data-scroll):
+   vai pro mesmo ponto que o menu levaria */
+window.addEventListener('hashchange', () => {
+  const el = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  if (el && el.matches('section, [id="home"]')) scrollToAnchor(el);
 });
 
 

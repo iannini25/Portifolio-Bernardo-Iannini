@@ -79,7 +79,9 @@ function closeContactModal() {
 /* veio de outra pagina pelo link Contato (/#contato): chega com o modal aberto */
 if (location.hash === '#contato' && dialog) {
   const nav = performance.getEntriesByType('navigation')[0];
-  if (!nav || nav.type !== 'back_forward') setTimeout(openContactModal, 500);
+  /* recarregar nao reabre o modal que a pessoa ja tinha visto/fechado:
+     ela volta pra section de contato, so isso */
+  if (!nav || nav.type === 'navigate') setTimeout(openContactModal, 500);
 }
 
 openBtn?.addEventListener('click', openContactModal);

@@ -41,10 +41,13 @@
     window.scrollTo(0, y);
   };
 
+  /* voltar/avancar E recarregar: volta exatamente onde a pessoa estava
+     (secao + distancia dentro dela). Link novo com #ancora: o MESMO ponto
+     em que o menu leva (window.biAnchorTop, de js/UI.js). */
   const target = () => {
     const nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
-    const isBack = nav && nav.type === 'back_forward';
-    if (isBack) {
+    const kind = nav && nav.type;
+    if (kind === 'back_forward' || kind === 'reload') {
       try {
         const st = JSON.parse(sessionStorage.getItem(KEY) || 'null');
         if (st) {
@@ -56,6 +59,7 @@
     if (location.hash.length > 1) {
       const el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
       if (el) {
+        if (typeof window.biAnchorTop === 'function') return window.biAnchorTop(el);
         const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
         return absTop(el) - margin;
       }
