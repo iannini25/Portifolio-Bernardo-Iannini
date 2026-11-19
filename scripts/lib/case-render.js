@@ -280,7 +280,7 @@ function renderCaseMain(o) {
   };
   const kindLabel = KIND[lang][isLab ? 'lab' : p.category] || '';
   const role = p.role || (isLab ? (lang === 'pt' ? 'design, copy e front-end' : 'design, copy and front-end') : '');
-  const eb = (label) => `<p class="pj-eb" aria-hidden="true">${label}</p>`;
+  const eb = () => '';   /* sem rotulo nem numeracao de secao (pedido do Bernardo) */
   const btn = (href, label, small, cls = '') => `<a class="pj-btn ${cls}" href="${esc(href)}" target="_blank" rel="noopener noreferrer">
             <span class="pj-btn__txt"><b>${label}</b>${small ? `<small>${esc(small)}</small>` : ''}</span>
             <span class="pj-btn__ic" aria-hidden="true">${ICON.arrow}</span><span class="sr-only">(${u.newTab})</span></a>`;
@@ -575,7 +575,7 @@ function renderCaseMain(o) {
       </div>
       <ol class="pj-steps" data-cs-steps style="--n:${steps.length}">
         ${steps.map((s, i) => `<li class="pj-step${i === steps.length - 1 ? ' pj-step--end' : ''}" style="--i:${i}">
-          <span class="pj-step__num" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span>
+          <span class="pj-step__mark" aria-hidden="true"></span>
           <span class="pj-step__label">${s.label}</span>
           ${s.sub ? `<span class="pj-step__sub">${s.sub}</span>` : ''}
         </li>`).join('')}
@@ -593,7 +593,7 @@ function renderCaseMain(o) {
       </div>
       <div class="pj-bento__grid" style="--n:${topics.length}">
         ${topics.map((tp, i) => `<article class="pjb-card${i === 0 ? ' pjb-card--hi' : ''}" data-reveal style="--i:${i}">
-          <span class="pjb-card__top"><span class="pjb-card__icon" aria-hidden="true">${PC_ICONS[tp.icon] || PC_ICONS.layers}</span><span class="pjb-card__n" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span></span>
+          <span class="pjb-card__top"><span class="pjb-card__icon" aria-hidden="true">${PC_ICONS[tp.icon] || PC_ICONS.layers}</span><span class="pjb-card__n" aria-hidden="true">${ICON.arrow}</span></span>
           <h3 class="pjb-card__title">${tp.title}</h3>
           <p class="pjb-card__text">${tp.text}</p>
           ${(tp.deep && tp.deep.length) ? `<details class="cs-feat__more"><summary>${u.more}</summary><ul>${tp.deep.map(l => `<li>${l}</li>`).join('')}</ul></details>` : ''}

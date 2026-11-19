@@ -258,3 +258,22 @@
 @media (prefers-reduced-motion: reduce) {
   .pj-btn, .pj-btn__ic, .pjb-card, .pj-cover__img { transition: none; }
 }
+
+/* ---------- sem numeracao (cards, passos, frentes) ----------
+   no lugar do numero: seta ↗ discreta nos cards e um ponto no acento
+   nos passos */
+.pjb-card__n {
+  display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255,255,255,.05); color: var(--pj-mute);
+  transition: transform .35s var(--pj-ease), background .35s var(--pj-ease), color .35s var(--pj-ease);
+}
+.pjb-card__n svg { width: 15px; height: 15px; }
+.pjb-card:hover .pjb-card__n { transform: rotate(45deg); background: var(--pa-10); color: var(--pa-hi); }
+.pjb-card--hi .pjb-card__n { background: rgba(0,0,0,.12); color: #0b0d0c; }
+.pj-step__mark {
+  width: 10px; height: 10px; border-radius: 50%; margin-bottom: auto;
+  background: var(--pa); box-shadow: 0 0 0 5px var(--pa-10);
+}
+.pj-step--end .pj-step__mark { background: #0b0d0c; box-shadow: 0 0 0 5px rgba(0,0,0,.12); }
+.pj-step { min-height: 160px; }
+.pj .cs-pillar__num { display: none; }
