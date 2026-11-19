@@ -31,6 +31,34 @@
     });
   }
 
+  /* ---------- 0b. arrastar com a mao ----------
+     Toda faixa que rola pro lado (galeria de telas, telas dos apps)
+     tambem rola clicando e arrastando com o mouse. No toque o swipe
+     nativo continua igual. Arrastou de verdade: o clique da imagem
+     (ampliar) nao dispara. */
+  root.querySelectorAll('[data-cs-track], .cs-app__screens').forEach((el) => {
+    el.classList.add('cs-drag');
+    let down = false, startX = 0, startLeft = 0, moved = 0;
+    el.addEventListener('pointerdown', (e) => {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      down = true; moved = 0; startX = e.clientX; startLeft = el.scrollLeft;
+    });
+    el.addEventListener('pointermove', (e) => {
+      if (!down) return;
+      const dx = e.clientX - startX;
+      if (!moved && Math.abs(dx) < 4) return;
+      if (!moved) { el.classList.add('is-dragging'); el.setPointerCapture(e.pointerId); }
+      moved = Math.abs(dx);
+      el.scrollLeft = startLeft - dx;
+      e.preventDefault();
+    });
+    const end = () => { down = false; el.classList.remove('is-dragging'); };
+    el.addEventListener('pointerup', end);
+    el.addEventListener('pointercancel', end);
+    el.addEventListener('click', (e) => { if (moved > 4) { e.preventDefault(); e.stopPropagation(); moved = 0; } }, true);
+    el.addEventListener('dragstart', (e) => e.preventDefault());
+  });
+
   /* ---------- 1. reveals ---------- */
   const revealEls = root.querySelectorAll('[data-reveal]');
   if ('IntersectionObserver' in window) {

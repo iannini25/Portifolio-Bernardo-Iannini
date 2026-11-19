@@ -277,3 +277,11 @@
 .pj-step--end .pj-step__mark { background: #0b0d0c; box-shadow: 0 0 0 5px rgba(0,0,0,.12); }
 .pj-step { min-height: 160px; }
 .pj .cs-pillar__num { display: none; }
+
+/* ---------- arrastar com a mao (faixas horizontais) ---------- */
+@media (hover: hover) and (pointer: fine) {
+  .cs-drag, .cs-drag button, .cs-drag img { cursor: grab; }
+  .cs-drag.is-dragging, .cs-drag.is-dragging button, .cs-drag.is-dragging img { cursor: grabbing; }
+  .cs-drag.is-dragging { scroll-snap-type: none !important; scroll-behavior: auto !important; user-select: none; }
+  .cs-drag img { -webkit-user-drag: none; user-select: none; }
+}
