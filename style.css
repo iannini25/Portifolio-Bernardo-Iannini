@@ -5166,28 +5166,54 @@ header { top: max(8px, env(safe-area-inset-top, 0px)); }
   .pj-panel__case:hover { background: var(--lime); transform: translateY(-2px); }
 }
 /* indices 01 02 03: bolinhas; a ativa acende em lime */
+/* indices 01 02 03 como UM controle segmentado: uma pilula so, e o
+   destaque lime desliza de um numero pro outro (--i = posicao ativa) */
 .pj-panel__nav {
-  display: flex;
-  gap: 8px;
+  --i: 0;
+  position: relative;
+  display: inline-flex;
+  gap: 0;
   margin-top: 24px;
-  padding-right: 66px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .05);
+  box-shadow: inset 0 0 0 1px var(--w-08);
+}
+.pj-panel__nav:has(.pj-panel__dot:nth-child(2).is-on) { --i: 1; }
+.pj-panel__nav:has(.pj-panel__dot:nth-child(3).is-on) { --i: 2; }
+.pj-panel__nav:has(.pj-panel__dot:nth-child(4).is-on) { --i: 3; }
+.pj-panel__nav::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 42px;
+  height: 36px;
+  border-radius: 999px;
+  background: var(--lime);
+  transform: translateX(calc(var(--i) * 42px));
+  transition: transform .45s cubic-bezier(.2, .8, .2, 1);
 }
 .pj-panel__dot {
-  width: 38px;
-  height: 38px;
+  position: relative;
+  z-index: 1;
+  width: 42px;
+  height: 36px;
   padding: 0;
-  border: 1px solid var(--w-12);
-  border-radius: 50%;
+  border: 0;
+  border-radius: 999px;
   background: none;
   cursor: pointer;
   font-size: .76rem;
   font-weight: 700;
   color: var(--text-soft);
   font-variant-numeric: tabular-nums;
-  transition: color .25s ease, background .25s ease, border-color .25s ease;
+  transition: color .3s ease;
 }
-.pj-panel__dot:hover { color: var(--text); border-color: var(--lime); }
-.pj-panel__dot.is-on { background: var(--lime); border-color: var(--lime); color: var(--pj-ink); }
+.pj-panel__dot:hover { color: var(--text); }
+.pj-panel__dot.is-on { color: var(--pj-ink); }
+.pj-panel__dot:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .pj-panel__nav::before { transition: none; } }
 .pj-panel__next {
   position: absolute;
   right: 0;
