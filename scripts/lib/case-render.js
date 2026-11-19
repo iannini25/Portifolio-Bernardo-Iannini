@@ -366,16 +366,23 @@ function renderCaseMain(o) {
     const m = String(txt).match(/^(.+?[.!?])\s+(.+)$/s);
     return m ? `${esc(m[1])} <span class="pj-mute">${esc(m[2])}</span>` : esc(txt);
   };
+  /* bloco de 2 colunas: so a 1a frase vira a frase grande; o resto do
+     paragrafo desce pra coluna da direita como texto normal (nada de
+     paragrafo gigante com a coluna ao lado vazia) */
+  const headTail = (txt) => {
+    const m = String(txt).match(/^(.+?[.!?])\s+(.+)$/s);
+    return m ? [m[1], m[2]] : [String(txt), ''];
+  };
   if (whatParas.length) {
     sec.push(`
     <section class="pj-split" aria-labelledby="csWhat" data-reveal>
       <div class="pj-split__head">
         ${eb(u.whatIs)}
         <h2 class="sr-only" id="csWhat">${u.whatIs}</h2>
-        <p class="pj-statement">${twoTone(whatParas[0])}</p>
+        <p class="pj-statement">${esc(headTail(whatParas[0])[0])}</p>
       </div>
       <div class="pj-split__body">
-        ${whatParas.slice(1).map(x => `<p>${esc(x)}</p>`).join('')}
+        ${[headTail(whatParas[0])[1], ...whatParas.slice(1)].filter(Boolean).map(x => `<p>${esc(x)}</p>`).join('')}
         ${p.signature ? `<p class="pj-sig"><span>${lang === 'pt' ? 'Assinatura visual' : 'Visual signature'}</span>${esc(p.signature)}</p>` : ''}
       </div>
     </section>`);
@@ -388,9 +395,9 @@ function renderCaseMain(o) {
       <div class="pj-split__head">
         ${eb(u.problem)}
         <h2 class="sr-only" id="csProblem">${u.problem}</h2>
-        <p class="pj-statement">${twoTone(problem[0])}</p>
+        <p class="pj-statement">${esc(headTail(problem[0])[0])}</p>
       </div>
-      <div class="pj-split__body">${problem.slice(1, 2).map(x => `<p>${esc(x)}</p>`).join('')}</div>
+      <div class="pj-split__body">${[headTail(problem[0])[1], ...problem.slice(1, 2)].filter(Boolean).map(x => `<p>${esc(x)}</p>`).join('')}</div>
     </section>`);
   }
 
@@ -585,10 +592,10 @@ function renderCaseMain(o) {
         <h2 class="pj-h2" id="csFeat">${isLab ? (lang === 'pt' ? 'O que foi pensado ' : 'What was designed ') : (lang === 'pt' ? 'O que ele faz ' : 'What it does ')}<span class="pj-mute">${isLab ? (lang === 'pt' ? 'em cada detalhe.' : 'in every detail.') : (lang === 'pt' ? 'por quem usa.' : 'for the people using it.')}</span></h2>
       </div>
       <div class="pj-bento__grid" style="--n:${topics.length}">
-        ${topics.map((tp, i) => `<article class="pj-card${i === 0 ? ' pj-card--hi' : ''}" data-reveal style="--i:${i}">
-          <span class="pj-card__top"><span class="pj-card__icon" aria-hidden="true">${PC_ICONS[tp.icon] || PC_ICONS.layers}</span><span class="pj-card__n" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span></span>
-          <h3 class="pj-card__title">${tp.title}</h3>
-          <p class="pj-card__text">${tp.text}</p>
+        ${topics.map((tp, i) => `<article class="pjb-card${i === 0 ? ' pjb-card--hi' : ''}" data-reveal style="--i:${i}">
+          <span class="pjb-card__top"><span class="pjb-card__icon" aria-hidden="true">${PC_ICONS[tp.icon] || PC_ICONS.layers}</span><span class="pjb-card__n" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span></span>
+          <h3 class="pjb-card__title">${tp.title}</h3>
+          <p class="pjb-card__text">${tp.text}</p>
           ${(tp.deep && tp.deep.length) ? `<details class="cs-feat__more"><summary>${u.more}</summary><ul>${tp.deep.map(l => `<li>${l}</li>`).join('')}</ul></details>` : ''}
         </article>`).join('')}
       </div>

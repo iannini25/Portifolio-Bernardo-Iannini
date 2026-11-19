@@ -9377,17 +9377,18 @@ header .pill, header .lang-switch.pill, header .lang-switch:hover, header .lang-
 .pj-card__frame::before, .pj-card.is-hot .pj-card__frame::before { display: none; }
 .pj-win.is-front:hover, .cs-win--link:hover { border-color: var(--w-05); }
 /* ===== navbar liquid glass com refracao leve ===== */
+/* versao clean: blur liso sem refracao (a distorcao entortava o fundo),
+   tinta mais sutil, um unico fio de luz no topo e sombra suave */
 header .pill, header .lang-switch.pill, header .cv-btn {
-  background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.025)) !important;
-  -webkit-backdrop-filter: blur(14px) saturate(1.6) brightness(1.08);
-          backdrop-filter: blur(14px) saturate(1.6) brightness(1.08);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.22), inset 0 -1px 0 rgba(255,255,255,.06),
-              inset 1px 0 0 rgba(255,255,255,.08), inset -1px 0 0 rgba(255,255,255,.08),
-              0 10px 30px -12px rgba(0,0,0,.55);
+  background: rgba(18, 22, 20, .55) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(1.3);
+          backdrop-filter: blur(20px) saturate(1.3);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.10), inset 0 0 0 1px rgba(255,255,255,.05),
+              0 8px 24px -14px rgba(0,0,0,.6);
 }
 html.lg-ok header .pill, html.lg-ok header .lang-switch.pill, html.lg-ok header .cv-btn {
-  -webkit-backdrop-filter: url(#lgRefract) blur(6px) saturate(1.6) brightness(1.08);
-          backdrop-filter: url(#lgRefract) blur(6px) saturate(1.6) brightness(1.08);
+  -webkit-backdrop-filter: blur(20px) saturate(1.3);
+          backdrop-filter: blur(20px) saturate(1.3);
 }
 /* sem contorno no recorte das capas e no botao de seta */
 .pj-card__frame { background: transparent; box-shadow: none; outline: 0; }
@@ -9397,16 +9398,15 @@ html.lg-ok header .pill, html.lg-ok header .lang-switch.pill, html.lg-ok header 
 /* botao Voltar das paginas de projeto: mesmo liquid glass da navbar */
 .cs-back {
   border-color: transparent;
-  background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.025));
-  -webkit-backdrop-filter: blur(14px) saturate(1.6) brightness(1.08);
-          backdrop-filter: blur(14px) saturate(1.6) brightness(1.08);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.22), inset 0 -1px 0 rgba(255,255,255,.06),
-              inset 1px 0 0 rgba(255,255,255,.08), inset -1px 0 0 rgba(255,255,255,.08),
-              0 10px 30px -12px rgba(0,0,0,.55);
+  background: rgba(18, 22, 20, .55);
+  -webkit-backdrop-filter: blur(20px) saturate(1.3);
+          backdrop-filter: blur(20px) saturate(1.3);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.10), inset 0 0 0 1px rgba(255,255,255,.05),
+              0 8px 24px -14px rgba(0,0,0,.6);
 }
 html.lg-ok .cs-back {
-  -webkit-backdrop-filter: url(#lgRefract) blur(6px) saturate(1.6) brightness(1.08);
-          backdrop-filter: url(#lgRefract) blur(6px) saturate(1.6) brightness(1.08);
+  -webkit-backdrop-filter: blur(20px) saturate(1.3);
+          backdrop-filter: blur(20px) saturate(1.3);
 }
 /* capas sem fresta/franja na borda: a imagem sangra 2px alem da moldura
    (subpixel do grid no hover deixava 1px do fundo aparecer como "borda") e a
