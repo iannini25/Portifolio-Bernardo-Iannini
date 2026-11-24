@@ -126,6 +126,15 @@
       ]
     },
     {
+      "source": "/panfleto-dengue(.html)?",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
       "source": "/bernardolindao",
       "headers": [
         {
@@ -195,6 +204,10 @@
     {
       "source": "/pt",
       "destination": "/pt/index.html"
+    },
+    {
+      "source": "/panfleto-dengue",
+      "destination": "/panfleto-dengue.html"
     }
   ]
 }

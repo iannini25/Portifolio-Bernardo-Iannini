@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Dengue: tudo que você precisa saber</title>
+  <meta name="description" content="Panfleto sobre a dengue: onde o mosquito se reproduz, sintomas, como prevenir e quando procurar ajuda.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#fff0b3">
+  <meta property="og:title" content="Dengue: tudo que você precisa saber">
+  <meta property="og:description" content="Conheça os riscos e como se proteger.">
+  <meta property="og:image" content="https://www.bernardoiannini.com/img/panfleto/panfleto-dengue.jpg">
+  <meta property="og:type" content="website">
+  <!-- pagina avulsa (nao faz parte do portfolio): sem menu, sem scripts do site -->
+  <style>
+    :root { --bg: #fff0b3; --red: #d51a14; --red-dark: #a8120e; }
+    * { box-sizing: border-box; margin: 0; }
+    html, body { height: 100%; }
+    body {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--bg);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      padding: max(12px, env(safe-area-inset-top)) 12px 0;
+    }
+    /* a imagem inteira sempre na tela: cabe na largura E na altura que
+       sobra acima do botao, em qualquer celular */
+    .flyer {
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .flyer img {
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: calc(100dvh - 96px - env(safe-area-inset-bottom) - env(safe-area-inset-top));
+      aspect-ratio: 1131 / 1600;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px -12px rgba(120, 40, 0, .35);
+    }
+    .bar {
+      position: sticky;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding: 12px 12px max(14px, env(safe-area-inset-bottom));
+      background: linear-gradient(to top, var(--bg) 70%, rgba(255, 240, 179, 0));
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: min(100%, 420px);
+      min-height: 56px;
+      padding: 0 24px;
+      border-radius: 999px;
+      background: var(--red);
+      color: #fff;
+      font-size: 1.05rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 10px 24px -10px rgba(168, 18, 14, .7);
+      transition: background .2s ease, transform .2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn:hover { background: var(--red-dark); }
+    .btn:active { transform: scale(.98); }
+    .btn:focus-visible { outline: 3px solid #222; outline-offset: 3px; }
+    .btn svg { width: 22px; height: 22px; flex: none; }
+  </style>
+</head>
+<body>
+  <main class="flyer">
+    <a href="/img/panfleto/panfleto-dengue.jpg" target="_blank" rel="noopener" aria-label="Abrir o panfleto em tamanho original">
+      <img src="/img/panfleto/panfleto-dengue.jpg" width="1131" height="1600"
+           alt="Panfleto sobre a dengue: onde o mosquito se reproduz (pratos de plantas, pneus, poças e baldes com água), sintomas (febre, dor de cabeça e dores no corpo), como prevenir (eliminar água parada e tampar reservatórios) e quando procurar ajuda (dor forte na barriga, vômitos persistentes ou sangramento). Sentiu os sintomas? Procure uma unidade de saúde e não tome remédios por conta própria.">
+    </a>
+  </main>
+  <div class="bar">
+    <a class="btn" href="/img/panfleto/panfleto-dengue.jpg" download="panfleto-dengue.jpg">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Baixar imagem
+    </a>
+  </div>
+</body>
+</html>
