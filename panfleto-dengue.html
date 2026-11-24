@@ -35,12 +35,16 @@
       align-items: center;
       justify-content: center;
     }
+    /* largura = a menor entre a da tela e a que cabe na altura livre
+       (proporcao do panfleto 1131x1600): nunca corta nem rola */
+    .flyer a {
+      display: block;
+      width: min(100%, calc((100dvh - 96px - env(safe-area-inset-bottom) - env(safe-area-inset-top)) * 1131 / 1600));
+    }
     .flyer img {
       display: block;
-      width: auto;
+      width: 100%;
       height: auto;
-      max-width: 100%;
-      max-height: calc(100dvh - 96px - env(safe-area-inset-bottom) - env(safe-area-inset-top));
       aspect-ratio: 1131 / 1600;
       border-radius: 10px;
       box-shadow: 0 10px 30px -12px rgba(120, 40, 0, .35);
